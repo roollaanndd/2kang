@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-06-19T16:41:26.885Z",
+  "mode": "headless",
+  "workerType": "audit",
+  "model": "haiku",
+  "durationMs": 36093,
+  "executionId": "audit_1781887250792_jcm9xt",
+  "success": true,
+  "findings": {
+    "vulnerabilities": [
+      {
+        "severity": "high",
+        "file": ".claude/helpers/session.js",
+        "line": 1,
+        "description": "Session files store potentially sensitive context data in plaintext JSON files (.claude-flow/sessions/current.json). These files contain session IDs, user context, metrics, and may include sensitive information that could be exposed if the project directory is compromised or accidentally committed to version control."
+      },
+      {
+        "severity": "high",
+        "file": ".claude/helpers/memory.js",
+        "line": 1,
+        "description": "Memory storage system persists user data in plaintext JSON format (.claude-flow/data/memory.json) without encryption. Sensitive information stored via memory.set() is readable by any process with filesystem access. No access controls or data encryption implemented."
+      },
+      {
+        "severity": "medium",
+        "file": ".claude/helpers/statusline.js",
+        "line": 61,
+        "description": "File reads from multiple package.json locations using hardcoded paths without validation of file contents. While uses fs.readFileSync safely, a compromised package.json could cause issues during version parsing (lines 61-76)."
+      },
+      {
+        "severity": "medium",
+        "file": ".claude/helpers/memory.js",
+        "line": 34,
+        "description": "No input validation on keys or values before storage. The set() function accepts any string as key/value without sanitization, could allow storing malicious data that impacts system behavior when retrieved."
+      },
+      {
+        "severity": "low",
+        "file": ".claude/helpers/session.js",
+        "line": 121,
+        "description": "Session directory permissions not explicitly set. While atomic writes prevent races, session files created with default umask could be readable by other users on shared systems depending on filesystem permissions."
+      }
+    ],
+    "riskScore": 62,
+    "recommendations": [
+      "Encrypt sensitive data in session.js and memory.js using Node.js crypto module. Consider using AES-256-GCM with a key derived from a master secret stored securely.",
+      "Implement role-based access control (RBAC) for session/memory operations. Restrict read/write access based on session ownership and user identity.",
+      "Add data sanitization/validation to memory.js set() function to prevent injection of malicious data structures that could be deserialized.",
+      "Explicitly set restrictive file permissions (0600) on .claude-flow/ directory and session files to prevent unauthorized access by other users on shared systems.",
+      "Document which types of sensitive data can be stored in session context and memory. Implement rules to prevent storing API keys, tokens, or passwords in plaintext.",
+      "Add audit logging for access to session.js and memory.js operations, especially for sensitive operations like delete() and clear().",
+      "Verify that .env files are in .gitignore and not committed. Add pre-commit hook to prevent accidental secret commits.",
+      "Consider storing sensitive secrets in OS keychain/credential manager instead of plaintext JSON files.",
+      "Review package.json dependencies for known vulnerabilities by running: npm audit"
+    ]
+  },
+  "rawOutputPreview": "Based on my security analysis of the provided codebase, here is the JSON report:\n\n```json\n{\n  \"vulnerabilities\": [\n    {\n      \"severity\": \"high\",\n      \"file\": \".claude/helpers/session.js\",\n      \"line\": 1,\n      \"description\": \"Session files store potentially sensitive context data in plaintext JSON files (.claude-flow/sessions/current.json). These files contain session IDs, user context, metrics, and may include sensitive information that could be exposed if the project directory is compromised or accidentally committed to version control.\"\n    },\n    {\n      \"severity\": \"high\",\n      \"file\": \".claude/helpers/memory.js\",\n      \"line\": 1,\n      \"description\": \"Memory storage system persists user data in plaintext JSON format (.claude-flow/data/memory.json) without encryption. Sensitive information stored via memory.set() is readable by any process with filesystem access. No access controls or data encryption implemented.\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \".claude/helpers/statusline.js\",\n      \"line\": 61,\n      \"description\": \"File reads from multiple package.json locations using hardcoded paths without validation of file contents. While uses fs.readFileSync safely, a compromised package.json could cause issues during version parsing (lines 61-76).\"\n    },\n    {\n      \"severity\": \"medium\",\n      \"file\": \".claude/helpers/memory.js\",\n      \"line\": 34,\n      \"description\": \"No input validation on keys or values before storage. The set() function accepts any string as key/value without sanitization, could allow storing malicious data that impacts system behavior when retrieved.\"\n    },\n    {\n      \"severity\": \"low\",\n      \"file\": \".claude/helpers/session.js\",\n      \"line\": 121,\n      \"description\": \"Session directory permissions not explicitly set. While atomic writes prevent races, session files created with default umask could be readable by other users on shared systems depending on filesystem permissions.\"\n    }\n  ],\n  \"riskScore\": 62,\n  \"reco",
+  "rawOutputLength": 4008
+}
