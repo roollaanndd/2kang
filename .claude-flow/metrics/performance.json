@@ -1,0 +1,100 @@
+{
+  "timestamp": "2026-06-19T16:43:49.588Z",
+  "mode": "headless",
+  "workerType": "optimize",
+  "model": "sonnet",
+  "durationMs": 58801,
+  "executionId": "optimize_1781887370787_bjq5ri",
+  "success": true,
+  "findings": {
+    "sections": [
+      {
+        "title": "Performance Analysis",
+        "content": "\n",
+        "level": 2
+      },
+      {
+        "title": "1. N+1 Query Patterns",
+        "content": "\n**None found** — this is a static marketing site with no data fetching. If real API calls are added later, the `workers` array in `Workers.tsx` is the natural place where N+1 would emerge (fetching worker details per card).\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "2. Unnecessary Re-renders",
+        "content": "\n**Static data arrays defined inside component bodies** — the biggest offender. These objects are recreated on every render:\n\n`src/components/Layout.tsx:11`\n```tsx\n// Before: recreated on every Navbar render\nexport function Navbar() {\n  const navLinks = [\"Home\", \"Cari Tukang\", ...];\n```\n\n`src/components/Sections.tsx:4` and `:43`\n```tsx\n// Before: recreated on every render\nexport function Categories() {\n  const categories = [{ title: \"Tukang Bangunan\", icon: Hammer, ... }];\n```\n\n`src/components/Workers.tsx:5`\n```tsx\n// Before: recreated on every render  \nexport function TopWorkers() {\n  const workers = [{ id: 1, name: \"Budi Santoso\", ... }];\n```\n\n**Fix — hoist static data above the component:**\n```tsx\n// After: defined once, never reallocated\nconst NAV_LINKS = [\"Home\", \"Cari Tukang\", \"Kategori\", \"Cara Kerja\", \"Testimoni\", \"Blog\"];\n\nconst CATEGORIES = [\n  { title: \"Tukang Bangunan\", icon: Hammer, color: \"text-amber-700\" },\n  // ...\n];\n\nexport function Navbar() { /* uses NAV_LINKS */ }\nexport function Categories() { /* uses CATEGORIES */ }\n```\n\n**Precomputed href slugs** — `link.toLowerCase().replace(\" \", \"-\")` runs in the render loop for both desktop and mobile nav on every state change (`isOpen` toggle):\n\n```tsx\n// Before (computed twice per render per link):\nhref={`#${link.toLowerCase().replace(\" \", \"-\")}`}\n\n// After (precomputed once):\nconst NAV_LINKS = [\n  { label: \"Home\", slug: \"home\" },\n  { label: \"Cari Tukang\", slug: \"cari-tukang\" },\n  // ...\n];\n// href={`#${link.slug}`}\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "3. Caching Opportunities",
+        "content": "\n**Worker images lack lazy loading.** The horizontal scroll container in `Workers.tsx` loads all 5 images eagerly — images 3–5 are off-screen on mobile:\n\n```tsx\n// Before:\n<img src={worker.img} alt={worker.name} className=\"w-full h-full object-cover ...\" />\n\n// After:\n<img\n  src={worker.img}\n  alt={worker.name}\n  loading=\"lazy\"\n  decoding=\"async\"\n  width={300}\n  height={192}\n  className=\"w-full h-full object-cover ...\"\n/>\n```\n\nSame applies to the CTA phone mockup image (`src/components/CTA.tsx`):\n```tsx\n<img\n  src=\"https://images.unsplash.com/photo-1508214751196-bfdcf20eb432?w=300&h=300&fit=crop\"\n  loading=\"lazy\"\n  decoding=\"async\"\n  className=\"w-full h-full object-cover opacity-60 mix-blend-multiply\"\n/>\n```\n\n**Below-fold sections can be code-split.** `Categories`, `HowItWorks`, `TopWorkers`, `Features`, and `CTASection` are all below the fold. They could be lazy-loaded to reduce initial bundle:\n\n```tsx\n// src/App.tsx\nimport { lazy, Suspense } from \"react\";\nimport { Hero } from \"./components/Hero\";\nimport { Navbar, Footer } from \"./components/Layout\";\n\nconst Categories = lazy(() => import(\"./components/Sections\").then(m => ({ default: m.Categories })));\nconst TopWorkers = lazy(() => import(\"./components/Workers\").then(m => ({ default: m.TopWorkers })));\n// etc.\n\nexport default function App() {\n  return (\n    <div className=\"min-h-screen bg-white font-sans ...\">\n      <Navbar />\n      <main>\n        <Hero />\n        <Suspense fallback={null}>\n          <Categories />\n          <TopWorkers />\n          {/* ... */}\n        </Suspense>\n      </main>\n      <Footer />\n    </div>\n  );\n}\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "4. Memory Leaks",
+        "content": "\n**Infinite animations run off-screen.** The floating `y` animations in `Hero.tsx` and `CTA.tsx` use `repeat: Infinity` and run continuously even after the element scrolls out of viewport, wasting GPU/compositor resources:\n\n```tsx\n// Hero.tsx — runs forever regardless of visibility\nanimate={{ y: [0, -12, 0] }}\ntransition={{ duration: 4.5, repeat: Infinity, ease: \"easeInOut\" }}\n```\n\n**Fix — pause when off-screen using `useInView`:**\n```tsx\nimport { useInView } from \"motion/react\";\nimport { useRef } from \"react\";\n\nfunction FloatingCard({ children, yRange, duration }) {\n  const ref = useRef(null);\n  const isInView = useInView(ref, { margin: \"0px 0px -100px 0px\" });\n\n  return (\n    <motion.div\n      ref={ref}\n      animate={isInView ? { y: yRange } : { y: 0 }}\n      transition={isInView ? { duration, repeat: Infinity, ease: \"easeInOut\" } : {}}\n    >\n      {children}\n    </motion.div>\n  );\n}\n```\n\n**Social icon array in Footer** (`src/components/Layout.tsx`) creates a new array `[Facebook, Instagram, Youtube, Twitter]` inline on every render — minor but consistent with the hoisting fix above.\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "5. Redundant Computations",
+        "content": "\n**Dead conditional in `HowItWorks`** — all branches resolve to the same class:\n\n```tsx\n// Before: always 'text-[#FF7315]' except idx===4\n${idx === 3 || idx === 1 ? 'text-[#FF7315]' : idx === 4 ? 'text-amber-600' : 'text-[#FF7315]'}\n\n// After: simplified\n${idx === 4 ? 'text-amber-600' : 'text-[#FF7315]'}\n```\n\n**`Logo` renders `motion.div` for hover/tap on every mount** — `whileHover` and `whileTap` attach event listeners each time the Logo mounts (Navbar + Footer = 2 instances per page). This is minor, but if Logo is used more frequently, wrapping with `React.memo` prevents redundant subscriptions when parent re-renders:\n\n```tsx\nexport const Logo = React.memo(function Logo({ className = \"\", textVisible = true }) {\n  // ...\n});\n```\n\n---\n\n",
+        "level": 3
+      },
+      {
+        "title": "Priority Summary",
+        "content": "| Issue | Impact | Effort |\n|---|---|---|\n| Hoist static arrays out of components | Medium | Low |\n| Add `loading=\"lazy\"` to images | High on mobile | Low |\n| Pause infinite animations when off-screen | Medium (battery/GPU) | Low |\n| Code-split below-fold sections | High (initial load) | Medium |\n| Precompute nav slugs | Low | Low |\n| Simplify dead conditional | Low | Low |",
+        "level": 3
+      }
+    ],
+    "codeBlocks": [
+      {
+        "language": "tsx",
+        "code": "// Before: recreated on every Navbar render\nexport function Navbar() {\n  const navLinks = [\"Home\", \"Cari Tukang\", ...];"
+      },
+      {
+        "language": "tsx",
+        "code": "// Before: recreated on every render\nexport function Categories() {\n  const categories = [{ title: \"Tukang Bangunan\", icon: Hammer, ... }];"
+      },
+      {
+        "language": "tsx",
+        "code": "// Before: recreated on every render  \nexport function TopWorkers() {\n  const workers = [{ id: 1, name: \"Budi Santoso\", ... }];"
+      },
+      {
+        "language": "tsx",
+        "code": "// After: defined once, never reallocated\nconst NAV_LINKS = [\"Home\", \"Cari Tukang\", \"Kategori\", \"Cara Kerja\", \"Testimoni\", \"Blog\"];\n\nconst CATEGORIES = [\n  { title: \"Tukang Bangunan\", icon: Hammer, color: \"text-amber-700\" },\n  // ...\n];\n\nexport function Navbar() { /* uses NAV_LINKS */ }\nexport function Categories() { /* uses CATEGORIES */ }"
+      },
+      {
+        "language": "tsx",
+        "code": "// Before (computed twice per render per link):\nhref={`#${link.toLowerCase().replace(\" \", \"-\")}`}\n\n// After (precomputed once):\nconst NAV_LINKS = [\n  { label: \"Home\", slug: \"home\" },\n  { label: \"Cari Tukang\", slug: \"cari-tukang\" },\n  // ...\n];\n// href={`#${link.slug}`}"
+      },
+      {
+        "language": "tsx",
+        "code": "// Before:\n<img src={worker.img} alt={worker.name} className=\"w-full h-full object-cover ...\" />\n\n// After:\n<img\n  src={worker.img}\n  alt={worker.name}\n  loading=\"lazy\"\n  decoding=\"async\"\n  width={300}\n  height={192}\n  className=\"w-full h-full object-cover ...\"\n/>"
+      },
+      {
+        "language": "tsx",
+        "code": "<img\n  src=\"https://images.unsplash.com/photo-1508214751196-bfdcf20eb432?w=300&h=300&fit=crop\"\n  loading=\"lazy\"\n  decoding=\"async\"\n  className=\"w-full h-full object-cover opacity-60 mix-blend-multiply\"\n/>"
+      },
+      {
+        "language": "tsx",
+        "code": "// src/App.tsx\nimport { lazy, Suspense } from \"react\";\nimport { Hero } from \"./components/Hero\";\nimport { Navbar, Footer } from \"./components/Layout\";\n\nconst Categories = lazy(() => import(\"./components/Sections\").then(m => ({ default: m.Categories })));\nconst TopWorkers = lazy(() => import(\"./components/Workers\").then(m => ({ default: m.TopWorkers })));\n// etc.\n\nexport default function App() {\n  return (\n    <div className=\"min-h-screen bg-white font-sans ...\">\n      <Navbar />\n      <main>\n        <Hero />\n        <Suspense fallback={null}>\n          <Categories />\n          <TopWorkers />\n          {/* ... */}\n        </Suspense>\n      </main>\n      <Footer />\n    </div>\n  );\n}"
+      },
+      {
+        "language": "tsx",
+        "code": "// Hero.tsx — runs forever regardless of visibility\nanimate={{ y: [0, -12, 0] }}\ntransition={{ duration: 4.5, repeat: Infinity, ease: \"easeInOut\" }}"
+      },
+      {
+        "language": "tsx",
+        "code": "import { useInView } from \"motion/react\";\nimport { useRef } from \"react\";\n\nfunction FloatingCard({ children, yRange, duration }) {\n  const ref = useRef(null);\n  const isInView = useInView(ref, { margin: \"0px 0px -100px 0px\" });\n\n  return (\n    <motion.div\n      ref={ref}\n      animate={isInView ? { y: yRange } : { y: 0 }}\n      transition={isInView ? { duration, repeat: Infinity, ease: \"easeInOut\" } : {}}\n    >\n      {children}\n    </motion.div>\n  );\n}"
+      },
+      {
+        "language": "tsx",
+        "code": "// Before: always 'text-[#FF7315]' except idx===4\n${idx === 3 || idx === 1 ? 'text-[#FF7315]' : idx === 4 ? 'text-amber-600' : 'text-[#FF7315]'}\n\n// After: simplified\n${idx === 4 ? 'text-amber-600' : 'text-[#FF7315]'}"
+      },
+      {
+        "language": "tsx",
+        "code": "export const Logo = React.memo(function Logo({ className = \"\", textVisible = true }) {\n  // ...\n});"
+      }
+    ]
+  },
+  "rawOutputPreview": "## Performance Analysis\n\n### 1. N+1 Query Patterns\n\n**None found** — this is a static marketing site with no data fetching. If real API calls are added later, the `workers` array in `Workers.tsx` is the natural place where N+1 would emerge (fetching worker details per card).\n\n---\n\n### 2. Unnecessary Re-renders\n\n**Static data arrays defined inside component bodies** — the biggest offender. These objects are recreated on every render:\n\n`src/components/Layout.tsx:11`\n```tsx\n// Before: recreated on every Navbar render\nexport function Navbar() {\n  const navLinks = [\"Home\", \"Cari Tukang\", ...];\n```\n\n`src/components/Sections.tsx:4` and `:43`\n```tsx\n// Before: recreated on every render\nexport function Categories() {\n  const categories = [{ title: \"Tukang Bangunan\", icon: Hammer, ... }];\n```\n\n`src/components/Workers.tsx:5`\n```tsx\n// Before: recreated on every render  \nexport function TopWorkers() {\n  const workers = [{ id: 1, name: \"Budi Santoso\", ... }];\n```\n\n**Fix — hoist static data above the component:**\n```tsx\n// After: defined once, never reallocated\nconst NAV_LINKS = [\"Home\", \"Cari Tukang\", \"Kategori\", \"Cara Kerja\", \"Testimoni\", \"Blog\"];\n\nconst CATEGORIES = [\n  { title: \"Tukang Bangunan\", icon: Hammer, color: \"text-amber-700\" },\n  // ...\n];\n\nexport function Navbar() { /* uses NAV_LINKS */ }\nexport function Categories() { /* uses CATEGORIES */ }\n```\n\n**Precomputed href slugs** — `link.toLowerCase().replace(\" \", \"-\")` runs in the render loop for both desktop and mobile nav on every state change (`isOpen` toggle):\n\n```tsx\n// Before (computed twice per render per link):\nhref={`#${link.toLowerCase().replace(\" \", \"-\")}`}\n\n// After (precomputed once):\nconst NAV_LINKS = [\n  { label: \"Home\", slug: \"home\" },\n  { label: \"Cari Tukang\", slug: \"cari-tukang\" },\n  // ...\n];\n// href={`#${link.slug}`}\n```\n\n---\n\n### 3. Caching Opportunities\n\n**Worker images lack lazy loading.** The horizontal scroll container in `Workers.tsx` loads all 5 images eagerly — images 3–5 are off-screen on mob",
+  "rawOutputLength": 5775
+}
