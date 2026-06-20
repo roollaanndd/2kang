@@ -106,9 +106,9 @@ function BeforeAfterSlider({ before, after, title }: { before: string; after: st
           <ChevronRight size={12} color={PINK} />
         </div>
       </div>
-      <div style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(0,0,0,0.55)', color: 'white', padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700 }}>Sebelum</div>
+      <div style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(255,255,255,0.92)', color: '#374151', padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700, backdropFilter: 'blur(8px)' }}>Sebelum</div>
       <div style={{ position: 'absolute', top: 10, right: 10, background: PINK, color: 'white', padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700 }}>Sesudah</div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: 'linear-gradient(transparent, rgba(0,0,0,0.55))', color: 'white', fontSize: 13, fontWeight: 700 }}>{title}</div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: 'linear-gradient(transparent, rgba(255,255,255,0.88))', color: '#374151', fontSize: 13, fontWeight: 700 }}>{title}</div>
     </div>
   );
 }
@@ -772,37 +772,49 @@ function CTASection() {
 function AppPromoSection() {
   const [ref, inView] = useInView();
   return (
-    <section ref={ref} style={{ background: `linear-gradient(135deg, #0D1421 0%, #1A0A2E 50%, #0A1628 100%)`, padding: '72px 0', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.16) 0%, transparent 70%)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: -60, left: -60, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+    <section ref={ref} style={{ background: 'linear-gradient(135deg, #FFF0F7 0%, #F0FFFE 100%)', padding: '72px 0', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: -60, left: -60, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
           <motion.div initial={{ opacity: 0, x: -24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
             <Eyebrow text="Mobile App" />
-            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: 'white', lineHeight: 1.1, marginBottom: 20 }}>
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20 }}>
               Kelola Kesehatan Gigi<br />
               <GradText>di Genggaman Anda</GradText>
             </h2>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 32 }}>
+            <p style={{ fontSize: 16, color: '#6B7280', lineHeight: 1.7, marginBottom: 32 }}>
               Download aplikasi OMDC Dental untuk booking, pantau jadwal, ambil nomor antrian, dan akses rekam medis kapan saja.
             </p>
             <div style={{ display: 'flex', gap: 12 }}>
-              <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', background: 'white', color: DARK, borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+              <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}>
                 📱 App Store
               </Link>
-              <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', background: 'rgba(255,255,255,0.1)', color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.15)' }}>
+              <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', background: 'white', color: DARK, borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', border: '1.5px solid rgba(233,30,140,0.15)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
                 🤖 Google Play
               </Link>
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.15 }}
             style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ width: 220, height: 420, borderRadius: 36, background: 'linear-gradient(180deg, #1A1A2E 0%, #0D1421 100%)', border: '3px solid rgba(255,255,255,0.12)', boxShadow: '0 40px 80px rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 48, marginBottom: 12 }}>🦷</div>
-                <div style={{ color: 'white', fontWeight: 800, fontSize: 16 }}>OMDC Dental</div>
-                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 4 }}>Versi 2.0</div>
+            {/* Outer shell — double-bezel */}
+            <div style={{ padding: 10, borderRadius: 46, background: 'white', boxShadow: '0 24px 72px rgba(233,30,140,0.14), 0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(233,30,140,0.1)' }}>
+              <div style={{ width: 200, height: 400, borderRadius: 38, background: 'linear-gradient(160deg, #FFF0F7 0%, #FFFFFF 50%, #F0FFFE 100%)', border: '1.5px solid rgba(233,30,140,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+                <div style={{ width: 56, height: 56, borderRadius: 16, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, boxShadow: '0 8px 24px rgba(233,30,140,0.3)' }}>🦷</div>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ color: DARK, fontWeight: 900, fontSize: 16 }}>OMDC Dental</div>
+                  <div style={{ color: '#9CA3AF', fontSize: 11, marginTop: 4 }}>Versi 2.0</div>
+                </div>
+                <div style={{ width: 140, height: 1, background: 'linear-gradient(90deg, transparent, rgba(233,30,140,0.15), transparent)' }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '80%' }}>
+                  {['Booking Online', 'No. Antrian Digital', 'Rekam Medis'].map(f => (
+                    <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#6B7280' }}>
+                      <div style={{ width: 6, height: 6, borderRadius: '50%', background: PINK, flexShrink: 0 }} />
+                      {f}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
