@@ -20,10 +20,8 @@ export function OmdcLogo({ size = 'md', variant = 'default', showText = true }: 
 
   const s = sizes[size];
   const textColor = variant === 'white' ? 'text-white' : variant === 'dark' ? 'text-gray-900' : 'text-[#E91E8C]';
-  const subColor = variant === 'white' ? 'text-white/80' : 'text-gray-500';
+  const subColor = variant === 'white' ? 'text-white/80' : 'text-[#06B6D4]';
 
-  /* When a custom logo has been uploaded, render it as the complete logo mark.
-     The uploaded image replaces both the tooth icon and the OMDC text. */
   if (logoUrl) {
     const h = s.icon * 1.5;
     return (
@@ -34,51 +32,70 @@ export function OmdcLogo({ size = 'md', variant = 'default', showText = true }: 
           height: h,
           maxWidth: h * 4,
           objectFit: 'contain',
-          /* On white-variant backgrounds (hero/kiosk) keep the image as-is
-             so the real brand colours show through. */
           filter: variant === 'white' ? 'brightness(0) invert(1)' : 'none',
         }}
       />
     );
   }
 
+  /* Icon colors by variant */
+  const outerFill = variant === 'white'
+    ? 'rgba(255,255,255,0.25)'
+    : 'url(#omdc-grad)';
+  const toothFill = 'white';
+  const toothOpacity = variant === 'white' ? 0.9 : 1;
+
   return (
     <div className="flex items-center gap-2">
-      <div
-        className="rounded-xl flex items-center justify-center flex-shrink-0"
-        style={{
-          width: s.icon,
-          height: s.icon,
-          background: variant === 'white' ? 'rgba(255,255,255,0.2)' : 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-        }}
-      >
-        <svg
-          width={s.icon * 0.6}
-          height={s.icon * 0.64}
-          viewBox="0 0 22 24"
-          fill="none"
-        >
-          {/* Premium bicuspid tooth crown */}
+      <div className="flex-shrink-0" style={{ width: s.icon, height: s.icon }}>
+        <svg width={s.icon} height={s.icon} viewBox="0 0 64 64" fill="none">
+          <defs>
+            <linearGradient id="omdc-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#E91E8C" />
+              <stop offset="100%" stopColor="#FF6BB5" />
+            </linearGradient>
+          </defs>
+          {/* Outer heart-tooth shape: rounded top lobes + pointed bottom */}
           <path
-            d="M7.8 3C5.7 3 4.2 4.6 4.2 6.6c0 1.3.5 2.5 1.1 3.5l2 3.5c.3.6.6 1.4.6 2.6v.3c0 .5.4.9.9.9h6.4c.5 0 .9-.4.9-.9v-.3c0-1.2.3-2 .6-2.6l2-3.5c.6-1 1.1-2.2 1.1-3.5C19.8 4.6 18.3 3 16.2 3c-1 0-1.9.4-2.5 1-.3.3-.8.5-1.2.5-.4 0-.9-.2-1.2-.5C10.7 3.4 9.8 3 7.8 3z"
-            fill="white"
-            opacity="0.95"
+            d="M32 58
+               C32 58 8 42 8 24
+               C8 16 14 10 20 10
+               C24 10 28 12 30 15
+               C30.8 16.4 31.4 17 32 17
+               C32.6 17 33.2 16.4 34 15
+               C36 12 40 10 44 10
+               C50 10 56 16 56 24
+               C56 42 32 58 32 58Z"
+            fill={outerFill}
           />
-          {/* Bicuspid cusp groove */}
+          {/* Inner white tooth — bicuspid crown shape */}
           <path
-            d="M11 3.8V7.8"
-            stroke="rgba(233,30,140,0.28)"
-            strokeWidth="1.2"
+            d="M32 52
+               C32 52 14 38 14 24.5
+               C14 19 18 15 22 15
+               C24.6 15 27 16.4 28.4 18.2
+               C29.2 19.2 30.4 19.8 32 19.8
+               C33.6 19.8 34.8 19.2 35.6 18.2
+               C37 16.4 39.4 15 42 15
+               C46 15 50 19 50 24.5
+               C50 38 32 52 32 52Z"
+            fill={toothFill}
+            opacity={toothOpacity}
+          />
+          {/* Center groove on inner tooth */}
+          <path
+            d="M32 20V28"
+            stroke="#E91E8C"
+            strokeWidth="1.4"
             strokeLinecap="round"
+            opacity={variant === 'white' ? 0.5 : 0.35}
           />
-          {/* 4-point sparkle — top right corner */}
+          {/* 4-point sparkle top-right */}
           <path
-            d="M18.2 1.5l.35 1 1 .35-1 .35-.35 1-.35-1-1-.35 1-.35z"
-            fill="white"
-            opacity="0.7"
+            d="M50 7 L51.2 10.2 L54.5 11 L51.2 11.8 L50 15 L48.8 11.8 L45.5 11 L48.8 10.2Z"
+            fill={variant === 'white' ? 'white' : '#E91E8C'}
+            opacity={0.7}
           />
-          {/* Shine dot — upper left */}
-          <circle cx="7.6" cy="5.4" r="0.9" fill="white" opacity="0.42" />
         </svg>
       </div>
       {showText && (
