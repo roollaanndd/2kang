@@ -694,11 +694,103 @@ function ContactTab() {
 
 // ─── APPEARANCE TAB ───────────────────────────────────────────────────────────
 function AppearanceTab() {
-  const { cms, updateAppearance } = useCMS();
+  const { cms, updateAppearance, updateCMS } = useCMS();
   const ap = cms.appearance;
+  const logoInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogoFile = (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => updateCMS({ logoUrl: e.target?.result as string });
+    reader.readAsDataURL(file);
+  };
 
   return (
     <div className="space-y-6">
+
+      {/* ── LOGO PERUSAHAAN ────────────────────────────────────────────── */}
+      <div className="rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-4 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <div className="text-sm font-semibold text-gray-800">Logo Perusahaan</div>
+            <div className="text-xs text-gray-500 mt-0.5">Akan diterapkan ke semua halaman: website, kiosk, dan aplikasi mobile</div>
+          </div>
+          {cms.logoUrl && (
+            <button
+              onClick={() => updateCMS({ logoUrl: null })}
+              className="flex items-center gap-1.5 text-xs font-medium text-red-500 hover:text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-all"
+            >
+              <X size={13} /> Reset ke default
+            </button>
+          )}
+        </div>
+        <div className="p-5">
+          <div className="flex flex-col sm:flex-row gap-5 items-start">
+            {/* Preview */}
+            <div className="flex-shrink-0">
+              <div className="text-xs font-medium text-gray-500 mb-2">Preview</div>
+              <div className="flex gap-3">
+                {/* On light bg */}
+                <div className="flex flex-col items-center gap-1.5">
+                  <div className="w-28 h-16 rounded-xl bg-white border border-gray-200 flex items-center justify-center px-3">
+                    {cms.logoUrl
+                      ? <img src={cms.logoUrl} alt="Logo" style={{ maxHeight: 36, maxWidth: '100%', objectFit: 'contain' }} />
+                      : <div className="flex items-center gap-1.5">
+                          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#E91E8C,#FF6BB5)' }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.5 2 6 4.5 6 8c0 2 .8 3.5 1.5 5 .7 1.5 1 2.5 1 4 0 .6.4 1 1 1h5c.6 0 1-.4 1-1 0-1.5.3-2.5 1-4 .7-1.5 1.5-3 1.5-5 0-3.5-2.5-6-6-6z" fill="white" opacity="0.9"/></svg>
+                          </div>
+                          <div><div className="text-xs font-black text-pink-500 leading-none">OMDC</div><div className="text-[8px] font-semibold text-gray-400 leading-none uppercase tracking-widest">Dental</div></div>
+                        </div>
+                    }
+                  </div>
+                  <span className="text-[10px] text-gray-400">Terang</span>
+                </div>
+                {/* On dark bg */}
+                <div className="flex flex-col items-center gap-1.5">
+                  <div className="w-28 h-16 rounded-xl flex items-center justify-center px-3" style={{ background: 'linear-gradient(135deg,#9D174D,#E91E8C)' }}>
+                    {cms.logoUrl
+                      ? <img src={cms.logoUrl} alt="Logo" style={{ maxHeight: 36, maxWidth: '100%', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+                      : <div className="flex items-center gap-1.5">
+                          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.2)' }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.5 2 6 4.5 6 8c0 2 .8 3.5 1.5 5 .7 1.5 1 2.5 1 4 0 .6.4 1 1 1h5c.6 0 1-.4 1-1 0-1.5.3-2.5 1-4 .7-1.5 1.5-3 1.5-5 0-3.5-2.5-6-6-6z" fill="white" opacity="0.9"/></svg>
+                          </div>
+                          <div><div className="text-xs font-black text-white leading-none">OMDC</div><div className="text-[8px] font-semibold text-white/70 leading-none uppercase tracking-widest">Dental</div></div>
+                        </div>
+                    }
+                  </div>
+                  <span className="text-[10px] text-gray-400">Gelap</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Upload area */}
+            <div className="flex-1 min-w-0">
+              <div className="text-xs font-medium text-gray-500 mb-2">Upload Logo Baru</div>
+              <input
+                ref={logoInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={e => { const f = e.target.files?.[0]; if (f) handleLogoFile(f); e.target.value = ''; }}
+              />
+              <div
+                onClick={() => logoInputRef.current?.click()}
+                onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) handleLogoFile(f); }}
+                onDragOver={e => e.preventDefault()}
+                className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all"
+              >
+                <Upload size={22} className="mx-auto text-gray-400 mb-2" />
+                <div className="text-sm text-gray-500 font-medium">Klik atau seret file logo</div>
+                <div className="text-xs text-gray-400 mt-1">PNG, SVG, JPG • Latar transparan direkomendasikan</div>
+              </div>
+              <div className="mt-2 text-xs text-gray-400">
+                Tips: Gunakan logo dengan latar belakang transparan (PNG/SVG) untuk hasil terbaik di semua halaman.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
         Perubahan warna akan diterapkan ke seluruh website secara real-time. Pastikan kombinasi warna memiliki kontras yang baik.
       </div>

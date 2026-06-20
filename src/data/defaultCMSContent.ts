@@ -70,9 +70,12 @@ export interface CMSContent {
     sectionTitle: string;
     logos: Array<{ name: string; logo: string }>;
   };
+  /** Custom company logo — base64 data URL. When set, replaces the default tooth SVG everywhere. */
+  logoUrl: string | null;
 }
 
 export const DEFAULT_CMS_CONTENT: CMSContent = {
+  logoUrl: null,
   hero: {
     headline: 'Senyum Sehat,',
     headlineAccent: 'Percaya Diri Penuh',

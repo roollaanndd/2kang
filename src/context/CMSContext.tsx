@@ -18,7 +18,7 @@ interface CMSContextValue {
   resetToDefaults: () => void;
 }
 
-const CMSContext = createContext<CMSContextValue | null>(null);
+export const CMSContext = createContext<CMSContextValue | null>(null);
 
 export function CMSProvider({ children }: { children: ReactNode }) {
   const [cms, setCMS] = useState<CMSContent>(loadCMSContent);

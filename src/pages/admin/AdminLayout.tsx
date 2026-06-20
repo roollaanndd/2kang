@@ -2,6 +2,7 @@
 import { useState, type ComponentType } from 'react';
 import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import { useCMS } from '../../context/CMSContext';
 import {
   LayoutDashboard, Users2, CalendarDays, ClipboardList,
   Stethoscope, Scissors, Tag, BarChart3, Settings, LogOut,
@@ -162,6 +163,7 @@ function AdminLogin() {
 // ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   const { logout, hasPermission, currentRole } = useAuth();
+  const { cms } = useCMS();
 
   const visibleItems = NAV_ITEMS.filter(item =>
     !item.permission || hasPermission(item.permission)
@@ -178,17 +180,33 @@ function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => 
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 py-6 border-b border-white/10">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `linear-gradient(135deg, ${PINK}, #FF6BB5)` }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 3C9.24 3 7 5.24 7 8c0 1.74.88 3.26 2.2 4.17L12 21l2.8-8.83C16.12 11.26 17 9.74 17 8c0-2.76-2.24-5-5-5z" fill="white" opacity="0.9" />
-            <circle cx="12" cy="8" r="2" fill="white" />
-          </svg>
-        </div>
-        {!collapsed && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }}>
-            <div className="text-white font-bold text-base leading-tight">OMDC Dental</div>
-            <div className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Admin Panel</div>
-          </motion.div>
+        {cms.logoUrl ? (
+          <img
+            src={cms.logoUrl}
+            alt="Logo"
+            style={{
+              height: 36,
+              maxWidth: collapsed ? 36 : 120,
+              objectFit: 'contain',
+              filter: 'brightness(0) invert(1)',
+              transition: 'max-width 0.25s',
+            }}
+          />
+        ) : (
+          <>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `linear-gradient(135deg, ${PINK}, #FF6BB5)` }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3C9.24 3 7 5.24 7 8c0 1.74.88 3.26 2.2 4.17L12 21l2.8-8.83C16.12 11.26 17 9.74 17 8c0-2.76-2.24-5-5-5z" fill="white" opacity="0.9" />
+                <circle cx="12" cy="8" r="2" fill="white" />
+              </svg>
+            </div>
+            {!collapsed && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }}>
+                <div className="text-white font-bold text-base leading-tight">OMDC Dental</div>
+                <div className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Admin Panel</div>
+              </motion.div>
+            )}
+          </>
         )}
       </div>
 
