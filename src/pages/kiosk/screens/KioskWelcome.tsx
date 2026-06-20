@@ -15,6 +15,63 @@ const TICKER_ITEMS = [
   'Buka Senin – Sabtu: 08.00 – 20.00 WIB',
 ];
 
+// ── ANIMATED PREMIUM BACKGROUND ───────────────────────────────────────────────
+function KioskAnimatedBg() {
+  const shapes = [
+    { x: 6,  y: -3,  s: 88,  d: 0,   t: 14, c: PINK, o: 0.055, sh: 'tooth'   },
+    { x: 84, y: 4,   s: 108, d: 1.5, t: 12, c: AQUA, o: 0.04,  sh: 'ring'    },
+    { x: 70, y: 56,  s: 32,  d: 0.8, t: 9,  c: PINK, o: 0.065, sh: 'plus'    },
+    { x: 80, y: 73,  s: 72,  d: 2.2, t: 16, c: PINK, o: 0.042, sh: 'tooth'   },
+    { x: 16, y: 60,  s: 22,  d: 1.1, t: 8,  c: AQUA, o: 0.075, sh: 'sparkle' },
+    { x: 44, y: 80,  s: 68,  d: 0.4, t: 11, c: PINK, o: 0.032, sh: 'ring'    },
+    { x: 3,  y: 30,  s: 20,  d: 1.8, t: 10, c: AQUA, o: 0.065, sh: 'plus'    },
+    { x: 91, y: 30,  s: 18,  d: 0.2, t: 7,  c: PINK, o: 0.085, sh: 'sparkle' },
+    { x: 48, y: 2,   s: 54,  d: 3,   t: 18, c: AQUA, o: 0.03,  sh: 'tooth'   },
+    { x: 18, y: 7,   s: 82,  d: 2.5, t: 15, c: AQUA, o: 0.032, sh: 'ring'    },
+    { x: 57, y: 48,  s: 16,  d: 1.4, t: 8,  c: PINK, o: 0.055, sh: 'sparkle' },
+    { x: 30, y: 40,  s: 26,  d: 2.8, t: 12, c: PINK, o: 0.045, sh: 'plus'    },
+  ] as const;
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
+      {shapes.map((el, i) => (
+        <motion.div
+          key={i}
+          style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, opacity: el.o }}
+          animate={{
+            y: [-10, 10, -10],
+            rotate: el.sh === 'ring' ? [0, 6, 0] : el.sh === 'plus' ? [0, 18, 0] : el.sh === 'sparkle' ? [0, 22, 0] : [0, 4, 0],
+          }}
+          transition={{ duration: el.t, repeat: Infinity, delay: el.d, ease: 'easeInOut' }}
+        >
+          {el.sh === 'tooth' && (
+            <svg width={el.s} height={Math.round(el.s * 1.15)} viewBox="0 0 100 115" fill="none">
+              <path d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+                stroke={el.c} strokeWidth="3.5" strokeLinejoin="round" />
+            </svg>
+          )}
+          {el.sh === 'ring' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="42" stroke={el.c} strokeWidth="2.5" />
+              <circle cx="50" cy="50" r="30" stroke={el.c} strokeWidth="1.5" strokeDasharray="7 5" />
+            </svg>
+          )}
+          {el.sh === 'plus' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
+              <path d="M50 18V82M18 50H82" stroke={el.c} strokeWidth="9" strokeLinecap="round" />
+            </svg>
+          )}
+          {el.sh === 'sparkle' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100">
+              <path d="M50 10L55 45L90 50L55 55L50 90L45 55L10 50L45 45Z" fill={el.c} />
+            </svg>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function Clock() {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
@@ -70,34 +127,8 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       {/* Signature 3px gradient accent strip */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 20 }} />
 
-      {/* Restrained premium mesh — two soft blobs only */}
-      <div style={{
-        position: 'absolute', top: -160, right: -120, width: 640, height: 640,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 62%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: -180, left: -120, width: 560, height: 560,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 62%)',
-        pointerEvents: 'none',
-      }} />
-
-      {/* Decorative tooth watermark — barely-there */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 0.04, scale: 1 }}
-        transition={{ delay: 0.3, duration: 1 }}
-        style={{ position: 'absolute', bottom: -30, right: 60, pointerEvents: 'none' }}
-      >
-        <svg viewBox="0 0 200 220" width={300} height={330}>
-          <path
-            d="M100 8C71 8 50 29 50 58c0 18 7 33 14 48 7 15 11 26 11 41 0 6 4 10 9 10H116c5 0 9-4 9-10 0-15 4-26 11-41 7-15 14-30 14-48 0-29-21-50-50-50z"
-            fill={PINK}
-          />
-        </svg>
-      </motion.div>
+      {/* Animated premium dental-geometry background */}
+      <KioskAnimatedBg />
 
       {/* Main content */}
       <div style={{

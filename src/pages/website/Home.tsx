@@ -76,12 +76,59 @@ function GradText({ children, style = {} }: { children: ReactNode; style?: CSSPr
   );
 }
 
-function LightMesh() {
+// ── ANIMATED PREMIUM HERO BACKGROUND — dental geometry, no blobs ─────────────
+function AnimatedHeroBg() {
+  const shapes = [
+    { x: 90, y: -4,  s: 92,  d: 0,   t: 15, c: PINK, o: 0.05,  sh: 'tooth'   },
+    { x: 2,  y: 8,   s: 100, d: 1.6, t: 13, c: AQUA, o: 0.038, sh: 'ring'    },
+    { x: 78, y: 55,  s: 28,  d: 0.9, t: 9,  c: PINK, o: 0.06,  sh: 'plus'    },
+    { x: 4,  y: 62,  s: 68,  d: 2.3, t: 17, c: PINK, o: 0.04,  sh: 'tooth'   },
+    { x: 88, y: 72,  s: 22,  d: 1.2, t: 8,  c: AQUA, o: 0.07,  sh: 'sparkle' },
+    { x: 50, y: 88,  s: 72,  d: 0.5, t: 12, c: PINK, o: 0.03,  sh: 'ring'    },
+    { x: 94, y: 30,  s: 22,  d: 1.9, t: 10, c: AQUA, o: 0.06,  sh: 'plus'    },
+    { x: 8,  y: 30,  s: 18,  d: 0.3, t: 7,  c: PINK, o: 0.08,  sh: 'sparkle' },
+    { x: 40, y: 3,   s: 52,  d: 3.2, t: 19, c: AQUA, o: 0.028, sh: 'tooth'   },
+    { x: 60, y: 10,  s: 80,  d: 2.6, t: 16, c: AQUA, o: 0.03,  sh: 'ring'    },
+    { x: 20, y: 78,  s: 16,  d: 1.5, t: 8,  c: PINK, o: 0.055, sh: 'sparkle' },
+    { x: 66, y: 40,  s: 24,  d: 2.9, t: 13, c: PINK, o: 0.042, sh: 'plus'    },
+  ] as const;
+
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-      <div style={{ position: 'absolute', top: '-15%', right: '-8%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', filter: 'blur(80px)' }} />
-      <div style={{ position: 'absolute', bottom: '-10%', left: '-8%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)', filter: 'blur(80px)' }} />
-      <div style={{ position: 'absolute', top: '35%', left: '30%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+      {shapes.map((el, i) => (
+        <motion.div
+          key={i}
+          style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, opacity: el.o }}
+          animate={{
+            y: [-10, 10, -10],
+            rotate: el.sh === 'ring' ? [0, 6, 0] : el.sh === 'plus' ? [0, 18, 0] : el.sh === 'sparkle' ? [0, 22, 0] : [0, 3, 0],
+          }}
+          transition={{ duration: el.t, repeat: Infinity, delay: el.d, ease: 'easeInOut' }}
+        >
+          {el.sh === 'tooth' && (
+            <svg width={el.s} height={Math.round(el.s * 1.15)} viewBox="0 0 100 115" fill="none">
+              <path d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+                stroke={el.c} strokeWidth="3.5" strokeLinejoin="round" />
+            </svg>
+          )}
+          {el.sh === 'ring' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="42" stroke={el.c} strokeWidth="2.5" />
+              <circle cx="50" cy="50" r="30" stroke={el.c} strokeWidth="1.5" strokeDasharray="7 5" />
+            </svg>
+          )}
+          {el.sh === 'plus' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
+              <path d="M50 18V82M18 50H82" stroke={el.c} strokeWidth="9" strokeLinecap="round" />
+            </svg>
+          )}
+          {el.sh === 'sparkle' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100">
+              <path d="M50 10L55 45L90 50L55 55L50 90L45 55L10 50L45 45Z" fill={el.c} />
+            </svg>
+          )}
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -146,7 +193,7 @@ function HeroSection() {
 
   return (
     <section style={{ position: 'relative', background: '#FFFFFF', paddingTop: isMobile ? 92 : 80, paddingBottom: 0, overflow: 'hidden', minHeight: isMobile ? 'auto' : '100dvh', display: 'flex', alignItems: 'center' }}>
-      <LightMesh />
+      <AnimatedHeroBg />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '55% 45%', gap: isMobile ? 32 : 48, alignItems: 'center', paddingTop: isMobile ? 12 : 40, paddingBottom: isMobile ? 52 : 60 }}>
@@ -731,9 +778,8 @@ function CTASection() {
 
   return (
     <section ref={ref} style={{ position: 'relative', padding: '80px 0', overflow: 'hidden' }}>
-      {/* Gradient background */}
+      {/* Soft pastel gradient background — no blobs */}
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, #FFF5F9 0%, #F0FFFE 50%, #FFF5FC 100%)` }} />
-      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 30% 50%, rgba(233,30,140,0.08) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(6,182,212,0.07) 0%, transparent 60%)` }} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ position: 'relative', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
