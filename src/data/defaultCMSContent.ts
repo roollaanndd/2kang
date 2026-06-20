@@ -14,6 +14,7 @@ export interface CMSContent {
     ctaPrimaryText: string;
     ctaSecondaryText: string;
     heroImage: string | null;
+    heroImages: string[];
     badgeText: string;
     badgeSubtext: string;
     stats: CMSStat[];
@@ -83,6 +84,7 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     ctaPrimaryText: 'Booking Sekarang',
     ctaSecondaryText: 'Lihat Layanan',
     heroImage: null,
+    heroImages: [],
     badgeText: 'Healthy Smile',
     badgeSubtext: 'for Better Life',
     stats: [
@@ -188,7 +190,16 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
 export function loadCMSContent(): CMSContent {
   try {
     const stored = localStorage.getItem('omdc_cms_content');
-    if (stored) return { ...DEFAULT_CMS_CONTENT, ...JSON.parse(stored) };
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return {
+        ...DEFAULT_CMS_CONTENT,
+        ...parsed,
+        hero: { ...DEFAULT_CMS_CONTENT.hero, ...(parsed.hero ?? {}) },
+        appearance: { ...DEFAULT_CMS_CONTENT.appearance, ...(parsed.appearance ?? {}) },
+        contact: { ...DEFAULT_CMS_CONTENT.contact, ...(parsed.contact ?? {}) },
+      };
+    }
   } catch {}
   return DEFAULT_CMS_CONTENT;
 }

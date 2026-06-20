@@ -1,101 +1,217 @@
 /* eslint-disable */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar, ChevronLeft } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 
 const PINK = '#E91E8C';
 const BLUE = '#4FC3F7';
 
-// ─── HERO BLOB SVG ────────────────────────────────────────────────────────────
-function HeroBlob({ heroImage, primaryColor }: { heroImage: string | null; primaryColor: string }) {
+// ─── CUSTOM DENTAL SVG ICONS ─────────────────────────────────────────────────
+const DENTAL_ICONS = [
+  // 0: Pemeriksaan — dental mirror + magnify
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="17" cy="17" r="9" stroke="white" strokeWidth="2.5" fill="white" fillOpacity="0.15"/>
+    <line x1="24" y1="24" x2="33" y2="33" stroke="white" strokeWidth="3" strokeLinecap="round"/>
+    <line x1="17" y1="12" x2="17" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="12" y1="17" x2="22" y2="17" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <circle cx="17" cy="17" r="3.5" fill="white" fillOpacity="0.35"/>
+  </svg>,
+  // 1: Scaling — water drop + sparkles
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 6C20 6 11 18 11 25C11 30 15 34 20 34C25 34 29 30 29 25C29 18 20 6 20 6Z" fill="white" fillOpacity="0.85"/>
+    <path d="M16 26C16 28.2 17.8 30 20 30" stroke="white" strokeWidth="2" strokeLinecap="round" fillOpacity="0"/>
+    <circle cx="30" cy="11" r="2.2" fill="white" fillOpacity="0.75"/>
+    <path d="M32 7L34 5M34 9L36 7" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <circle cx="9" cy="14" r="1.6" fill="white" fillOpacity="0.6"/>
+  </svg>,
+  // 2: Tambal — tooth shape with fill patch
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13 9C10 9 8 11.5 8 14C8 17 9.5 20 11 22C12.5 24.5 12.5 27 12.5 29C12.5 31 14 32 15 32C16 32 16.5 31 17 29C17.5 27 18 25 20 25C22 25 22.5 27 23 29C23.5 31 24 32 25 32C26 32 27.5 31 27.5 29C27.5 27 27.5 24.5 29 22C30.5 20 32 17 32 14C32 11.5 30 9 27 9C24.5 9 23 10 20 10C17 10 15.5 9 13 9Z" fill="white" fillOpacity="0.85"/>
+    <rect x="16" y="15" width="8" height="6" rx="2" fill="white" fillOpacity="0.5"/>
+  </svg>,
+  // 3: Cabut — tooth with motion arrows
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 11C12.5 11 11 13 11 15C11 18 12 21 13 23L14 31H17L18 23C18.5 21 18.5 18.5 18.5 16.5C18.5 13.5 17 11 15 11Z" fill="white" fillOpacity="0.85"/>
+    <path d="M21 11C23.5 11 25 13 25 15C25 18 24 21 23 23L22 31H19L18 23C18.5 21 18.5 18.5 18.5 16.5C18.5 13.5 20 11 21 11Z" fill="white" fillOpacity="0.65"/>
+    <path d="M27 5L31 2M29 9L33 6" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <path d="M29 5L33 4" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
+  </svg>,
+  // 4: Kawat — braces
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="16" width="6" height="9" rx="2.5" fill="white" fillOpacity="0.85"/>
+    <rect x="14" y="16" width="6" height="9" rx="2.5" fill="white" fillOpacity="0.85"/>
+    <rect x="23" y="16" width="6" height="9" rx="2.5" fill="white" fillOpacity="0.85"/>
+    <rect x="30" y="18" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.65"/>
+    <path d="M11 20.5H14M20 20.5H23M29 20.5H30" stroke="white" strokeWidth="2.2"/>
+    <path d="M5 20.5H4" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <circle cx="17" cy="20.5" r="3" fill="white"/>
+    <circle cx="26" cy="20.5" r="3" fill="white"/>
+  </svg>,
+  // 5: Implan — dental implant screw
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="17" y="4" width="6" height="6" rx="2" fill="white" fillOpacity="0.9"/>
+    <rect x="18" y="10" width="4" height="20" rx="2" fill="white" fillOpacity="0.75"/>
+    <line x1="14" y1="14" x2="18" y2="14" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <line x1="14" y1="18" x2="18" y2="18" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <line x1="14" y1="22" x2="18" y2="22" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <line x1="22" y1="14" x2="26" y2="14" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <line x1="22" y1="18" x2="26" y2="18" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <line x1="22" y1="22" x2="26" y2="22" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
+    <path d="M16 30L20 35L24 30" fill="white" fillOpacity="0.85"/>
+  </svg>,
+  // 6: Veneer — diamond
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 6L32 16L20 36L8 16L20 6Z" fill="white" fillOpacity="0.35" stroke="white" strokeWidth="2"/>
+    <path d="M8 16H32" stroke="white" strokeWidth="1.8"/>
+    <path d="M15 8L12 16L20 36" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
+    <path d="M25 8L28 16L20 36" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
+    <path d="M20 6L15 8M20 6L25 8" stroke="white" strokeWidth="1.8"/>
+    <circle cx="20" cy="16" r="3" fill="white" fillOpacity="0.9"/>
+  </svg>,
+  // 7: Bleaching — radiant sun/laser
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="8" fill="white" fillOpacity="0.9"/>
+    <line x1="20" y1="4" x2="20" y2="8" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
+    <line x1="20" y1="32" x2="20" y2="36" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
+    <line x1="4" y1="20" x2="8" y2="20" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
+    <line x1="32" y1="20" x2="36" y2="20" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
+    <line x1="8.1" y1="8.1" x2="11" y2="11" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="29" y1="29" x2="31.9" y2="31.9" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="31.9" y1="8.1" x2="29" y2="11" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+    <line x1="11" y1="29" x2="8.1" y2="31.9" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+  </svg>,
+];
+
+// ─── HERO FRAME (replaces blob) ───────────────────────────────────────────────
+function HeroFrame({ images, primaryColor }: { images: string[]; primaryColor: string }) {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(() => setCurrent(c => (c + 1) % images.length), 4500);
+    return () => clearInterval(id);
+  }, [images.length]);
+
+  const src = images[current] ?? null;
+
   return (
-    <div className="relative w-full max-w-[480px] mx-auto">
-      {/* Decorative circles — always visible regardless of image */}
+    <div className="relative w-full max-w-[420px] mx-auto select-none">
+      {/* Decorative blobs behind the frame */}
       <div
-        className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-30"
+        className="absolute -top-8 -right-8 w-28 h-28 rounded-full opacity-20 blur-xl"
         style={{ background: primaryColor }}
       />
       <div
-        className="absolute -bottom-8 -left-8 w-14 h-14 rounded-full opacity-20"
+        className="absolute -bottom-8 -left-8 w-20 h-20 rounded-full opacity-15 blur-xl"
         style={{ background: BLUE }}
       />
       <div
-        className="absolute top-1/3 -left-4 w-8 h-8 rounded-full opacity-40"
-        style={{ background: primaryColor }}
+        className="absolute top-1/2 -right-4 w-10 h-10 rounded-full opacity-25"
+        style={{ background: primaryColor, transform: 'translateY(-60%)' }}
       />
 
-      {/* Pink organic blob shape with image inside */}
-      <svg
-        viewBox="0 0 480 520"
-        className="w-full drop-shadow-2xl"
-        xmlns="http://www.w3.org/2000/svg"
+      {/* Gradient outer ring */}
+      <div
+        className="relative rounded-[32px] p-[3px]"
+        style={{
+          background: `linear-gradient(145deg, ${primaryColor}, #FF6BB5, ${BLUE})`,
+          boxShadow: `0 32px 64px ${primaryColor}30, 0 8px 24px rgba(0,0,0,0.12)`,
+        }}
       >
-        <defs>
-          <clipPath id="heroBlob">
-            <path d="M240,20 C310,20 375,55 410,115 C445,175 445,255 420,325 C395,395 345,445 280,470 C215,495 145,485 95,450 C45,415 20,360 20,295 C20,230 45,160 90,110 C135,60 185,20 240,20Z" />
-          </clipPath>
-          <linearGradient id="blobGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={primaryColor} />
-            <stop offset="100%" stopColor="#FF6BB5" />
-          </linearGradient>
-        </defs>
+        {/* Inner frame */}
+        <div
+          className="relative overflow-hidden rounded-[30px]"
+          style={{ aspectRatio: '4/5', background: `${primaryColor}15` }}
+        >
+          {/* Image carousel */}
+          <AnimatePresence mode="wait">
+            {src ? (
+              <motion.img
+                key={current}
+                src={src}
+                alt="Hero"
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.55, ease: 'easeInOut' }}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <motion.div
+                key="placeholder"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+                style={{ background: `linear-gradient(160deg, ${primaryColor}18, ${BLUE}18)` }}
+              >
+                <div className="text-7xl">🦷</div>
+                <div className="text-sm font-semibold text-center px-6" style={{ color: primaryColor }}>
+                  Upload foto hero di Admin CMS
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* Blob fill */}
-        <path
-          d="M240,20 C310,20 375,55 410,115 C445,175 445,255 420,325 C395,395 345,445 280,470 C215,495 145,485 95,450 C45,415 20,360 20,295 C20,230 45,160 90,110 C135,60 185,20 240,20Z"
-          fill="url(#blobGrad)"
-          opacity="0.15"
-        />
+          {/* Bottom gradient scrim */}
+          {src && (
+            <div
+              className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
+              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.35), transparent)' }}
+            />
+          )}
 
-        {/* Hero image or placeholder */}
-        {heroImage ? (
-          <image
-            href={heroImage}
-            x="20"
-            y="20"
-            width="440"
-            height="480"
-            clipPath="url(#heroBlob)"
-            preserveAspectRatio="xMidYMid slice"
-          />
-        ) : (
-          <>
-            {/* Default placeholder — family/dental illustration */}
-            <rect x="20" y="20" width="440" height="480" clipPath="url(#heroBlob)" fill={`${primaryColor}15`} />
-            {/* Tooth mascot silhouette */}
-            <g clipPath="url(#heroBlob)" opacity="0.6">
-              <ellipse cx="240" cy="200" rx="80" ry="100" fill={primaryColor} opacity="0.2" />
-              <ellipse cx="240" cy="190" rx="60" ry="80" fill={primaryColor} opacity="0.25" />
-              {/* Smile */}
-              <path d="M215,220 Q240,240 265,220" fill="none" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" opacity="0.5" />
-              {/* Eyes */}
-              <circle cx="225" cy="195" r="6" fill={primaryColor} opacity="0.4" />
-              <circle cx="255" cy="195" r="6" fill={primaryColor} opacity="0.4" />
-            </g>
-            <text x="240" y="360" textAnchor="middle" fill={primaryColor} fontSize="14" opacity="0.5" fontFamily="sans-serif">
-              Upload foto hero di Admin CMS
-            </text>
-          </>
-        )}
+          {/* Nav arrows for multiple images */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={() => setCurrent(c => (c - 1 + images.length) % images.length)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-colors"
+              >
+                <ChevronLeft size={14} style={{ color: primaryColor }} />
+              </button>
+              <button
+                onClick={() => setCurrent(c => (c + 1) % images.length)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md hover:bg-white transition-colors"
+              >
+                <ChevronRight size={14} style={{ color: primaryColor }} />
+              </button>
+            </>
+          )}
 
-        {/* Blob border */}
-        <path
-          d="M240,20 C310,20 375,55 410,115 C445,175 445,255 420,325 C395,395 345,445 280,470 C215,495 145,485 95,450 C45,415 20,360 20,295 C20,230 45,160 90,110 C135,60 185,20 240,20Z"
-          fill="none"
-          stroke={primaryColor}
-          strokeWidth="2"
-          opacity="0.2"
-        />
-      </svg>
+          {/* Dot indicators */}
+          {images.length > 1 && (
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  style={{
+                    width: i === current ? 20 : 6,
+                    height: 6,
+                    borderRadius: 3,
+                    background: 'white',
+                    opacity: i === current ? 1 : 0.55,
+                    transition: 'all 0.3s',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Floating badge — Healthy Smile */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        className="absolute top-10 -left-4 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3"
+        className="absolute top-8 -left-6 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3"
+        style={{ boxShadow: '0 8px 32px rgba(233,30,140,0.15)' }}
       >
         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: `${PINK}15` }}>
           😁
@@ -111,7 +227,8 @@ function HeroBlob({ heroImage, primaryColor }: { heroImage: string | null; prima
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.5 }}
-        className="absolute bottom-16 -right-4 bg-white rounded-2xl shadow-xl px-4 py-3"
+        className="absolute bottom-16 -right-6 bg-white rounded-2xl shadow-xl px-4 py-3"
+        style={{ boxShadow: '0 8px 32px rgba(79,195,247,0.2)' }}
       >
         <div className="flex items-center gap-1.5">
           <Star size={14} fill="#F59E0B" className="text-yellow-400" />
@@ -141,12 +258,14 @@ function StatBar({ stats, primaryColor }: { stats: Array<{ value: string; label:
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.1, duration: 0.4 }}
-          whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(233,30,140,0.12)' }}
-          className="relative text-center p-5 rounded-2xl bg-white shadow-sm border border-gray-50 overflow-hidden"
-          style={{ transition: 'all 0.3s ease' }}
+          whileHover={{ y: -4 }}
+          className="relative text-center p-5 rounded-2xl bg-white border border-gray-50 overflow-hidden"
+          style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)', transition: 'all 0.25s ease' }}
         >
           {/* Top accent */}
-          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: STAT_GRADIENTS[i % STAT_GRADIENTS.length] }} />
+          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: STAT_GRADIENTS[i % STAT_GRADIENTS.length] }} />
+          {/* Corner glow */}
+          <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full opacity-[0.07]" style={{ background: STAT_GRADIENTS[i % STAT_GRADIENTS.length] }} />
           <div className="text-2xl font-extrabold leading-tight" style={{ color: primaryColor }}>{stat.value}</div>
           <div className="text-xs text-gray-500 mt-1 font-medium">{stat.label}</div>
         </motion.div>
@@ -171,40 +290,58 @@ function ServiceCard({ emoji, name, description, price, primaryColor, index }: {
   emoji: string; name: string; description: string; price: string; primaryColor: string; index: number;
 }) {
   const grad = SERVICE_GRADIENTS[index % SERVICE_GRADIENTS.length];
+  const icon = DENTAL_ICONS[index % DENTAL_ICONS.length];
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: (index % 4) * 0.07 }}
-      whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(233,30,140,0.18)' }}
-      className="relative bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer overflow-hidden group"
-      style={{ transition: 'all 0.3s ease' }}
+      whileHover={{ y: -6 }}
+      className="relative bg-white rounded-2xl overflow-hidden cursor-pointer"
+      style={{
+        boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+        border: '1px solid rgba(0,0,0,0.04)',
+        transition: 'all 0.25s ease',
+      }}
     >
-      {/* Subtle gradient hover bg */}
-      <motion.div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100"
-        style={{ background: `${primaryColor}06`, transition: 'opacity 0.3s' }}
-      />
-      {/* Bottom accent bar on hover */}
+      {/* Gradient top section */}
       <div
-        className="absolute bottom-0 left-0 h-0.5 w-0"
-        style={{ background: grad, transition: 'width 0.35s ease' }}
-      />
-
-      {/* Gradient icon container */}
-      <div
-        className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-xl shadow-sm"
+        className="relative px-4 pt-5 pb-7 overflow-hidden"
         style={{ background: grad }}
       >
-        <span style={{ filter: 'brightness(10) grayscale(1)' }}>{emoji}</span>
-        {/* Shine dot */}
-        <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-white opacity-60" />
+        {/* Decorative circles */}
+        <div style={{
+          position: 'absolute', top: -16, right: -16,
+          width: 72, height: 72, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.15)',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: -8, left: -8,
+          width: 40, height: 40, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.1)',
+        }} />
+        {/* Custom SVG icon */}
+        <div style={{ width: 44, height: 44, position: 'relative', zIndex: 1 }}>
+          {icon}
+        </div>
       </div>
 
-      <div className="relative font-bold text-gray-800 text-sm mb-1.5">{name}</div>
-      <div className="relative text-xs text-gray-500 mb-3 leading-relaxed">{description}</div>
-      <div className="relative text-sm font-bold" style={{ color: primaryColor }}>{price}</div>
+      {/* White pull-up overlap */}
+      <div
+        className="relative bg-white rounded-t-2xl"
+        style={{ marginTop: -14, padding: '12px 14px 14px' }}
+      >
+        <div className="font-bold text-gray-800 text-sm mb-1 leading-tight">{name}</div>
+        <div className="text-xs text-gray-400 mb-2.5 leading-relaxed line-clamp-2">{description}</div>
+        <div
+          className="text-xs font-extrabold"
+          style={{ background: grad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+        >
+          {price}
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -229,58 +366,63 @@ function DoctorCard({ name, specialty, experience, photo, rating, patients, prim
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: (index % 4) * 0.09 }}
-      whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(233,30,140,0.15)' }}
-      className="relative bg-white rounded-2xl p-5 border border-gray-100 text-center overflow-hidden"
-      style={{ transition: 'all 0.3s ease' }}
+      whileHover={{ y: -6 }}
+      className="relative bg-white rounded-2xl overflow-hidden"
+      style={{
+        boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+        border: '1px solid rgba(0,0,0,0.04)',
+        transition: 'all 0.25s ease',
+      }}
     >
-      {/* Top gradient accent */}
-      <div className="absolute top-0 left-0 right-0 h-1" style={{ background: avatarColors[colorIdx] }} />
+      {/* Gradient top strip */}
+      <div className="h-1.5 w-full" style={{ background: avatarColors[colorIdx] }} />
 
-      <div className="relative inline-block mb-4 mt-1">
-        {/* Outer ring with gradient */}
-        <div
-          className="w-22 h-22 rounded-full p-0.5 inline-block"
-          style={{ background: avatarColors[colorIdx] }}
+      {/* Angled background swatch */}
+      <div
+        className="absolute top-0 left-0 right-0 h-24 opacity-[0.07]"
+        style={{ background: avatarColors[colorIdx] }}
+      />
+
+      <div className="relative p-5 text-center">
+        <div className="relative inline-block mb-4">
+          <div
+            className="w-[84px] h-[84px] rounded-full p-[3px] inline-flex"
+            style={{ background: avatarColors[colorIdx] }}
+          >
+            {photo ? (
+              <img src={photo} alt={name} className="w-full h-full rounded-full object-cover border-2 border-white" />
+            ) : (
+              <div
+                className="w-full h-full rounded-full flex items-center justify-center text-white text-2xl font-black border-2 border-white"
+                style={{ background: avatarColors[colorIdx] }}
+              >
+                {initial}
+              </div>
+            )}
+          </div>
+          <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center bg-green-500 border-2 border-white shadow-sm">
+            <span className="text-white text-[8px] font-bold">✓</span>
+          </div>
+        </div>
+
+        <div className="font-bold text-gray-800 text-sm leading-snug">{name}</div>
+        <div className="text-xs mt-1 font-semibold" style={{ color: primaryColor }}>{specialty}</div>
+        <div className="text-xs text-gray-400 mt-0.5">{experience} Pengalaman</div>
+
+        <div className="flex items-center justify-center gap-1.5 mt-3">
+          <Star size={12} fill="#F59E0B" className="text-yellow-400" />
+          <span className="text-xs font-bold text-gray-700">{rating}</span>
+          <span className="text-xs text-gray-400">· {patients} pasien</span>
+        </div>
+
+        <Link
+          to="/booking"
+          className="mt-3.5 block text-xs font-semibold py-2 px-4 rounded-full transition-all hover:opacity-85 hover:-translate-y-0.5"
+          style={{ background: avatarColors[colorIdx], color: 'white' }}
         >
-          {photo ? (
-            <img
-              src={photo}
-              alt={name}
-              className="w-20 h-20 rounded-full object-cover border-2 border-white"
-            />
-          ) : (
-            <div
-              className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-black border-2 border-white"
-              style={{ background: avatarColors[colorIdx] }}
-            >
-              {initial}
-            </div>
-          )}
-        </div>
-        <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center bg-green-500 border-2 border-white shadow-sm">
-          <span className="text-white text-[8px] font-bold">✓</span>
-        </div>
+          Buat Janji
+        </Link>
       </div>
-
-      <div className="font-bold text-gray-800 text-sm leading-snug">{name}</div>
-      <div className="text-xs mt-1 font-medium" style={{ color: primaryColor }}>{specialty}</div>
-      <div className="text-xs text-gray-400 mt-0.5">{experience} Pengalaman</div>
-
-      <div className="flex items-center justify-center gap-1.5 mt-3">
-        <Star size={12} fill="#F59E0B" className="text-yellow-400" />
-        <span className="text-xs font-bold text-gray-700">{rating}</span>
-        <span className="text-xs text-gray-400">· {patients} pasien</span>
-      </div>
-
-      <Link
-        to="/booking"
-        className="mt-3.5 block text-xs font-semibold py-2 px-4 rounded-full transition-all"
-        style={{ background: avatarColors[colorIdx], color: 'white' }}
-        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.85'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1'; (e.currentTarget as HTMLElement).style.transform = 'none'; }}
-      >
-        Buat Janji
-      </Link>
     </motion.div>
   );
 }
@@ -295,20 +437,22 @@ function PromoCard({ title, subtitle, discount, image, validUntil, badge, color 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.12)' }}
+      whileHover={{ y: -6 }}
       className="relative rounded-2xl overflow-hidden bg-white"
-      style={{ transition: 'all 0.3s ease' }}
+      style={{
+        boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+        border: '1px solid rgba(0,0,0,0.04)',
+        transition: 'all 0.25s ease',
+      }}
     >
-      {/* Gradient header area */}
-      <div className="relative px-5 pt-5 pb-4 overflow-hidden" style={{ background: `linear-gradient(135deg, ${color}, ${color}bb)` }}>
-        <div style={{
-          position: 'absolute', top: -20, right: -20,
-          width: 120, height: 120, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.12)',
-        }} />
+      {/* Gradient header */}
+      <div className="relative px-5 pt-5 pb-5 overflow-hidden" style={{ background: `linear-gradient(135deg, ${color}, ${color}bb)` }}>
+        {/* Decorative circles */}
+        <div style={{ position: 'absolute', top: -24, right: -24, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,255,255,0.12)' }} />
+        <div style={{ position: 'absolute', bottom: -12, left: -12, width: 60, height: 60, borderRadius: '50%', background: 'rgba(255,255,255,0.08)' }} />
+
         {badge && (
-          <span className="inline-block text-[10px] font-bold px-2.5 py-1 rounded-full text-white mb-2"
-            style={{ background: 'rgba(255,255,255,0.25)' }}>
+          <span className="inline-block text-[10px] font-bold px-2.5 py-1 rounded-full text-white mb-2" style={{ background: 'rgba(255,255,255,0.25)' }}>
             {badge}
           </span>
         )}
@@ -323,7 +467,7 @@ function PromoCard({ title, subtitle, discount, image, validUntil, badge, color 
         </div>
         <Link
           to="/booking"
-          className="flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full text-white transition-all hover:opacity-90 hover:-translate-y-0.5"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full text-white transition-all hover:opacity-90 hover:-translate-y-0.5"
           style={{ background: `linear-gradient(135deg, ${color}, ${color}cc)` }}
         >
           Klaim Sekarang <ArrowRight size={12} />
@@ -334,30 +478,60 @@ function PromoCard({ title, subtitle, discount, image, validUntil, badge, color 
 }
 
 // ─── ARTICLE CARD ─────────────────────────────────────────────────────────────
+const CATEGORY_COLORS: Record<string, string> = {
+  'Tips Kesehatan': '#10B981',
+  'Ortodonti': '#A78BFA',
+  'Perawatan Kosmetik': '#EC4899',
+};
+
 function ArticleCard({ title, excerpt, thumbnail, category, publishedAt }: {
   title: string; excerpt: string; thumbnail: string | null; category: string; publishedAt: string;
 }) {
+  const catColor = CATEGORY_COLORS[category] ?? PINK;
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       whileHover={{ y: -4 }}
-      className="bg-white rounded-2xl overflow-hidden border border-gray-100 transition-all cursor-pointer"
+      className="bg-white rounded-2xl overflow-hidden cursor-pointer"
+      style={{
+        boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+        border: '1px solid rgba(0,0,0,0.04)',
+        transition: 'all 0.25s ease',
+      }}
     >
-      <div className="h-40 bg-gray-100 relative overflow-hidden">
+      <div className="h-44 relative overflow-hidden">
         {thumbnail ? (
           <img src={thumbnail} alt={title} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl">🦷</div>
+          <div
+            className="w-full h-full flex flex-col items-center justify-center gap-2"
+            style={{ background: `linear-gradient(135deg, ${catColor}18, ${catColor}08)` }}
+          >
+            <span className="text-4xl">🦷</span>
+          </div>
         )}
+        {/* Category chip overlaid on image */}
+        <div className="absolute top-3 left-3">
+          <span
+            className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
+            style={{ background: catColor, boxShadow: `0 2px 8px ${catColor}60` }}
+          >
+            {category}
+          </span>
+        </div>
       </div>
       <div className="p-4">
-        <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-600 mb-2">{category}</span>
         <div className="font-semibold text-gray-800 text-sm leading-snug mb-2">{title}</div>
         <div className="text-xs text-gray-500 leading-relaxed line-clamp-2">{excerpt}</div>
-        <div className="text-xs text-gray-400 mt-3">
-          {new Date(publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+        <div className="flex items-center justify-between mt-3">
+          <div className="text-xs text-gray-400">
+            {new Date(publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </div>
+          <div className="text-xs font-semibold flex items-center gap-0.5" style={{ color: catColor }}>
+            Baca <ChevronRight size={12} />
+          </div>
         </div>
       </div>
     </motion.div>
@@ -374,6 +548,11 @@ export function Home() {
   const visibleDoctors = doctors.items.filter(d => d.isVisible);
   const visiblePromos = promotions.items.filter(p => p.isVisible);
   const visibleArticles = articles.items.filter(a => a.isVisible);
+
+  // Support both single heroImage (legacy) and heroImages array
+  const heroImages = hero.heroImages?.length > 0
+    ? hero.heroImages
+    : hero.heroImage ? [hero.heroImage] : [];
 
   return (
     <div className="overflow-x-hidden">
@@ -447,9 +626,9 @@ export function Home() {
               </div>
             </motion.div>
 
-            {/* Right: Hero image blob */}
+            {/* Right: Hero image frame */}
             <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
-              <HeroBlob heroImage={hero.heroImage} primaryColor={primary} />
+              <HeroFrame images={heroImages} primaryColor={primary} />
             </motion.div>
           </div>
 
@@ -529,17 +708,20 @@ export function Home() {
               transition={{ duration: 0.5 }}
               className="relative"
             >
-              <div className="rounded-3xl overflow-hidden aspect-[4/3] bg-gray-100">
+              <div className="rounded-3xl overflow-hidden aspect-[4/3]" style={{ background: `${primary}10` }}>
                 {clinic.photo ? (
                   <img src={clinic.photo} alt="Klinik" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ background: `${primary}10` }}>
+                  <div className="w-full h-full flex items-center justify-center">
                     <span className="text-6xl">🏥</span>
                   </div>
                 )}
               </div>
               {/* Floating stats on image */}
-              <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-4 min-w-[150px]">
+              <div
+                className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-4 min-w-[150px]"
+                style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
+              >
                 <div className="text-2xl font-extrabold" style={{ color: primary }}>{clinic.stats[0]?.value}</div>
                 <div className="text-xs text-gray-500">{clinic.stats[0]?.label}</div>
               </div>
@@ -642,7 +824,7 @@ export function Home() {
             <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
               <div className="grid grid-cols-2 gap-4">
                 {about.stats.map((stat, i) => (
-                  <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100 text-center shadow-sm">
+                  <div key={i} className="bg-white rounded-2xl p-5 border border-gray-100 text-center" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
                     <div className="text-2xl font-extrabold mb-1" style={{ color: i % 2 === 0 ? primary : BLUE }}>{stat.value}</div>
                     <div className="text-xs text-gray-500">{stat.label}</div>
                   </div>
