@@ -96,29 +96,21 @@ export function Promotions() {
   return (
     <div>
       {/* Hero */}
-      <section
-        className="relative overflow-hidden py-20"
-        style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5 50%, #FFD6EC 80%, #FFF5F9)' }}
-      >
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 opacity-10" style={{ width: 400, height: 400 }}>
-          <svg viewBox="0 0 400 400" fill="none">
-            <circle cx="200" cy="200" r="180" fill="white" />
-            <circle cx="200" cy="200" r="120" fill="white" opacity="0.5" />
-            <circle cx="200" cy="200" r="60" fill="white" opacity="0.8" />
-          </svg>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
+        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: -120, right: -80, width: 560, height: 560, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -80, left: -60, width: 440, height: 440, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-bold text-white"
-              style={{ background: 'rgba(255,255,255,0.2)' }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-bold"
+              style={{ background: '#FFF0F7', color: '#E91E8C', border: '1px solid rgba(233,30,140,0.2)' }}
             >
               <Tag size={14} />
               Penawaran Terbatas
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-white mb-6">Promo Spesial OMDC</h1>
-            <p className="text-xl text-white/85 max-w-2xl mx-auto mb-8">
+            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827' }}>Promo Spesial OMDC</h1>
+            <p className="text-xl max-w-2xl mx-auto mb-8" style={{ color: '#6B7280' }}>
               Dapatkan layanan dental premium dengan harga istimewa. Jangan lewatkan penawaran eksklusif kami!
             </p>
             <div className="flex justify-center gap-6 flex-wrap">
@@ -130,10 +122,10 @@ export function Promotions() {
                 <div
                   key={s.val}
                   className="px-6 py-3 rounded-2xl text-center"
-                  style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}
+                  style={{ background: 'white', border: '1px solid rgba(233,30,140,0.15)', boxShadow: '0 2px 12px rgba(233,30,140,0.08)' }}
                 >
-                  <div className="text-2xl font-black text-white">{s.val}</div>
-                  <div className="text-sm text-white/80">{s.label}</div>
+                  <div className="text-2xl font-black" style={{ color: '#E91E8C' }}>{s.val}</div>
+                  <div className="text-sm" style={{ color: '#6B7280' }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -334,18 +326,19 @@ export function Promotions() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <div
             className="rounded-3xl p-10 relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+            style={{ background: '#FFF5F9', border: '1.5px solid rgba(233,30,140,0.15)' }}
           >
-            <h2 className="text-2xl sm:text-3xl font-black text-white mb-4">
+            <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            <h2 className="text-2xl sm:text-3xl font-black mb-4 relative z-10" style={{ color: '#111827' }}>
               Tidak Ada Promo yang Cocok?
             </h2>
-            <p className="text-white/80 mb-6">
+            <p className="mb-6 relative z-10" style={{ color: '#6B7280' }}>
               Hubungi kami dan ceritakan kebutuhan Anda. Kami siap memberikan penawaran terbaik untuk Anda!
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl"
-              style={{ background: 'white', color: '#E91E8C' }}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base text-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl relative z-10"
+              style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}
             >
               Hubungi Kami
               <ArrowRight size={18} />

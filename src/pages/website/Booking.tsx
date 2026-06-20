@@ -153,13 +153,12 @@ export function Booking() {
   return (
     <div style={{ background: '#FAFAFA', minHeight: '100vh' }}>
       {/* Hero */}
-      <div
-        className="py-12"
-        style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5 60%, #FFD6EC)' }}
-      >
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">Buat Janji Temu</h1>
-          <p className="text-white/80 text-base">Isi formulir berikut untuk menjadwalkan kunjungan Anda</p>
+      <div className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
+        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: -80, right: -60, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div className="max-w-4xl mx-auto px-4 py-12 text-center relative z-10">
+          <h1 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: '#111827' }}>Buat Janji Temu</h1>
+          <p className="text-base" style={{ color: '#6B7280' }}>Isi formulir berikut untuk menjadwalkan kunjungan Anda</p>
         </div>
       </div>
 
