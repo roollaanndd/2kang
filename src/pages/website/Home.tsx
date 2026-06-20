@@ -32,6 +32,20 @@ function useInView(threshold = 0.12) {
   return [ref, inView] as const;
 }
 
+// ─── RESPONSIVE HOOK ──────────────────────────────────────────────────────────
+function useIsMobile(breakpoint = 860) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth < breakpoint : false
+  );
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener('resize', onResize);
+    onResize();
+    return () => window.removeEventListener('resize', onResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
 function Eyebrow({ text }: { text: string }) {
   return (
@@ -119,6 +133,7 @@ function HeroSection() {
   const h = cms.hero;
   const images = h.heroImages ?? [];
   const [imgIdx, setImgIdx] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (images.length < 2) return;
@@ -127,36 +142,39 @@ function HeroSection() {
   }, [images.length]);
 
   const services = cms.services.items.filter(s => s.isVisible).slice(0, 6);
+  const stats = h.stats ?? [];
 
   return (
-    <section style={{ position: 'relative', background: '#FFFFFF', paddingTop: 80, paddingBottom: 0, overflow: 'hidden', minHeight: '100dvh', display: 'flex', alignItems: 'center' }}>
+    <section style={{ position: 'relative', background: '#FFFFFF', paddingTop: isMobile ? 92 : 80, paddingBottom: 0, overflow: 'hidden', minHeight: isMobile ? 'auto' : '100dvh', display: 'flex', alignItems: 'center' }}>
       <LightMesh />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div style={{ display: 'grid', gridTemplateColumns: '55% 45%', gap: 48, alignItems: 'center', paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '55% 45%', gap: isMobile ? 32 : 48, alignItems: 'center', paddingTop: isMobile ? 12 : 40, paddingBottom: isMobile ? 52 : 60 }}>
 
           {/* Left: Text content */}
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}>
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+            style={{ textAlign: isMobile ? 'center' : 'left' }}>
             <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} />
 
-            <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: -1.5, color: DARK, margin: 0, marginBottom: 8 }}>
+            <h1 style={{ fontSize: isMobile ? 'clamp(34px, 9vw, 46px)' : 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: -1.5, color: DARK, margin: 0, marginBottom: 8 }}>
               {h.headline || 'Senyum Sehat,'}
             </h1>
-            <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: -1.5, margin: 0, marginBottom: 24 }}>
+            <h1 style={{ fontSize: isMobile ? 'clamp(34px, 9vw, 46px)' : 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: -1.5, margin: 0, marginBottom: isMobile ? 16 : 24 }}>
               <GradText>{h.headlineAccent || 'Percaya Diri Penuh'}</GradText>
             </h1>
 
-            <p style={{ fontSize: 18, color: '#6B7280', lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
+            <p style={{ fontSize: isMobile ? 15.5 : 18, color: '#6B7280', lineHeight: 1.7, maxWidth: 520, margin: isMobile ? '0 auto 28px' : '0 0 36px' }}>
               {h.subheadline || 'Perawatan gigi modern dengan teknologi terkini untuk Anda dan keluarga tercinta.'}
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 44 }}>
-              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: isMobile ? 32 : 44, justifyContent: isMobile ? 'center' : 'flex-start' }}>
+              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} style={isMobile ? { flex: '1 1 100%', maxWidth: 320, margin: '0 auto' } : undefined}>
                 <Link
                   to="/booking"
                   style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '14px 28px',
+                    width: isMobile ? '100%' : undefined,
                     background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
                     color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 15,
                     textDecoration: 'none', boxShadow: '0 8px 32px rgba(233,30,140,0.35)',
@@ -168,11 +186,12 @@ function HeroSection() {
                   </div>
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} style={isMobile ? { flex: '1 1 100%', maxWidth: 320, margin: '0 auto' } : undefined}>
                 <Link
                   to="/services"
                   style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 24px',
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 24px',
+                    width: isMobile ? '100%' : undefined,
                     background: 'white', color: DARK,
                     border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 14,
                     fontWeight: 600, fontSize: 15, textDecoration: 'none',
@@ -186,24 +205,24 @@ function HeroSection() {
             </div>
 
             {/* Stats pills */}
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              {(h.stats ?? []).map((s, i) => (
+            <div style={{ display: isMobile ? 'grid' : 'flex', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : undefined, gap: isMobile ? 10 : 16, flexWrap: 'wrap', justifyContent: isMobile ? 'stretch' : 'flex-start' }}>
+              {stats.map((s, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '12px 20px', background: 'white', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-                  <span style={{ fontSize: 22, fontWeight: 900, color: DARK }}>{s.value}</span>
-                  <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '12px 12px' : '12px 20px', background: 'white', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: DARK }}>{s.value}</span>
+                  <span style={{ fontSize: isMobile ? 10.5 : 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
           {/* Right: Hero image + Booking card */}
-          <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.15, ease: [0.32, 0.72, 0, 1] }}
-            style={{ position: 'relative' }}>
+          <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 32, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.7, delay: 0.15, ease: [0.32, 0.72, 0, 1] }}
+            style={{ position: 'relative', paddingBottom: (images.length > 0 && !isMobile) ? 24 : 0 }}>
 
             {/* Hero image frame */}
             {images.length > 0 && (
-              <div style={{ borderRadius: 28, overflow: 'hidden', aspectRatio: '4/5', position: 'relative', boxShadow: '0 24px 80px rgba(0,0,0,0.15)' }}>
+              <div style={{ borderRadius: isMobile ? 24 : 28, overflow: 'hidden', aspectRatio: isMobile ? '4/3' : '4/5', position: 'relative', boxShadow: '0 24px 80px rgba(0,0,0,0.15)' }}>
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 60%, rgba(233,30,140,0.18) 100%)' }} />
                 <AnimatePresence mode="wait">
                   <motion.img
@@ -229,17 +248,17 @@ function HeroSection() {
               </div>
             )}
 
-            {/* Booking card — floats if no image, overlays if image */}
+            {/* Booking card — floats over image on desktop, stacks below on mobile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
               style={{
-                ...(images.length > 0
-                  ? { position: 'absolute', bottom: -24, left: -28, right: 24 }
-                  : {}),
+                ...(images.length > 0 && !isMobile
+                  ? { position: 'absolute', bottom: 0, left: -28, right: 24 }
+                  : { marginTop: images.length > 0 ? 16 : 0 }),
                 background: 'white', borderRadius: 22,
-                padding: 24, boxShadow: '0 20px 60px rgba(0,0,0,0.14)',
+                padding: isMobile ? 20 : 24, boxShadow: '0 20px 60px rgba(0,0,0,0.14)',
                 border: '1px solid rgba(255,255,255,0.8)',
               }}
             >
@@ -298,7 +317,9 @@ function HeroSection() {
       </div>
 
       {/* Bottom wave */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 60, background: '#F8F9FB', clipPath: 'ellipse(55% 100% at 50% 100%)' }} />
+      {!isMobile && (
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 60, background: '#F8F9FB', clipPath: 'ellipse(55% 100% at 50% 100%)' }} />
+      )}
     </section>
   );
 }
@@ -771,23 +792,25 @@ function CTASection() {
 // ─── APP PROMO SECTION ────────────────────────────────────────────────────────
 function AppPromoSection() {
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
   return (
-    <section ref={ref} style={{ background: 'linear-gradient(135deg, #FFF0F7 0%, #F0FFFE 100%)', padding: '72px 0', position: 'relative', overflow: 'hidden' }}>
+    <section ref={ref} style={{ background: 'linear-gradient(135deg, #FFF0F7 0%, #F0FFFE 100%)', padding: isMobile ? '56px 0' : '72px 0', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: -60, left: -60, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
-          <motion.div initial={{ opacity: 0, x: -24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 60, alignItems: 'center' }}>
+          <motion.div initial={{ opacity: 0, x: isMobile ? 0 : -24, y: isMobile ? 20 : 0 }} animate={inView ? { opacity: 1, x: 0, y: 0 } : {}} transition={{ duration: 0.6 }}
+            style={{ textAlign: isMobile ? 'center' : 'left', order: isMobile ? 2 : 1 }}>
             <Eyebrow text="Mobile App" />
-            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20 }}>
+            <h2 style={{ fontSize: isMobile ? 'clamp(26px, 7vw, 36px)' : 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20 }}>
               Kelola Kesehatan Gigi<br />
               <GradText>di Genggaman Anda</GradText>
             </h2>
-            <p style={{ fontSize: 16, color: '#6B7280', lineHeight: 1.7, marginBottom: 32 }}>
+            <p style={{ fontSize: 16, color: '#6B7280', lineHeight: 1.7, marginBottom: 32, maxWidth: isMobile ? 480 : undefined, marginLeft: isMobile ? 'auto' : undefined, marginRight: isMobile ? 'auto' : undefined }}>
               Download aplikasi OMDC Dental untuk booking, pantau jadwal, ambil nomor antrian, dan akses rekam medis kapan saja.
             </p>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 12, justifyContent: isMobile ? 'center' : 'flex-start', flexWrap: 'wrap' }}>
               <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}>
                 📱 App Store
               </Link>
@@ -796,8 +819,8 @@ function AppPromoSection() {
               </Link>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.15 }}
-            style={{ display: 'flex', justifyContent: 'center' }}>
+          <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 24, y: isMobile ? 20 : 0 }} animate={inView ? { opacity: 1, x: 0, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.15 }}
+            style={{ display: 'flex', justifyContent: 'center', order: isMobile ? 1 : 2 }}>
             {/* Outer shell — double-bezel */}
             <div style={{ padding: 10, borderRadius: 46, background: 'white', boxShadow: '0 24px 72px rgba(233,30,140,0.14), 0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(233,30,140,0.1)' }}>
               <div style={{ width: 200, height: 400, borderRadius: 38, background: 'linear-gradient(160deg, #FFF0F7 0%, #FFFFFF 50%, #F0FFFE 100%)', border: '1.5px solid rgba(233,30,140,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
