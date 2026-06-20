@@ -124,20 +124,31 @@ function HeroBlob({ heroImage, primaryColor }: { heroImage: string | null; prima
 }
 
 // ─── STAT BAR ────────────────────────────────────────────────────────────────
+const STAT_GRADIENTS = [
+  'linear-gradient(135deg,#E91E8C,#FF6BB5)',
+  'linear-gradient(135deg,#4FC3F7,#0288D1)',
+  'linear-gradient(135deg,#A78BFA,#7C3AED)',
+  'linear-gradient(135deg,#10B981,#059669)',
+];
+
 function StatBar({ stats, primaryColor }: { stats: Array<{ value: string; label: string }>; primaryColor: string }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {stats.map((stat, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.1, duration: 0.4 }}
-          className="text-center p-4 rounded-2xl bg-white shadow-sm border border-gray-50"
+          whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(233,30,140,0.12)' }}
+          className="relative text-center p-5 rounded-2xl bg-white shadow-sm border border-gray-50 overflow-hidden"
+          style={{ transition: 'all 0.3s ease' }}
         >
+          {/* Top accent */}
+          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: STAT_GRADIENTS[i % STAT_GRADIENTS.length] }} />
           <div className="text-2xl font-extrabold leading-tight" style={{ color: primaryColor }}>{stat.value}</div>
-          <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
+          <div className="text-xs text-gray-500 mt-1 font-medium">{stat.label}</div>
         </motion.div>
       ))}
     </div>
@@ -145,29 +156,63 @@ function StatBar({ stats, primaryColor }: { stats: Array<{ value: string; label:
 }
 
 // ─── SERVICE CARD ─────────────────────────────────────────────────────────────
-function ServiceCard({ emoji, name, description, price, primaryColor }: {
-  emoji: string; name: string; description: string; price: string; primaryColor: string;
+const SERVICE_GRADIENTS = [
+  'linear-gradient(135deg,#E91E8C,#FF6BB5)',
+  'linear-gradient(135deg,#4FC3F7,#0288D1)',
+  'linear-gradient(135deg,#A78BFA,#7C3AED)',
+  'linear-gradient(135deg,#10B981,#059669)',
+  'linear-gradient(135deg,#F59E0B,#D97706)',
+  'linear-gradient(135deg,#EF4444,#DC2626)',
+  'linear-gradient(135deg,#EC4899,#DB2777)',
+  'linear-gradient(135deg,#14B8A6,#0D9488)',
+];
+
+function ServiceCard({ emoji, name, description, price, primaryColor, index }: {
+  emoji: string; name: string; description: string; price: string; primaryColor: string; index: number;
 }) {
+  const grad = SERVICE_GRADIENTS[index % SERVICE_GRADIENTS.length];
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -4, boxShadow: '0 12px 40px rgba(233,30,140,0.15)' }}
-      className="bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer transition-all"
+      transition={{ delay: (index % 4) * 0.07 }}
+      whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(233,30,140,0.18)' }}
+      className="relative bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer overflow-hidden group"
+      style={{ transition: 'all 0.3s ease' }}
     >
-      <div className="text-3xl mb-3">{emoji}</div>
-      <div className="font-semibold text-gray-800 text-sm mb-1">{name}</div>
-      <div className="text-xs text-gray-500 mb-3 leading-relaxed">{description}</div>
-      <div className="text-sm font-bold" style={{ color: primaryColor }}>{price}</div>
+      {/* Subtle gradient hover bg */}
+      <motion.div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+        style={{ background: `${primaryColor}06`, transition: 'opacity 0.3s' }}
+      />
+      {/* Bottom accent bar on hover */}
+      <div
+        className="absolute bottom-0 left-0 h-0.5 w-0"
+        style={{ background: grad, transition: 'width 0.35s ease' }}
+      />
+
+      {/* Gradient icon container */}
+      <div
+        className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-xl shadow-sm"
+        style={{ background: grad }}
+      >
+        <span style={{ filter: 'brightness(10) grayscale(1)' }}>{emoji}</span>
+        {/* Shine dot */}
+        <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-white opacity-60" />
+      </div>
+
+      <div className="relative font-bold text-gray-800 text-sm mb-1.5">{name}</div>
+      <div className="relative text-xs text-gray-500 mb-3 leading-relaxed">{description}</div>
+      <div className="relative text-sm font-bold" style={{ color: primaryColor }}>{price}</div>
     </motion.div>
   );
 }
 
 // ─── DOCTOR CARD ──────────────────────────────────────────────────────────────
-function DoctorCard({ name, specialty, experience, photo, rating, patients, primaryColor }: {
+function DoctorCard({ name, specialty, experience, photo, rating, patients, primaryColor, index }: {
   name: string; specialty: string; experience: string; photo: string | null;
-  rating: number; patients: number; primaryColor: string;
+  rating: number; patients: number; primaryColor: string; index: number;
 }) {
   const initial = name.replace('drg. ', '')[0] ?? 'D';
   const avatarColors = [
@@ -176,45 +221,63 @@ function DoctorCard({ name, specialty, experience, photo, rating, patients, prim
     `linear-gradient(135deg, #A78BFA, #7C3AED)`,
     `linear-gradient(135deg, #10B981, #059669)`,
   ];
-  const colorIdx = name.charCodeAt(5) % avatarColors.length;
+  const colorIdx = index % avatarColors.length;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -4 }}
-      className="bg-white rounded-2xl p-5 border border-gray-100 text-center transition-all"
+      transition={{ delay: (index % 4) * 0.09 }}
+      whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(233,30,140,0.15)' }}
+      className="relative bg-white rounded-2xl p-5 border border-gray-100 text-center overflow-hidden"
+      style={{ transition: 'all 0.3s ease' }}
     >
-      <div className="relative inline-block mb-4">
-        {photo ? (
-          <img src={photo} alt={name} className="w-20 h-20 rounded-full object-cover" />
-        ) : (
-          <div
-            className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto"
-            style={{ background: avatarColors[colorIdx] }}
-          >
-            {initial}
-          </div>
-        )}
-        <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center bg-green-500 border-2 border-white">
+      {/* Top gradient accent */}
+      <div className="absolute top-0 left-0 right-0 h-1" style={{ background: avatarColors[colorIdx] }} />
+
+      <div className="relative inline-block mb-4 mt-1">
+        {/* Outer ring with gradient */}
+        <div
+          className="w-22 h-22 rounded-full p-0.5 inline-block"
+          style={{ background: avatarColors[colorIdx] }}
+        >
+          {photo ? (
+            <img
+              src={photo}
+              alt={name}
+              className="w-20 h-20 rounded-full object-cover border-2 border-white"
+            />
+          ) : (
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-black border-2 border-white"
+              style={{ background: avatarColors[colorIdx] }}
+            >
+              {initial}
+            </div>
+          )}
+        </div>
+        <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center bg-green-500 border-2 border-white shadow-sm">
           <span className="text-white text-[8px] font-bold">✓</span>
         </div>
       </div>
-      <div className="font-semibold text-gray-800 text-sm leading-snug">{name}</div>
-      <div className="text-xs mt-1" style={{ color: primaryColor }}>{specialty}</div>
+
+      <div className="font-bold text-gray-800 text-sm leading-snug">{name}</div>
+      <div className="text-xs mt-1 font-medium" style={{ color: primaryColor }}>{specialty}</div>
       <div className="text-xs text-gray-400 mt-0.5">{experience} Pengalaman</div>
-      <div className="flex items-center justify-center gap-1 mt-3">
+
+      <div className="flex items-center justify-center gap-1.5 mt-3">
         <Star size={12} fill="#F59E0B" className="text-yellow-400" />
-        <span className="text-xs font-medium text-gray-700">{rating}</span>
+        <span className="text-xs font-bold text-gray-700">{rating}</span>
         <span className="text-xs text-gray-400">· {patients} pasien</span>
       </div>
+
       <Link
         to="/booking"
-        className="mt-3 block text-xs font-medium py-2 px-4 rounded-full border transition-all hover:text-white"
-        style={{ borderColor: primaryColor, color: primaryColor }}
-        onMouseEnter={e => { (e.target as HTMLElement).style.background = primaryColor; (e.target as HTMLElement).style.color = 'white'; }}
-        onMouseLeave={e => { (e.target as HTMLElement).style.background = 'transparent'; (e.target as HTMLElement).style.color = primaryColor; }}
+        className="mt-3.5 block text-xs font-semibold py-2 px-4 rounded-full transition-all"
+        style={{ background: avatarColors[colorIdx], color: 'white' }}
+        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.85'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1'; (e.currentTarget as HTMLElement).style.transform = 'none'; }}
       >
         Buat Janji
       </Link>
@@ -229,37 +292,43 @@ function PromoCard({ title, subtitle, discount, image, validUntil, badge, color 
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -4 }}
-      className="relative rounded-2xl overflow-hidden border border-gray-100 bg-white transition-all"
+      whileHover={{ y: -8, boxShadow: '0 20px 50px rgba(0,0,0,0.12)' }}
+      className="relative rounded-2xl overflow-hidden bg-white"
+      style={{ transition: 'all 0.3s ease' }}
     >
-      {/* Color accent top bar */}
-      <div className="h-1.5" style={{ background: color }} />
-      <div className="p-5">
+      {/* Gradient header area */}
+      <div className="relative px-5 pt-5 pb-4 overflow-hidden" style={{ background: `linear-gradient(135deg, ${color}, ${color}bb)` }}>
+        <div style={{
+          position: 'absolute', top: -20, right: -20,
+          width: 120, height: 120, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.12)',
+        }} />
         {badge && (
-          <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full text-white mb-3" style={{ background: color }}>
+          <span className="inline-block text-[10px] font-bold px-2.5 py-1 rounded-full text-white mb-2"
+            style={{ background: 'rgba(255,255,255,0.25)' }}>
             {badge}
           </span>
         )}
-        <div className="text-3xl font-extrabold mb-1" style={{ color }}>{discount}</div>
-        <div className="font-semibold text-gray-800 text-sm mb-1">{title}</div>
-        <div className="text-xs text-gray-500 mb-3">{subtitle}</div>
-        <div className="text-xs text-gray-400">Berlaku hingga {new Date(validUntil).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+        <div className="text-3xl font-extrabold text-white leading-tight">{discount}</div>
+        <div className="font-bold text-white/90 text-sm mt-1">{title}</div>
+      </div>
+
+      <div className="p-5">
+        <div className="text-xs text-gray-500 mb-2">{subtitle}</div>
+        <div className="text-xs text-gray-400 mb-4">
+          Berlaku hingga {new Date(validUntil).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+        </div>
         <Link
           to="/booking"
-          className="mt-4 flex items-center gap-1 text-xs font-medium transition-colors hover:opacity-80"
-          style={{ color }}
+          className="flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full text-white transition-all hover:opacity-90 hover:-translate-y-0.5"
+          style={{ background: `linear-gradient(135deg, ${color}, ${color}cc)` }}
         >
           Klaim Sekarang <ArrowRight size={12} />
         </Link>
       </div>
-      {image && (
-        <div className="absolute top-0 right-0 w-24 h-full opacity-10">
-          <img src={image} alt="" className="w-full h-full object-cover" />
-        </div>
-      )}
     </motion.div>
   );
 }
@@ -410,8 +479,8 @@ export function Home() {
               <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{services.sectionSubtitle}</p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {visibleServices.map(s => (
-                <ServiceCard key={s.id} {...s} primaryColor={primary} />
+              {visibleServices.map((s, idx) => (
+                <ServiceCard key={s.id} {...s} primaryColor={primary} index={idx} />
               ))}
             </div>
             <div className="text-center mt-8">
@@ -435,8 +504,8 @@ export function Home() {
               <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{doctors.sectionSubtitle}</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {visibleDoctors.map(d => (
-                <DoctorCard key={d.id} {...d} primaryColor={primary} />
+              {visibleDoctors.map((d, idx) => (
+                <DoctorCard key={d.id} {...d} primaryColor={primary} index={idx} />
               ))}
             </div>
             <div className="text-center mt-8">
