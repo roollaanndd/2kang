@@ -204,7 +204,7 @@ function HeroSection() {
             {/* Hero image frame */}
             {images.length > 0 && (
               <div style={{ borderRadius: 28, overflow: 'hidden', aspectRatio: '4/5', position: 'relative', boxShadow: '0 24px 80px rgba(0,0,0,0.15)' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(233,30,140,0.3) 100%)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 60%, rgba(233,30,140,0.18) 100%)' }} />
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={imgIdx}
