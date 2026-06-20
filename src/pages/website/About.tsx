@@ -81,21 +81,15 @@ export function About() {
   return (
     <div>
       {/* Hero */}
-      <section
-        className="relative overflow-hidden py-24"
-        style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5 50%, #FFD6EC 80%, #FFF5F9)' }}
-      >
-        <div className="absolute inset-0">
-          <div
-            className="absolute top-0 left-1/2 rounded-full opacity-15"
-            style={{ width: 600, height: 600, background: 'white', transform: 'translate(-50%, -50%)', filter: 'blur(80px)' }}
-          />
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
+        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: -120, right: -80, width: 560, height: 560, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -80, left: -60, width: 440, height: 440, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-sm font-bold uppercase tracking-widest mb-4 text-white/80">Tentang Kami</p>
-            <h1 className="text-4xl sm:text-5xl font-black text-white mb-6">Mengenal OMDC Dental</h1>
-            <p className="text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tentang Kami</p>
+            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827' }}>Mengenal OMDC Dental</h1>
+            <p className="text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: '#6B7280' }}>
               Lebih dari 15 tahun kami melayani kesehatan gigi masyarakat Jakarta dengan dedikasi, teknologi modern, dan tim dokter spesialis terbaik.
             </p>
           </motion.div>
@@ -177,16 +171,13 @@ export function About() {
             >
               <div
                 className="rounded-3xl p-8 relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+                style={{ background: 'white', border: '1.5px solid rgba(233,30,140,0.12)', boxShadow: '0 8px 48px rgba(233,30,140,0.08)' }}
               >
-                <div
-                  className="absolute top-0 right-0 rounded-full opacity-20"
-                  style={{ width: 250, height: 250, background: 'white', transform: 'translate(30%, -30%)' }}
-                />
+                <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
                 <div className="relative z-10">
                   <div className="text-6xl mb-4">🏥</div>
-                  <h3 className="text-2xl font-black text-white mb-2">{CLINIC_NAME}</h3>
-                  <p className="text-white/80 text-sm mb-6">{CLINIC_ADDRESS}</p>
+                  <h3 className="text-2xl font-black mb-2" style={{ color: '#111827' }}>{CLINIC_NAME}</h3>
+                  <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>{CLINIC_ADDRESS}</p>
                   <div className="grid grid-cols-2 gap-4">
                     {[
                       { val: 'A+', label: 'Akreditasi Klinik' },
@@ -197,10 +188,10 @@ export function About() {
                       <div
                         key={s.val}
                         className="rounded-xl p-3 text-center"
-                        style={{ background: 'rgba(255,255,255,0.2)' }}
+                        style={{ background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.12)' }}
                       >
-                        <div className="text-xl font-black text-white">{s.val}</div>
-                        <div className="text-xs text-white/70 mt-0.5">{s.label}</div>
+                        <div className="text-xl font-black" style={{ color: '#E91E8C' }}>{s.val}</div>
+                        <div className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{s.label}</div>
                       </div>
                     ))}
                   </div>
@@ -498,27 +489,28 @@ export function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="rounded-3xl p-10 relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+            style={{ background: '#FFF5F9', border: '1.5px solid rgba(233,30,140,0.15)' }}
           >
-            <h2 className="text-2xl sm:text-3xl font-black text-white mb-4">
+            <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            <h2 className="text-2xl sm:text-3xl font-black mb-4 relative z-10" style={{ color: '#111827' }}>
               Bergabunglah dengan Keluarga OMDC Dental
             </h2>
-            <p className="text-white/80 mb-8">
+            <p className="mb-8 relative z-10" style={{ color: '#6B7280' }}>
               Percayakan kesehatan gigi Anda kepada kami. Kami siap memberikan senyum terbaik untuk Anda.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-4 relative z-10">
               <Link
                 to="/booking"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl"
-                style={{ background: 'white', color: '#E91E8C' }}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base text-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+                style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}
               >
                 <Calendar size={18} />
                 Buat Janji
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base text-white transition-all duration-200 hover:-translate-y-1"
-                style={{ border: '2px solid rgba(255,255,255,0.6)', background: 'rgba(255,255,255,0.15)' }}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base transition-all duration-200 hover:-translate-y-1"
+                style={{ border: '2px solid #E91E8C', color: '#E91E8C', background: 'white' }}
               >
                 Hubungi Kami <ArrowRight size={18} />
               </Link>
