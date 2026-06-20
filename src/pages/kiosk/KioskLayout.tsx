@@ -1,4 +1,4 @@
-import { createElement, useState, type ComponentType, type Dispatch, type SetStateAction } from 'react';
+import { createElement, useEffect, useState, type ComponentType, type Dispatch, type SetStateAction } from 'react';
 import { AnimatePresence } from 'motion/react';
 import type { KioskState, KioskStep } from '../../types';
 import { KioskHeader } from '../../components/kiosk/KioskHeader';
@@ -16,6 +16,10 @@ import { KioskQueueDisplay } from './screens/KioskQueueDisplay';
 import { KioskCheckin } from './screens/KioskCheckin';
 import { KioskNewPatient } from './screens/KioskNewPatient';
 import { KioskInfoPromo } from './screens/KioskInfoPromo';
+
+/* Design canvas — all kiosk screens are authored at this resolution */
+const DESIGN_W = 1280;
+const DESIGN_H = 800;
 
 const STEP_HISTORY: Record<KioskStep, KioskStep | null> = {
   'welcome': null,
@@ -70,6 +74,18 @@ function renderScreen(step: KioskStep, props: KioskScreenProps) {
 
 export default function KioskLayout() {
   const [state, setState] = useState<KioskState>(INITIAL_STATE);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const update = () => {
+      const sx = window.innerWidth / DESIGN_W;
+      const sy = window.innerHeight / DESIGN_H;
+      setScale(Math.min(sx, sy));
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   const goTo = (step: KioskStep) => {
     setState(prev => ({ ...prev, step }));
@@ -85,6 +101,7 @@ export default function KioskLayout() {
   const showHeader = state.step !== 'welcome';
 
   return (
+    /* Outer shell — fills the real viewport, centers the scaled canvas */
     <div
       className="kiosk-mode select-none"
       style={{
@@ -92,17 +109,34 @@ export default function KioskLayout() {
         height: '100vh',
         overflow: 'hidden',
         display: 'flex',
-        flexDirection: 'column',
-        fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
-        backgroundColor: '#F9FAFB',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0D0D1A',
       }}
     >
-      {showHeader && <KioskHeader />}
+      {/* Inner canvas — always DESIGN_W × DESIGN_H, scaled to fit viewport */}
+      <div
+        style={{
+          width: DESIGN_W,
+          height: DESIGN_H,
+          /* Scale around center so it stays centred in the outer shell */
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
+          backgroundColor: '#F9FAFB',
+          flexShrink: 0,
+        }}
+      >
+        {showHeader && <KioskHeader />}
 
-      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
-        <AnimatePresence mode="wait">
-          {renderScreen(state.step, { state, setState, goTo, goBack })}
-        </AnimatePresence>
+        <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+          <AnimatePresence mode="wait">
+            {renderScreen(state.step, { state, setState, goTo, goBack })}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

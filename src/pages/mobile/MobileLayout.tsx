@@ -78,26 +78,39 @@ export function MobileLayout() {
   };
 
   return (
-    /* On mobile: full-screen immersive. On desktop: centered phone frame */
     <div
-      className="flex items-start justify-center"
-      style={{ minHeight: '100dvh', background: '#E5E7EB' }}
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        /* Fixed height — NOT minHeight — so child screens have a fixed container to scroll within */
+        height: '100dvh',
+        background: '#E5E7EB',
+        overflow: 'hidden',
+      }}
     >
       <div
-        className="relative w-full flex flex-col overflow-hidden"
         style={{
+          position: 'relative',
           maxWidth: 430,
-          minHeight: '100dvh',
+          width: '100%',
+          height: '100dvh',
           background: 'white',
-          /* Prevent pull-to-refresh within the app container */
           overscrollBehavior: 'contain',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <AnimatePresence mode="wait">
-          <div key={state.screen} className="flex flex-col flex-1 overflow-hidden" style={{ minHeight: '100dvh' }}>
-            {renderScreen()}
-          </div>
-        </AnimatePresence>
+        {/* Screen area — fixed size so child screens can scroll internally */}
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+          <AnimatePresence mode="wait">
+            {/* position:absolute + inset:0 gives each screen a fixed viewport to fill and scroll within */}
+            <div key={state.screen} style={{ position: 'absolute', inset: 0 }}>
+              {renderScreen()}
+            </div>
+          </AnimatePresence>
+        </div>
 
         {showBottomNav && (
           <BottomNav

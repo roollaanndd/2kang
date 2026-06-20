@@ -23,7 +23,7 @@ export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
 
   return (
     <div
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 z-50"
+      className="w-full bg-white border-t border-gray-100 z-50 flex-shrink-0"
       style={{ boxShadow: '0 -4px 20px rgba(0,0,0,0.08)' }}
     >
       <div className="flex items-center justify-around h-16 px-2">

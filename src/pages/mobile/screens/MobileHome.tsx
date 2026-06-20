@@ -62,15 +62,22 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.22 }}
-      className="flex flex-col h-full no-overscroll"
-      style={{ background: '#F1F3F6', overflowY: 'auto', scrollbarWidth: 'none' }}
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#F1F3F6',
+        overflow: 'hidden',
+      }}
     >
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <div
-        className="relative overflow-hidden flex-shrink-0"
         style={{
+          position: 'relative',
+          flexShrink: 0,
           background: 'linear-gradient(155deg, #9D174D 0%, #BE185D 25%, #E91E8C 60%, #FF6BB5 100%)',
-          paddingBottom: 28,
+          paddingBottom: 44,
+          overflow: 'visible',
         }}
       >
         {/* Animated bokeh blobs */}
@@ -205,190 +212,214 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             </motion.button>
           ))}
         </div>
+
+        {/* Wave blend — content card rises up over the hero gradient */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 32,
+          background: '#F1F3F6',
+          borderTopLeftRadius: 28,
+          borderTopRightRadius: 28,
+          pointerEvents: 'none',
+        }} />
       </div>
 
       {/* ── SCROLLABLE CONTENT ───────────────────────────────────────── */}
-      <div className="flex flex-col gap-6 px-4 pt-5 pb-28">
+      <div
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+          overscrollBehavior: 'contain',
+          /* -8px so content sits flush in the wave cutout of the hero */
+          marginTop: -8,
+          scrollbarWidth: 'none',
+        }}
+      >
+        <div className="flex flex-col gap-6 px-4 pt-3 pb-6">
 
-        {/* Services Grid */}
-        <section>
-          <div className="flex items-center justify-between mb-3.5">
-            <h2 className="font-black text-[15px] text-gray-900">Layanan Kami</h2>
-            <button
-              onClick={() => setState({ screen: 'booking' })}
-              className="flex items-center gap-0.5 text-xs font-semibold"
-              style={{ color: PINK }}
-            >
-              Lihat semua <ChevronRight size={13} />
-            </button>
-          </div>
-          <div className="grid grid-cols-4 gap-3">
-            {SERVICES.map((svc, i) => (
-              <motion.button
-                key={svc.id}
-                initial={{ opacity: 0, scale: 0.82 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.04 }}
-                whileTap={{ scale: 0.88 }}
-                onClick={() => handleServiceClick(svc)}
-                className="flex flex-col items-center gap-2"
+          {/* Services Grid */}
+          <section>
+            <div className="flex items-center justify-between mb-3.5">
+              <h2 className="font-black text-[15px] text-gray-900">Layanan Kami</h2>
+              <button
+                onClick={() => setState({ screen: 'booking' })}
+                className="flex items-center gap-0.5 text-xs font-semibold"
+                style={{ color: PINK }}
               >
-                <div
-                  className="w-14 h-14 rounded-[18px] flex items-center justify-center shadow-md"
-                  style={{ background: GRADIENTS[i % GRADIENTS.length] }}
-                >
-                  <DentalIcon id={svc.id} />
-                </div>
-                <span className="text-[10px] font-semibold text-center leading-tight text-gray-700 w-full">
-                  {svc.name.length > 11 ? svc.name.slice(0, 10) + '…' : svc.name}
-                </span>
-              </motion.button>
-            ))}
-          </div>
-        </section>
-
-        {/* Doctors */}
-        <section>
-          <div className="flex items-center justify-between mb-3.5">
-            <h2 className="font-black text-[15px] text-gray-900">Dokter Rekomendasi</h2>
-            <button
-              onClick={() => setState({ screen: 'doctors' })}
-              className="flex items-center gap-0.5 text-xs font-semibold"
-              style={{ color: PINK }}
-            >
-              Semua <ChevronRight size={13} />
-            </button>
-          </div>
-          <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-            {DOCTORS.map((doc, i) => {
-              const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
-              return (
+                Lihat semua <ChevronRight size={13} />
+              </button>
+            </div>
+            <div className="grid grid-cols-4 gap-3">
+              {SERVICES.map((svc, i) => (
                 <motion.button
-                  key={doc.id}
+                  key={svc.id}
+                  initial={{ opacity: 0, scale: 0.82 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.04 }}
+                  whileTap={{ scale: 0.88 }}
+                  onClick={() => handleServiceClick(svc)}
+                  className="flex flex-col items-center gap-2"
+                >
+                  <div
+                    className="w-14 h-14 rounded-[18px] flex items-center justify-center shadow-md"
+                    style={{ background: GRADIENTS[i % GRADIENTS.length] }}
+                  >
+                    <DentalIcon id={svc.id} />
+                  </div>
+                  <span className="text-[10px] font-semibold text-center leading-tight text-gray-700 w-full">
+                    {svc.name.length > 11 ? svc.name.slice(0, 10) + '…' : svc.name}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+          </section>
+
+          {/* Doctors */}
+          <section>
+            <div className="flex items-center justify-between mb-3.5">
+              <h2 className="font-black text-[15px] text-gray-900">Dokter Rekomendasi</h2>
+              <button
+                onClick={() => setState({ screen: 'doctors' })}
+                className="flex items-center gap-0.5 text-xs font-semibold"
+                style={{ color: PINK }}
+              >
+                Semua <ChevronRight size={13} />
+              </button>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+              {DOCTORS.map((doc, i) => {
+                const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
+                return (
+                  <motion.button
+                    key={doc.id}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.07 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => setState({ screen: 'booking-doctor', selectedDoctor: doc })}
+                    className="flex-shrink-0 w-44 rounded-2xl p-3.5 text-left"
+                    style={{ background: 'white', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}
+                  >
+                    <div
+                      className="w-14 h-14 rounded-2xl mb-2.5 flex items-center justify-center overflow-hidden"
+                      style={{ background: GRADIENTS[i % GRADIENTS.length] }}
+                    >
+                      {doc.photo ? (
+                        <img src={doc.photo} alt={doc.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-white font-black text-xl">{initials}</span>
+                      )}
+                    </div>
+                    <p className="text-xs font-bold leading-tight text-gray-800 line-clamp-2">{doc.name}</p>
+                    <p className="text-[10px] mt-0.5 mb-2.5 leading-snug text-gray-400">{doc.specialty}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <Star size={10} fill="#F59E0B" color="#F59E0B" />
+                        <span className="text-[10px] font-bold text-gray-700">{doc.rating}</span>
+                      </div>
+                      <span
+                        className="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
+                        style={doc.available
+                          ? { background: '#D1FAE5', color: '#065F46' }
+                          : { background: '#FEE2E2', color: '#991B1B' }
+                        }
+                      >
+                        {doc.available ? 'Tersedia' : 'Libur'}
+                      </span>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Promotions */}
+          <section>
+            <div className="flex items-center justify-between mb-3.5">
+              <h2 className="font-black text-[15px] text-gray-900">Promo Terkini</h2>
+              <button
+                onClick={() => setState({ screen: 'promos' })}
+                className="flex items-center gap-0.5 text-xs font-semibold"
+                style={{ color: PINK }}
+              >
+                Semua <ChevronRight size={13} />
+              </button>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+              {PROMOTIONS.map((promo, i) => (
+                <motion.div
+                  key={promo.id}
                   initial={{ opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07 }}
-                  whileTap={{ scale: 0.96 }}
-                  onClick={() => setState({ screen: 'booking-doctor', selectedDoctor: doc })}
-                  className="flex-shrink-0 w-44 rounded-2xl p-3.5 text-left"
-                  style={{ background: 'white', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}
+                  className="flex-shrink-0 w-60 rounded-2xl overflow-hidden"
+                  style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
                 >
-                  <div
-                    className="w-14 h-14 rounded-2xl mb-2.5 flex items-center justify-center overflow-hidden"
-                    style={{ background: GRADIENTS[i % GRADIENTS.length] }}
-                  >
-                    {doc.photo ? (
-                      <img src={doc.photo} alt={doc.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-white font-black text-xl">{initials}</span>
-                    )}
-                  </div>
-                  <p className="text-xs font-bold leading-tight text-gray-800 line-clamp-2">{doc.name}</p>
-                  <p className="text-[10px] mt-0.5 mb-2.5 leading-snug text-gray-400">{doc.specialty}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Star size={10} fill="#F59E0B" color="#F59E0B" />
-                      <span className="text-[10px] font-bold text-gray-700">{doc.rating}</span>
+                  {/* Gradient header */}
+                  <div className="px-4 pt-4 pb-3 relative overflow-hidden" style={{ background: promo.color }}>
+                    <div style={{
+                      position: 'absolute', top: -20, right: -20,
+                      width: 80, height: 80, borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.12)',
+                    }} />
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="text-white font-black text-sm leading-tight">{promo.title}</span>
+                      <span
+                        className="text-xs font-black rounded-full px-2.5 py-1 flex-shrink-0"
+                        style={{ background: 'rgba(255,255,255,0.28)', color: 'white' }}
+                      >
+                        -{promo.discount}%
+                      </span>
                     </div>
-                    <span
-                      className="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
-                      style={doc.available
-                        ? { background: '#D1FAE5', color: '#065F46' }
-                        : { background: '#FEE2E2', color: '#991B1B' }
-                      }
-                    >
-                      {doc.available ? 'Tersedia' : 'Libur'}
-                    </span>
                   </div>
-                </motion.button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Promotions */}
-        <section>
-          <div className="flex items-center justify-between mb-3.5">
-            <h2 className="font-black text-[15px] text-gray-900">Promo Terkini</h2>
-            <button
-              onClick={() => setState({ screen: 'promos' })}
-              className="flex items-center gap-0.5 text-xs font-semibold"
-              style={{ color: PINK }}
-            >
-              Semua <ChevronRight size={13} />
-            </button>
-          </div>
-          <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-            {PROMOTIONS.map((promo, i) => (
-              <motion.div
-                key={promo.id}
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.07 }}
-                className="flex-shrink-0 w-60 rounded-2xl overflow-hidden"
-                style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
-              >
-                {/* Gradient header */}
-                <div className="px-4 pt-4 pb-3 relative overflow-hidden" style={{ background: promo.color }}>
-                  <div style={{
-                    position: 'absolute', top: -20, right: -20,
-                    width: 80, height: 80, borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.12)',
-                  }} />
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="text-white font-black text-sm leading-tight">{promo.title}</span>
-                    <span
-                      className="text-xs font-black rounded-full px-2.5 py-1 flex-shrink-0"
-                      style={{ background: 'rgba(255,255,255,0.28)', color: 'white' }}
+                  {/* Content */}
+                  <div className="px-4 py-3.5" style={{ background: promo.bgColor || '#FFF5F9' }}>
+                    <p className="text-xs text-gray-600 leading-snug line-clamp-2">{promo.description}</p>
+                    <p className="text-[10px] text-gray-400 mt-1.5">Berlaku s/d {promo.validUntil}</p>
+                    <button
+                      onClick={() => setState({ screen: 'booking' })}
+                      className="mt-2.5 flex items-center gap-1 text-xs font-bold"
+                      style={{ color: promo.color }}
                     >
-                      -{promo.discount}%
-                    </span>
+                      Klaim Sekarang <ChevronRight size={11} />
+                    </button>
                   </div>
-                </div>
-                {/* Content */}
-                <div className="px-4 py-3.5" style={{ background: promo.bgColor || '#FFF5F9' }}>
-                  <p className="text-xs text-gray-600 leading-snug line-clamp-2">{promo.description}</p>
-                  <p className="text-[10px] text-gray-400 mt-1.5">Berlaku s/d {promo.validUntil}</p>
-                  <button
-                    onClick={() => setState({ screen: 'booking' })}
-                    className="mt-2.5 flex items-center gap-1 text-xs font-bold"
-                    style={{ color: promo.color }}
-                  >
-                    Klaim Sekarang <ChevronRight size={11} />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+                </motion.div>
+              ))}
+            </div>
+          </section>
 
-        {/* Emergency card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="rounded-2xl p-4 flex items-center gap-4"
-          style={{
-            background: 'linear-gradient(135deg,#FEF3C7,#FDE68A)',
-            border: '1px solid #FCD34D',
-          }}
-        >
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-            style={{ background: 'rgba(245,158,11,0.2)' }}>
-            🚨
-          </div>
-          <div className="flex-1">
-            <p className="font-black text-sm text-amber-900">Layanan Darurat 24/7</p>
-            <p className="text-xs text-amber-700 mt-0.5">Hubungi kami kapan saja untuk keadaan darurat</p>
-          </div>
-          <button
-            onClick={() => setState({ screen: 'notifications' })}
-            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(245,158,11,0.3)' }}
+          {/* Emergency card */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-2xl p-4 flex items-center gap-4"
+            style={{
+              background: 'linear-gradient(135deg,#FEF3C7,#FDE68A)',
+              border: '1px solid #FCD34D',
+            }}
           >
-            <Phone size={16} color="#92400E" />
-          </button>
-        </motion.div>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+              style={{ background: 'rgba(245,158,11,0.2)' }}>
+              🚨
+            </div>
+            <div className="flex-1">
+              <p className="font-black text-sm text-amber-900">Layanan Darurat 24/7</p>
+              <p className="text-xs text-amber-700 mt-0.5">Hubungi kami kapan saja untuk keadaan darurat</p>
+            </div>
+            <button
+              onClick={() => setState({ screen: 'notifications' })}
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(245,158,11,0.3)' }}
+            >
+              <Phone size={16} color="#92400E" />
+            </button>
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
