@@ -75,12 +75,23 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         style={{
           position: 'relative',
           flexShrink: 0,
-          background: 'linear-gradient(160deg, #0D1421 0%, #1a1040 50%, #0D2133 100%)',
+          background: '#FFFFFF',
           paddingBottom: 44,
           overflow: 'hidden',
         }}
       >
-        {/* Gradient mesh blobs */}
+        {/* Thin pink gradient accent strip at very top */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 3,
+          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+          zIndex: 2,
+        }} />
+
+        {/* Subtle gradient mesh blobs */}
         <div style={{
           position: 'absolute',
           top: -60,
@@ -88,7 +99,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           width: 220,
           height: 220,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(233,30,140,0.32) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(233,30,140,0.10) 0%, transparent 70%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
         }} />
@@ -99,7 +110,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           width: 180,
           height: 180,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(6,182,212,0.22) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
         }} />
@@ -110,17 +121,17 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           width: 150,
           height: 150,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
         }} />
 
         {/* Animated bokeh blobs */}
         {[
-          { x: 80, y: 5,  s: 90,  delay: 0,   op: 0.05 },
-          { x: 5,  y: 45, s: 60,  delay: 1.2, op: 0.06 },
-          { x: 60, y: 65, s: 100, delay: 0.7, op: 0.04 },
-          { x: 90, y: 50, s: 50,  delay: 1.8, op: 0.05 },
+          { x: 80, y: 5,  s: 90,  delay: 0,   op: 0.03 },
+          { x: 5,  y: 45, s: 60,  delay: 1.2, op: 0.04 },
+          { x: 60, y: 65, s: 100, delay: 0.7, op: 0.03 },
+          { x: 90, y: 50, s: 50,  delay: 1.8, op: 0.03 },
         ].map((b, i) => (
           <motion.div
             key={i}
@@ -131,7 +142,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               width: b.s,
               height: b.s,
               borderRadius: '50%',
-              background: `rgba(255,255,255,${b.op})`,
+              background: `rgba(233,30,140,${b.op})`,
               pointerEvents: 'none',
             }}
             animate={{ y: [-10, 10, -10] }}
@@ -142,8 +153,8 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         {/* Status-bar safe area + top bar */}
         <div className="relative flex items-center justify-between px-5 pt-14 pb-3">
           <div>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 500 }}>{getGreeting()},</p>
-            <h1 style={{ color: 'white', fontSize: 24, fontWeight: 900, letterSpacing: -0.5, lineHeight: 1.15 }}>
+            <p style={{ color: '#6B7280', fontSize: 13, fontWeight: 500 }}>{getGreeting()},</p>
+            <h1 style={{ color: '#0D1421', fontSize: 24, fontWeight: 900, letterSpacing: -0.5, lineHeight: 1.15 }}>
               {firstName}! 👋
             </h1>
           </div>
@@ -159,12 +170,13 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'rgba(255,255,255,0.12)',
-                border: '1px solid rgba(255,255,255,0.2)',
+                background: '#FFFFFF',
+                border: '1.5px solid rgba(233,30,140,0.25)',
+                boxShadow: '0 2px 8px rgba(233,30,140,0.10)',
                 cursor: 'pointer',
               }}
             >
-              <Bell size={18} color="white" />
+              <Bell size={18} color={PINK} />
               <span style={{
                 position: 'absolute',
                 top: 9,
@@ -173,7 +185,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 height: 8,
                 borderRadius: '50%',
                 background: '#FBBF24',
-                border: '2px solid transparent',
+                border: '2px solid #FFFFFF',
               }} />
             </motion.button>
             <motion.button
@@ -188,9 +200,10 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 justifyContent: 'center',
                 fontWeight: 900,
                 fontSize: 16,
-                color: 'white',
-                background: 'rgba(255,255,255,0.18)',
-                border: '2px solid rgba(255,255,255,0.35)',
+                color: PINK,
+                background: '#FFFFFF',
+                border: '1.5px solid rgba(233,30,140,0.35)',
+                boxShadow: '0 2px 8px rgba(233,30,140,0.12)',
                 cursor: 'pointer',
               }}
             >
@@ -199,7 +212,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           </div>
         </div>
 
-        {/* Next appointment — glass card */}
+        {/* Next appointment — white card with pink accent */}
         {appointment && (
           <motion.div
             initial={{ opacity: 0, y: 14 }}
@@ -209,14 +222,14 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               margin: '0 20px',
               borderRadius: 20,
               padding: 16,
-              background: 'rgba(255,255,255,0.10)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255,255,255,0.18)',
+              background: '#FFFFFF',
+              boxShadow: '0 4px 24px rgba(233,30,140,0.10), 0 1px 4px rgba(0,0,0,0.06)',
+              border: '1px solid rgba(233,30,140,0.12)',
+              borderLeft: `3px solid ${PINK}`,
             }}
           >
             <div className="flex items-center justify-between mb-2.5">
-              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              <span style={{ color: '#6B7280', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 Janji Temu Berikutnya
               </span>
               <span style={{
@@ -241,21 +254,21 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   justifyContent: 'center',
                   flexShrink: 0,
                   fontSize: 24,
-                  background: 'rgba(255,255,255,0.16)',
+                  background: 'rgba(233,30,140,0.08)',
                 }}
               >
                 🦷
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: 'white', fontWeight: 700, fontSize: 14, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <p style={{ color: '#0D1421', fontWeight: 700, fontSize: 14, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {appointment.service.name}
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 12, marginTop: 2 }}>{appointment.doctor.name}</p>
+                <p style={{ color: '#6B7280', fontSize: 12, marginTop: 2 }}>{appointment.doctor.name}</p>
                 <div className="flex items-center gap-3 mt-1">
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.55)', fontSize: 11 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#9CA3AF', fontSize: 11 }}>
                     <Clock size={10} /> {appointment.time}
                   </span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.55)', fontSize: 11 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#9CA3AF', fontSize: 11 }}>
                     <Calendar size={10} /> {appointment.date}
                   </span>
                 </div>
@@ -269,10 +282,11 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
-                  color: 'white',
+                  color: PINK,
                   fontWeight: 900,
                   fontSize: 12,
-                  background: 'rgba(255,255,255,0.22)',
+                  background: 'rgba(233,30,140,0.10)',
+                  border: '1px solid rgba(233,30,140,0.20)',
                 }}
               >
                 {appointment.queue}
@@ -284,9 +298,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         {/* Quick actions */}
         <div className="flex gap-2.5 px-5 mt-3.5">
           {[
-            { label: 'Booking',  emoji: '📅', screen: 'booking' as const,        bg: 'linear-gradient(135deg, rgba(233,30,140,0.5), rgba(255,107,181,0.35))' },
-            { label: 'Antrian',  emoji: '🎫', screen: 'queue'   as const,        bg: 'linear-gradient(135deg, rgba(6,182,212,0.4), rgba(14,165,233,0.25))' },
-            { label: 'Darurat',  emoji: '📞', screen: 'notifications' as const,  bg: 'linear-gradient(135deg, rgba(239,68,68,0.5), rgba(220,38,38,0.35))' },
+            { label: 'Booking',  emoji: '📅', screen: 'booking' as const,        bg: 'rgba(233,30,140,0.10)',  color: '#E91E8C',  border: 'rgba(233,30,140,0.22)' },
+            { label: 'Antrian',  emoji: '🎫', screen: 'queue'   as const,        bg: 'rgba(6,182,212,0.10)',   color: '#0891B2',  border: 'rgba(6,182,212,0.22)'  },
+            { label: 'Darurat',  emoji: '📞', screen: 'notifications' as const,  bg: 'rgba(239,68,68,0.10)',  color: '#DC2626',  border: 'rgba(239,68,68,0.22)'  },
           ].map((a, i) => (
             <motion.button
               key={a.label}
@@ -306,11 +320,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 borderRadius: 14,
                 fontSize: 12,
                 fontWeight: 700,
-                color: 'white',
+                color: a.color,
                 background: a.bg,
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.18)',
+                border: `1px solid ${a.border}`,
                 cursor: 'pointer',
               }}
             >
@@ -320,7 +332,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           ))}
         </div>
 
-        {/* Wave blend — content card rises up over the hero gradient */}
+        {/* Wave blend — content card rises up over the hero */}
         <div style={{
           position: 'absolute',
           bottom: 0,

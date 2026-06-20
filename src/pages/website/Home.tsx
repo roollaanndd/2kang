@@ -2,1412 +2,831 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar, ChevronLeft, Quote, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import {
+  Star, ChevronRight, Phone, MessageCircle, ArrowRight,
+  Calendar, ChevronLeft, Quote, ChevronDown, ChevronUp,
+  Sparkles, CheckCircle, MapPin, Clock, Shield,
+} from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
-import { useLanguage } from '../../context/LanguageContext';
 import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSContent';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
 const AQUA = '#06B6D4';
-const CYAN = '#0EA5E9';
-const PURPLE = '#8B5CF6';
-const DEEP = '#06080F';
+const DARK = '#0D1421';
 
-// ─── GRADIENT MESH BACKGROUND ─────────────────────────────────────────────────
-function GradientMesh({ dark = false }: { dark?: boolean }) {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div style={{
-        position: 'absolute', top: '-20%', right: '-10%',
-        width: 700, height: 700, borderRadius: '50%',
-        background: dark
-          ? 'radial-gradient(circle, rgba(233,30,140,0.18) 0%, transparent 70%)'
-          : 'radial-gradient(circle, rgba(233,30,140,0.10) 0%, transparent 70%)',
-        filter: 'blur(80px)',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '-10%', left: '-5%',
-        width: 600, height: 600, borderRadius: '50%',
-        background: dark
-          ? 'radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)'
-          : 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)',
-        filter: 'blur(80px)',
-      }} />
-      <div style={{
-        position: 'absolute', top: '40%', left: '40%',
-        width: 400, height: 400, borderRadius: '50%',
-        background: dark
-          ? 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)'
-          : 'radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)',
-        filter: 'blur(60px)',
-      }} />
-    </div>
-  );
-}
-
-// ─── CUSTOM DENTAL SVG ICONS ─────────────────────────────────────────────────
-const DENTAL_ICONS = [
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="17" cy="17" r="9" stroke="white" strokeWidth="2.5" fill="white" fillOpacity="0.15"/>
-    <line x1="24" y1="24" x2="33" y2="33" stroke="white" strokeWidth="3" strokeLinecap="round"/>
-    <line x1="17" y1="12" x2="17" y2="22" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="12" y1="17" x2="22" y2="17" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <circle cx="17" cy="17" r="3.5" fill="white" fillOpacity="0.35"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 6C20 6 11 18 11 25C11 30 15 34 20 34C25 34 29 30 29 25C29 18 20 6 20 6Z" fill="white" fillOpacity="0.85"/>
-    <path d="M16 26C16 28.2 17.8 30 20 30" stroke="white" strokeWidth="2" strokeLinecap="round" fillOpacity="0"/>
-    <circle cx="30" cy="11" r="2.2" fill="white" fillOpacity="0.75"/>
-    <path d="M32 7L34 5M34 9L36 7" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <circle cx="9" cy="14" r="1.6" fill="white" fillOpacity="0.6"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M13 9C10 9 8 11.5 8 14C8 17 9.5 20 11 22C12.5 24.5 12.5 27 12.5 29C12.5 31 14 32 15 32C16 32 16.5 31 17 29C17.5 27 18 25 20 25C22 25 22.5 27 23 29C23.5 31 24 32 25 32C26 32 27.5 31 27.5 29C27.5 27 27.5 24.5 29 22C30.5 20 32 17 32 14C32 11.5 30 9 27 9C24.5 9 23 10 20 10C17 10 15.5 9 13 9Z" fill="white" fillOpacity="0.85"/>
-    <rect x="16" y="15" width="8" height="6" rx="2" fill="white" fillOpacity="0.5"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M15 11C12.5 11 11 13 11 15C11 18 12 21 13 23L14 31H17L18 23C18.5 21 18.5 18.5 18.5 16.5C18.5 13.5 17 11 15 11Z" fill="white" fillOpacity="0.85"/>
-    <path d="M21 11C23.5 11 25 13 25 15C25 18 24 21 23 23L22 31H19L18 23C18.5 21 18.5 18.5 18.5 16.5C18.5 13.5 20 11 21 11Z" fill="white" fillOpacity="0.65"/>
-    <path d="M27 5L31 2M29 9L33 6" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <path d="M29 5L33 4" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="5" y="16" width="6" height="9" rx="2.5" fill="white" fillOpacity="0.85"/>
-    <rect x="14" y="16" width="6" height="9" rx="2.5" fill="white" fillOpacity="0.85"/>
-    <rect x="23" y="16" width="6" height="9" rx="2.5" fill="white" fillOpacity="0.85"/>
-    <rect x="30" y="18" width="5" height="5" rx="1.5" fill="white" fillOpacity="0.65"/>
-    <path d="M11 20.5H14M20 20.5H23M29 20.5H30" stroke="white" strokeWidth="2.2"/>
-    <path d="M5 20.5H4" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <circle cx="17" cy="20.5" r="3" fill="white"/>
-    <circle cx="26" cy="20.5" r="3" fill="white"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="17" y="4" width="6" height="6" rx="2" fill="white" fillOpacity="0.9"/>
-    <rect x="18" y="10" width="4" height="20" rx="2" fill="white" fillOpacity="0.75"/>
-    <line x1="14" y1="14" x2="18" y2="14" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <line x1="14" y1="18" x2="18" y2="18" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <line x1="14" y1="22" x2="18" y2="22" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <line x1="22" y1="14" x2="26" y2="14" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <line x1="22" y1="18" x2="26" y2="18" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <line x1="22" y1="22" x2="26" y2="22" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <path d="M16 30L20 35L24 30" fill="white" fillOpacity="0.85"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 6L32 16L20 36L8 16L20 6Z" fill="white" fillOpacity="0.35" stroke="white" strokeWidth="2"/>
-    <path d="M8 16H32" stroke="white" strokeWidth="1.8"/>
-    <path d="M15 8L12 16L20 36" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
-    <path d="M25 8L28 16L20 36" stroke="white" strokeWidth="1" strokeOpacity="0.6"/>
-    <path d="M20 6L15 8M20 6L25 8" stroke="white" strokeWidth="1.8"/>
-    <circle cx="20" cy="16" r="3" fill="white" fillOpacity="0.9"/>
-  </svg>,
-  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="20" cy="20" r="8" fill="white" fillOpacity="0.9"/>
-    <line x1="20" y1="4" x2="20" y2="8" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
-    <line x1="20" y1="32" x2="20" y2="36" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
-    <line x1="4" y1="20" x2="8" y2="20" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
-    <line x1="32" y1="20" x2="36" y2="20" stroke="white" strokeWidth="2.8" strokeLinecap="round"/>
-    <line x1="8.1" y1="8.1" x2="11" y2="11" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="29" y1="29" x2="31.9" y2="31.9" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="31.9" y1="8.1" x2="29" y2="11" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-    <line x1="11" y1="29" x2="8.1" y2="31.9" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-  </svg>,
-];
-
-// ─── HERO FRAME ───────────────────────────────────────────────────────────────
-function HeroFrame({ images, primaryColor }: { images: string[]; primaryColor: string }) {
-  const [current, setCurrent] = useState(0);
-
+// ─── SCROLL-REVEAL HOOK ───────────────────────────────────────────────────────
+function useInView(threshold = 0.12) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
   useEffect(() => {
-    if (images.length <= 1) return;
-    const id = setInterval(() => setCurrent(c => (c + 1) % images.length), 4500);
-    return () => clearInterval(id);
-  }, [images.length]);
-
-  const src = images[current] ?? null;
-
-  return (
-    <div className="relative w-full max-w-[420px] mx-auto select-none">
-      {/* Ambient glow blobs */}
-      <div style={{
-        position: 'absolute', top: -40, right: -40,
-        width: 180, height: 180, borderRadius: '50%',
-        background: `radial-gradient(circle, ${PINK}50 0%, transparent 70%)`,
-        filter: 'blur(30px)',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: -40, left: -40,
-        width: 140, height: 140, borderRadius: '50%',
-        background: `radial-gradient(circle, ${AQUA}40 0%, transparent 70%)`,
-        filter: 'blur(30px)',
-      }} />
-
-      {/* Gradient outer ring */}
-      <div
-        className="relative rounded-[32px] p-[3px]"
-        style={{
-          background: `linear-gradient(145deg, ${primaryColor}, ${ROSE}, ${AQUA})`,
-          boxShadow: `0 40px 80px ${primaryColor}30, 0 0 0 1px ${primaryColor}20`,
-        }}
-      >
-        <div
-          className="relative overflow-hidden rounded-[30px]"
-          style={{ aspectRatio: '4/5', background: `${primaryColor}15` }}
-        >
-          <AnimatePresence mode="wait">
-            {src ? (
-              <motion.img
-                key={current}
-                src={src}
-                alt="Hero"
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.55, ease: 'easeInOut' }}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            ) : (
-              <motion.div
-                key="placeholder"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="absolute inset-0 flex flex-col items-center justify-center gap-3"
-                style={{ background: `linear-gradient(160deg, ${primaryColor}18, ${AQUA}18)` }}
-              >
-                <div className="text-7xl">🦷</div>
-                <div className="text-sm font-semibold text-center px-6" style={{ color: primaryColor }}>
-                  Upload foto hero di Admin CMS
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {src && (
-            <div
-              className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
-              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.45), transparent)' }}
-            />
-          )}
-
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={() => setCurrent(c => (c - 1 + images.length) % images.length)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-colors"
-                style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)' }}
-              >
-                <ChevronLeft size={14} style={{ color: primaryColor }} />
-              </button>
-              <button
-                onClick={() => setCurrent(c => (c + 1) % images.length)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-colors"
-                style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)' }}
-              >
-                <ChevronRight size={14} style={{ color: primaryColor }} />
-              </button>
-            </>
-          )}
-
-          {images.length > 1 && (
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  style={{
-                    width: i === current ? 20 : 6, height: 6, borderRadius: 3,
-                    background: i === current ? 'white' : 'rgba(255,255,255,0.5)',
-                    transition: 'all 0.3s', border: 'none', cursor: 'pointer', padding: 0,
-                  }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Floating badge — Healthy Smile */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="absolute top-8 -left-8"
-        style={{
-          background: 'rgba(255,255,255,0.92)',
-          backdropFilter: 'blur(16px)',
-          borderRadius: 20,
-          padding: '12px 16px',
-          display: 'flex', alignItems: 'center', gap: 12,
-          boxShadow: '0 8px 32px rgba(233,30,140,0.18), 0 0 0 1px rgba(255,255,255,0.8)',
-        }}
-      >
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: `${PINK}15` }}>😁</div>
-        <div>
-          <div className="text-xs font-bold text-gray-800 leading-tight">Healthy Smile</div>
-          <div className="text-[10px] text-gray-400">for Better Life</div>
-        </div>
-      </motion.div>
-
-      {/* Floating badge — Rating */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-        className="absolute bottom-16 -right-8"
-        style={{
-          background: 'rgba(255,255,255,0.92)',
-          backdropFilter: 'blur(16px)',
-          borderRadius: 20,
-          padding: '12px 16px',
-          boxShadow: '0 8px 32px rgba(6,182,212,0.18), 0 0 0 1px rgba(255,255,255,0.8)',
-        }}
-      >
-        <div className="flex items-center gap-1.5">
-          <Star size={14} fill="#F59E0B" className="text-yellow-400" />
-          <span className="text-sm font-bold text-gray-800">4.9/5</span>
-        </div>
-        <div className="text-[10px] text-gray-400 mt-0.5">Rating Pasien</div>
-      </motion.div>
-    </div>
-  );
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, inView] as const;
 }
 
-// ─── STAT BAR ────────────────────────────────────────────────────────────────
-const STAT_GRADIENTS = [
-  `linear-gradient(135deg,${PINK},${ROSE})`,
-  `linear-gradient(135deg,${AQUA},${CYAN})`,
-  `linear-gradient(135deg,${PURPLE},#7C3AED)`,
-  'linear-gradient(135deg,#10B981,#059669)',
-];
-
-function StatBar({ stats }: { stats: Array<{ value: string; label: string }> }) {
+// ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
+function Eyebrow({ text }: { text: string }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {stats.map((stat, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.1, duration: 0.4 }}
-          whileHover={{ y: -4 }}
-          style={{
-            position: 'relative',
-            textAlign: 'center',
-            padding: '20px',
-            borderRadius: 20,
-            background: 'rgba(255,255,255,0.07)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-            transition: 'all 0.25s ease',
-            overflow: 'hidden',
-          }}
-        >
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-            background: STAT_GRADIENTS[i % STAT_GRADIENTS.length],
-          }} />
-          <div style={{
-            fontSize: 26, fontWeight: 900, lineHeight: 1.1,
-            background: STAT_GRADIENTS[i % STAT_GRADIENTS.length],
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>
-            {stat.value}
-          </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginTop: 4, fontWeight: 500 }}>
-            {stat.label}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-// ─── SERVICE CARD ─────────────────────────────────────────────────────────────
-const SERVICE_GRADIENTS = [
-  `linear-gradient(135deg,${PINK},${ROSE})`,
-  `linear-gradient(135deg,${AQUA},${CYAN})`,
-  `linear-gradient(135deg,${PURPLE},#7C3AED)`,
-  'linear-gradient(135deg,#10B981,#059669)',
-  'linear-gradient(135deg,#F59E0B,#D97706)',
-  'linear-gradient(135deg,#EF4444,#DC2626)',
-  `linear-gradient(135deg,${ROSE},#DB2777)`,
-  'linear-gradient(135deg,#14B8A6,#0D9488)',
-];
-
-const SERVICE_GLOW_COLORS = [
-  `${PINK}30`, `${AQUA}30`, `${PURPLE}30`, '#10B98130',
-  '#F59E0B30', '#EF444430', `${ROSE}30`, '#14B8A630',
-];
-
-function ServiceCard({ emoji, name, description, price, index }: {
-  emoji: string; name: string; description: string; price: string; index: number;
-}) {
-  const grad = SERVICE_GRADIENTS[index % SERVICE_GRADIENTS.length];
-  const glow = SERVICE_GLOW_COLORS[index % SERVICE_GLOW_COLORS.length];
-  const icon = DENTAL_ICONS[index % DENTAL_ICONS.length];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: (index % 4) * 0.07 }}
-      whileHover={{ y: -6 }}
-      style={{
-        position: 'relative',
-        borderRadius: 20,
-        overflow: 'hidden',
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        cursor: 'pointer',
-        transition: 'all 0.25s ease',
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 40px ${glow}, 0 0 0 1px rgba(255,255,255,0.14)`;
-        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.07)';
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
-      }}
-    >
-      {/* Gradient icon area */}
-      <div style={{ position: 'relative', padding: '20px 16px 24px', background: grad, overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: -16, right: -16, width: 72, height: 72, borderRadius: '50%', background: 'rgba(255,255,255,0.15)' }} />
-        <div style={{ position: 'absolute', bottom: -8, left: -8, width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
-        <div style={{ width: 44, height: 44, position: 'relative', zIndex: 1 }}>{icon}</div>
-      </div>
-
-      {/* Glass pull-up */}
-      <div style={{
-        position: 'relative',
-        marginTop: -14,
-        padding: '14px 14px 16px',
-        background: 'rgba(255,255,255,0.04)',
-        borderRadius: '16px 16px 0 0',
-      }}>
-        <div style={{ fontWeight: 700, color: 'rgba(255,255,255,0.92)', fontSize: 13, marginBottom: 4, lineHeight: 1.3 }}>{name}</div>
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 10, lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' as any }}>{description}</div>
-        <div style={{ fontSize: 11, fontWeight: 800, background: grad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          {price}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── TESTIMONIAL CARD ────────────────────────────────────────────────────────
-function TestimonialCard({ item, primaryColor, index }: { item: CMSTestimonial; primaryColor: string; index: number }) {
-  const accents = [
-    `linear-gradient(135deg,${PINK},${ROSE})`,
-    `linear-gradient(135deg,${AQUA},${CYAN})`,
-    `linear-gradient(135deg,${PURPLE},#7C3AED)`,
-    'linear-gradient(135deg,#10B981,#059669)',
-    'linear-gradient(135deg,#F59E0B,#D97706)',
-    `linear-gradient(135deg,${ROSE},#DB2777)`,
-  ];
-  const grad = accents[index % accents.length];
-  const initial = item.name[0] ?? 'P';
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: (index % 3) * 0.1 }}
-      whileHover={{ y: -5 }}
-      style={{
-        position: 'relative',
-        borderRadius: 24,
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'rgba(255,255,255,0.05)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.10)',
-        transition: 'all 0.25s ease',
-        boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
-      }}
-    >
-      {/* Top accent bar */}
-      <div style={{ height: 3, width: '100%', background: grad }} />
-
-      <div style={{ padding: 20, display: 'flex', flexDirection: 'column', flex: 1 }}>
-        {/* Quote icon */}
-        <div style={{ marginBottom: 12, opacity: 0.3 }}>
-          <Quote size={28} style={{ color: PINK }} />
-        </div>
-
-        {/* Stars */}
-        <div style={{ display: 'flex', gap: 2, marginBottom: 12 }}>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} size={12} fill={i < item.rating ? '#F59E0B' : 'rgba(255,255,255,0.15)'} style={{ color: i < item.rating ? '#F59E0B' : 'rgba(255,255,255,0.15)' }} />
-          ))}
-        </div>
-
-        {/* Text */}
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.65, flex: 1, marginBottom: 16, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical' as any }}>
-          "{item.text}"
-        </p>
-
-        {/* Treatment chip */}
-        <div style={{ marginBottom: 16 }}>
-          <span style={{ fontSize: 10, fontWeight: 700, padding: '4px 12px', borderRadius: 100, color: 'white', background: grad }}>
-            {item.treatment}
-          </span>
-        </div>
-
-        {/* Author */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-          {item.avatar ? (
-            <img src={item.avatar} alt={item.name} style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }} />
-          ) : (
-            <div style={{
-              width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 700,
-              background: grad, flexShrink: 0,
-            }}>
-              {initial}
-            </div>
-          )}
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.9)', lineHeight: 1.2 }}>{item.name}</div>
-            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>Pasien OMDC Dental</div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── DOCTOR CARD ──────────────────────────────────────────────────────────────
-function DoctorCard({ name, specialty, experience, photo, rating, patients, primaryColor, index }: {
-  name: string; specialty: string; experience: string; photo: string | null;
-  rating: number; patients: number; primaryColor: string; index: number;
-}) {
-  const initial = name.replace('drg. ', '')[0] ?? 'D';
-  const avatarColors = [
-    `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-    `linear-gradient(135deg, ${AQUA}, ${CYAN})`,
-    `linear-gradient(135deg, ${PURPLE}, #7C3AED)`,
-    'linear-gradient(135deg, #10B981, #059669)',
-  ];
-  const colorIdx = index % avatarColors.length;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: (index % 4) * 0.09 }}
-      whileHover={{ y: -6 }}
-      className="relative bg-white rounded-3xl overflow-hidden"
-      style={{
-        boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
-        transition: 'all 0.25s ease',
-      }}
-    >
-      {/* Gradient top strip */}
-      <div style={{ height: 4, width: '100%', background: avatarColors[colorIdx] }} />
-
-      {/* Subtle swatch */}
-      <div className="absolute top-0 left-0 right-0 h-28 opacity-[0.05]" style={{ background: avatarColors[colorIdx] }} />
-
-      <div className="relative p-5 text-center">
-        <div className="relative inline-block mb-4">
-          <div
-            className="w-[88px] h-[88px] rounded-full p-[3px] inline-flex"
-            style={{ background: avatarColors[colorIdx], boxShadow: `0 8px 24px ${PINK}25` }}
-          >
-            {photo ? (
-              <img src={photo} alt={name} className="w-full h-full rounded-full object-cover border-2 border-white" />
-            ) : (
-              <div
-                className="w-full h-full rounded-full flex items-center justify-center text-white text-2xl font-black border-2 border-white"
-                style={{ background: avatarColors[colorIdx] }}
-              >
-                {initial}
-              </div>
-            )}
-          </div>
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center bg-green-500 border-2 border-white shadow-sm">
-            <span className="text-white text-[8px] font-bold">✓</span>
-          </div>
-        </div>
-
-        <div className="font-bold text-gray-800 text-sm leading-snug">{name}</div>
-        <div className="text-xs mt-1 font-semibold" style={{ color: primaryColor }}>{specialty}</div>
-        <div className="text-xs text-gray-400 mt-0.5">{experience} Pengalaman</div>
-
-        <div className="flex items-center justify-center gap-1.5 mt-3">
-          <Star size={12} fill="#F59E0B" className="text-yellow-400" />
-          <span className="text-xs font-bold text-gray-700">{rating}</span>
-          <span className="text-xs text-gray-400">· {patients} pasien</span>
-        </div>
-
-        <Link
-          to="/booking"
-          className="mt-4 block text-xs font-semibold py-2.5 px-4 rounded-full transition-all hover:opacity-85 hover:-translate-y-0.5"
-          style={{ background: avatarColors[colorIdx], color: 'white', boxShadow: `0 4px 12px ${PINK}30` }}
-        >
-          Buat Janji
-        </Link>
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── PROMO CARD ──────────────────────────────────────────────────────────────
-function PromoCard({ title, subtitle, discount, image, validUntil, badge, color }: {
-  title: string; subtitle: string; discount: string; image: string | null;
-  validUntil: string; badge: string; color: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -6 }}
-      className="relative rounded-2xl overflow-hidden bg-white"
-      style={{
-        boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
-        transition: 'all 0.25s ease',
-      }}
-    >
-      <div className="relative px-5 pt-5 pb-5 overflow-hidden" style={{ background: `linear-gradient(135deg, ${color}, ${color}bb)` }}>
-        <div style={{ position: 'absolute', top: -24, right: -24, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,255,255,0.12)' }} />
-        <div style={{ position: 'absolute', bottom: -12, left: -12, width: 60, height: 60, borderRadius: '50%', background: 'rgba(255,255,255,0.08)' }} />
-        {badge && (
-          <span className="inline-block text-[10px] font-bold px-2.5 py-1 rounded-full text-white mb-2" style={{ background: 'rgba(255,255,255,0.25)' }}>
-            {badge}
-          </span>
-        )}
-        <div className="text-3xl font-extrabold text-white leading-tight">{discount}</div>
-        <div className="font-bold text-white/90 text-sm mt-1">{title}</div>
-      </div>
-
-      <div className="p-5">
-        <div className="text-xs text-gray-500 mb-2">{subtitle}</div>
-        <div className="text-xs text-gray-400 mb-4">
-          Berlaku hingga {new Date(validUntil).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-        </div>
-        <Link
-          to="/booking"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full text-white transition-all hover:opacity-90 hover:-translate-y-0.5"
-          style={{ background: `linear-gradient(135deg, ${color}, ${color}cc)` }}
-        >
-          Klaim Sekarang <ArrowRight size={12} />
-        </Link>
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── ARTICLE CARD ─────────────────────────────────────────────────────────────
-const CATEGORY_COLORS: Record<string, string> = {
-  'Tips Kesehatan': '#10B981',
-  'Ortodonti': '#A78BFA',
-  'Perawatan Kosmetik': '#EC4899',
-};
-
-function ArticleCard({ title, excerpt, thumbnail, category, publishedAt }: {
-  title: string; excerpt: string; thumbnail: string | null; category: string; publishedAt: string;
-}) {
-  const catColor = CATEGORY_COLORS[category] ?? PINK;
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -4 }}
-      className="bg-white rounded-2xl overflow-hidden cursor-pointer"
-      style={{
-        boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
-        border: '1px solid rgba(0,0,0,0.04)',
-        transition: 'all 0.25s ease',
-      }}
-    >
-      <div className="h-44 relative overflow-hidden">
-        {thumbnail ? (
-          <img src={thumbnail} alt={title} className="w-full h-full object-cover" />
-        ) : (
-          <div
-            className="w-full h-full flex flex-col items-center justify-center gap-2"
-            style={{ background: `linear-gradient(135deg, ${catColor}18, ${catColor}08)` }}
-          >
-            <span className="text-4xl">🦷</span>
-          </div>
-        )}
-        <div className="absolute top-3 left-3">
-          <span
-            className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
-            style={{ background: catColor, boxShadow: `0 2px 8px ${catColor}60` }}
-          >
-            {category}
-          </span>
-        </div>
-      </div>
-      <div className="p-4">
-        <div className="font-semibold text-gray-800 text-sm leading-snug mb-2">{title}</div>
-        <div className="text-xs text-gray-500 leading-relaxed line-clamp-2">{excerpt}</div>
-        <div className="flex items-center justify-between mt-3">
-          <div className="text-xs text-gray-400">
-            {new Date(publishedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-          </div>
-          <div className="text-xs font-semibold flex items-center gap-0.5" style={{ color: catColor }}>
-            Baca <ChevronRight size={12} />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ─── BEFORE / AFTER SLIDER ───────────────────────────────────────────────────
-function BeforeAfterSlider({ item, primaryColor, t }: { item: CMSBeforeAfter; primaryColor: string; t: (k: string) => string }) {
-  const [pos, setPos] = useState(50);
-  const [dragging, setDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const calcPos = useCallback((clientX: number) => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    setPos(Math.min(98, Math.max(2, ((clientX - rect.left) / rect.width) * 100)));
-  }, []);
-
-  const onMouseMove = useCallback((e: MouseEvent) => { if (dragging) calcPos(e.clientX); }, [dragging, calcPos]);
-  const onTouchMove = useCallback((e: TouchEvent) => { calcPos(e.touches[0].clientX); }, [calcPos]);
-  const stopDrag = useCallback(() => setDragging(false), []);
-
-  useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', stopDrag);
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('touchend', stopDrag);
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', stopDrag);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('touchend', stopDrag);
-    };
-  }, [onMouseMove, onTouchMove, stopDrag]);
-
-  const hasBefore = !!item.before;
-  const hasAfter = !!item.after;
-  const hasBoth = hasBefore && hasAfter;
-
-  return (
-    <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.04)' }}>
-      <div
-        ref={containerRef}
-        className="relative overflow-hidden select-none"
-        style={{ aspectRatio: '4/3', cursor: hasBoth ? 'col-resize' : 'default' }}
-        onMouseDown={() => hasBoth && setDragging(true)}
-        onTouchStart={() => hasBoth && setDragging(true)}
-        onMouseMove={e => hasBoth && calcPos(e.clientX)}
-      >
-        {hasAfter ? (
-          <img src={item.after!} alt="After" className="absolute inset-0 w-full h-full object-cover" />
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3"
-            style={{ background: `linear-gradient(135deg, ${primaryColor}12, ${primaryColor}06)` }}>
-            <span className="text-5xl">🦷</span>
-            <span className="text-xs text-gray-400">Upload foto sesudah</span>
-          </div>
-        )}
-        {hasBefore ? (
-          <div
-            className="absolute inset-0 overflow-hidden"
-            style={{ clipPath: `polygon(0 0, ${pos}% 0, ${pos}% 100%, 0 100%)` }}
-          >
-            <img src={item.before!} alt="Before" className="absolute inset-0 w-full h-full object-cover" />
-          </div>
-        ) : (
-          !hasAfter && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3"
-              style={{ background: `linear-gradient(135deg, ${primaryColor}08, ${AQUA}08)` }}>
-              <span className="text-5xl">📸</span>
-              <span className="text-xs text-gray-400">Upload foto sebelum & sesudah di Admin</span>
-            </div>
-          )
-        )}
-        {hasBefore && (
-          <div className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
-            style={{ background: 'rgba(0,0,0,0.6)' }}>
-            {t('before')}
-          </div>
-        )}
-        {hasAfter && (
-          <div className="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
-            style={{ background: primaryColor }}>
-            {t('after')}
-          </div>
-        )}
-        {hasBoth && (
-          <>
-            <div
-              className="absolute top-0 bottom-0 w-0.5"
-              style={{ left: `${pos}%`, background: 'white', boxShadow: '0 0 8px rgba(0,0,0,0.4)', pointerEvents: 'none' }}
-            />
-            <div
-              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-xl"
-              style={{ left: `${pos}%`, pointerEvents: 'none', boxShadow: `0 4px 20px ${primaryColor}50, 0 0 0 2px ${primaryColor}` }}
-            >
-              <div className="flex gap-0.5">
-                <ChevronLeft size={12} style={{ color: primaryColor }} />
-                <ChevronRight size={12} style={{ color: primaryColor }} />
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="px-4 py-3 border-t border-gray-50">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm font-bold text-gray-800">{item.title}</div>
-            <div className="text-xs font-medium mt-0.5" style={{ color: primaryColor }}>{item.treatment}</div>
-          </div>
-          {hasBoth && (
-            <div className="text-[10px] text-gray-400 flex items-center gap-1">
-              <ChevronLeft size={10} />{t('drag_hint')}<ChevronRight size={10} />
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── FAQ ACCORDION ────────────────────────────────────────────────────────────
-function FaqItem({ question, answer, primaryColor, index }: {
-  question: string; answer: string; primaryColor: string; index: number;
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05 }}
-      className="bg-white rounded-2xl overflow-hidden border border-gray-100"
-      style={{ boxShadow: open ? `0 4px 24px ${primaryColor}15` : '0 2px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.25s' }}
-    >
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-5 py-4 text-left transition-colors"
-        style={{ background: open ? `${primaryColor}06` : 'white' }}
-      >
-        <span className="text-sm font-semibold text-gray-800 pr-4 leading-snug">{question}</span>
-        <div
-          className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
-          style={{ background: open ? primaryColor : `${primaryColor}15` }}
-        >
-          {open
-            ? <ChevronUp size={14} color="white" />
-            : <ChevronDown size={14} style={{ color: primaryColor }} />
-          }
-        </div>
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="answer"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            style={{ overflow: 'hidden' }}
-          >
-            <div className="px-5 pb-4 text-sm text-gray-500 leading-relaxed border-t border-gray-50 pt-3">
-              {answer}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-}
-
-// ─── SECTION LABEL ────────────────────────────────────────────────────────────
-function SectionLabel({ text, dark = false }: { text: string; dark?: boolean }) {
-  return (
-    <div
-      className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5"
-      style={{
-        background: dark ? 'rgba(233,30,140,0.15)' : 'rgba(233,30,140,0.1)',
-        color: dark ? ROSE : PINK,
-        border: dark ? '1px solid rgba(233,30,140,0.2)' : 'none',
-      }}
-    >
-      <Sparkles size={10} />
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 6,
+      padding: '5px 14px', borderRadius: 100,
+      background: 'rgba(233,30,140,0.08)',
+      border: '1px solid rgba(233,30,140,0.18)',
+      color: PINK, fontSize: 11, fontWeight: 700,
+      letterSpacing: '0.08em', textTransform: 'uppercase',
+      marginBottom: 18,
+    }}>
+      <Sparkles size={11} />
       {text}
     </div>
   );
 }
 
-// ─── HOME ─────────────────────────────────────────────────────────────────────
-export function Home() {
-  const { cms } = useCMS();
-  const { t } = useLanguage();
-  const { hero, services, doctors, promotions, articles, about, clinic, contact, trust, appearance } = cms;
-  const primary = appearance.primaryColor || PINK;
+function GradText({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <span style={{
+      background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
+      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+      ...style,
+    }}>
+      {children}
+    </span>
+  );
+}
 
-  const visibleServices = services.items.filter(s => s.isVisible);
-  const visibleDoctors = doctors.items.filter(d => d.isVisible);
-  const visiblePromos = promotions.items.filter(p => p.isVisible);
-  const visibleArticles = articles.items.filter(a => a.isVisible);
+function LightMesh() {
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <div style={{ position: 'absolute', top: '-15%', right: '-8%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+      <div style={{ position: 'absolute', bottom: '-10%', left: '-8%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+      <div style={{ position: 'absolute', top: '35%', left: '30%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(139,92,246,0.04) 0%, transparent 70%)', filter: 'blur(60px)' }} />
+    </div>
+  );
+}
 
-  const heroImages = hero.heroImages?.length > 0
-    ? hero.heroImages
-    : hero.heroImage ? [hero.heroImage] : [];
+// ─── BEFORE/AFTER SLIDER ─────────────────────────────────────────────────────
+function BeforeAfterSlider({ before, after, title }: { before: string; after: string; title: string }) {
+  const [pos, setPos] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const updatePos = useCallback((clientX: number) => {
+    if (!containerRef.current) return;
+    const { left, width } = containerRef.current.getBoundingClientRect();
+    setPos(Math.min(100, Math.max(0, ((clientX - left) / width) * 100)));
+  }, []);
 
   return (
-    <div className="overflow-x-hidden">
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section
-        className="relative min-h-screen flex items-center"
-        style={{ background: `linear-gradient(160deg, ${DEEP} 0%, #0D0A23 45%, #060E28 100%)` }}
-      >
-        <GradientMesh dark />
+    <div
+      ref={containerRef}
+      onMouseDown={e => { dragging.current = true; updatePos(e.clientX); }}
+      onMouseMove={e => { if (dragging.current) updatePos(e.clientX); }}
+      onMouseUp={() => { dragging.current = false; }}
+      onMouseLeave={() => { dragging.current = false; }}
+      onTouchStart={e => { dragging.current = true; updatePos(e.touches[0].clientX); }}
+      onTouchMove={e => { if (dragging.current) updatePos(e.touches[0].clientX); }}
+      onTouchEnd={() => { dragging.current = false; }}
+      style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', cursor: 'ew-resize', userSelect: 'none', aspectRatio: '4/3' }}
+    >
+      <img src={before} alt="Sebelum" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
+        <img src={after} alt="Sesudah" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${pos}%`, transform: 'translateX(-50%)', width: 3, background: 'white', boxShadow: '0 0 12px rgba(0,0,0,0.3)' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 40, height: 40, borderRadius: '50%', background: 'white', boxShadow: '0 4px 16px rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+          <ChevronLeft size={12} color={PINK} />
+          <ChevronRight size={12} color={PINK} />
+        </div>
+      </div>
+      <div style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(0,0,0,0.55)', color: 'white', padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700 }}>Sebelum</div>
+      <div style={{ position: 'absolute', top: 10, right: 10, background: PINK, color: 'white', padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 700 }}>Sesudah</div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: 'linear-gradient(transparent, rgba(0,0,0,0.55))', color: 'white', fontSize: 13, fontWeight: 700 }}>{title}</div>
+    </div>
+  );
+}
 
-        {/* Noise texture overlay */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', backgroundSize: '200px' }}
-        />
+// ─── HERO SECTION ─────────────────────────────────────────────────────────────
+function HeroSection() {
+  const { cms } = useCMS();
+  const h = cms.hero;
+  const images = h.heroImages ?? [];
+  const [imgIdx, setImgIdx] = useState(0);
 
-        <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-32 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left: Text content */}
-            <motion.div initial={{ opacity: 0, x: -32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
-              {/* Badge */}
-              <div
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8"
-                style={{
-                  background: 'rgba(233,30,140,0.12)',
-                  border: '1px solid rgba(233,30,140,0.25)',
-                  color: ROSE,
-                  backdropFilter: 'blur(8px)',
-                }}
-              >
-                <span>🦷</span>
-                <span>{hero.badgeText} · {hero.badgeSubtext}</span>
-              </div>
+  useEffect(() => {
+    if (images.length < 2) return;
+    const id = setInterval(() => setImgIdx(i => (i + 1) % images.length), 4500);
+    return () => clearInterval(id);
+  }, [images.length]);
 
-              {/* Headline — gradient text */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-5">
-                <span style={{ color: 'rgba(255,255,255,0.95)' }}>{hero.headline}{' '}</span>
-                <span style={{
-                  background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 40%, ${AQUA} 100%)`,
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                }}>
-                  {hero.headlineAccent}
-                </span>
-              </h1>
+  const services = cms.services.items.filter(s => s.isVisible).slice(0, 6);
 
-              <p className="text-base text-white/55 leading-relaxed mb-10 max-w-lg">
-                {hero.subheadline}
-              </p>
+  return (
+    <section style={{ position: 'relative', background: '#FFFFFF', paddingTop: 80, paddingBottom: 0, overflow: 'hidden', minHeight: '100dvh', display: 'flex', alignItems: 'center' }}>
+      <LightMesh />
 
-              {/* CTAs */}
-              <div className="flex flex-wrap gap-3 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div style={{ display: 'grid', gridTemplateColumns: '55% 45%', gap: 48, alignItems: 'center', paddingTop: 40, paddingBottom: 60 }}>
+
+          {/* Left: Text content */}
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}>
+            <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} />
+
+            <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: -1.5, color: DARK, margin: 0, marginBottom: 8 }}>
+              {h.headline || 'Senyum Sehat,'}
+            </h1>
+            <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: -1.5, margin: 0, marginBottom: 24 }}>
+              <GradText>{h.headlineAccent || 'Percaya Diri Penuh'}</GradText>
+            </h1>
+
+            <p style={{ fontSize: 18, color: '#6B7280', lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
+              {h.subheadline || 'Perawatan gigi modern dengan teknologi terkini untuk Anda dan keluarga tercinta.'}
+            </p>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 44 }}>
+              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   to="/booking"
-                  className="flex items-center gap-2 px-7 py-4 rounded-full text-white font-semibold text-sm transition-all hover:-translate-y-0.5"
                   style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 28px',
                     background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                    boxShadow: `0 8px 32px ${PINK}45`,
+                    color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 15,
+                    textDecoration: 'none', boxShadow: '0 8px 32px rgba(233,30,140,0.35)',
                   }}
                 >
-                  <Calendar size={18} />
-                  {hero.ctaPrimaryText}
+                  {h.ctaPrimaryText || 'Booking Sekarang'}
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Calendar size={14} />
+                  </div>
                 </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
                 <Link
                   to="/services"
-                  className="flex items-center gap-2 px-7 py-4 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5"
                   style={{
-                    background: 'rgba(255,255,255,0.07)',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    color: 'rgba(255,255,255,0.85)',
-                    backdropFilter: 'blur(8px)',
+                    display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 24px',
+                    background: 'white', color: DARK,
+                    border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 14,
+                    fontWeight: 600, fontSize: 15, textDecoration: 'none',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
                   }}
                 >
-                  {hero.ctaSecondaryText}
-                  <ChevronRight size={18} />
+                  {h.ctaSecondaryText || 'Lihat Layanan'}
+                  <ChevronRight size={16} color={PINK} />
                 </Link>
-              </div>
-
-              {/* Contact quick links */}
-              <div className="flex gap-5">
-                {contact.whatsapp && (
-                  <a
-                    href={`https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm transition-colors hover:text-green-400"
-                    style={{ color: 'rgba(255,255,255,0.45)' }}
-                  >
-                    <MessageCircle size={15} className="text-green-400" />
-                    WhatsApp
-                  </a>
-                )}
-                {contact.phone && (
-                  <a href={`tel:${contact.phone.replace(/[^0-9+]/g, '')}`}
-                    className="flex items-center gap-2 text-sm transition-colors"
-                    style={{ color: 'rgba(255,255,255,0.45)' }}
-                  >
-                    <Phone size={15} style={{ color: ROSE }} />
-                    {contact.phone}
-                  </a>
-                )}
-              </div>
-            </motion.div>
-
-            {/* Right: Hero image frame */}
-            <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
-              <HeroFrame images={heroImages} primaryColor={primary} />
-            </motion.div>
-          </div>
-
-          {/* Stats bar */}
-          {hero.stats.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-16"
-            >
-              <StatBar stats={hero.stats} />
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      {/* ── SERVICES ──────────────────────────────────────────────────────── */}
-      {visibleServices.length > 0 && (
-        <section className="py-24 relative" style={{ background: `linear-gradient(180deg, ${DEEP} 0%, #0A0A1A 100%)` }}>
-          <GradientMesh dark />
-          <div className="relative max-w-7xl mx-auto px-6">
-            <div className="text-center mb-14">
-              <SectionLabel text="Layanan" dark />
-              <h2 className="text-3xl sm:text-4xl font-extrabold mb-3" style={{ color: 'rgba(255,255,255,0.95)' }}>
-                {services.sectionTitle}
-              </h2>
-              <p style={{ color: 'rgba(255,255,255,0.45)', maxWidth: 520, margin: '0 auto', fontSize: 14, lineHeight: 1.7 }}>
-                {services.sectionSubtitle}
-              </p>
+              </motion.div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {visibleServices.map((s, idx) => (
-                <ServiceCard key={s.id} {...s} index={idx} />
-              ))}
-            </div>
-            <div className="text-center mt-10">
-              <Link to="/services"
-                className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:opacity-80"
-                style={{ color: ROSE }}
-              >
-                Lihat Semua Layanan <ChevronRight size={16} />
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
 
-      {/* ── DOCTORS ──────────────────────────────────────────────────────── */}
-      {visibleDoctors.length > 0 && (
-        <section className="py-24 relative" style={{ background: '#FAFBFF' }}>
-          {/* Subtle light mesh */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div style={{
-              position: 'absolute', top: '-20%', right: '-5%',
-              width: 500, height: 500, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 70%)',
-              filter: 'blur(60px)',
-            }} />
-            <div style={{
-              position: 'absolute', bottom: '-10%', left: '0%',
-              width: 400, height: 400, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)',
-              filter: 'blur(60px)',
-            }} />
-          </div>
-          <div className="relative max-w-7xl mx-auto px-6">
-            <div className="text-center mb-14">
-              <SectionLabel text="Tim Dokter" />
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">{doctors.sectionTitle}</h2>
-              <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{doctors.sectionSubtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {visibleDoctors.map((d, idx) => (
-                <DoctorCard key={d.id} {...d} primaryColor={primary} index={idx} />
-              ))}
-            </div>
-            <div className="text-center mt-10">
-              <Link to="/doctors" className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-70" style={{ color: primary }}>
-                Lihat Semua Dokter <ChevronRight size={16} />
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
-      {(() => {
-        const visibleTestimonials = (cms.testimonials?.items ?? []).filter(t => t.isVisible);
-        if (!visibleTestimonials.length) return null;
-        return (
-          <section className="py-24 relative" style={{ background: `linear-gradient(160deg, #0A0814 0%, ${DEEP} 100%)` }}>
-            <GradientMesh dark />
-            <div className="relative max-w-7xl mx-auto px-6">
-              <div className="text-center mb-14">
-                <SectionLabel text="Testimoni" dark />
-                <h2 className="text-3xl sm:text-4xl font-extrabold mb-3" style={{ color: 'rgba(255,255,255,0.95)' }}>
-                  {cms.testimonials.sectionTitle}
-                </h2>
-                <p style={{ color: 'rgba(255,255,255,0.45)', maxWidth: 520, margin: '0 auto', fontSize: 14, lineHeight: 1.7 }}>
-                  {cms.testimonials.sectionSubtitle}
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {visibleTestimonials.map((t, idx) => (
-                  <TestimonialCard key={t.id} item={t} primaryColor={primary} index={idx} />
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })()}
-
-      {/* ── BEFORE/AFTER GALLERY ─────────────────────────────────────────── */}
-      {(() => {
-        const visibleGallery = (cms.gallery?.items ?? []).filter(g => g.isVisible);
-        if (!visibleGallery.length) return null;
-        return (
-          <section className="py-24 relative" style={{ background: '#F8FAFC' }}>
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="text-center mb-14">
-                <SectionLabel text={t('section_gallery')} />
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">{cms.gallery.sectionTitle}</h2>
-                <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{cms.gallery.sectionSubtitle}</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {visibleGallery.map(item => (
-                  <BeforeAfterSlider key={item.id} item={item} primaryColor={primary} t={t} />
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })()}
-
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      {(() => {
-        const visibleFaqs = (cms.faq?.items ?? []).filter(f => f.isVisible);
-        if (!visibleFaqs.length) return null;
-        return (
-          <section className="py-24 bg-white">
-            <div className="max-w-3xl mx-auto px-6">
-              <div className="text-center mb-14">
-                <SectionLabel text={t('section_faq')} />
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">{cms.faq.sectionTitle}</h2>
-                <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{cms.faq.sectionSubtitle}</p>
-              </div>
-              <div className="space-y-3">
-                {visibleFaqs.map((f, idx) => (
-                  <FaqItem key={f.id} {...f} primaryColor={primary} index={idx} />
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })()}
-
-      {/* ── CLINIC SECTION ────────────────────────────────────────────────── */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div style={{
-            position: 'absolute', top: '-30%', left: '-10%',
-            width: 600, height: 600, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(233,30,140,0.04) 0%, transparent 70%)',
-            filter: 'blur(60px)',
-          }} />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              <div
-                className="rounded-3xl overflow-hidden aspect-[4/3]"
-                style={{
-                  background: `${primary}10`,
-                  boxShadow: `0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)`,
-                }}
-              >
-                {clinic.photo ? (
-                  <img src={clinic.photo} alt="Klinik" className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-6xl">🏥</span>
-                  </div>
-                )}
-              </div>
-              <div
-                className="absolute -bottom-6 -right-6 rounded-2xl p-4 min-w-[150px]"
-                style={{
-                  background: 'rgba(255,255,255,0.92)',
-                  backdropFilter: 'blur(20px)',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                  border: '1px solid rgba(255,255,255,0.8)',
-                }}
-              >
-                <div className="text-2xl font-extrabold" style={{ color: primary }}>{clinic.stats[0]?.value}</div>
-                <div className="text-xs text-gray-500">{clinic.stats[0]?.label}</div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <SectionLabel text="Fasilitas" />
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{clinic.sectionTitle}</h2>
-              <p className="text-gray-500 text-sm leading-relaxed mb-6">{clinic.description}</p>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {clinic.stats.slice(1).map((stat, i) => (
-                  <div
-                    key={i}
-                    className="p-4 rounded-2xl"
-                    style={{
-                      background: i % 2 === 0 ? `${PINK}08` : `${AQUA}08`,
-                      border: `1px solid ${i % 2 === 0 ? PINK : AQUA}12`,
-                    }}
-                  >
-                    <div
-                      className="text-xl font-extrabold"
-                      style={{ color: i % 2 === 0 ? primary : AQUA }}
-                    >
-                      {stat.value}
-                    </div>
-                    <div className="text-xs text-gray-500 mt-0.5">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-              {clinic.address && (
-                <div className="text-sm text-gray-500 flex items-start gap-2">
-                  <span>📍</span>
-                  <span>{clinic.address}</span>
-                </div>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROMOTIONS ────────────────────────────────────────────────────── */}
-      {visiblePromos.length > 0 && (
-        <section className="py-24" style={{ background: '#F8FAFC' }}>
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-14">
-              <SectionLabel text="Penawaran" />
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">{promotions.sectionTitle}</h2>
-              <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{promotions.sectionSubtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {visiblePromos.map(p => (
-                <PromoCard key={p.id} {...p} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── ARTICLES ─────────────────────────────────────────────────────── */}
-      {visibleArticles.length > 0 && (
-        <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-14">
-              <SectionLabel text="Edukasi" />
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">{articles.sectionTitle}</h2>
-              <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{articles.sectionSubtitle}</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {visibleArticles.map(a => (
-                <ArticleCard key={a.id} {...a} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── ABOUT ────────────────────────────────────────────────────────── */}
-      <section className="py-24 relative" style={{ background: `linear-gradient(135deg, ${DEEP} 0%, #0D0A23 100%)` }}>
-        <GradientMesh dark />
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-              <SectionLabel text="Tentang Kami" dark />
-              <h2 className="text-3xl sm:text-4xl font-extrabold mb-4" style={{ color: 'rgba(255,255,255,0.95)' }}>{about.sectionTitle}</h2>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>{about.description}</p>
-              {about.mission && (
-                <div
-                  className="rounded-2xl p-4 mb-3"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(233,30,140,0.2)',
-                    backdropFilter: 'blur(8px)',
-                  }}
-                >
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: ROSE }}>Misi</div>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>{about.mission}</p>
-                </div>
-              )}
-              {about.vision && (
-                <div
-                  className="rounded-2xl p-4"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(6,182,212,0.2)',
-                    backdropFilter: 'blur(8px)',
-                  }}
-                >
-                  <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: AQUA }}>Visi</div>
-                  <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>{about.vision}</p>
-                </div>
-              )}
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-              <div className="grid grid-cols-2 gap-4">
-                {about.stats.map((stat, i) => (
-                  <div
-                    key={i}
-                    className="rounded-2xl p-5 text-center"
-                    style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      backdropFilter: 'blur(8px)',
-                    }}
-                  >
-                    <div
-                      className="text-2xl font-extrabold mb-1"
-                      style={{
-                        background: i % 2 === 0 ? `linear-gradient(135deg, ${PINK}, ${ROSE})` : `linear-gradient(135deg, ${AQUA}, ${CYAN})`,
-                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                      }}
-                    >
-                      {stat.value}
-                    </div>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── TRUST LOGOS ──────────────────────────────────────────────────── */}
-      {trust.logos.length > 0 && (
-        <section className="py-12 bg-white border-t border-gray-50">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center text-sm font-medium text-gray-400 mb-8">{trust.sectionTitle}</div>
-            <div className="flex flex-wrap gap-4 justify-center items-center">
-              {trust.logos.map((logo, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="px-6 py-3 rounded-xl bg-gray-50 border border-gray-100 font-bold text-gray-500 text-sm hover:border-gray-200 transition-all"
-                >
-                  {logo.logo || logo.name}
+            {/* Stats pills */}
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {(h.stats ?? []).map((s, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '12px 20px', background: 'white', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+                  <span style={{ fontSize: 22, fontWeight: 900, color: DARK }}>{s.value}</span>
+                  <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
                 </motion.div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
+          </motion.div>
 
-      {/* ── CTA STRIP ────────────────────────────────────────────────────── */}
-      <section className="py-24 relative overflow-hidden" style={{ background: `linear-gradient(135deg, #1A0A2E 0%, #2D0A4E 35%, #1A1040 65%, #0A1628 100%)` }}>
-        {/* Rich mesh */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div style={{
-            position: 'absolute', top: '-30%', left: '-10%',
-            width: 700, height: 700, borderRadius: '50%',
-            background: `radial-gradient(circle, ${PINK}35 0%, transparent 65%)`,
-            filter: 'blur(80px)',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '-20%', right: '-10%',
-            width: 600, height: 600, borderRadius: '50%',
-            background: `radial-gradient(circle, ${AQUA}25 0%, transparent 65%)`,
-            filter: 'blur(80px)',
-          }} />
-          <div style={{
-            position: 'absolute', top: '30%', right: '20%',
-            width: 400, height: 400, borderRadius: '50%',
-            background: `radial-gradient(circle, ${PURPLE}20 0%, transparent 65%)`,
-            filter: 'blur(60px)',
-          }} />
-        </div>
+          {/* Right: Hero image + Booking card */}
+          <motion.div initial={{ opacity: 0, x: 32 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.15, ease: [0.32, 0.72, 0, 1] }}
+            style={{ position: 'relative' }}>
 
-        <div className="relative max-w-3xl mx-auto px-6 text-center">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <div className="text-5xl mb-6">😁</div>
-            <h2
-              className="text-3xl sm:text-4xl font-extrabold mb-4"
+            {/* Hero image frame */}
+            {images.length > 0 && (
+              <div style={{ borderRadius: 28, overflow: 'hidden', aspectRatio: '4/5', position: 'relative', boxShadow: '0 24px 80px rgba(0,0,0,0.15)' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(233,30,140,0.3) 100%)' }} />
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={imgIdx}
+                    src={images[imgIdx]}
+                    alt=""
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.7 }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </AnimatePresence>
+                {/* Dot indicators */}
+                {images.length > 1 && (
+                  <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6 }}>
+                    {images.map((_, i) => (
+                      <button key={i} onClick={() => setImgIdx(i)}
+                        style={{ width: i === imgIdx ? 24 : 8, height: 8, borderRadius: 4, background: i === imgIdx ? 'white' : 'rgba(255,255,255,0.45)', border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.3s' }} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Booking card — floats if no image, overlays if image */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
               style={{
-                background: `linear-gradient(135deg, white 0%, rgba(255,255,255,0.85) 100%)`,
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                ...(images.length > 0
+                  ? { position: 'absolute', bottom: -24, left: -28, right: 24 }
+                  : {}),
+                background: 'white', borderRadius: 22,
+                padding: 24, boxShadow: '0 20px 60px rgba(0,0,0,0.14)',
+                border: '1px solid rgba(255,255,255,0.8)',
               }}
             >
-              Mulai Perjalanan Senyum Sehat Anda
-            </h2>
-            <p className="mb-10 leading-relaxed text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
-              Booking sekarang dan dapatkan konsultasi gratis untuk kunjungan pertama Anda
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <Link
-                to="/booking"
-                className="flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5"
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Calendar size={18} color="white" />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: 15, color: DARK }}>Booking Janji Temu</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>Gratis konsultasi awal</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <input
+                  placeholder="Nama Lengkap"
+                  style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #F3F4F6', fontSize: 13, color: DARK, outline: 'none', background: '#FAFBFC' }}
+                  onFocus={e => (e.currentTarget.style.borderColor = ROSE)}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#F3F4F6')}
+                />
+                <select
+                  style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #F3F4F6', fontSize: 13, color: DARK, outline: 'none', background: '#FAFBFC', cursor: 'pointer' }}
+                  onFocus={e => (e.currentTarget.style.borderColor = ROSE)}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#F3F4F6')}
+                >
+                  <option value="">Pilih Layanan</option>
+                  {services.map(s => <option key={s.id} value={s.id}>{s.emoji} {s.name}</option>)}
+                </select>
+                <input
+                  type="date"
+                  style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #F3F4F6', fontSize: 13, color: DARK, outline: 'none', background: '#FAFBFC' }}
+                  onFocus={e => (e.currentTarget.style.borderColor = ROSE)}
+                  onBlur={e => (e.currentTarget.style.borderColor = '#F3F4F6')}
+                />
+              </div>
+
+              <Link to="/booking"
                 style={{
-                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                  color: 'white',
-                  boxShadow: `0 12px 40px ${PINK}50`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  marginTop: 14, padding: '13px', borderRadius: 12, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                  color: 'white', fontWeight: 700, fontSize: 14, textDecoration: 'none',
+                  boxShadow: '0 6px 20px rgba(233,30,140,0.32)',
                 }}
               >
-                <Calendar size={18} /> Booking Sekarang
+                Booking Sekarang
+                <ArrowRight size={16} />
               </Link>
-              {contact.whatsapp && (
-                <a
-                  href={`https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm transition-all hover:-translate-y-0.5"
-                  style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    color: 'rgba(255,255,255,0.85)',
-                    backdropFilter: 'blur(12px)',
-                  }}
-                >
-                  <MessageCircle size={18} /> Chat WhatsApp
-                </a>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, justifyContent: 'center' }}>
+                <Shield size={12} color="#10B981" />
+                <span style={{ fontSize: 11, color: '#9CA3AF' }}>Terpercaya · 15+ Tahun Pengalaman</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Bottom wave */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 60, background: '#F8F9FB', clipPath: 'ellipse(55% 100% at 50% 100%)' }} />
+    </section>
+  );
+}
+
+// ─── SERVICES SECTION ─────────────────────────────────────────────────────────
+function ServicesSection() {
+  const { cms } = useCMS();
+  const s = cms.services;
+  const visible = s.items.filter(i => i.isVisible);
+  const [ref, inView] = useInView();
+
+  return (
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 52 }}>
+          <Eyebrow text="Layanan Kami" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            {s.sectionTitle}
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 520, margin: '0 auto' }}>{s.sectionSubtitle}</p>
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 20 }}>
+          {visible.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.06 }}
+              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.10)' }}
+              style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.04)', cursor: 'default', transition: 'box-shadow 0.3s, transform 0.3s' }}
+            >
+              <div style={{ fontSize: 36, marginBottom: 14 }}>{item.emoji}</div>
+              <div style={{ fontWeight: 700, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
+              <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 12 }}>{item.description}</div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: PINK }}>{item.price}</div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }}
+          style={{ textAlign: 'center', marginTop: 40 }}>
+          <Link to="/services" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 28px',
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white',
+            borderRadius: 14, fontWeight: 700, fontSize: 14, textDecoration: 'none',
+            boxShadow: '0 6px 20px rgba(233,30,140,0.28)',
+          }}>
+            Lihat Semua Layanan <ChevronRight size={16} />
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ─── DOCTORS SECTION ──────────────────────────────────────────────────────────
+function DoctorsSection() {
+  const { cms } = useCMS();
+  const d = cms.doctors;
+  const visible = d.items.filter(i => i.isVisible);
+  const [ref, inView] = useInView();
+
+  return (
+    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ marginBottom: 44 }}>
+          <Eyebrow text="Tim Dokter Kami" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10 }}>
+            {d.sectionTitle}
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480 }}>{d.sectionSubtitle}</p>
+        </motion.div>
+
+        <div style={{ display: 'flex', gap: 20, overflowX: 'auto', paddingBottom: 8, scrollbarWidth: 'none' }}>
+          {visible.map((doc, i) => {
+            const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
+            return (
+              <motion.div
+                key={doc.id}
+                initial={{ opacity: 0, x: 24 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.10)' }}
+                style={{ flexShrink: 0, width: 220, background: 'white', borderRadius: 22, padding: 20, boxShadow: '0 4px 20px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.05)', transition: 'all 0.3s' }}
+              >
+                {/* Avatar */}
+                <div style={{ position: 'relative', marginBottom: 14 }}>
+                  <div style={{ width: 72, height: 72, borderRadius: 18, overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {doc.photo
+                      ? <img src={doc.photo} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <span style={{ fontSize: 28, fontWeight: 900, color: 'white' }}>{initials}</span>
+                    }
+                  </div>
+                  <div style={{ position: 'absolute', bottom: -4, right: 0, width: 22, height: 22, borderRadius: '50%', background: doc.patients > 0 ? '#10B981' : '#D1D5DB', border: '3px solid white' }} />
+                </div>
+                <div style={{ fontWeight: 800, fontSize: 13, color: DARK, lineHeight: 1.3, marginBottom: 4 }}>{doc.name}</div>
+                <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 12 }}>{doc.specialty} · {doc.experience}</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Star size={12} fill="#F59E0B" color="#F59E0B" />
+                    <span style={{ fontSize: 12, fontWeight: 700, color: DARK }}>{doc.rating}</span>
+                  </div>
+                  <span style={{ fontSize: 10, color: '#9CA3AF' }}>{doc.patients.toLocaleString('id-ID')} pasien</span>
+                </div>
+                <Link to="/booking"
+                  style={{ display: 'block', marginTop: 14, padding: '9px', textAlign: 'center', background: 'rgba(233,30,140,0.07)', color: PINK, borderRadius: 10, fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
+                  Buat Janji
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── GALLERY SECTION ──────────────────────────────────────────────────────────
+function GallerySection() {
+  const { cms } = useCMS();
+  const g = (cms as any).gallery;
+  if (!g) return null;
+  const visible = g.items?.filter((i: CMSBeforeAfter) => i.isVisible && i.before && i.after) ?? [];
+  if (!visible.length) return null;
+  const [ref, inView] = useInView();
+
+  return (
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 52 }}>
+          <Eyebrow text="Transformasi Senyum" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            {g.sectionTitle || 'Galeri Sebelum & Sesudah'}
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 500, margin: '0 auto' }}>{g.sectionSubtitle || 'Seret slider untuk melihat transformasi nyata pasien kami.'}</p>
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 24 }}>
+          {visible.slice(0, 4).map((item: CMSBeforeAfter, i: number) => (
+            <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }}>
+              <BeforeAfterSlider before={item.before!} after={item.after!} title={item.title} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── TESTIMONIALS SECTION ─────────────────────────────────────────────────────
+function TestimonialsSection() {
+  const { cms } = useCMS();
+  const t = cms.testimonials;
+  const visible = t.items.filter(i => i.isVisible);
+  const [idx, setIdx] = useState(0);
+  const [ref, inView] = useInView();
+
+  if (!visible.length) return null;
+
+  const prev = () => setIdx(i => (i - 1 + visible.length) % visible.length);
+  const next = () => setIdx(i => (i + 1) % visible.length);
+
+  return (
+    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 52 }}>
+          <Eyebrow text="Testimoni Pasien" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            {t.sectionTitle}
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 500, margin: '0 auto' }}>{t.sectionSubtitle}</p>
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+          {visible.slice(0, 6).map((item: CMSTestimonial, i) => (
+            <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
+              style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
+              <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <Star key={j} size={14} fill={j < item.rating ? '#F59E0B' : '#E5E7EB'} color={j < item.rating ? '#F59E0B' : '#E5E7EB'} />
+                ))}
+              </div>
+              <Quote size={24} color="rgba(233,30,140,0.2)" style={{ marginBottom: 10 }} />
+              <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.7, marginBottom: 18, fontStyle: 'italic' }}>{item.text}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {item.avatar
+                    ? <img src={item.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <span style={{ fontSize: 16, fontWeight: 900, color: 'white' }}>{item.name[0]}</span>
+                  }
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: DARK }}>{item.name}</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>{item.treatment}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── PROMOTIONS SECTION ───────────────────────────────────────────────────────
+function PromotionsSection() {
+  const { cms } = useCMS();
+  const p = cms.promotions;
+  const visible = p.items.filter(i => i.isVisible);
+  const [ref, inView] = useInView();
+  if (!visible.length) return null;
+
+  return (
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 52 }}>
+          <Eyebrow text="Promo Spesial" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            {p.sectionTitle}
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480, margin: '0 auto' }}>{p.sectionSubtitle}</p>
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
+          {visible.map((item, i) => (
+            <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
+              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.10)' }}
+              style={{ background: 'white', borderRadius: 22, overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.07)', transition: 'all 0.3s' }}>
+              {/* Gradient header */}
+              <div style={{ background: `linear-gradient(135deg, ${item.color}, ${item.color}CC)`, padding: '20px 22px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: -16, right: -16, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.12)' }} />
+                {item.badge && (
+                  <span style={{ fontSize: 10, fontWeight: 800, background: 'rgba(255,255,255,0.25)', color: 'white', padding: '3px 10px', borderRadius: 20, marginBottom: 8, display: 'inline-block' }}>
+                    {item.badge}
+                  </span>
+                )}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+                  <span style={{ fontSize: 16, fontWeight: 900, color: 'white', lineHeight: 1.2 }}>{item.title}</span>
+                  <span style={{ fontSize: 22, fontWeight: 900, color: 'white', flexShrink: 0 }}>{item.discount}</span>
+                </div>
+              </div>
+              <div style={{ padding: '16px 22px' }}>
+                <p style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5, marginBottom: 10 }}>{item.subtitle}</p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 11, color: '#9CA3AF' }}>s/d {item.validUntil}</span>
+                  <Link to="/booking" style={{ fontSize: 12, fontWeight: 700, color: item.color, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    Klaim <ArrowRight size={12} />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── ARTICLES SECTION ─────────────────────────────────────────────────────────
+function ArticlesSection() {
+  const { cms } = useCMS();
+  const a = cms.articles;
+  const visible = a.items.filter(i => i.isVisible);
+  const [ref, inView] = useInView();
+  if (!visible.length) return null;
+
+  return (
+    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 44 }}>
+          <div>
+            <Eyebrow text="Artikel Kesehatan" />
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10 }}>
+              {a.sectionTitle}
+            </h2>
+            <p style={{ fontSize: 17, color: '#6B7280' }}>{a.sectionSubtitle}</p>
+          </div>
+          <Link to="/articles" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: PINK, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+            Semua artikel <ChevronRight size={16} />
+          </Link>
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+          {visible.slice(0, 3).map((item, i) => (
+            <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}
+              style={{ background: 'white', borderRadius: 20, overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)', transition: 'all 0.3s' }}>
+              {item.thumbnail ? (
+                <img src={item.thumbnail} alt={item.title} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
+              ) : (
+                <div style={{ width: '100%', height: 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
               )}
+              <div style={{ padding: '18px 20px' }}>
+                <span style={{ fontSize: 10, fontWeight: 700, color: PINK, background: 'rgba(233,30,140,0.08)', padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
+                  {item.category}
+                </span>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px' }}>{item.title}</h3>
+                <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 14, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>
+                  {item.excerpt}
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 11, color: '#C0C4CC' }}>{item.publishedAt}</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: PINK, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    Baca <ChevronRight size={12} />
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── FAQ SECTION ──────────────────────────────────────────────────────────────
+function FAQSection() {
+  const { cms } = useCMS();
+  const f = (cms as any).faq;
+  if (!f) return null;
+  const visible = f.items?.filter((i: any) => i.isVisible) ?? [];
+  const [open, setOpen] = useState<string | null>(null);
+  const [ref, inView] = useInView();
+  if (!visible.length) return null;
+
+  return (
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0' }}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 48 }}>
+          <Eyebrow text="FAQ" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            {f.sectionTitle || 'Pertanyaan Umum'}
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280' }}>{f.sectionSubtitle || ''}</p>
+        </motion.div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {visible.map((item: any, i: number) => (
+            <motion.div key={item.id} initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.06 }}
+              style={{ background: 'white', borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+              <button
+                onClick={() => setOpen(open === item.id ? null : item.id)}
+                style={{ width: '100%', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+              >
+                <span style={{ fontWeight: 700, fontSize: 14, color: DARK, lineHeight: 1.4 }}>{item.question}</span>
+                {open === item.id
+                  ? <ChevronUp size={18} color={PINK} style={{ flexShrink: 0 }} />
+                  : <ChevronDown size={18} color="#9CA3AF" style={{ flexShrink: 0 }} />
+                }
+              </button>
+              <AnimatePresence>
+                {open === item.id && (
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}
+                    style={{ overflow: 'hidden' }}>
+                    <p style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.7, padding: '0 22px 18px', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                      {item.answer}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── TRUST SECTION ────────────────────────────────────────────────────────────
+function TrustSection() {
+  const { cms } = useCMS();
+  const t = cms.trust;
+  if (!t.logos?.length) return null;
+  const [ref, inView] = useInView();
+
+  return (
+    <section ref={ref} style={{ background: '#FFFFFF', padding: '48px 0', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+          style={{ textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#C0C4CC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 24 }}>
+          {t.sectionTitle || 'Mitra & Asuransi Terpercaya'}
+        </motion.p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
+          {t.logos.map((logo, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.05 }}
+              style={{ padding: '10px 22px', borderRadius: 12, background: '#F8F9FB', border: '1px solid rgba(0,0,0,0.06)', fontWeight: 800, color: '#6B7280', fontSize: 14, letterSpacing: 0.5 }}>
+              {logo.logo || logo.name}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── CTA SECTION ──────────────────────────────────────────────────────────────
+function CTASection() {
+  const { cms } = useCMS();
+  const c = cms.contact;
+  const [ref, inView] = useInView();
+
+  return (
+    <section ref={ref} style={{ position: 'relative', padding: '80px 0', overflow: 'hidden' }}>
+      {/* Gradient background */}
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, #FFF5F9 0%, #F0FFFE 50%, #FFF5FC 100%)` }} />
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(circle at 30% 50%, rgba(233,30,140,0.08) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(6,182,212,0.07) 0%, transparent 60%)` }} />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ position: 'relative', textAlign: 'center' }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
+          <Eyebrow text="Mulai Perjalanan Sehat Anda" />
+          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20 }}>
+            Siap untuk Senyum<br />
+            <GradText>yang Lebih Sehat?</GradText>
+          </h2>
+          <p style={{ fontSize: 18, color: '#6B7280', lineHeight: 1.7, maxWidth: 520, margin: '0 auto 36px' }}>
+            Bergabunglah dengan ribuan keluarga yang telah mempercayakan kesehatan gigi mereka kepada kami.
+          </p>
+
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
+            <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <Link to="/booking" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 32px',
+                background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                color: 'white', borderRadius: 16, fontWeight: 700, fontSize: 16,
+                textDecoration: 'none', boxShadow: '0 12px 36px rgba(233,30,140,0.35)',
+              }}>
+                Booking Sekarang <Calendar size={18} />
+              </Link>
+            </motion.div>
+            {c.whatsapp && (
+              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+                <a href={`https://wa.me/${c.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px',
+                  background: 'white', color: DARK, borderRadius: 16, fontWeight: 700, fontSize: 16,
+                  textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', border: '1.5px solid rgba(0,0,0,0.08)',
+                }}>
+                  <MessageCircle size={18} color="#25D366" /> WhatsApp
+                </a>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Contact info pills */}
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            {c.phone && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6B7280' }}>
+                <Phone size={14} color={PINK} /> {c.phone}
+              </div>
+            )}
+            {c.address && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6B7280' }}>
+                <MapPin size={14} color={AQUA} /> {c.address}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ─── APP PROMO SECTION ────────────────────────────────────────────────────────
+function AppPromoSection() {
+  const [ref, inView] = useInView();
+  return (
+    <section ref={ref} style={{ background: `linear-gradient(135deg, #0D1421 0%, #1A0A2E 50%, #0A1628 100%)`, padding: '72px 0', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: -100, right: -100, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.16) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: -60, left: -60, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
+          <motion.div initial={{ opacity: 0, x: -24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6 }}>
+            <Eyebrow text="Mobile App" />
+            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: 'white', lineHeight: 1.1, marginBottom: 20 }}>
+              Kelola Kesehatan Gigi<br />
+              <GradText>di Genggaman Anda</GradText>
+            </h2>
+            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 32 }}>
+              Download aplikasi OMDC Dental untuk booking, pantau jadwal, ambil nomor antrian, dan akses rekam medis kapan saja.
+            </p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', background: 'white', color: DARK, borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>
+                📱 App Store
+              </Link>
+              <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', background: 'rgba(255,255,255,0.1)', color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', border: '1px solid rgba(255,255,255,0.15)' }}>
+                🤖 Google Play
+              </Link>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 24 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.6, delay: 0.15 }}
+            style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ width: 220, height: 420, borderRadius: 36, background: 'linear-gradient(180deg, #1A1A2E 0%, #0D1421 100%)', border: '3px solid rgba(255,255,255,0.12)', boxShadow: '0 40px 80px rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 48, marginBottom: 12 }}>🦷</div>
+                <div style={{ color: 'white', fontWeight: 800, fontSize: 16 }}>OMDC Dental</div>
+                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 4 }}>Versi 2.0</div>
+              </div>
             </div>
           </motion.div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
+
+// ─── MAIN HOME COMPONENT ──────────────────────────────────────────────────────
+export default function Home() {
+  return (
+    <div style={{ background: '#FFFFFF' }}>
+      <HeroSection />
+      <ServicesSection />
+      <DoctorsSection />
+      <TestimonialsSection />
+      <GallerySection />
+      <PromotionsSection />
+      <ArticlesSection />
+      <AppPromoSection />
+      <FAQSection />
+      <TrustSection />
+      <CTASection />
     </div>
   );
 }

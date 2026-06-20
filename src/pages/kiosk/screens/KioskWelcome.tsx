@@ -19,10 +19,10 @@ function Clock() {
   }, []);
   return (
     <div style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: 72, fontWeight: 900, color: 'white', letterSpacing: -3, lineHeight: 1 }}>
+      <div style={{ fontSize: 72, fontWeight: 900, color: '#0D1421', letterSpacing: -3, lineHeight: 1 }}>
         {time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
       </div>
-      <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.6)', fontWeight: 400, marginTop: 8, letterSpacing: 0.5 }}>
+      <div style={{ fontSize: 18, color: '#6B7280', fontWeight: 400, marginTop: 8, letterSpacing: 0.5 }}>
         {time.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
       </div>
     </div>
@@ -58,13 +58,13 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       onClick={handleTouch}
       style={{
         width: '100%', height: '100%',
-        background: '#06080F',
+        background: '#F8FAFB',
         display: 'flex', flexDirection: 'column',
         cursor: 'pointer', position: 'relative', overflow: 'hidden',
       }}
     >
-      {/* Gradient mesh blobs */}
-      {/* Pink top-right */}
+      {/* Gradient mesh blobs — very subtle light versions */}
+      {/* Soft pink top-right */}
       <div style={{
         position: 'absolute',
         top: -120,
@@ -72,10 +72,10 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         width: 600,
         height: 600,
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(233,30,140,0.28) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 65%)',
         pointerEvents: 'none',
       }} />
-      {/* Cyan bottom-left */}
+      {/* Soft aqua bottom-left */}
       <div style={{
         position: 'absolute',
         bottom: -100,
@@ -83,10 +83,10 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         width: 500,
         height: 500,
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(6,182,212,0.22) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)',
         pointerEvents: 'none',
       }} />
-      {/* Purple center */}
+      {/* Soft lavender center */}
       <div style={{
         position: 'absolute',
         top: '40%',
@@ -94,11 +94,11 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         width: 400,
         height: 400,
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 65%)',
         pointerEvents: 'none',
       }} />
 
-      {/* Animated floating orbs */}
+      {/* Animated floating orbs — very subtle */}
       <motion.div
         animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
@@ -109,7 +109,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           width: 180,
           height: 180,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(233,30,140,0.14) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -123,7 +123,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           width: 220,
           height: 220,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -137,16 +137,15 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           width: 160,
           height: 160,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.16) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
 
-      {/* Sparkling dots */}
+      {/* Sparkling dots — pink dots vibrant, reduced set */}
       {[
         { x: '15%', y: '20%' }, { x: '85%', y: '15%' }, { x: '92%', y: '60%' },
-        { x: '8%',  y: '75%' }, { x: '50%', y: '90%' }, { x: '70%', y: '40%' },
-        { x: '30%', y: '60%' }, { x: '60%', y: '12%' },
+        { x: '8%',  y: '75%' }, { x: '70%', y: '40%' },
       ].map((dot, i) => (
         <motion.div
           key={`dot-${i}`}
@@ -158,13 +157,13 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             width: 4 + (i % 3) * 2,
             height: 4 + (i % 3) * 2,
             borderRadius: '50%',
-            background: i % 3 === 0 ? 'rgba(233,30,140,0.7)' : i % 3 === 1 ? 'rgba(6,182,212,0.6)' : 'rgba(255,255,255,0.5)',
+            background: i % 2 === 0 ? 'rgba(233,30,140,0.75)' : 'rgba(255,107,181,0.55)',
             pointerEvents: 'none',
           }}
         />
       ))}
 
-      {/* Decorative large tooth SVG */}
+      {/* Decorative large tooth SVG — very light pink/gray fill */}
       <motion.div
         initial={{ opacity: 0, scale: 0.7, y: -30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -174,10 +173,10 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         <svg viewBox="0 0 200 220" width={240} height={264}>
           <path
             d="M100 8C71 8 50 29 50 58c0 18 7 33 14 48 7 15 11 26 11 41 0 6 4 10 9 10H116c5 0 9-4 9-10 0-15 4-26 11-41 7-15 14-30 14-48 0-29-21-50-50-50z"
-            fill="white"
+            fill="#F3F4F6"
           />
-          <rect x="80" y="144" width="12" height="36" rx="6" fill="white" opacity="0.7" />
-          <rect x="108" y="144" width="12" height="36" rx="6" fill="white" opacity="0.7" />
+          <rect x="80" y="144" width="12" height="36" rx="6" fill="#F3F4F6" opacity="0.7" />
+          <rect x="108" y="144" width="12" height="36" rx="6" fill="#F3F4F6" opacity="0.7" />
         </svg>
       </motion.div>
 
@@ -214,12 +213,12 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           style={{ textAlign: 'center' }}
         >
           <div style={{
-            fontSize: 32, fontWeight: 700, color: 'rgba(255,255,255,0.92)',
+            fontSize: 32, fontWeight: 700, color: '#0D1421',
             letterSpacing: 0.3, marginBottom: 10, lineHeight: 1.25,
           }}>
             Senyum Sehat, Percaya Diri Penuh
           </div>
-          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.5)', fontWeight: 400, letterSpacing: 0.2 }}>
+          <div style={{ fontSize: 18, color: '#6B7280', fontWeight: 400, letterSpacing: 0.2 }}>
             Gigi lebih sehat, senyum lebih percaya diri
           </div>
         </motion.div>
@@ -231,17 +230,17 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           transition={{ delay: 0.65, duration: 0.5 }}
           style={{ position: 'relative', marginTop: 8 }}
         >
-          {/* Glow rings */}
+          {/* Glow rings — keep pink, slightly reduced intensity */}
           {[1, 2].map((n) => (
             <motion.div
               key={n}
-              animate={{ scale: [1, 1.5 + n * 0.12, 1], opacity: [0.35, 0, 0.35] }}
+              animate={{ scale: [1, 1.5 + n * 0.12, 1], opacity: [0.25, 0, 0.25] }}
               transition={{ duration: 2.8, repeat: Infinity, delay: n * 0.45 }}
               style={{
                 position: 'absolute',
                 inset: -(n * 20),
                 borderRadius: 60,
-                border: `1.5px solid rgba(233,30,140,${0.4 - n * 0.1})`,
+                border: `1.5px solid rgba(233,30,140,${0.35 - n * 0.1})`,
                 pointerEvents: 'none',
               }}
             />
@@ -280,7 +279,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         animate={{ y: 0 }}
         transition={{ delay: 0.9, duration: 0.5 }}
         style={{
-          background: 'rgba(6,8,15,0.85)',
+          background: 'rgba(255,255,255,0.95)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           borderTop: '1px solid rgba(233,30,140,0.15)',
@@ -302,13 +301,13 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: tickerVisible ? 1 : 0, x: tickerVisible ? 0 : -24 }}
           transition={{ duration: 0.35 }}
-          style={{ fontSize: 16, color: 'rgba(255,255,255,0.85)', fontWeight: 500, flex: 1 }}
+          style={{ fontSize: 16, color: '#374151', fontWeight: 500, flex: 1 }}
         >
           {TICKER_ITEMS[tickerIndex]}
         </motion.div>
 
         <div style={{
-          fontSize: 14, color: 'rgba(255,255,255,0.35)',
+          fontSize: 14, color: '#9CA3AF',
           whiteSpace: 'nowrap', flexShrink: 0,
         }}>
           4 Dokter Spesialis • Booking Online • No Antrian Digital
