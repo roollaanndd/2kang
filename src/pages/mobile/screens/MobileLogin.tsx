@@ -42,16 +42,10 @@ export function MobileLogin({ setState }: MobileLoginProps) {
       className="flex flex-col h-full bg-white overflow-y-auto"
     >
       {/* Top decoration */}
-      <div
-        className="h-36 w-full flex-shrink-0"
-        style={{ background: 'linear-gradient(160deg, #E91E8C 0%, #FF6BB5 100%)' }}
-      >
-        <div className="flex items-end justify-center h-full pb-0">
-          <div
-            className="w-full h-8 bg-white"
-            style={{ borderRadius: '24px 24px 0 0' }}
-          />
-        </div>
+      <div className="h-36 w-full flex-shrink-0 relative overflow-hidden" style={{ background: '#FFFFFF' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -30, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
       </div>
 
       <div className="flex-1 px-6 pb-8 -mt-4">

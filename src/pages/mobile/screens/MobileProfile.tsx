@@ -49,12 +49,14 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
       className="flex flex-col h-full overflow-y-auto"
       style={{ background: '#F8F9FA' }}
     >
-      {/* Header gradient */}
+      {/* Header */}
       <div
-        className="pt-12 pb-8 px-5"
-        style={{ background: 'linear-gradient(160deg, #E91E8C 0%, #FF6BB5 100%)' }}
+        className="pt-12 pb-8 px-5 relative overflow-hidden"
+        style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}
       >
-        <div className="flex flex-col items-center gap-3">
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: -60, right: -60, width: 240, height: 240, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div className="flex flex-col items-center gap-3 relative z-10">
           {/* Avatar */}
           <motion.div
             initial={{ scale: 0.7, opacity: 0 }}
@@ -62,8 +64,9 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
             transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
             className="w-20 h-20 rounded-full flex items-center justify-center"
             style={{
-              background: 'rgba(255,255,255,0.25)',
-              border: '3px solid rgba(255,255,255,0.5)',
+              background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+              border: '3px solid white',
+              boxShadow: '0 4px 20px rgba(233,30,140,0.3)',
             }}
           >
             <span className="text-white font-black text-3xl">{initial}</span>
@@ -75,14 +78,14 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
             transition={{ delay: 0.2 }}
             className="text-center"
           >
-            <h2 className="text-xl font-black text-white">{user?.name ?? 'Pengguna'}</h2>
-            <p className="text-white/70 text-sm">{user?.email}</p>
+            <h2 className="text-xl font-black" style={{ color: '#111827' }}>{user?.name ?? 'Pengguna'}</h2>
+            <p className="text-sm" style={{ color: '#9CA3AF' }}>{user?.email}</p>
 
             <div
               className="mt-2 px-3 py-1 rounded-full inline-block"
-              style={{ background: 'rgba(255,255,255,0.2)' }}
+              style={{ background: '#FFF0F7', border: '1px solid rgba(233,30,140,0.15)' }}
             >
-              <p className="text-white/90 text-xs font-semibold">
+              <p className="text-xs font-semibold" style={{ color: '#E91E8C' }}>
                 📋 {user?.medicalRecordNo ?? 'RM-2024-001'}
               </p>
             </div>
