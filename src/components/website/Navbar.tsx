@@ -5,8 +5,6 @@ import { Menu, X, ChevronRight, Bell, Download, Monitor, ChevronDown, Languages 
 import { OmdcLogo } from '../ui/OmdcLogo';
 import { useLanguage } from '../../context/LanguageContext';
 
-const ROSE = '#FF6BB5';
-
 const SERVICES_MENU = [
   { label: 'Pemeriksaan Gigi', icon: '🦷', to: '/services' },
   { label: 'Scaling & Polishing', icon: '✨', to: '/services' },
@@ -72,25 +70,16 @@ export function Navbar() {
     closeTimer.current = setTimeout(() => setServicesOpen(false), 120);
   };
 
-  const isHome = location.pathname === '/';
-  const darkMode = isHome && !scrolled;
-
   return (
     <>
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
         style={{
-          background: scrolled
-            ? (isHome ? 'rgba(10,8,25,0.88)' : 'rgba(255,255,255,0.95)')
-            : 'transparent',
-          boxShadow: scrolled
-            ? (isHome ? '0 4px 32px rgba(0,0,0,0.3)' : '0 2px 24px rgba(233,30,140,0.08)')
-            : 'none',
+          background: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
+          boxShadow: scrolled ? '0 2px 24px rgba(233,30,140,0.08)' : 'none',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled
-            ? (isHome ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(233,30,140,0.06)')
-            : 'none',
+          borderBottom: scrolled ? '1px solid rgba(233,30,140,0.06)' : 'none',
         }}
       >
         {/* Scroll progress bar */}
@@ -114,10 +103,8 @@ export function Navbar() {
             <div className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.to;
-                const linkColor = darkMode
-                  ? (isActive ? '#FF6BB5' : 'rgba(255,255,255,0.80)')
-                  : (isActive ? '#E91E8C' : '#374151');
-                const hoverBg = darkMode ? 'rgba(255,255,255,0.08)' : '#FFF5F9';
+                const linkColor = isActive ? '#E91E8C' : '#374151';
+                const hoverBg = '#FFF5F9';
                 if (link.hasMenu) {
                   return (
                     <div
@@ -136,7 +123,7 @@ export function Navbar() {
                         <ChevronDown
                           size={14}
                           className="transition-transform duration-200"
-                          style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: darkMode ? ROSE : '#E91E8C' }}
+                          style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: '#E91E8C' }}
                         />
                         {isActive && (
                           <span className="absolute inset-0 rounded-xl" style={{ background: hoverBg }} />
@@ -228,7 +215,7 @@ export function Navbar() {
                     {isActive && (
                       <span
                         className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                        style={{ background: darkMode ? ROSE : '#E91E8C' }}
+                        style={{ background: '#E91E8C' }}
                       />
                     )}
                   </Link>
@@ -242,10 +229,8 @@ export function Navbar() {
               <Link
                 to="/kiosk"
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
-                style={{
-                  color: darkMode ? 'rgba(255,255,255,0.65)' : '#374151',
-                }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = darkMode ? 'rgba(255,255,255,0.08)' : '#F9FAFB'}
+                style={{ color: '#374151' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = '#F9FAFB'}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
               >
                 <Monitor size={15} style={{ color: '#06B6D4' }} />
@@ -256,8 +241,8 @@ export function Navbar() {
               <Link
                 to="/app"
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
-                style={{ color: darkMode ? 'rgba(255,255,255,0.65)' : '#374151' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = darkMode ? 'rgba(255,255,255,0.08)' : '#F9FAFB'}
+                style={{ color: '#374151' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = '#F9FAFB'}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
               >
                 <Download size={15} style={{ color: '#10B981' }} />
@@ -269,9 +254,9 @@ export function Navbar() {
                 onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border transition-all duration-200"
                 style={{
-                  borderColor: darkMode ? 'rgba(255,107,181,0.3)' : '#E91E8C22',
-                  color: darkMode ? ROSE : '#E91E8C',
-                  background: darkMode ? 'rgba(233,30,140,0.08)' : 'transparent',
+                  borderColor: '#E91E8C22',
+                  color: '#E91E8C',
+                  background: 'transparent',
                 }}
                 title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
               >
@@ -282,8 +267,8 @@ export function Navbar() {
               {/* Bell with badge */}
               <button
                 className="relative p-2 rounded-xl transition-colors duration-200"
-                style={{ color: darkMode ? 'rgba(255,255,255,0.65)' : '#374151' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = darkMode ? 'rgba(255,255,255,0.08)' : '#F9FAFB'}
+                style={{ color: '#374151' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = '#F9FAFB'}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
                 aria-label="Notifikasi"
               >
@@ -314,7 +299,7 @@ export function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="lg:hidden p-2 rounded-xl transition-colors duration-200"
-              style={{ color: darkMode ? 'rgba(255,255,255,0.85)' : '#E91E8C' }}
+              style={{ color: '#E91E8C' }}
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
