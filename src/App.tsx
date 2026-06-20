@@ -66,7 +66,7 @@ function LoadingFallback() {
 export default function App() {
   return (
     <CMSProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
             {/* Public Website */}
