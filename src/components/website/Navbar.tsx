@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ChevronRight, Bell, Download, Monitor, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronRight, Bell, Download, Monitor, ChevronDown, Languages } from 'lucide-react';
 import { OmdcLogo } from '../ui/OmdcLogo';
+import { useLanguage } from '../../context/LanguageContext';
 
 const SERVICES_MENU = [
   { label: 'Pemeriksaan Gigi', icon: '🦷', to: '/services' },
@@ -15,21 +16,22 @@ const SERVICES_MENU = [
   { label: 'Veneer Gigi', icon: '➕', to: '/services' },
 ];
 
-const navLinks = [
-  { label: 'Beranda', to: '/' },
-  { label: 'Layanan', to: '/services', hasMenu: true },
-  { label: 'Dokter', to: '/doctors' },
-  { label: 'Promo', to: '/promotions' },
-  { label: 'Tentang', to: '/about' },
-  { label: 'Kontak', to: '/contact' },
-];
-
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [servicesOpen, setServicesOpen] = useState(false);
   const location = useLocation();
+  const { lang, setLang, t } = useLanguage();
+
+  const navLinks = [
+    { label: t('nav_home'), to: '/' },
+    { label: t('nav_services'), to: '/services', hasMenu: true },
+    { label: t('nav_doctors'), to: '/doctors' },
+    { label: t('nav_promotions'), to: '/promotions' },
+    { label: t('nav_about'), to: '/about' },
+    { label: t('nav_contact'), to: '/contact' },
+  ];
   const servicesRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -239,6 +241,17 @@ export function Navbar() {
                 Download App
               </Link>
 
+              {/* Language Toggle */}
+              <button
+                onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold border transition-all duration-200 hover:bg-gray-50"
+                style={{ borderColor: '#E91E8C22', color: '#E91E8C' }}
+                title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              >
+                <Languages size={15} />
+                {lang === 'id' ? 'EN' : 'ID'}
+              </button>
+
               {/* Bell with badge */}
               <button
                 className="relative p-2 rounded-xl transition-colors duration-200 hover:bg-gray-50"
@@ -262,7 +275,7 @@ export function Navbar() {
                   boxShadow: '0 4px 14px rgba(233,30,140,0.3)',
                 }}
               >
-                Buat Janji
+                {t('book_appointment')}
                 <ChevronRight size={16} />
               </Link>
             </div>
@@ -364,7 +377,16 @@ export function Navbar() {
             </div>
 
             {/* Drawer footer CTA */}
-            <div className="px-4 py-5" style={{ borderTop: '1px solid #f3f4f6' }}>
+            <div className="px-4 py-4 space-y-3" style={{ borderTop: '1px solid #f3f4f6' }}>
+              {/* Language toggle mobile */}
+              <button
+                onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
+                className="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-xl text-sm font-bold border transition-all"
+                style={{ borderColor: '#E91E8C40', color: '#E91E8C', background: '#FFF5F9' }}
+              >
+                <Languages size={16} />
+                {lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              </button>
               <Link
                 to="/booking"
                 className="flex items-center justify-center gap-2 w-full px-5 py-3.5 rounded-xl text-sm font-bold text-white"
@@ -373,7 +395,7 @@ export function Navbar() {
                   boxShadow: '0 4px 14px rgba(233,30,140,0.3)',
                 }}
               >
-                Buat Janji Sekarang
+                {t('book_appointment')}
                 <ChevronRight size={16} />
               </Link>
             </div>

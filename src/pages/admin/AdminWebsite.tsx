@@ -10,7 +10,7 @@ import {
 import { useCMS } from '../../context/CMSContext';
 import { useAuth } from '../../context/AuthContext';
 import type {
-  CMSStat, CMSService, CMSDoctor, CMSPromo, CMSArticle, CMSTestimonial,
+  CMSStat, CMSService, CMSDoctor, CMSPromo, CMSArticle, CMSTestimonial, CMSFaq, CMSBeforeAfter,
 } from '../../data/defaultCMSContent';
 
 const PINK = '#E91E8C';
@@ -29,6 +29,8 @@ const TABS = [
   { id: 'appearance', label: 'Tampilan', icon: Palette },
   { id: 'trust', label: 'Trust', icon: Shield },
   { id: 'testimonials', label: 'Testimoni', icon: MessageSquareQuote },
+  { id: 'faq', label: 'FAQ', icon: Settings },
+  { id: 'gallery', label: 'Galeri', icon: Image },
   { id: 'kiosk', label: 'Kiosk', icon: Settings },
 ] as const;
 type TabId = typeof TABS[number]['id'];
@@ -1071,6 +1073,174 @@ function TestimonialsTab() {
   );
 }
 
+// ─── FAQ TAB ──────────────────────────────────────────────────────────────────
+function FaqTab() {
+  const { cms, updateFaq } = useCMS();
+  const f = cms.faq;
+  const [editing, setEditing] = useState<CMSFaq | null>(null);
+  const [editIdx, setEditIdx] = useState<number | null>(null);
+
+  const toggleVisible = (id: string) => updateFaq({ items: f.items.map(i => i.id === id ? { ...i, isVisible: !i.isVisible } : i) });
+  const openEdit = (item: CMSFaq, idx: number) => { setEditing({ ...item }); setEditIdx(idx); };
+  const saveEdit = () => {
+    if (!editing || editIdx === null) return;
+    updateFaq({ items: f.items.map((i, idx) => idx === editIdx ? editing : i) });
+    setEditing(null); setEditIdx(null);
+  };
+  const deleteItem = (id: string) => updateFaq({ items: f.items.filter(i => i.id !== id) });
+  const addItem = () => {
+    const id = `fq${Date.now()}`;
+    updateFaq({ items: [...f.items, { id, question: 'Pertanyaan baru?', answer: 'Jawaban...', isVisible: true }] });
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Field label="Judul Seksi"><Input value={f.sectionTitle} onChange={v => updateFaq({ sectionTitle: v })} /></Field>
+        <Field label="Subjudul Seksi"><Input value={f.sectionSubtitle} onChange={v => updateFaq({ sectionSubtitle: v })} multiline /></Field>
+      </div>
+
+      <div className="space-y-2">
+        {f.items.map((item, idx) => (
+          <div key={item.id} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="flex items-start gap-3">
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-gray-800 mb-1">{item.question}</div>
+                <div className="text-xs text-gray-500 line-clamp-2">{item.answer}</div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <Toggle checked={item.isVisible} onChange={() => toggleVisible(item.id)} />
+                <button onClick={() => openEdit(item, idx)} className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-lg transition-all"><Edit2 size={14} /></button>
+                <button onClick={() => deleteItem(item.id)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14} /></button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button onClick={addItem} className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl border border-dashed border-gray-300 text-gray-500 hover:border-pink-400 hover:text-pink-500 transition-all">
+        <Plus size={16} /> Tambah Pertanyaan
+      </button>
+
+      <AnimatePresence>
+        {editing && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            onClick={e => { if (e.target === e.currentTarget) { setEditing(null); setEditIdx(null); } }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 16 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 space-y-4"
+            >
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-800">Edit FAQ</div>
+                <button onClick={() => { setEditing(null); setEditIdx(null); }} className="p-1.5 rounded-lg hover:bg-gray-100"><X size={16} /></button>
+              </div>
+              <Field label="Pertanyaan"><Input value={editing.question} onChange={v => setEditing({ ...editing, question: v })} /></Field>
+              <Field label="Jawaban"><Input value={editing.answer} onChange={v => setEditing({ ...editing, answer: v })} multiline /></Field>
+              <div className="flex items-center gap-3 pt-2">
+                <button onClick={() => { setEditing(null); setEditIdx(null); }} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">Batal</button>
+                <button onClick={saveEdit} className="flex-1 py-2.5 rounded-xl text-white text-sm font-medium transition-all" style={{ background: PINK }}>Simpan</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── GALLERY TAB ──────────────────────────────────────────────────────────────
+function GalleryTab() {
+  const { cms, updateGallery } = useCMS();
+  const g = cms.gallery;
+  const [editing, setEditing] = useState<CMSBeforeAfter | null>(null);
+  const [editIdx, setEditIdx] = useState<number | null>(null);
+
+  const toggleVisible = (id: string) => updateGallery({ items: g.items.map(i => i.id === id ? { ...i, isVisible: !i.isVisible } : i) });
+  const openEdit = (item: CMSBeforeAfter, idx: number) => { setEditing({ ...item }); setEditIdx(idx); };
+  const saveEdit = () => {
+    if (!editing || editIdx === null) return;
+    updateGallery({ items: g.items.map((i, idx) => idx === editIdx ? editing : i) });
+    setEditing(null); setEditIdx(null);
+  };
+  const deleteItem = (id: string) => updateGallery({ items: g.items.filter(i => i.id !== id) });
+  const addItem = () => {
+    const id = `ga${Date.now()}`;
+    updateGallery({ items: [...g.items, { id, title: 'Kasus Baru', treatment: 'Perawatan', before: null, after: null, isVisible: true }] });
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
+        Upload foto sebelum & sesudah perawatan. Pengunjung dapat menyeret slider untuk membandingkan kedua foto.
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Field label="Judul Seksi"><Input value={g.sectionTitle} onChange={v => updateGallery({ sectionTitle: v })} /></Field>
+        <Field label="Subjudul Seksi"><Input value={g.sectionSubtitle} onChange={v => updateGallery({ sectionSubtitle: v })} multiline /></Field>
+      </div>
+
+      <div className="space-y-2">
+        {g.items.map((item, idx) => (
+          <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="flex gap-2 flex-shrink-0">
+              <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-gray-200 text-xs text-gray-400">
+                {item.before ? <img src={item.before} alt="" className="w-full h-full object-cover" /> : 'B'}
+              </div>
+              <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center text-xs text-white" style={{ background: PINK }}>
+                {item.after ? <img src={item.after} alt="" className="w-full h-full object-cover" /> : 'A'}
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold text-gray-800">{item.title}</div>
+              <div className="text-xs text-gray-500">{item.treatment}</div>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Toggle checked={item.isVisible} onChange={() => toggleVisible(item.id)} />
+              <button onClick={() => openEdit(item, idx)} className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-lg transition-all"><Edit2 size={14} /></button>
+              <button onClick={() => deleteItem(item.id)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14} /></button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button onClick={addItem} className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl border border-dashed border-gray-300 text-gray-500 hover:border-pink-400 hover:text-pink-500 transition-all">
+        <Plus size={16} /> Tambah Kasus
+      </button>
+
+      <AnimatePresence>
+        {editing && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            onClick={e => { if (e.target === e.currentTarget) { setEditing(null); setEditIdx(null); } }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 16 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 space-y-4 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-800">Edit Galeri</div>
+                <button onClick={() => { setEditing(null); setEditIdx(null); }} className="p-1.5 rounded-lg hover:bg-gray-100"><X size={16} /></button>
+              </div>
+              <Field label="Judul"><Input value={editing.title} onChange={v => setEditing({ ...editing, title: v })} /></Field>
+              <Field label="Jenis Perawatan"><Input value={editing.treatment} onChange={v => setEditing({ ...editing, treatment: v })} /></Field>
+              <ImageUpload label="Foto Sebelum (Before)" value={editing.before} onChange={v => setEditing({ ...editing, before: v })} aspectHint="Rasio 4:3 disarankan" />
+              <ImageUpload label="Foto Sesudah (After)" value={editing.after} onChange={v => setEditing({ ...editing, after: v })} aspectHint="Rasio 4:3 disarankan" />
+              <div className="flex items-center gap-3 pt-2">
+                <button onClick={() => { setEditing(null); setEditIdx(null); }} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">Batal</button>
+                <button onClick={saveEdit} className="flex-1 py-2.5 rounded-xl text-white text-sm font-medium transition-all" style={{ background: PINK }}>Simpan</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── KIOSK SETTINGS TAB ───────────────────────────────────────────────────────
 function KioskSettingsTab() {
   const { cms, updateKioskSettings } = useCMS();
@@ -1168,6 +1338,8 @@ export default function AdminWebsite() {
       case 'appearance': return <AppearanceTab />;
       case 'trust': return <TrustTab />;
       case 'testimonials': return <TestimonialsTab />;
+      case 'faq': return <FaqTab />;
+      case 'gallery': return <GalleryTab />;
       case 'kiosk': return <KioskSettingsTab />;
       default: return null;
     }

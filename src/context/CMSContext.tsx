@@ -16,6 +16,8 @@ interface CMSContextValue {
   updateContact: (patch: Partial<CMSContent['contact']>) => void;
   updateTrust: (patch: Partial<CMSContent['trust']>) => void;
   updateTestimonials: (patch: Partial<CMSContent['testimonials']>) => void;
+  updateFaq: (patch: Partial<CMSContent['faq']>) => void;
+  updateGallery: (patch: Partial<CMSContent['gallery']>) => void;
   updateKioskSettings: (patch: Partial<CMSContent['kioskSettings']>) => void;
   resetToDefaults: () => void;
 }
@@ -126,6 +128,22 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const updateFaq = useCallback((patch: Partial<CMSContent['faq']>) => {
+    setCMS(prev => {
+      const next = { ...prev, faq: { ...prev.faq, ...patch } };
+      saveCMSContent(next);
+      return next;
+    });
+  }, []);
+
+  const updateGallery = useCallback((patch: Partial<CMSContent['gallery']>) => {
+    setCMS(prev => {
+      const next = { ...prev, gallery: { ...prev.gallery, ...patch } };
+      saveCMSContent(next);
+      return next;
+    });
+  }, []);
+
   const updateKioskSettings = useCallback((patch: Partial<CMSContent['kioskSettings']>) => {
     setCMS(prev => {
       const next = { ...prev, kioskSettings: { ...prev.kioskSettings, ...patch } };
@@ -140,7 +158,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     <CMSContext.Provider value={{
       cms, updateCMS, updateHero, updateServices, updateDoctors, updateClinic,
       updatePromotions, updateArticles, updateAbout, updateAppearance, updateContact,
-      updateTrust, updateTestimonials, updateKioskSettings, resetToDefaults,
+      updateTrust, updateTestimonials, updateFaq, updateGallery, updateKioskSettings, resetToDefaults,
     }}>
       {children}
     </CMSContext.Provider>

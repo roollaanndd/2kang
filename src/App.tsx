@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { CMSProvider } from './context/CMSContext';
+import { LanguageProvider } from './context/LanguageContext';
 
 // Website — named exports
 const WebsiteLayout = lazy(() =>
@@ -66,6 +67,7 @@ function LoadingFallback() {
 export default function App() {
   return (
     <CMSProvider>
+    <LanguageProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
@@ -93,6 +95,7 @@ export default function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+    </LanguageProvider>
     </CMSProvider>
   );
 }
