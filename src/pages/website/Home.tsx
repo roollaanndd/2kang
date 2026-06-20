@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, type ReactNode, type CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -50,7 +50,7 @@ function Eyebrow({ text }: { text: string }) {
   );
 }
 
-function GradText({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
+function GradText({ children, style = {} }: { children: ReactNode; style?: CSSProperties }) {
   return (
     <span style={{
       background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
@@ -825,7 +825,7 @@ function AppPromoSection() {
 }
 
 // ─── MAIN HOME COMPONENT ──────────────────────────────────────────────────────
-export default function Home() {
+export function Home() {
   return (
     <div style={{ background: '#FFFFFF' }}>
       <HeroSection />

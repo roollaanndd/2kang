@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
+import type { ReactNode } from 'react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { KioskStep } from '../../../types';
 
@@ -75,7 +76,7 @@ function IconMegaphone() {
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
 interface MenuCard {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   subtitle: string;
   step: KioskStep;
