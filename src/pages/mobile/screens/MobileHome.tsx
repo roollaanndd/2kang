@@ -201,6 +201,59 @@ function ServiceIconBezel({ gradient, shadowColor, children }: {
   );
 }
 
+// ── ANIMATED HERO BG — dental geometry, no blobs ─────────────────────────────
+function MobileHeroBg() {
+  const shapes = [
+    { x: 78, y: -8,  s: 52, d: 0,   t: 12, c: PINK, o: 0.06, sh: 'tooth'   },
+    { x: -4, y: 20,  s: 56, d: 1.4, t: 10, c: AQUA, o: 0.05, sh: 'ring'    },
+    { x: 82, y: 55,  s: 18, d: 0.7, t: 8,  c: PINK, o: 0.07, sh: 'plus'    },
+    { x: 60, y: 78,  s: 40, d: 2.1, t: 14, c: AQUA, o: 0.04, sh: 'ring'    },
+    { x: 8,  y: 72,  s: 14, d: 1.0, t: 7,  c: AQUA, o: 0.08, sh: 'sparkle' },
+    { x: 92, y: 80,  s: 12, d: 0.2, t: 6,  c: PINK, o: 0.09, sh: 'sparkle' },
+    { x: 30, y: -5,  s: 36, d: 2.8, t: 16, c: PINK, o: 0.04, sh: 'tooth'   },
+    { x: -2, y: 50,  s: 16, d: 1.7, t: 9,  c: PINK, o: 0.06, sh: 'plus'    },
+  ] as const;
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      {shapes.map((el, i) => (
+        <motion.div
+          key={i}
+          style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, opacity: el.o }}
+          animate={{
+            y: [-8, 8, -8],
+            rotate: el.sh === 'ring' ? [0, 5, 0] : el.sh === 'plus' ? [0, 16, 0] : el.sh === 'sparkle' ? [0, 20, 0] : [0, 3, 0],
+          }}
+          transition={{ duration: el.t, repeat: Infinity, delay: el.d, ease: 'easeInOut' }}
+        >
+          {el.sh === 'tooth' && (
+            <svg width={el.s} height={Math.round(el.s * 1.15)} viewBox="0 0 100 115" fill="none">
+              <path d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+                stroke={el.c} strokeWidth="4" strokeLinejoin="round" />
+            </svg>
+          )}
+          {el.sh === 'ring' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="42" stroke={el.c} strokeWidth="3" />
+              <circle cx="50" cy="50" r="29" stroke={el.c} strokeWidth="1.5" strokeDasharray="8 6" />
+            </svg>
+          )}
+          {el.sh === 'plus' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
+              <path d="M50 18V82M18 50H82" stroke={el.c} strokeWidth="10" strokeLinecap="round" />
+            </svg>
+          )}
+          {el.sh === 'sparkle' && (
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100">
+              <path d="M50 10L55 45L90 50L55 55L50 90L45 55L10 50L45 45Z" fill={el.c} />
+            </svg>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 // ── GREETING ──────────────────────────────────────────────────────────────────
 const getGreeting = () => {
   const h = new Date().getHours();
@@ -245,72 +298,13 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         {/* 3px pink→rose→aqua gradient strip at very top */}
         <div style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 3,
+          top: 0, left: 0, right: 0, height: 3,
           background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
           zIndex: 2,
         }} />
 
-        {/* Subtle gradient mesh blobs */}
-        <div style={{
-          position: 'absolute',
-          top: -60,
-          right: -40,
-          width: 220,
-          height: 220,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(233,30,140,0.10) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute',
-          top: 40,
-          left: -60,
-          width: 180,
-          height: 180,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: 20,
-          right: 60,
-          width: 150,
-          height: 150,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
-        }} />
-
-        {/* Animated bokeh blobs */}
-        {[
-          { x: 80, y: 5,  s: 90,  delay: 0,   op: 0.03 },
-          { x: 5,  y: 45, s: 60,  delay: 1.2, op: 0.04 },
-          { x: 60, y: 65, s: 100, delay: 0.7, op: 0.03 },
-          { x: 90, y: 50, s: 50,  delay: 1.8, op: 0.03 },
-        ].map((b, i) => (
-          <motion.div
-            key={i}
-            style={{
-              position: 'absolute',
-              left: `${b.x}%`,
-              top: `${b.y}%`,
-              width: b.s,
-              height: b.s,
-              borderRadius: '50%',
-              background: `rgba(233,30,140,${b.op})`,
-              pointerEvents: 'none',
-            }}
-            animate={{ y: [-10, 10, -10] }}
-            transition={{ duration: 4 + b.delay, repeat: Infinity, delay: b.delay }}
-          />
-        ))}
+        {/* Animated premium dental-geometry background */}
+        <MobileHeroBg />
 
         {/* Status-bar safe area + top bar */}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '56px 20px 12px' }}>
