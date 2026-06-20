@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { AnimatePresence } from 'motion/react';
-import type { MobileState } from '../../types';
+import type { MobileState } from '../../types/index';
 import { BottomNav } from '../../components/mobile/BottomNav';
 import { MobileOnboarding } from './screens/MobileOnboarding';
 import { MobileLogin } from './screens/MobileLogin';
@@ -21,10 +21,6 @@ const INITIAL_STATE: MobileState = {
   isLoggedIn: false,
   onboardingStep: 0,
 };
-
-const BOOKING_SCREENS = new Set([
-  'booking', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
-]);
 
 const HIDE_BOTTOMNAV_SCREENS = new Set([
   'onboarding', 'login', 'register',
@@ -82,25 +78,27 @@ export function MobileLayout() {
   };
 
   return (
+    /* On mobile: full-screen immersive. On desktop: centered phone frame */
     <div
-      className="min-h-screen flex items-start justify-center"
-      style={{ background: '#E5E7EB' }}
+      className="flex items-start justify-center"
+      style={{ minHeight: '100dvh', background: '#E5E7EB' }}
     >
-      {/* Phone frame */}
       <div
-        className="relative w-full max-w-[430px] min-h-screen flex flex-col overflow-hidden"
-        style={{ background: 'white' }}
+        className="relative w-full flex flex-col overflow-hidden"
+        style={{
+          maxWidth: 430,
+          minHeight: '100dvh',
+          background: 'white',
+          /* Prevent pull-to-refresh within the app container */
+          overscrollBehavior: 'contain',
+        }}
       >
-        {/* Screen content */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <AnimatePresence mode="wait">
-            <div key={state.screen} className="flex flex-col flex-1 overflow-hidden">
-              {renderScreen()}
-            </div>
-          </AnimatePresence>
-        </div>
+        <AnimatePresence mode="wait">
+          <div key={state.screen} className="flex flex-col flex-1 overflow-hidden" style={{ minHeight: '100dvh' }}>
+            {renderScreen()}
+          </div>
+        </AnimatePresence>
 
-        {/* Bottom navigation */}
         {showBottomNav && (
           <BottomNav
             currentScreen={state.screen}

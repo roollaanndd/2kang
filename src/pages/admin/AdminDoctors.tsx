@@ -1,14 +1,13 @@
 /* eslint-disable */
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Star, Phone, Mail, Calendar, CheckCircle2, XCircle,
-  Edit3, Plus, ChevronDown, X, Clock, Stethoscope,
+  Star, Phone, Mail, Calendar, CheckCircle2,
+  Edit3, Plus, X, Clock, Stethoscope, Camera, Upload,
 } from 'lucide-react';
 
 const PINK = '#E91E8C';
 const GREEN = '#10B981';
-const BLUE = '#4FC3F7';
 
 interface Doctor {
   id: string;
@@ -16,7 +15,8 @@ interface Doctor {
   specialty: string;
   phone: string;
   email: string;
-  photo: string;
+  initials: string;
+  photoUrl: string | null;
   rating: number;
   totalPatients: number;
   isAvailableToday: boolean;
@@ -24,11 +24,11 @@ interface Doctor {
   bio: string;
 }
 
-// TODO: Replace with doctorsService.list()
-const MOCK_DOCTORS: Doctor[] = [
+const BASE_DOCTORS: Doctor[] = [
   {
-    id: '1', name: 'drg. Sarah Sella', specialty: 'Orthodontist', phone: '0812-1111-0001',
-    email: 'sarah@omdc.id', photo: 'SS', rating: 4.9, totalPatients: 342, isAvailableToday: true,
+    id: '1', name: 'drg. Sarah Sella', specialty: 'Orthodontist',
+    phone: '0812-1111-0001', email: 'sarah@omdc.id',
+    initials: 'SS', photoUrl: null, rating: 4.9, totalPatients: 342, isAvailableToday: true,
     bio: 'Spesialis ortodonti dengan pengalaman 8 tahun menangani kawat gigi dan aligner.',
     schedule: {
       Senin: { start: '08:00', end: '17:00', available: true },
@@ -41,8 +41,9 @@ const MOCK_DOCTORS: Doctor[] = [
     },
   },
   {
-    id: '2', name: 'drg. Ivan Kontralizan', specialty: 'Endodontist', phone: '0812-2222-0002',
-    email: 'ivan@omdc.id', photo: 'IK', rating: 4.8, totalPatients: 218, isAvailableToday: true,
+    id: '2', name: 'drg. Ivan Kontralizan', specialty: 'Endodontist',
+    phone: '0812-2222-0002', email: 'ivan@omdc.id',
+    initials: 'IK', photoUrl: null, rating: 4.8, totalPatients: 218, isAvailableToday: true,
     bio: 'Dokter spesialis saluran akar dengan teknisi terkini untuk prosedur minim nyeri.',
     schedule: {
       Senin: { start: '09:00', end: '17:00', available: true },
@@ -55,8 +56,9 @@ const MOCK_DOCTORS: Doctor[] = [
     },
   },
   {
-    id: '3', name: 'drg. Andika Andilisa', specialty: 'Prosthodontist', phone: '0812-3333-0003',
-    email: 'andika@omdc.id', photo: 'AA', rating: 4.7, totalPatients: 165, isAvailableToday: false,
+    id: '3', name: 'drg. Andika Andilisa', specialty: 'Prosthodontist',
+    phone: '0812-3333-0003', email: 'andika@omdc.id',
+    initials: 'AA', photoUrl: null, rating: 4.7, totalPatients: 165, isAvailableToday: false,
     bio: 'Spesialis prostodontia untuk perawatan implan, mahkota, dan veneer porcelain.',
     schedule: {
       Senin: { start: '', end: '', available: false },
@@ -69,8 +71,9 @@ const MOCK_DOCTORS: Doctor[] = [
     },
   },
   {
-    id: '4', name: 'drg. Reza Rizki', specialty: 'Oral Surgeon', phone: '0812-4444-0004',
-    email: 'reza@omdc.id', photo: 'RR', rating: 4.9, totalPatients: 289, isAvailableToday: true,
+    id: '4', name: 'drg. Reza Rizki', specialty: 'Oral Surgeon',
+    phone: '0812-4444-0004', email: 'reza@omdc.id',
+    initials: 'RR', photoUrl: null, rating: 4.9, totalPatients: 289, isAvailableToday: true,
     bio: 'Ahli bedah mulut dan maksilofasial, spesialis pencabutan gigi dan operasi rahang.',
     schedule: {
       Senin: { start: '08:00', end: '16:00', available: true },
@@ -86,9 +89,54 @@ const MOCK_DOCTORS: Doctor[] = [
 
 const DAYS = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
+const AVATAR_GRADS = [
+  'linear-gradient(135deg,#E91E8C,#FF6BB5)',
+  'linear-gradient(135deg,#4FC3F7,#0288D1)',
+  'linear-gradient(135deg,#A78BFA,#7C3AED)',
+  'linear-gradient(135deg,#10B981,#059669)',
+];
+
+function DoctorAvatar({ doc, size = 64 }: { doc: Doctor; size?: number }) {
+  const idx = parseInt(doc.id) % AVATAR_GRADS.length;
+  const radius = size * 0.3125;
+  return (
+    <div
+      style={{
+        width: size, height: size,
+        borderRadius: radius,
+        overflow: 'hidden',
+        background: doc.photoUrl ? undefined : AVATAR_GRADS[idx],
+        flexShrink: 0,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      {doc.photoUrl ? (
+        <img src={doc.photoUrl} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      ) : (
+        <span style={{ color: 'white', fontWeight: 900, fontSize: size * 0.28 }}>{doc.initials}</span>
+      )}
+    </div>
+  );
+}
+
 export default function AdminDoctors() {
+  const [doctors, setDoctors] = useState<Doctor[]>(BASE_DOCTORS);
   const [selected, setSelected] = useState<Doctor | null>(null);
   const [editSchedule, setEditSchedule] = useState(false);
+  const [uploading, setUploading] = useState<string | null>(null);
+
+  const handlePhotoUpload = (id: string, file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    setUploading(id);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const url = e.target?.result as string;
+      setDoctors(prev => prev.map(d => d.id === id ? { ...d, photoUrl: url } : d));
+      if (selected?.id === id) setSelected(prev => prev ? { ...prev, photoUrl: url } : null);
+      setUploading(null);
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -96,10 +144,10 @@ export default function AdminDoctors() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-800">Manajemen Dokter</h1>
-          <p className="text-sm text-gray-400 mt-0.5">{MOCK_DOCTORS.length} dokter aktif</p>
+          <p className="text-sm text-gray-400 mt-0.5">{doctors.length} dokter aktif</p>
         </div>
         <button
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium"
           style={{ background: `linear-gradient(135deg, ${PINK}, #FF6BB5)` }}
         >
           <Plus size={16} />
@@ -109,7 +157,7 @@ export default function AdminDoctors() {
 
       {/* Doctor Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {MOCK_DOCTORS.map((doc, i) => (
+        {doctors.map((doc, i) => (
           <motion.div
             key={doc.id}
             initial={{ opacity: 0, y: 12 }}
@@ -119,16 +167,35 @@ export default function AdminDoctors() {
             onClick={() => setSelected(doc)}
           >
             <div className="flex items-start gap-4">
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0"
-                style={{ background: `linear-gradient(135deg, ${PINK}, #FF6BB5)` }}
-              >
-                {doc.photo}
+              {/* Avatar with upload overlay */}
+              <div className="relative flex-shrink-0">
+                <DoctorAvatar doc={doc} size={64} />
+                <label
+                  htmlFor={`photo-${doc.id}`}
+                  onClick={e => e.stopPropagation()}
+                  className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer"
+                  style={{ background: '#1A1A2E', border: '2px solid white' }}
+                  title="Upload foto"
+                >
+                  {uploading === doc.id ? (
+                    <div className="w-3 h-3 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  ) : (
+                    <Camera size={11} color="white" />
+                  )}
+                  <input
+                    id={`photo-${doc.id}`}
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={e => { if (e.target.files?.[0]) handlePhotoUpload(doc.id, e.target.files[0]); }}
+                  />
+                </label>
               </div>
+
               <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="font-bold text-gray-800">{doc.name}</div>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className="font-bold text-gray-800 truncate">{doc.name}</div>
                     <div className="text-sm text-gray-400 mt-0.5 flex items-center gap-1">
                       <Stethoscope size={12} />{doc.specialty}
                     </div>
@@ -150,11 +217,19 @@ export default function AdminDoctors() {
                   </div>
                   <span className="text-gray-300">·</span>
                   <span className="text-gray-400">{doc.totalPatients} pasien</span>
+                  {doc.photoUrl && (
+                    <>
+                      <span className="text-gray-300">·</span>
+                      <span className="text-xs text-emerald-500 font-medium flex items-center gap-1">
+                        <CheckCircle2 size={11} /> Foto
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Schedule preview */}
+            {/* Schedule bar */}
             <div className="mt-4 flex gap-1">
               {DAYS.slice(0, 6).map(day => {
                 const s = doc.schedule[day];
@@ -172,38 +247,74 @@ export default function AdminDoctors() {
         ))}
       </div>
 
-      {/* Detail Modal */}
+      {/* Doctor Detail Modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => { setSelected(null); setEditSchedule(false); }}
           >
             <motion.div
-              initial={{ scale: 0.95, y: 16 }}
+              initial={{ scale: 0.94, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 16 }}
+              exit={{ scale: 0.94, y: 20 }}
               onClick={e => e.stopPropagation()}
               className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
             >
-              {/* Header */}
-              <div className="p-6 border-b flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-xl"
-                    style={{ background: `linear-gradient(135deg, ${PINK}, #FF6BB5)` }}
-                  >
-                    {selected.photo}
+              {/* Modal header */}
+              <div className="p-6 border-b flex items-center justify-between gap-3">
+                <div className="flex items-center gap-4">
+                  {/* Avatar with upload in modal */}
+                  <div className="relative flex-shrink-0">
+                    <DoctorAvatar doc={selected} size={64} />
+                    <label
+                      htmlFor="modal-photo-upload"
+                      className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center cursor-pointer shadow-md"
+                      style={{ background: PINK, border: '2px solid white' }}
+                      title="Ganti foto"
+                    >
+                      {uploading === selected.id ? (
+                        <div className="w-3.5 h-3.5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                      ) : (
+                        <Camera size={13} color="white" />
+                      )}
+                      <input
+                        id="modal-photo-upload"
+                        type="file"
+                        accept="image/*"
+                        className="sr-only"
+                        onChange={e => { if (e.target.files?.[0]) handlePhotoUpload(selected.id, e.target.files[0]); }}
+                      />
+                    </label>
                   </div>
                   <div>
                     <div className="font-bold text-gray-800 text-lg">{selected.name}</div>
                     <div className="text-sm text-gray-400">{selected.specialty}</div>
+                    {!selected.photoUrl && (
+                      <label
+                        htmlFor="modal-photo-upload-2"
+                        className="mt-1 inline-flex items-center gap-1.5 text-xs font-medium cursor-pointer px-2.5 py-1 rounded-full"
+                        style={{ color: PINK, background: `${PINK}12` }}
+                      >
+                        <Upload size={11} /> Upload foto dokter
+                        <input
+                          id="modal-photo-upload-2"
+                          type="file"
+                          accept="image/*"
+                          className="sr-only"
+                          onChange={e => { if (e.target.files?.[0]) handlePhotoUpload(selected.id, e.target.files[0]); }}
+                        />
+                      </label>
+                    )}
                   </div>
                 </div>
-                <button onClick={() => { setSelected(null); setEditSchedule(false); }} className="p-2 rounded-xl hover:bg-gray-100">
+                <button
+                  onClick={() => { setSelected(null); setEditSchedule(false); }}
+                  className="p-2 rounded-xl hover:bg-gray-100 flex-shrink-0"
+                >
                   <X size={18} className="text-gray-500" />
                 </button>
               </div>
