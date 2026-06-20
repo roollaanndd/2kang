@@ -4,6 +4,8 @@ import { ChevronLeft, Volume2 } from 'lucide-react';
 import { CURRENT_QUEUE, QUEUE_UPCOMING } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 
+const EASE = [0.32, 0.72, 0, 1] as const;
+
 export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
   const [currentQueue] = useState(CURRENT_QUEUE);
@@ -31,169 +33,278 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.4, ease: EASE }}
       style={{
         width: '100%',
         height: '100%',
-        background: 'linear-gradient(160deg, #1A1A2E 0%, #2D1B54 50%, #1A1A2E 100%)',
+        background: '#F8F9FB',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* Background decorations */}
+      {/* 3px gradient strip at very top */}
       <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: 'radial-gradient(ellipse 60% 50% at 50% 40%, rgba(233,30,140,0.12) 0%, transparent 70%)',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '3px',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+        flexShrink: 0,
       }} />
 
-      {/* Header text */}
+      {/* Soft mesh background blobs */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+        {/* Pink blob top-left */}
+        <div style={{
+          position: 'absolute',
+          top: '-120px',
+          left: '-120px',
+          width: '500px',
+          height: '500px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)',
+        }} />
+        {/* Aqua blob bottom-right */}
+        <div style={{
+          position: 'absolute',
+          bottom: '-100px',
+          right: '-100px',
+          width: '460px',
+          height: '460px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)',
+        }} />
+        {/* Rose blob center */}
+        <div style={{
+          position: 'absolute',
+          top: '40%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '400px',
+          borderRadius: '50%',
+          background: 'radial-gradient(ellipse, rgba(255,107,181,0.06) 0%, transparent 70%)',
+        }} />
+      </div>
+
+      {/* Header */}
       <div style={{
-        padding: '32px 60px 20px',
+        paddingTop: '28px',
+        paddingBottom: '16px',
+        paddingLeft: '60px',
+        paddingRight: '60px',
         flexShrink: 0,
         textAlign: 'center',
+        position: 'relative',
+        zIndex: 1,
       }}>
+        {/* Live badge */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '10px',
-          backgroundColor: 'rgba(233,30,140,0.15)',
-          border: '1px solid rgba(233,30,140,0.3)',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid rgba(233,30,140,0.2)',
           padding: '10px 28px',
           borderRadius: '40px',
-          marginBottom: '8px',
+          boxShadow: '0 2px 12px rgba(233,30,140,0.08)',
+          marginBottom: '10px',
         }}>
-          <div style={{
-            width: '10px', height: '10px', borderRadius: '50%',
-            backgroundColor: '#E91E8C',
-            animation: 'pulse 1.5s ease-in-out infinite',
-          }} />
-          <span style={{ fontSize: '15px', fontWeight: '700', color: '#FF6BB5', letterSpacing: '2px' }}>
-            {t ? 'LIVE QUEUE' : 'ANTRIAN LANGSUNG'}
+          <motion.div
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              width: '9px',
+              height: '9px',
+              borderRadius: '50%',
+              backgroundColor: '#E91E8C',
+              flexShrink: 0,
+            }}
+          />
+          <span style={{
+            fontSize: '14px',
+            fontWeight: '700',
+            color: '#E91E8C',
+            letterSpacing: '2.5px',
+          }}>
+            {t ? 'LIVE QUEUE / ANTRIAN LANGSUNG' : 'ANTRIAN LANGSUNG / LIVE QUEUE'}
           </span>
         </div>
 
         <div style={{
-          fontSize: '22px',
-          fontWeight: '700',
-          color: 'rgba(255,255,255,0.7)',
-          marginTop: '8px',
+          fontSize: '17px',
+          fontWeight: '500',
+          color: '#6B7280',
+          marginTop: '4px',
         }}>
           {t ? 'Currently Being Called / Being Served' : 'Sedang Dipanggil / Sedang Dilayani'}
         </div>
       </div>
 
-      {/* Main queue number */}
+      {/* Main queue card area */}
       <div style={{
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '20px 60px',
-        gap: '20px',
+        padding: '16px 60px',
+        gap: '24px',
+        position: 'relative',
+        zIndex: 1,
       }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`queue-${tick}`}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, type: 'spring' }}
+            initial={{ opacity: 0, scale: 0.88, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: -12 }}
+            transition={{ duration: 0.52, ease: EASE }}
             style={{ position: 'relative', textAlign: 'center' }}
           >
-            {/* Glow ring */}
+            {/* Outer glow ring */}
             <motion.div
               animate={{
-                scale: glowing ? [1, 1.08, 1] : 1,
-                opacity: glowing ? [0.4, 0.7, 0.4] : 0.25,
+                scale: glowing ? [1, 1.07, 1] : 1,
+                opacity: glowing ? [0.5, 1, 0.5] : 0.3,
               }}
-              transition={{ duration: 1.2 }}
+              transition={{ duration: 1.2, ease: 'easeInOut' }}
               style={{
                 position: 'absolute',
-                inset: '-24px',
-                borderRadius: '32px',
-                border: '2px solid #E91E8C',
+                inset: '-20px',
+                borderRadius: '48px',
+                border: '2px solid rgba(233,30,140,0.4)',
                 pointerEvents: 'none',
               }}
             />
             <motion.div
               animate={{
-                scale: glowing ? [1, 1.15, 1] : 1,
-                opacity: glowing ? [0.2, 0.4, 0.2] : 0.1,
+                scale: glowing ? [1, 1.13, 1] : 1,
+                opacity: glowing ? [0.2, 0.5, 0.2] : 0.1,
               }}
-              transition={{ duration: 1.2, delay: 0.15 }}
+              transition={{ duration: 1.2, delay: 0.14, ease: 'easeInOut' }}
               style={{
                 position: 'absolute',
-                inset: '-44px',
-                borderRadius: '44px',
-                border: '2px solid #E91E8C',
+                inset: '-40px',
+                borderRadius: '60px',
+                border: '2px solid rgba(233,30,140,0.25)',
                 pointerEvents: 'none',
               }}
             />
 
-            {/* Queue number display */}
+            {/* Double-bezel outer shell */}
             <div style={{
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              border: '2px solid rgba(233,30,140,0.4)',
-              borderRadius: '28px',
-              padding: '32px 72px',
-              backdropFilter: 'blur(12px)',
+              padding: '8px',
+              borderRadius: '40px',
+              background: '#FFFFFF',
+              border: '1px solid rgba(233,30,140,0.1)',
+              boxShadow: '0 32px 80px rgba(233,30,140,0.14), 0 8px 24px rgba(233,30,140,0.06)',
             }}>
+              {/* Inner core */}
               <div style={{
-                fontSize: '20px',
-                fontWeight: '700',
-                color: 'rgba(255,255,255,0.5)',
-                letterSpacing: '6px',
-                marginBottom: '8px',
+                background: 'linear-gradient(160deg, #FFF0F7 0%, #FFFFFF 50%, #F0FFFE 100%)',
+                borderRadius: '32px',
+                padding: '36px 72px 32px',
+                minWidth: '380px',
               }}>
-                {t ? 'QUEUE NUMBER' : 'NOMOR ANTRIAN'}
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '2px' }}>
-                <span style={{
-                  fontSize: '80px',
-                  fontWeight: '900',
-                  color: '#FF6BB5',
-                  lineHeight: '1',
+                {/* "NOMOR ANTRIAN" label — pink pill */}
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(233,30,140,0.08)',
+                  border: '1px solid rgba(233,30,140,0.18)',
+                  padding: '6px 20px',
+                  borderRadius: '100px',
+                  marginBottom: '16px',
                 }}>
-                  {queueLetter}
-                </span>
-                <span style={{
-                  fontSize: '130px',
-                  fontWeight: '900',
-                  color: '#E91E8C',
-                  lineHeight: '1',
-                  letterSpacing: '-4px',
-                  textShadow: '0 0 40px rgba(233,30,140,0.6)',
-                }}>
-                  {queueNum}
-                </span>
-              </div>
-
-              <div style={{
-                marginTop: '16px',
-                paddingTop: '16px',
-                borderTop: '1px solid rgba(233,30,140,0.3)',
-                display: 'flex',
-                gap: '32px',
-                justifyContent: 'center',
-              }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '4px' }}>
-                    {t ? 'SERVICE' : 'LAYANAN'}
-                  </div>
-                  <div style={{ fontSize: '17px', fontWeight: '700', color: '#ffffff' }}>
-                    Scaling & Polishing
-                  </div>
+                  <span style={{
+                    fontSize: '12px',
+                    fontWeight: '700',
+                    color: '#E91E8C',
+                    letterSpacing: '2px',
+                  }}>
+                    {t ? 'QUEUE NUMBER / NOMOR ANTRIAN' : 'NOMOR ANTRIAN / QUEUE NUMBER'}
+                  </span>
                 </div>
-                <div style={{ width: '1px', backgroundColor: 'rgba(255,255,255,0.1)' }} />
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '4px' }}>
-                    {t ? 'ROOM' : 'RUANGAN'}
+
+                {/* Queue number display */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  justifyContent: 'center',
+                  gap: '4px',
+                }}>
+                  <span style={{
+                    fontSize: '80px',
+                    fontWeight: '900',
+                    color: '#FF6BB5',
+                    lineHeight: '1',
+                    letterSpacing: '-2px',
+                  }}>
+                    {queueLetter}
+                  </span>
+                  <span style={{
+                    fontSize: '140px',
+                    fontWeight: '900',
+                    lineHeight: '1',
+                    letterSpacing: '4px',
+                    background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}>
+                    {queueNum}
+                  </span>
+                </div>
+
+                {/* Service + Room info */}
+                <div style={{
+                  marginTop: '20px',
+                  paddingTop: '20px',
+                  borderTop: '1.5px solid rgba(233,30,140,0.15)',
+                  display: 'flex',
+                  gap: '32px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      color: '#9CA3AF',
+                      letterSpacing: '1.5px',
+                      marginBottom: '5px',
+                      textTransform: 'uppercase',
+                    }}>
+                      {t ? 'Service' : 'Layanan'}
+                    </div>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: '#111827' }}>
+                      Scaling &amp; Polishing
+                    </div>
                   </div>
-                  <div style={{ fontSize: '17px', fontWeight: '700', color: '#ffffff' }}>
-                    {t ? 'Room 2' : 'Ruang 2'}
+                  <div style={{
+                    width: '1px',
+                    height: '36px',
+                    background: 'linear-gradient(180deg, transparent, rgba(233,30,140,0.2), transparent)',
+                  }} />
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: '11px',
+                      fontWeight: '600',
+                      color: '#9CA3AF',
+                      letterSpacing: '1.5px',
+                      marginBottom: '5px',
+                      textTransform: 'uppercase',
+                    }}>
+                      {t ? 'Room' : 'Ruangan'}
+                    </div>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: '#111827' }}>
+                      {t ? 'Room 2' : 'Ruang 2'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -201,45 +312,64 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Sound icon */}
+        {/* Announcement strip */}
         <motion.div
-          animate={{ scale: glowing ? [1, 1.1, 1] : 1 }}
-          transition={{ duration: 1 }}
+          animate={{ scale: glowing ? [1, 1.04, 1] : 1 }}
+          transition={{ duration: 1, ease: 'easeInOut' }}
           style={{
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             gap: '10px',
-            color: glowing ? '#E91E8C' : 'rgba(255,255,255,0.3)',
-            fontSize: '16px',
-            fontWeight: '600',
-            transition: 'color 0.5s',
+            backgroundColor: '#FFFFFF',
+            border: `1px solid ${glowing ? 'rgba(233,30,140,0.3)' : 'rgba(233,30,140,0.12)'}`,
+            borderRadius: '100px',
+            padding: '10px 24px',
+            boxShadow: glowing
+              ? '0 4px 20px rgba(233,30,140,0.12)'
+              : '0 2px 8px rgba(0,0,0,0.04)',
+            transition: 'border-color 0.5s, box-shadow 0.5s',
           }}
         >
-          <Volume2 size={20} />
-          {t ? 'Queue being announced' : 'Antrian sedang diumumkan'}
+          <Volume2
+            size={18}
+            style={{
+              color: glowing ? '#E91E8C' : '#9CA3AF',
+              transition: 'color 0.5s',
+            }}
+          />
+          <span style={{
+            fontSize: '15px',
+            fontWeight: '600',
+            color: '#374151',
+          }}>
+            {t ? 'Queue being announced' : 'Antrian sedang diumumkan'}
+          </span>
         </motion.div>
       </div>
 
       {/* Upcoming queues strip */}
       <div style={{
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
-        padding: '20px 60px',
+        backgroundColor: '#FFFFFF',
+        borderTop: '1px solid rgba(233,30,140,0.08)',
+        padding: '20px 60px 28px',
         flexShrink: 0,
+        position: 'relative',
+        zIndex: 1,
       }}>
         <div style={{
-          fontSize: '14px',
+          fontSize: '12px',
           fontWeight: '700',
-          color: 'rgba(255,255,255,0.5)',
-          letterSpacing: '2px',
+          color: '#9CA3AF',
+          letterSpacing: '2.5px',
           marginBottom: '14px',
           textAlign: 'center',
+          textTransform: 'uppercase',
         }}>
-          {t ? 'NEXT IN QUEUE / ANTRIAN SELANJUTNYA' : 'ANTRIAN SELANJUTNYA / NEXT QUEUE'}
+          {t ? 'Next in Queue / Antrian Selanjutnya' : 'Antrian Selanjutnya / Next Queue'}
         </div>
         <div style={{
           display: 'flex',
-          gap: '16px',
+          gap: '12px',
           justifyContent: 'center',
         }}>
           {upcomingQueues.map((q, i) => (
@@ -247,15 +377,20 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
               key={q}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.08, ease: EASE }}
               style={{
-                backgroundColor: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.15)',
+                backgroundColor: i === 0 ? 'rgba(233,30,140,0.06)' : '#FFFFFF',
+                border: i === 0
+                  ? '1px solid rgba(233,30,140,0.25)'
+                  : '1px solid rgba(233,30,140,0.1)',
                 borderRadius: '14px',
                 padding: '12px 28px',
                 fontSize: '22px',
                 fontWeight: '800',
-                color: i === 0 ? '#4FC3F7' : 'rgba(255,255,255,0.6)',
+                color: i === 0 ? '#E91E8C' : '#6B7280',
+                boxShadow: i === 0
+                  ? '0 4px 16px rgba(233,30,140,0.1)'
+                  : '0 1px 4px rgba(0,0,0,0.04)',
               }}
             >
               {q}
@@ -264,34 +399,44 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
         </div>
       </div>
 
-      {/* Back button overlay */}
+      {/* Back button */}
       <div style={{
         position: 'absolute',
         bottom: '110px',
         left: '40px',
+        zIndex: 5,
       }}>
         <button
           onClick={goBack}
           style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '12px 20px', borderRadius: '12px',
-            border: '1px solid rgba(255,255,255,0.2)',
-            backgroundColor: 'rgba(255,255,255,0.06)',
-            color: 'rgba(255,255,255,0.6)',
-            fontSize: '15px', fontWeight: '600',
-            cursor: 'pointer', backdropFilter: 'blur(8px)',
-            transition: 'all 0.15s',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '11px 20px',
+            borderRadius: '100px',
+            border: '1px solid rgba(233,30,140,0.15)',
+            backgroundColor: '#FFFFFF',
+            color: '#374151',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            transition: 'all 0.18s ease',
           }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLButtonElement).style.color = '#ffffff';
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.4)';
+            const btn = e.currentTarget as HTMLButtonElement;
+            btn.style.borderColor = 'rgba(233,30,140,0.45)';
+            btn.style.boxShadow = '0 4px 16px rgba(233,30,140,0.12)';
+            btn.style.color = '#E91E8C';
           }}
           onMouseLeave={e => {
-            (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.6)';
-            (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.2)';
+            const btn = e.currentTarget as HTMLButtonElement;
+            btn.style.borderColor = 'rgba(233,30,140,0.15)';
+            btn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+            btn.style.color = '#374151';
           }}
         >
-          <ChevronLeft size={18} />
+          <ChevronLeft size={16} />
           {t ? 'Back' : 'Kembali'}
         </button>
       </div>
