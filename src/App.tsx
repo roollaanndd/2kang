@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
+import { CMSProvider } from './context/CMSContext';
 
 // Website — named exports
 const WebsiteLayout = lazy(() =>
@@ -64,32 +65,34 @@ function LoadingFallback() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {/* Public Website */}
-          <Route path="/" element={<WebsiteLayout />}>
-            <Route index element={<Home />} />
-            <Route path="doctors" element={<Doctors />} />
-            <Route path="services" element={<Services />} />
-            <Route path="booking" element={<Booking />} />
-            <Route path="promotions" element={<Promotions />} />
-            <Route path="about" element={<About />} />
-            <Route path="contact" element={<Contact />} />
-          </Route>
+    <CMSProvider>
+      <BrowserRouter>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {/* Public Website */}
+            <Route path="/" element={<WebsiteLayout />}>
+              <Route index element={<Home />} />
+              <Route path="doctors" element={<Doctors />} />
+              <Route path="services" element={<Services />} />
+              <Route path="booking" element={<Booking />} />
+              <Route path="promotions" element={<Promotions />} />
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<Contact />} />
+            </Route>
 
-          {/* E-Kiosk */}
-          <Route path="/kiosk/*" element={<KioskLayout />} />
+            {/* E-Kiosk */}
+            <Route path="/kiosk/*" element={<KioskLayout />} />
 
-          {/* Mobile PWA */}
-          <Route path="/app/*" element={<MobileLayout />} />
+            {/* Mobile PWA */}
+            <Route path="/app/*" element={<MobileLayout />} />
 
-          {/* Admin CMS */}
-          <Route path="/admin/*" element={<AdminLayout />} />
+            {/* Admin CMS */}
+            <Route path="/admin/*" element={<AdminLayout />} />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </CMSProvider>
   );
 }
