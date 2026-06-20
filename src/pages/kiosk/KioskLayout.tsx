@@ -1,4 +1,5 @@
 import { createElement, useEffect, useState, type ComponentType, type Dispatch, type SetStateAction } from 'react';
+import { APP_VERSION } from '../../version';
 import { AnimatePresence } from 'motion/react';
 import type { KioskState, KioskStep } from '../../types';
 import { KioskHeader } from '../../components/kiosk/KioskHeader';
@@ -136,6 +137,23 @@ export default function KioskLayout() {
           <AnimatePresence mode="wait">
             {renderScreen(state.step, { state, setState, goTo, goBack })}
           </AnimatePresence>
+        </div>
+
+        {/* Version badge — always visible in bottom-right corner of canvas */}
+        <div style={{
+          position: 'absolute',
+          bottom: 10,
+          right: 16,
+          fontSize: 11,
+          fontWeight: 600,
+          color: 'rgba(255,255,255,0.45)',
+          letterSpacing: '0.04em',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+          zIndex: 9999,
+        }}>
+          e-Kiosk v{APP_VERSION}
         </div>
       </div>
     </div>
