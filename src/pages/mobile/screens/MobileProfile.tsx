@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import {
-  User, ClipboardList, Bell, Pill, Star, Gift, HelpCircle, LogOut, ChevronRight,
+  User, ClipboardList, Bell, Pill, Star, Gift, HelpCircle, LogOut, ChevronRight, Users,
 } from 'lucide-react';
 import type { MobileState, MobileScreen } from '../../../types';
 
@@ -18,7 +18,8 @@ const MENU_ITEMS: {
   danger?: boolean;
 }[] = [
   { icon: <User size={20} />, label: 'Data Diri', sublabel: 'Informasi profil Anda' },
-  { icon: <ClipboardList size={20} />, label: 'Riwayat Kunjungan', sublabel: 'Rekam kunjungan sebelumnya', screen: 'medical' },
+  { icon: <ClipboardList size={20} />, label: 'Riwayat Kunjungan', sublabel: 'Rekam kunjungan sebelumnya', screen: 'history' },
+  { icon: <Users size={20} />, label: 'Profil Keluarga', sublabel: 'Kelola anggota keluarga', screen: 'family' },
   { icon: <Bell size={20} />, label: 'Notifikasi', sublabel: 'Atur preferensi notifikasi', screen: 'notifications' },
   { icon: <Pill size={20} />, label: 'Riwayat Medis', sublabel: 'Catatan medis Anda', screen: 'medical' },
   { icon: <Star size={20} />, label: 'Ulasan Saya', sublabel: 'Ulasan yang telah dibuat' },

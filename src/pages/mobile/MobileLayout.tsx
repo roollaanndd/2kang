@@ -16,6 +16,8 @@ import { MobileQueue } from './screens/MobileQueue';
 import { MobileProfile } from './screens/MobileProfile';
 import { MobileMedical } from './screens/MobileMedical';
 import { MobileNotifications } from './screens/MobileNotifications';
+import { MobileHistory } from './screens/MobileHistory';
+import { MobileFamily } from './screens/MobileFamily';
 
 const INITIAL_STATE: MobileState = {
   screen: 'onboarding',
@@ -73,6 +75,10 @@ export function MobileLayout() {
         return <MobileDoctorSelect state={state} setState={setState} />;
       case 'promos':
         return <MobileHome state={state} setState={setState} />;
+      case 'history':
+        return <MobileHistory state={state} setState={setState} />;
+      case 'family':
+        return <MobileFamily state={state} setState={setState} />;
       default:
         return <MobileHome state={state} setState={setState} />;
     }
