@@ -6,6 +6,8 @@ export interface CMSDoctor { id: string; name: string; specialty: string; experi
 export interface CMSPromo { id: string; title: string; subtitle: string; discount: string; image: string | null; validUntil: string; badge: string; color: string; isVisible: boolean; }
 export interface CMSArticle { id: string; title: string; excerpt: string; thumbnail: string | null; category: string; publishedAt: string; isVisible: boolean; }
 export interface CMSTestimonial { id: string; name: string; treatment: string; rating: number; text: string; avatar: string | null; isVisible: boolean; }
+export interface CMSFaq { id: string; question: string; answer: string; isVisible: boolean; }
+export interface CMSBeforeAfter { id: string; title: string; treatment: string; before: string | null; after: string | null; isVisible: boolean; }
 
 export interface CMSContent {
   hero: {
@@ -76,6 +78,16 @@ export interface CMSContent {
     sectionTitle: string;
     sectionSubtitle: string;
     items: CMSTestimonial[];
+  };
+  faq: {
+    sectionTitle: string;
+    sectionSubtitle: string;
+    items: CMSFaq[];
+  };
+  gallery: {
+    sectionTitle: string;
+    sectionSubtitle: string;
+    items: CMSBeforeAfter[];
   };
   kioskSettings: {
     idleTimeoutSeconds: number;
@@ -206,6 +218,27 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
       { id: '6', name: 'Rizky Pratama', treatment: 'Tambal Gigi', rating: 5, text: 'Tambal gigi dengan bahan estetik hasilnya sangat natural, tidak terlihat tambalannya. Harga juga sangat terjangkau.', avatar: null, isVisible: true },
     ],
   },
+  faq: {
+    sectionTitle: 'Pertanyaan Umum',
+    sectionSubtitle: 'Temukan jawaban atas pertanyaan yang sering ditanyakan seputar perawatan gigi kami',
+    items: [
+      { id: '1', question: 'Berapa biaya pemeriksaan gigi pertama kali?', answer: 'Pemeriksaan awal dimulai dari Rp 100.000. Konsultasi pertama untuk pasien baru gratis. Biaya perawatan lanjutan tergantung jenis tindakan yang diperlukan.', isVisible: true },
+      { id: '2', question: 'Apakah klinik menerima BPJS?', answer: 'Saat ini kami melayani pasien umum dan beberapa asuransi swasta. Untuk info terbaru tentang BPJS, silakan hubungi kami langsung melalui WhatsApp atau telepon.', isVisible: true },
+      { id: '3', question: 'Berapa lama proses pemasangan kawat gigi?', answer: 'Durasi perawatan kawat gigi bervariasi, umumnya 12–24 bulan tergantung kondisi gigi. Dokter kami akan memberikan estimasi yang lebih akurat setelah pemeriksaan awal.', isVisible: true },
+      { id: '4', question: 'Apakah bleaching gigi aman dan menyakitkan?', answer: 'Bleaching modern yang kami gunakan aman dan nyaman. Sebagian kecil pasien merasakan sedikit sensitivitas yang bersifat sementara. Prosedur dilakukan oleh dokter berpengalaman dengan teknologi terkini.', isVisible: true },
+      { id: '5', question: 'Bagaimana cara booking janji temu?', answer: 'Anda bisa booking melalui tombol "Booking Sekarang" di website, WhatsApp, atau langsung menelepon klinik kami. Konfirmasi jadwal akan dikirim melalui WhatsApp dalam 1×24 jam.', isVisible: true },
+      { id: '6', question: 'Apakah ada parkir di klinik?', answer: 'Ya, klinik kami menyediakan tempat parkir yang cukup untuk kendaraan roda 2 maupun roda 4. Area parkir dijaga dan tersedia 24 jam selama jam operasional klinik.', isVisible: true },
+    ],
+  },
+  gallery: {
+    sectionTitle: 'Transformasi Senyum',
+    sectionSubtitle: 'Lihat perubahan nyata pasien kami sebelum dan sesudah perawatan gigi',
+    items: [
+      { id: '1', title: 'Kawat Gigi 18 Bulan', treatment: 'Ortodonti', before: null, after: null, isVisible: true },
+      { id: '2', title: 'Veneer Gigi Porselen', treatment: 'Veneer', before: null, after: null, isVisible: true },
+      { id: '3', title: 'Bleaching Laser', treatment: 'Pemutihan', before: null, after: null, isVisible: true },
+    ],
+  },
   kioskSettings: {
     idleTimeoutSeconds: 30,
   },
@@ -223,6 +256,8 @@ export function loadCMSContent(): CMSContent {
         appearance: { ...DEFAULT_CMS_CONTENT.appearance, ...(parsed.appearance ?? {}) },
         contact: { ...DEFAULT_CMS_CONTENT.contact, ...(parsed.contact ?? {}) },
         testimonials: { ...DEFAULT_CMS_CONTENT.testimonials, ...(parsed.testimonials ?? {}) },
+        faq: { ...DEFAULT_CMS_CONTENT.faq, ...(parsed.faq ?? {}) },
+        gallery: { ...DEFAULT_CMS_CONTENT.gallery, ...(parsed.gallery ?? {}) },
         kioskSettings: { ...DEFAULT_CMS_CONTENT.kioskSettings, ...(parsed.kioskSettings ?? {}) },
       };
     }

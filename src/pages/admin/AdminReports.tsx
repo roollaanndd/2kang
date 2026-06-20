@@ -4,7 +4,9 @@ import { motion } from 'motion/react';
 import {
   TrendingUp, TrendingDown, DollarSign, Users, CalendarDays,
   BarChart3, Download, Filter, ArrowUpRight, ArrowDownRight,
+  Stethoscope, Scissors, Tag, MessageSquare, HelpCircle, Images, Star,
 } from 'lucide-react';
+import { useCMS } from '../../context/CMSContext';
 
 const PINK = '#E91E8C';
 const BLUE = '#4FC3F7';
@@ -42,6 +44,20 @@ const fmtRp = (n: number) => n >= 1000000
 
 export default function AdminReports() {
   const [period, setPeriod] = useState<'weekly' | 'monthly' | 'yearly'>('monthly');
+  const { cms } = useCMS();
+
+  const cmsStats = [
+    { label: 'Layanan Aktif', value: cms.services.items.filter(i => i.isVisible).length, total: cms.services.items.length, icon: Scissors, color: PINK },
+    { label: 'Dokter Aktif', value: cms.doctors.items.filter(i => i.isVisible).length, total: cms.doctors.items.length, icon: Stethoscope, color: BLUE },
+    { label: 'Promo Aktif', value: cms.promotions.items.filter(i => i.isVisible).length, total: cms.promotions.items.length, icon: Tag, color: AMBER },
+    { label: 'Testimoni', value: cms.testimonials?.items.filter(i => i.isVisible).length ?? 0, total: cms.testimonials?.items.length ?? 0, icon: MessageSquare, color: GREEN },
+    { label: 'FAQ', value: cms.faq?.items.filter(i => i.isVisible).length ?? 0, total: cms.faq?.items.length ?? 0, icon: HelpCircle, color: '#A78BFA' },
+    { label: 'Galeri', value: cms.gallery?.items.filter(i => i.isVisible).length ?? 0, total: cms.gallery?.items.length ?? 0, icon: Images, color: '#EC4899' },
+  ];
+
+  const avgRating = cms.doctors.items.length > 0
+    ? (cms.doctors.items.reduce((s, d) => s + d.rating, 0) / cms.doctors.items.length).toFixed(1)
+    : '—';
 
   const current = MONTHLY_DATA[MONTHLY_DATA.length - 1];
   const prev = MONTHLY_DATA[MONTHLY_DATA.length - 2];
@@ -113,6 +129,64 @@ export default function AdminReports() {
             </motion.div>
           );
         })}
+      </div>
+
+      {/* CMS Live Data Panel */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <div className="font-semibold text-gray-800">Status Konten CMS</div>
+            <div className="text-xs text-gray-400 mt-0.5">Data live dari pengaturan website & klinik</div>
+          </div>
+          <div className="text-xs px-3 py-1 rounded-full font-medium" style={{ background: `${GREEN}15`, color: GREEN }}>
+            ● Live
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {cmsStats.map((stat, i) => {
+            const Icon = stat.icon;
+            const pct = stat.total > 0 ? Math.round((stat.value / stat.total) * 100) : 0;
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.06 }}
+                className="rounded-xl p-3 text-center"
+                style={{ background: `${stat.color}08`, border: `1px solid ${stat.color}20` }}
+              >
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: `${stat.color}18` }}>
+                  <Icon size={16} style={{ color: stat.color }} />
+                </div>
+                <div className="text-xl font-black" style={{ color: stat.color }}>{stat.value}</div>
+                <div className="text-[10px] text-gray-500 mt-0.5 font-medium">{stat.label}</div>
+                <div className="text-[9px] text-gray-400 mt-0.5">dari {stat.total} total</div>
+                {/* mini progress */}
+                <div className="mt-1.5 h-1 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-full rounded-full" style={{ width: `${pct}%`, background: stat.color }} />
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+        <div className="mt-4 pt-4 border-t border-gray-50 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="text-center">
+            <div className="text-lg font-bold text-gray-800">{cms.doctors.items.length > 0 ? `${(cms.doctors.items.reduce((s,d)=>s+d.patients,0)/1000).toFixed(0)}K+` : '—'}</div>
+            <div className="text-xs text-gray-400">Total Pasien (kumulatif)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold" style={{ color: AMBER }}>{avgRating} ⭐</div>
+            <div className="text-xs text-gray-400">Rata-rata Rating Dokter</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold" style={{ color: PINK }}>{cms.hero.heroImages?.length ?? 0}</div>
+            <div className="text-xs text-gray-400">Foto Hero Carousel</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold" style={{ color: BLUE }}>{cms.articles.items.filter(a => a.isVisible).length}</div>
+            <div className="text-xs text-gray-400">Artikel Aktif</div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

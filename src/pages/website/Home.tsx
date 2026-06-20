@@ -1,10 +1,11 @@
 /* eslint-disable */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar, ChevronLeft, Quote } from 'lucide-react';
+import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar, ChevronLeft, Quote, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
-import type { CMSTestimonial } from '../../data/defaultCMSContent';
+import { useLanguage } from '../../context/LanguageContext';
+import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSContent';
 
 const PINK = '#E91E8C';
 const BLUE = '#4FC3F7';
@@ -614,9 +615,185 @@ function ArticleCard({ title, excerpt, thumbnail, category, publishedAt }: {
   );
 }
 
+// ─── BEFORE / AFTER SLIDER ───────────────────────────────────────────────────
+function BeforeAfterSlider({ item, primaryColor, t }: { item: CMSBeforeAfter; primaryColor: string; t: (k: string) => string }) {
+  const [pos, setPos] = useState(50);
+  const [dragging, setDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const calcPos = useCallback((clientX: number) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setPos(Math.min(98, Math.max(2, ((clientX - rect.left) / rect.width) * 100)));
+  }, []);
+
+  const onMouseMove = useCallback((e: MouseEvent) => { if (dragging) calcPos(e.clientX); }, [dragging, calcPos]);
+  const onTouchMove = useCallback((e: TouchEvent) => { calcPos(e.touches[0].clientX); }, [calcPos]);
+  const stopDrag = useCallback(() => setDragging(false), []);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', stopDrag);
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', stopDrag);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', stopDrag);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', stopDrag);
+    };
+  }, [onMouseMove, onTouchMove, stopDrag]);
+
+  const hasBefore = !!item.before;
+  const hasAfter = !!item.after;
+  const hasBoth = hasBefore && hasAfter;
+
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: '0 2px 20px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.04)' }}>
+      {/* Image comparison area */}
+      <div
+        ref={containerRef}
+        className="relative overflow-hidden select-none"
+        style={{ aspectRatio: '4/3', cursor: hasBoth ? 'col-resize' : 'default' }}
+        onMouseDown={() => hasBoth && setDragging(true)}
+        onTouchStart={() => hasBoth && setDragging(true)}
+        onMouseMove={e => hasBoth && calcPos(e.clientX)}
+      >
+        {/* AFTER (base layer) */}
+        {hasAfter ? (
+          <img src={item.after!} alt="After" className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+            style={{ background: `linear-gradient(135deg, ${primaryColor}12, ${primaryColor}06)` }}>
+            <span className="text-5xl">🦷</span>
+            <span className="text-xs text-gray-400">Upload foto sesudah</span>
+          </div>
+        )}
+
+        {/* BEFORE (clip layer) */}
+        {hasBefore ? (
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{ clipPath: `polygon(0 0, ${pos}% 0, ${pos}% 100%, 0 100%)` }}
+          >
+            <img src={item.before!} alt="Before" className="absolute inset-0 w-full h-full object-cover" />
+          </div>
+        ) : (
+          !hasAfter && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+              style={{ background: `linear-gradient(135deg, ${primaryColor}08, #4FC3F708)` }}>
+              <span className="text-5xl">📸</span>
+              <span className="text-xs text-gray-400">Upload foto sebelum & sesudah di Admin</span>
+            </div>
+          )
+        )}
+
+        {/* Labels */}
+        {hasBefore && (
+          <div className="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
+            style={{ background: 'rgba(0,0,0,0.6)' }}>
+            {t('before')}
+          </div>
+        )}
+        {hasAfter && (
+          <div className="absolute top-3 right-3 text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
+            style={{ background: primaryColor }}>
+            {t('after')}
+          </div>
+        )}
+
+        {/* Divider line + handle */}
+        {hasBoth && (
+          <>
+            <div
+              className="absolute top-0 bottom-0 w-0.5"
+              style={{ left: `${pos}%`, background: 'white', boxShadow: '0 0 6px rgba(0,0,0,0.4)', pointerEvents: 'none' }}
+            />
+            <div
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-xl"
+              style={{ left: `${pos}%`, pointerEvents: 'none', boxShadow: `0 4px 16px ${primaryColor}40, 0 0 0 2px ${primaryColor}` }}
+            >
+              <div className="flex gap-0.5">
+                <ChevronLeft size={12} style={{ color: primaryColor }} />
+                <ChevronRight size={12} style={{ color: primaryColor }} />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Card footer */}
+      <div className="px-4 py-3 border-t border-gray-50">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-sm font-bold text-gray-800">{item.title}</div>
+            <div className="text-xs font-medium mt-0.5" style={{ color: primaryColor }}>{item.treatment}</div>
+          </div>
+          {hasBoth && (
+            <div className="text-[10px] text-gray-400 flex items-center gap-1">
+              <ChevronLeft size={10} />{t('drag_hint')}<ChevronRight size={10} />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── FAQ ACCORDION ────────────────────────────────────────────────────────────
+function FaqItem({ question, answer, primaryColor, index }: {
+  question: string; answer: string; primaryColor: string; index: number;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.05 }}
+      className="bg-white rounded-2xl overflow-hidden border border-gray-100"
+      style={{ boxShadow: open ? `0 4px 24px ${primaryColor}15` : '0 2px 12px rgba(0,0,0,0.04)', transition: 'box-shadow 0.25s' }}
+    >
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left transition-colors"
+        style={{ background: open ? `${primaryColor}06` : 'white' }}
+      >
+        <span className="text-sm font-semibold text-gray-800 pr-4 leading-snug">{question}</span>
+        <div
+          className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
+          style={{ background: open ? primaryColor : `${primaryColor}15` }}
+        >
+          {open
+            ? <ChevronUp size={14} color="white" />
+            : <ChevronDown size={14} style={{ color: primaryColor }} />
+          }
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="answer"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="px-5 pb-4 text-sm text-gray-500 leading-relaxed border-t border-gray-50 pt-3">
+              {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 // ─── HOME ─────────────────────────────────────────────────────────────────────
 export function Home() {
   const { cms } = useCMS();
+  const { t } = useLanguage();
   const { hero, services, doctors, promotions, articles, about, clinic, contact, trust, appearance } = cms;
   const primary = appearance.primaryColor || PINK;
 
@@ -789,6 +966,54 @@ export function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {visibleTestimonials.map((t, idx) => (
                   <TestimonialCard key={t.id} item={t} primaryColor={primary} index={idx} />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ── BEFORE/AFTER GALLERY ─────────────────────────────────────────── */}
+      {(() => {
+        const visibleGallery = (cms.gallery?.items ?? []).filter(g => g.isVisible);
+        if (!visibleGallery.length) return null;
+        return (
+          <section className="py-20" style={{ background: '#F8FAFC' }}>
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center mb-12">
+                <div className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4" style={{ background: `${primary}15`, color: primary }}>
+                  {t('section_gallery')}
+                </div>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-3">{cms.gallery.sectionTitle}</h2>
+                <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{cms.gallery.sectionSubtitle}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {visibleGallery.map(item => (
+                  <BeforeAfterSlider key={item.id} item={item} primaryColor={primary} t={t} />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      {(() => {
+        const visibleFaqs = (cms.faq?.items ?? []).filter(f => f.isVisible);
+        if (!visibleFaqs.length) return null;
+        return (
+          <section className="py-20 bg-white">
+            <div className="max-w-3xl mx-auto px-6">
+              <div className="text-center mb-12">
+                <div className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4" style={{ background: `${primary}15`, color: primary }}>
+                  {t('section_faq')}
+                </div>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-3">{cms.faq.sectionTitle}</h2>
+                <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{cms.faq.sectionSubtitle}</p>
+              </div>
+              <div className="space-y-3">
+                {visibleFaqs.map((f, idx) => (
+                  <FaqItem key={f.id} {...f} primaryColor={primary} index={idx} />
                 ))}
               </div>
             </div>
