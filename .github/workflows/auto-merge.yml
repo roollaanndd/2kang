@@ -47,6 +47,7 @@ jobs:
         run: |
           git checkout main
           git pull origin main
-          git merge --no-ff origin/${{ github.ref_name }} \
+          # -X theirs: on any conflict, always take the feature branch version
+          git merge --no-ff -X theirs origin/${{ github.ref_name }} \
             -m "chore: auto-merge ${{ github.ref_name }} [$(date +'%Y-%m-%d %H:%M UTC')]"
           git push origin main
