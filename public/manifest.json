@@ -1,0 +1,35 @@
+{
+  "name": "OMDC Dental",
+  "short_name": "OMDC Dental",
+  "description": "Senyum Sehat, Percaya Diri Penuh - Klinik Gigi Terpercaya",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#FFF5F9",
+  "theme_color": "#E91E8C",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "id",
+  "categories": ["health", "medical"],
+  "icons": [
+    {
+      "src": "/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Buat Janji",
+      "short_name": "Booking",
+      "description": "Buat janji dokter gigi",
+      "url": "/app?screen=booking"
+    },
+    {
+      "name": "Cek Antrian",
+      "short_name": "Antrian",
+      "description": "Cek nomor antrian Anda",
+      "url": "/app?screen=queue"
+    }
+  ]
+}

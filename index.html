@@ -1,13 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="OMDC Dental - Senyum Sehat, Percaya Diri Penuh. Klinik gigi terpercaya dengan dokter spesialis berpengalaman dan teknologi modern." />
+    <meta name="theme-color" content="#E91E8C" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="OMDC Dental" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta property="og:title" content="OMDC Dental" />
+    <meta property="og:description" content="Senyum Sehat, Percaya Diri Penuh - Klinik Gigi Terpercaya" />
+    <meta property="og:type" content="website" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <title>OMDC Dental - Senyum Sehat, Percaya Diri Penuh</title>
+    <!-- SPA redirect restore for GitHub Pages 404 trick -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
