@@ -5,10 +5,11 @@ import {
   Globe, Image, Type, List, Users, Tag, Newspaper, Info,
   Phone, Palette, Shield, Plus, Trash2, Eye, EyeOff,
   Upload, X, ChevronDown, ChevronUp, Save, RotateCcw,
-  Star, Check, GripVertical, Edit2, ExternalLink, MessageSquareQuote, Settings,
+  Star, Check, GripVertical, Edit2, ExternalLink, MessageSquareQuote, Settings, Loader,
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import { useAuth } from '../../context/AuthContext';
+import { uploadImage } from '../../lib/supabase';
 import type {
   CMSStat, CMSService, CMSDoctor, CMSPromo, CMSArticle, CMSTestimonial, CMSFaq, CMSBeforeAfter,
 } from '../../data/defaultCMSContent';
@@ -37,25 +38,36 @@ type TabId = typeof TABS[number]['id'];
 
 // ─── IMAGE UPLOAD HELPER ──────────────────────────────────────────────────────
 function ImageUpload({
-  value, onChange, label, aspectHint,
+  value, onChange, label, aspectHint, folder = 'cms',
 }: {
   value: string | null;
-  onChange: (b64: string | null) => void;
+  onChange: (url: string | null) => void;
   label?: string;
   aspectHint?: string;
+  folder?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFile = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = e => onChange(e.target?.result as string);
-    reader.readAsDataURL(file);
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const url = await uploadImage(file, folder);
+      onChange(url);
+    } catch (e: any) {
+      setError('Upload gagal. Coba lagi.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) handleFile(file);
+    if (file) handleFile(file);
   }, []);
 
   return (
@@ -75,20 +87,24 @@ function ImageUpload({
         <div
           onDrop={handleDrop}
           onDragOver={e => e.preventDefault()}
-          onClick={() => inputRef.current?.click()}
+          onClick={() => !uploading && inputRef.current?.click()}
           className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all"
+          style={{ opacity: uploading ? 0.7 : 1 }}
         >
-          <Upload size={24} className="mx-auto text-gray-400 mb-2" />
-          <div className="text-sm text-gray-500">Klik atau seret gambar ke sini</div>
+          {uploading
+            ? <><Loader size={24} className="mx-auto text-pink-400 mb-2 animate-spin" /><div className="text-sm text-pink-500">Mengupload...</div></>
+            : <><Upload size={24} className="mx-auto text-gray-400 mb-2" /><div className="text-sm text-gray-500">Klik atau seret gambar ke sini</div></>
+          }
           {aspectHint && <div className="text-xs text-gray-400 mt-1">{aspectHint}</div>}
         </div>
       )}
+      {error && <div className="text-xs text-red-500 mt-1">{error}</div>}
       <input
         ref={inputRef}
         type="file"
         accept="image/*"
         className="hidden"
-        onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+        onChange={e => { const f = e.target.files?.[0]; if (f) { handleFile(f); e.target.value = ''; } }}
       />
     </div>
   );
@@ -173,19 +189,27 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
 // ─── HERO IMAGES MULTI-UPLOAD ─────────────────────────────────────────────────
 function HeroImagesEditor({ images, onChange }: { images: string[]; onChange: (imgs: string[]) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const addFile = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const result = e.target?.result as string;
-      onChange([...images, result]);
-    };
-    reader.readAsDataURL(file);
+  const addFiles = async (files: File[]) => {
+    const imageFiles = files.filter(f => f.type.startsWith('image/'));
+    if (!imageFiles.length) return;
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const urls = await Promise.all(imageFiles.map(f => uploadImage(f, 'hero')));
+      onChange([...images, ...urls]);
+    } catch {
+      setUploadError('Gagal upload. Coba lagi.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    Array.from(e.dataTransfer.files).forEach(f => { if (f.type.startsWith('image/')) addFile(f); });
+    addFiles(Array.from(e.dataTransfer.files));
   }, [images]);
 
   const remove = (i: number) => onChange(images.filter((_, idx) => idx !== i));
@@ -238,20 +262,23 @@ function HeroImagesEditor({ images, onChange }: { images: string[]; onChange: (i
       <div
         onDrop={handleDrop}
         onDragOver={e => e.preventDefault()}
-        onClick={() => inputRef.current?.click()}
+        onClick={() => !uploading && inputRef.current?.click()}
         className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all"
+        style={{ opacity: uploading ? 0.7 : 1 }}
       >
-        <Upload size={20} className="mx-auto text-gray-400 mb-1.5" />
-        <div className="text-sm text-gray-500">Klik atau seret foto baru</div>
-        <div className="text-xs text-gray-400 mt-0.5">Disarankan 4:5 ratio, JPG/PNG</div>
+        {uploading
+          ? <><Loader size={20} className="mx-auto text-pink-400 mb-1.5 animate-spin" /><div className="text-sm text-pink-500">Mengupload ke cloud...</div></>
+          : <><Upload size={20} className="mx-auto text-gray-400 mb-1.5" /><div className="text-sm text-gray-500">Klik atau seret foto baru</div><div className="text-xs text-gray-400 mt-0.5">Disarankan 4:5 ratio, JPG/PNG</div></>
+        }
       </div>
+      {uploadError && <div className="text-xs text-red-500">{uploadError}</div>}
       <input
         ref={inputRef}
         type="file"
         accept="image/*"
         multiple
         className="hidden"
-        onChange={e => { Array.from(e.target.files ?? []).forEach(addFile); e.target.value = ''; }}
+        onChange={e => { addFiles(Array.from(e.target.files ?? [])); e.target.value = ''; }}
       />
     </div>
   );
@@ -782,11 +809,18 @@ function AppearanceTab() {
   const ap = cms.appearance;
   const logoInputRef = useRef<HTMLInputElement>(null);
 
-  const handleLogoFile = (file: File) => {
+  const [logoUploading, setLogoUploading] = useState(false);
+  const handleLogoFile = async (file: File) => {
     if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = e => updateCMS({ logoUrl: e.target?.result as string });
-    reader.readAsDataURL(file);
+    setLogoUploading(true);
+    try {
+      const url = await uploadImage(file, 'logo');
+      updateCMS({ logoUrl: url });
+    } catch {
+      // silent
+    } finally {
+      setLogoUploading(false);
+    }
   };
 
   return (
@@ -858,14 +892,16 @@ function AppearanceTab() {
                 onChange={e => { const f = e.target.files?.[0]; if (f) handleLogoFile(f); e.target.value = ''; }}
               />
               <div
-                onClick={() => logoInputRef.current?.click()}
+                onClick={() => !logoUploading && logoInputRef.current?.click()}
                 onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) handleLogoFile(f); }}
                 onDragOver={e => e.preventDefault()}
                 className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all"
+                style={{ opacity: logoUploading ? 0.7 : 1 }}
               >
-                <Upload size={22} className="mx-auto text-gray-400 mb-2" />
-                <div className="text-sm text-gray-500 font-medium">Klik atau seret file logo</div>
-                <div className="text-xs text-gray-400 mt-1">PNG, SVG, JPG • Latar transparan direkomendasikan</div>
+                {logoUploading
+                  ? <><Loader size={22} className="mx-auto text-pink-400 mb-2 animate-spin" /><div className="text-sm text-pink-500">Mengupload logo...</div></>
+                  : <><Upload size={22} className="mx-auto text-gray-400 mb-2" /><div className="text-sm text-gray-500 font-medium">Klik atau seret file logo</div><div className="text-xs text-gray-400 mt-1">PNG, SVG, JPG • Latar transparan direkomendasikan</div></>
+                }
               </div>
               <div className="mt-2 text-xs text-gray-400">
                 Tips: Gunakan logo dengan latar belakang transparan (PNG/SVG) untuk hasil terbaik di semua halaman.

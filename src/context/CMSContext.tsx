@@ -1,9 +1,37 @@
 /* eslint-disable */
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { type CMSContent, loadCMSContent, saveCMSContent, DEFAULT_CMS_CONTENT } from '../data/defaultCMSContent';
+import { supabase } from '../lib/supabase';
+
+const CMS_ROW_ID = 'default';
+
+async function loadFromSupabase(): Promise<CMSContent | null> {
+  try {
+    const { data, error } = await supabase
+      .from('cms_content')
+      .select('content')
+      .eq('id', CMS_ROW_ID)
+      .single();
+    if (error || !data) return null;
+    return data.content as CMSContent;
+  } catch {
+    return null;
+  }
+}
+
+async function saveToSupabase(content: CMSContent): Promise<void> {
+  try {
+    await supabase
+      .from('cms_content')
+      .upsert({ id: CMS_ROW_ID, content, updated_at: new Date().toISOString() });
+  } catch {
+    // silent — localStorage still saved
+  }
+}
 
 interface CMSContextValue {
   cms: CMSContent;
+  synced: boolean;
   updateCMS: (patch: Partial<CMSContent>) => void;
   updateHero: (patch: Partial<CMSContent['hero']>) => void;
   updateServices: (patch: Partial<CMSContent['services']>) => void;
@@ -26,16 +54,49 @@ export const CMSContext = createContext<CMSContextValue | null>(null);
 
 export function CMSProvider({ children }: { children: ReactNode }) {
   const [cms, setCMS] = useState<CMSContent>(loadCMSContent);
+  const [synced, setSynced] = useState(false);
+
+  // Load from Supabase on mount (overrides localStorage cache)
+  useEffect(() => {
+    loadFromSupabase().then(remote => {
+      if (remote) {
+        setCMS(remote);
+        saveCMSContent(remote); // update local cache
+      }
+      setSynced(true);
+    });
+  }, []);
+
+  // Real-time subscription — any device saving triggers update here
+  useEffect(() => {
+    const channel = supabase
+      .channel('cms_realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'cms_content', filter: `id=eq.${CMS_ROW_ID}` },
+        payload => {
+          const updated = (payload.new as any)?.content as CMSContent | undefined;
+          if (updated) {
+            setCMS(updated);
+            saveCMSContent(updated);
+          }
+        }
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
   const persist = useCallback((next: CMSContent) => {
     setCMS(next);
     saveCMSContent(next);
+    saveToSupabase(next);
   }, []);
 
   const updateCMS = useCallback((patch: Partial<CMSContent>) => {
     setCMS(prev => {
       const next = { ...prev, ...patch };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -44,6 +105,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, hero: { ...prev.hero, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -52,6 +114,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, services: { ...prev.services, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -60,6 +123,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, doctors: { ...prev.doctors, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -68,6 +132,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, clinic: { ...prev.clinic, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -76,6 +141,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, promotions: { ...prev.promotions, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -84,6 +150,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, articles: { ...prev.articles, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -92,6 +159,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, about: { ...prev.about, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -100,6 +168,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, appearance: { ...prev.appearance, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -108,6 +177,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, contact: { ...prev.contact, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -116,6 +186,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, trust: { ...prev.trust, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -124,6 +195,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, testimonials: { ...prev.testimonials, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -132,6 +204,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, faq: { ...prev.faq, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -140,6 +213,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, gallery: { ...prev.gallery, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -148,6 +222,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     setCMS(prev => {
       const next = { ...prev, kioskSettings: { ...prev.kioskSettings, ...patch } };
       saveCMSContent(next);
+      saveToSupabase(next);
       return next;
     });
   }, []);
@@ -156,7 +231,7 @@ export function CMSProvider({ children }: { children: ReactNode }) {
 
   return (
     <CMSContext.Provider value={{
-      cms, updateCMS, updateHero, updateServices, updateDoctors, updateClinic,
+      cms, synced, updateCMS, updateHero, updateServices, updateDoctors, updateClinic,
       updatePromotions, updateArticles, updateAbout, updateAppearance, updateContact,
       updateTrust, updateTestimonials, updateFaq, updateGallery, updateKioskSettings, resetToDefaults,
     }}>
