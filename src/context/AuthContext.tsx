@@ -15,14 +15,19 @@ export interface AdminUser {
   createdAt: string;
 }
 
+// Demo seed accounts — override via VITE_ADMIN_DEFAULT_PASSWORD / VITE_OWNER_DEFAULT_PASSWORD
+// env vars at build time, or change passwords via Admin → Users after first login.
+// In production replace this entire auth layer with a real backend (see src/services/api.ts).
 const DEFAULT_USERS: AdminUser[] = [
   {
-    id: 'u1', name: 'Super Admin', username: 'admin', password: 'admin123',
+    id: 'u1', name: 'Super Admin', username: 'admin',
+    password: import.meta.env.VITE_ADMIN_DEFAULT_PASSWORD ?? 'Omdc#2025!Sa',
     email: 'admin@omdc.id', avatar: 'SA', roleId: 'owner', isActive: true,
     lastLogin: null, createdAt: '2024-01-01T00:00:00Z',
   },
   {
-    id: 'u2', name: 'Dr. Owner', username: 'owner', password: 'owner2024',
+    id: 'u2', name: 'Dr. Owner', username: 'owner',
+    password: import.meta.env.VITE_OWNER_DEFAULT_PASSWORD ?? 'Omdc#2025!Ow',
     email: 'owner@omdc.id', avatar: 'OW', roleId: 'owner', isActive: true,
     lastLogin: null, createdAt: '2024-01-01T00:00:00Z',
   },

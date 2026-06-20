@@ -149,7 +149,7 @@ function AdminLogin() {
 
             <div className="text-center">
               <p className="text-xs text-gray-400">
-                Default: <span className="font-mono text-gray-600">admin</span> / <span className="font-mono text-gray-600">admin123</span>
+                Hubungi administrator untuk kredensial login.
               </p>
             </div>
           </form>
