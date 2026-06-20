@@ -166,14 +166,103 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (v: boolean
   );
 }
 
+// ─── HERO IMAGES MULTI-UPLOAD ─────────────────────────────────────────────────
+function HeroImagesEditor({ images, onChange }: { images: string[]; onChange: (imgs: string[]) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const addFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const result = e.target?.result as string;
+      onChange([...images, result]);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    Array.from(e.dataTransfer.files).forEach(f => { if (f.type.startsWith('image/')) addFile(f); });
+  }, [images]);
+
+  const remove = (i: number) => onChange(images.filter((_, idx) => idx !== i));
+  const moveUp = (i: number) => {
+    if (i === 0) return;
+    const next = [...images];
+    [next[i - 1], next[i]] = [next[i], next[i - 1]];
+    onChange(next);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="text-sm font-medium text-gray-700">Foto Carousel Hero</div>
+      <div className="text-xs text-gray-400">Upload beberapa foto untuk carousel yang berganti otomatis setiap 4.5 detik</div>
+
+      {/* Thumbnails */}
+      {images.length > 0 && (
+        <div className="grid grid-cols-3 gap-2">
+          {images.map((img, i) => (
+            <div key={i} className="relative rounded-xl overflow-hidden border border-gray-200 group">
+              <img src={img} alt="" className="w-full h-24 object-cover" />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
+                {i > 0 && (
+                  <button
+                    onClick={() => moveUp(i)}
+                    className="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-gray-700 hover:bg-white transition-colors"
+                    title="Pindah ke kiri"
+                  >
+                    ‹
+                  </button>
+                )}
+                <button
+                  onClick={() => remove(i)}
+                  className="w-7 h-7 rounded-full bg-red-500 flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                >
+                  <X size={13} />
+                </button>
+              </div>
+              {i === 0 && (
+                <div className="absolute top-1 left-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-pink-500 text-white">
+                  Utama
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add image drop zone */}
+      <div
+        onDrop={handleDrop}
+        onDragOver={e => e.preventDefault()}
+        onClick={() => inputRef.current?.click()}
+        className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/30 transition-all"
+      >
+        <Upload size={20} className="mx-auto text-gray-400 mb-1.5" />
+        <div className="text-sm text-gray-500">Klik atau seret foto baru</div>
+        <div className="text-xs text-gray-400 mt-0.5">Disarankan 4:5 ratio, JPG/PNG</div>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={e => { Array.from(e.target.files ?? []).forEach(addFile); e.target.value = ''; }}
+      />
+    </div>
+  );
+}
+
 // ─── HERO TAB ─────────────────────────────────────────────────────────────────
 function HeroTab() {
   const { cms, updateHero } = useCMS();
   const h = cms.hero;
+  const heroImages = h.heroImages ?? [];
+
   return (
     <div className="space-y-6">
-      <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700">
-        <strong>Info:</strong> Gambar hero akan ditampilkan di dalam shape pink organik. Shape dekoratif bersifat permanen (CSS) — hanya foto yang berubah.
+      <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
+        <strong>Info:</strong> Foto hero ditampilkan dalam frame persegi panjang premium. Upload beberapa foto untuk carousel otomatis.
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -206,32 +295,23 @@ function HeroTab() {
         </div>
 
         <div className="space-y-4">
-          <ImageUpload
-            label="Foto Hero (tampil dalam shape pink)"
-            value={h.heroImage}
-            onChange={v => updateHero({ heroImage: v })}
-            aspectHint="Disarankan ukuran 600×700px, format JPG/PNG"
+          <HeroImagesEditor
+            images={heroImages}
+            onChange={imgs => updateHero({ heroImages: imgs })}
           />
 
-          {/* Preview blob */}
-          <div className="bg-gray-50 rounded-xl p-4">
-            <div className="text-xs font-medium text-gray-500 mb-3">Preview Shape</div>
-            <div className="relative w-full h-36 flex items-center justify-center">
-              <svg viewBox="0 0 300 240" className="absolute inset-0 w-full h-full">
-                <defs>
-                  <clipPath id="blobPreview">
-                    <path d="M150,10 C200,10 240,40 250,90 C260,140 245,180 210,210 C175,240 120,240 85,215 C50,190 40,155 45,115 C50,75 80,30 120,15 C130,12 140,10 150,10Z" />
-                  </clipPath>
-                </defs>
-                <path d="M150,10 C200,10 240,40 250,90 C260,140 245,180 210,210 C175,240 120,240 85,215 C50,190 40,155 45,115 C50,75 80,30 120,15 C130,12 140,10 150,10Z" fill="#E91E8C" opacity="0.15" />
-                {h.heroImage ? (
-                  <image href={h.heroImage} x="20" y="0" width="260" height="240" clipPath="url(#blobPreview)" preserveAspectRatio="xMidYMid slice" />
-                ) : (
-                  <text x="150" y="120" textAnchor="middle" fill="#E91E8C" opacity="0.4" fontSize="12">Belum ada foto</text>
-                )}
-              </svg>
+          {/* Preview */}
+          {heroImages.length > 0 && (
+            <div className="bg-gray-50 rounded-xl p-3">
+              <div className="text-xs font-medium text-gray-500 mb-2">Preview Frame</div>
+              <div
+                className="relative rounded-2xl overflow-hidden mx-auto"
+                style={{ width: 120, aspectRatio: '4/5', border: '2px solid #E91E8C40' }}
+              >
+                <img src={heroImages[0]} alt="" className="w-full h-full object-cover" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

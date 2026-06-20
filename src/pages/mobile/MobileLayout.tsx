@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { AnimatePresence } from 'motion/react';
 import type { MobileState } from '../../types/index';
+import { APP_VERSION } from '../../version';
 import { BottomNav } from '../../components/mobile/BottomNav';
 import { MobileOnboarding } from './screens/MobileOnboarding';
 import { MobileLogin } from './screens/MobileLogin';
@@ -117,6 +118,24 @@ export function MobileLayout() {
             currentScreen={state.screen}
             onNavigate={handleNavigation}
           />
+        )}
+
+        {/* Version badge — bottom-right, only on logged-in screens */}
+        {state.isLoggedIn && (
+          <div style={{
+            position: 'absolute',
+            bottom: showBottomNav ? 68 : 8,
+            right: 10,
+            fontSize: 9,
+            fontWeight: 600,
+            color: 'rgba(0,0,0,0.2)',
+            letterSpacing: '0.05em',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            zIndex: 9999,
+          }}>
+            v{APP_VERSION}
+          </div>
         )}
       </div>
     </div>

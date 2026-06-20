@@ -16,8 +16,8 @@ function SummaryRow({ icon, label, value, highlight }: SummaryRowProps) {
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '20px',
-      padding: '18px 0',
+      gap: '16px',
+      padding: '11px 0',
       borderBottom: '1px solid #F3F4F6',
     }}>
       <div style={{
@@ -91,24 +91,26 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
       {/* Summary card */}
       <div style={{
         flex: 1,
-        padding: '28px 60px',
+        padding: '16px 60px',
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        gap: '32px',
+        gap: '24px',
+        overflow: 'hidden',
       }}>
         <div style={{
           flex: 1,
           backgroundColor: '#ffffff',
-          borderRadius: '24px',
+          borderRadius: '20px',
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-          padding: '32px 36px',
+          padding: '22px 28px',
           maxWidth: '640px',
+          overflow: 'hidden',
         }}>
           {/* Top pink bar */}
           <div style={{
-            margin: '-32px -36px 24px',
-            padding: '18px 36px',
+            margin: '-22px -28px 16px',
+            padding: '14px 28px',
             background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
             borderRadius: '24px 24px 0 0',
             display: 'flex',

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - claude/website-mobile-apps-dev-lmgp7x
   workflow_dispatch:
 
 permissions:
