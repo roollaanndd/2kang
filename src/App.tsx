@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
-// Website - named exports
+// Website — named exports
 const WebsiteLayout = lazy(() =>
   import('./pages/website/WebsiteLayout').then(m => ({ default: m.WebsiteLayout }))
 );
@@ -27,11 +27,14 @@ const Contact = lazy(() =>
   import('./pages/website/Contact').then(m => ({ default: m.Contact }))
 );
 
-// E-Kiosk — default export
+// E-Kiosk
 const KioskLayout = lazy(() => import('./pages/kiosk/KioskLayout'));
 
-// Mobile App — has both named and default export
+// Mobile PWA
 const MobileLayout = lazy(() => import('./pages/mobile/MobileLayout'));
+
+// Admin CMS
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
 
 function LoadingFallback() {
   return (
@@ -64,7 +67,7 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
-          {/* Website */}
+          {/* Public Website */}
           <Route path="/" element={<WebsiteLayout />}>
             <Route index element={<Home />} />
             <Route path="doctors" element={<Doctors />} />
@@ -78,10 +81,12 @@ export default function App() {
           {/* E-Kiosk */}
           <Route path="/kiosk/*" element={<KioskLayout />} />
 
-          {/* Mobile App */}
+          {/* Mobile PWA */}
           <Route path="/app/*" element={<MobileLayout />} />
 
-          {/* Fallback */}
+          {/* Admin CMS */}
+          <Route path="/admin/*" element={<AdminLayout />} />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

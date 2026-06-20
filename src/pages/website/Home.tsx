@@ -1,9 +1,10 @@
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Star, ChevronRight, Shield, Award, Clock, Users,
   CheckCircle, ArrowRight, Calendar, Phone,
-  Zap, Heart, MapPin,
+  Zap, Heart, MapPin, Smartphone, Apple, Play,
 } from 'lucide-react';
 import { DOCTORS, SERVICES, PROMOTIONS, TESTIMONIALS } from '../../data/mockData';
 
@@ -48,12 +49,38 @@ const serviceIcons: Record<string, string> = {
   s1: '🦷', s2: '✨', s3: '🔧', s4: '❌', s5: '😁', s6: '🔩', s7: '💊', s8: '➕',
 };
 
+const HOW_IT_WORKS = [
+  {
+    step: 1,
+    title: 'Pilih Layanan',
+    desc: 'Tentukan jenis perawatan gigi yang Anda butuhkan dari daftar layanan lengkap kami.',
+    icon: '🦷',
+  },
+  {
+    step: 2,
+    title: 'Pilih Dokter & Jadwal',
+    desc: 'Pilih dokter spesialis favorit Anda dan tentukan waktu yang paling sesuai.',
+    icon: '👨‍⚕️',
+  },
+  {
+    step: 3,
+    title: 'Datang & Dilayani',
+    desc: 'Datang ke klinik tepat waktu dan nikmati pelayanan dental terbaik dari tim kami.',
+    icon: '✅',
+  },
+];
+
 export function Home() {
+  const [showAllServices, setShowAllServices] = useState(false);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const testimonialTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const stats = [
-    { value: '500+', label: 'Pasien Puas' },
-    { value: '10+', label: 'Dokter Spesialis' },
-    { value: '15+', label: 'Tahun Pengalaman' },
-    { value: '4.9', label: 'Rating Google' },
+    { value: '500+', label: 'Pasien Puas', icon: '🏆' },
+    { value: '10+', label: 'Dokter Spesialis', icon: '👨‍⚕️' },
+    { value: '15+', label: 'Tahun Pengalaman', icon: '🎖️' },
+    { value: '4.9', label: 'Rating Google', icon: '⭐' },
   ];
 
   const features = [
@@ -86,6 +113,19 @@ export function Home() {
       bg: '#F0FDF4',
     },
   ];
+
+  // Auto-rotate testimonials every 4s
+  useEffect(() => {
+    if (isPaused) return;
+    testimonialTimer.current = setInterval(() => {
+      setTestimonialIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+    }, 4000);
+    return () => {
+      if (testimonialTimer.current) clearInterval(testimonialTimer.current);
+    };
+  }, [isPaused]);
+
+  const displayedServices = showAllServices ? SERVICES : SERVICES.slice(0, 4);
 
   return (
     <div>
@@ -198,13 +238,11 @@ export function Home() {
                   }}
                 >
                   <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-                    {/* Tooth shape */}
                     <path
                       d="M100 20 C70 20 45 40 45 70 C45 85 50 95 56 108 C62 121 65 130 65 150 C65 165 72 175 80 175 C90 175 95 165 100 155 C105 165 110 175 120 175 C128 175 135 165 135 150 C135 130 138 121 144 108 C150 95 155 85 155 70 C155 40 130 20 100 20Z"
                       fill="white"
                       opacity="0.95"
                     />
-                    {/* Tooth shine */}
                     <path
                       d="M75 45 C72 55 70 65 71 75"
                       stroke="rgba(233,30,140,0.4)"
@@ -217,7 +255,6 @@ export function Home() {
                       strokeWidth="3"
                       strokeLinecap="round"
                     />
-                    {/* Smile arc */}
                     <path
                       d="M68 130 Q100 145 132 130"
                       stroke="rgba(233,30,140,0.5)"
@@ -228,20 +265,25 @@ export function Home() {
                   </svg>
                 </div>
 
-                {/* Floating cards */}
+                {/* Floating glass stats cards */}
                 <motion.div
                   animate={{ y: [-6, 6, -6] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-4 -left-8 rounded-2xl p-3 shadow-xl"
-                  style={{ background: 'white', minWidth: 140 }}
+                  className="absolute -top-6 -left-10 rounded-2xl p-3.5 shadow-xl"
+                  style={{
+                    background: 'rgba(255,255,255,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255,255,255,0.6)',
+                    minWidth: 150,
+                  }}
                 >
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F9' }}>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F9' }}>
                       <Star size={16} fill="#F59E0B" style={{ color: '#F59E0B' }} />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 font-medium">Rating</p>
-                      <p className="text-sm font-black" style={{ color: '#1A1A2E' }}>4.9 / 5.0</p>
+                      <p className="text-xs text-gray-500 font-medium">Rating Google</p>
+                      <p className="text-sm font-black" style={{ color: '#1A1A2E' }}>4.9 ⭐ / 5.0</p>
                     </div>
                   </div>
                 </motion.div>
@@ -249,16 +291,21 @@ export function Home() {
                 <motion.div
                   animate={{ y: [6, -6, 6] }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-4 -right-8 rounded-2xl p-3 shadow-xl"
-                  style={{ background: 'white', minWidth: 150 }}
+                  className="absolute -bottom-6 -right-10 rounded-2xl p-3.5 shadow-xl"
+                  style={{
+                    background: 'rgba(255,255,255,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255,255,255,0.6)',
+                    minWidth: 160,
+                  }}
                 >
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FFF5F9' }}>
-                      <Users size={16} style={{ color: '#E91E8C' }} />
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: '#F0FDF4' }}>
+                      <Users size={16} style={{ color: '#10B981' }} />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 font-medium">Pasien Bulan Ini</p>
-                      <p className="text-sm font-black" style={{ color: '#1A1A2E' }}>+128 Pasien</p>
+                      <p className="text-xs text-gray-500 font-medium">Total Pasien</p>
+                      <p className="text-sm font-black" style={{ color: '#1A1A2E' }}>500+ Pasien</p>
                     </div>
                   </div>
                 </motion.div>
@@ -266,13 +313,17 @@ export function Home() {
                 <motion.div
                   animate={{ y: [-4, 4, -4] }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  className="absolute top-1/2 -right-12 -translate-y-1/2 rounded-2xl p-3 shadow-xl"
-                  style={{ background: 'white' }}
+                  className="absolute top-1/2 -right-14 -translate-y-1/2 rounded-2xl p-3.5 shadow-xl"
+                  style={{
+                    background: 'rgba(255,255,255,0.85)',
+                    backdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255,255,255,0.6)',
+                  }}
                 >
                   <div className="text-center">
-                    <p className="text-xs text-gray-500 font-medium">Spesialis</p>
-                    <p className="text-xl font-black" style={{ color: '#E91E8C' }}>10+</p>
-                    <p className="text-xs text-gray-500">Dokter</p>
+                    <p className="text-xs text-gray-500 font-medium">Pengalaman</p>
+                    <p className="text-xl font-black" style={{ color: '#E91E8C' }}>15+</p>
+                    <p className="text-xs text-gray-500">Tahun</p>
                   </div>
                 </motion.div>
               </div>
@@ -296,6 +347,7 @@ export function Home() {
                   border: '1px solid rgba(255,255,255,0.35)',
                 }}
               >
+                <div className="text-2xl mb-1">{stat.icon}</div>
                 <div className="text-3xl font-black text-white">{stat.value}</div>
                 <div className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.8)' }}>{stat.label}</div>
               </div>
@@ -326,65 +378,172 @@ export function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {SERVICES.map((service, i) => (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-              >
-                <Link
-                  to="/services"
-                  className="block p-6 rounded-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
-                  style={{ background: 'white' }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = service.color + '40';
-                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 40px ${service.color}15`;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = '#f3f4f6';
-                    (e.currentTarget as HTMLElement).style.boxShadow = '';
-                  }}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={showAllServices ? 'all' : 'partial'}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+            >
+              {displayedServices.map((service, i) => (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.07 }}
                 >
-                  <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4 transition-transform duration-300 group-hover:scale-110"
-                    style={{ background: service.color + '18' }}
+                  <Link
+                    to="/services"
+                    className="block p-6 rounded-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group relative overflow-hidden"
+                    style={{ background: 'white' }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = service.color + '40';
+                      (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 40px ${service.color}15`;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor = '#f3f4f6';
+                      (e.currentTarget as HTMLElement).style.boxShadow = '';
+                    }}
                   >
-                    {serviceIcons[service.id]}
-                  </div>
-                  <h3 className="font-bold text-base mb-2" style={{ color: '#1A1A2E' }}>{service.name}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed mb-4">{service.description}</p>
-                  <div
-                    className="text-xs font-bold"
-                    style={{ color: service.color }}
-                  >
-                    {formatPrice(service.priceMin)} – {formatPrice(service.priceMax)}
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-4 transition-transform duration-300 group-hover:scale-110"
+                      style={{ background: service.color + '18' }}
+                    >
+                      {serviceIcons[service.id]}
+                    </div>
+                    <h3 className="font-bold text-base mb-2" style={{ color: '#1A1A2E' }}>{service.name}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed mb-4">{service.description}</p>
+                    {/* Price on hover overlay */}
+                    <div
+                      className="text-xs font-bold"
+                      style={{ color: service.color }}
+                    >
+                      {formatPrice(service.priceMin)} – {formatPrice(service.priceMax)}
+                    </div>
+                    {/* Hover price highlight bar */}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 py-2 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-between"
+                      style={{ background: service.color, borderRadius: '0 0 16px 16px' }}
+                    >
+                      <span className="text-xs text-white font-bold">
+                        Mulai {formatPrice(service.priceMin)}
+                      </span>
+                      <span className="text-white text-xs font-semibold">Pilih →</span>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
 
-          <div className="text-center mt-10">
-            <Link
-              to="/services"
+          <div className="text-center mt-10 flex flex-wrap justify-center gap-4">
+            <button
+              onClick={() => setShowAllServices((v) => !v)}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-200 hover:-translate-y-0.5"
               style={{
                 color: '#E91E8C',
                 border: '2px solid #E91E8C',
-                background: 'transparent',
+                background: showAllServices ? '#FFF5F9' : 'transparent',
               }}
             >
-              Lihat Semua Layanan <ArrowRight size={16} />
-            </Link>
+              {showAllServices ? 'Tampilkan Lebih Sedikit' : 'Lihat Semua Layanan'}
+              <ArrowRight size={16} style={{ transform: showAllServices ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* ===== DOCTORS ===== */}
+      {/* ===== HOW IT WORKS ===== */}
       <section className="py-20" style={{ background: '#FFF5F9' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>
+              Mudah & Cepat
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E' }}>
+              Cara Membuat Janji
+            </h2>
+            <div className="w-16 h-1.5 rounded-full mx-auto mb-4" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
+            <p className="text-gray-500 max-w-lg mx-auto">
+              Hanya 3 langkah mudah untuk mendapatkan perawatan gigi terbaik dari tim kami.
+            </p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Connecting line (desktop) */}
+            <div
+              className="hidden lg:block absolute top-10 left-[16.6%] right-[16.6%] h-0.5"
+              style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #E91E8C)' }}
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+              {HOW_IT_WORKS.map((step, i) => (
+                <motion.div
+                  key={step.step}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.15 }}
+                  className="flex flex-col items-center text-center"
+                >
+                  {/* Step circle */}
+                  <div className="relative mb-6">
+                    <div
+                      className="w-20 h-20 rounded-full flex items-center justify-center text-3xl shadow-lg z-10 relative"
+                      style={{
+                        background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+                        boxShadow: '0 8px 24px rgba(233,30,140,0.35)',
+                      }}
+                    >
+                      {step.icon}
+                    </div>
+                    <div
+                      className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-white font-black text-xs z-20 border-2 border-white"
+                      style={{ background: '#1A1A2E' }}
+                    >
+                      {step.step}
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-black mb-3" style={{ color: '#1A1A2E' }}>{step.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed max-w-xs">{step.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-center mt-12"
+          >
+            <Link
+              to="/booking"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base text-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+              style={{
+                background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+                boxShadow: '0 6px 20px rgba(233,30,140,0.35)',
+              }}
+            >
+              <Calendar size={18} />
+              Mulai Sekarang
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ===== DOCTORS ===== */}
+      <section className="py-20" style={{ background: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -414,9 +573,8 @@ export function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                style={{ background: 'white' }}
+                style={{ background: 'white', border: '1px solid #F3F4F6' }}
               >
-                {/* Card header */}
                 <div
                   className="p-6 flex flex-col items-center text-center"
                   style={{ background: 'linear-gradient(135deg, #FFF5F9, white)' }}
@@ -442,7 +600,6 @@ export function Home() {
                   </div>
                 </div>
 
-                {/* Card footer */}
                 <div className="px-4 py-4 border-t border-gray-50">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-xs text-gray-500">{doctor.experience} thn pengalaman</span>
@@ -486,7 +643,7 @@ export function Home() {
       </section>
 
       {/* ===== PROMOTIONS ===== */}
-      <section className="py-20" style={{ background: 'white' }}>
+      <section className="py-20" style={{ background: '#FAFAFA' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -558,7 +715,7 @@ export function Home() {
       </section>
 
       {/* ===== WHY CHOOSE US ===== */}
-      <section className="py-20" style={{ background: '#FAFAFA' }}>
+      <section className="py-20" style={{ background: 'white' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -607,8 +764,8 @@ export function Home() {
         </div>
       </section>
 
-      {/* ===== TESTIMONIALS ===== */}
-      <section className="py-20" style={{ background: 'white' }}>
+      {/* ===== TESTIMONIALS (Auto-rotating Carousel) ===== */}
+      <section className="py-20" style={{ background: '#FFF5F9' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -629,38 +786,182 @@ export function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={t.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-6 rounded-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                style={{ background: 'white' }}
-              >
-                <div className="flex items-center gap-1 mb-4">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={14} fill={s <= t.rating ? '#F59E0B' : 'none'} style={{ color: '#F59E0B' }} />
-                  ))}
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed mb-6 italic">"{t.comment}"</p>
-                <div className="flex items-center gap-3 pt-4" style={{ borderTop: '1px solid #f3f4f6' }}>
+          {/* Carousel */}
+          <div
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${testimonialIndex * (100 / Math.min(TESTIMONIALS.length, 4))}%)` }}
+            >
+              {TESTIMONIALS.map((t) => (
+                <div
+                  key={t.id}
+                  className="min-w-[calc(25%-12px)] px-3 flex-shrink-0"
+                  style={{ minWidth: 'clamp(280px, 25%, 320px)' }}
+                >
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+                    className="p-6 rounded-2xl border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl h-full"
+                    style={{ background: 'white' }}
                   >
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{t.name}</p>
-                    <p className="text-xs text-gray-400">{t.service}</p>
+                    <div className="flex items-center gap-1 mb-4">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <Star key={s} size={14} fill={s <= t.rating ? '#F59E0B' : 'none'} style={{ color: '#F59E0B' }} />
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-6 italic">"{t.comment}"</p>
+                    <div className="flex items-center gap-3 pt-4" style={{ borderTop: '1px solid #f3f4f6' }}>
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0"
+                        style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+                      >
+                        {t.avatar}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{t.name}</p>
+                        <p className="text-xs text-gray-400">{t.service}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-2 mt-8">
+            {TESTIMONIALS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setTestimonialIndex(i)}
+                className="transition-all duration-300 rounded-full"
+                style={{
+                  width: i === testimonialIndex ? 24 : 8,
+                  height: 8,
+                  background: i === testimonialIndex ? '#E91E8C' : '#E5E7EB',
+                }}
+              />
             ))}
           </div>
+          <p className="text-center text-xs text-gray-400 mt-3">
+            {isPaused ? 'Dijeda' : 'Otomatis berganti setiap 4 detik'} · Hover untuk menjeda
+          </p>
+        </div>
+      </section>
+
+      {/* ===== APP DOWNLOAD CTA BANNER ===== */}
+      <section className="py-20" style={{ background: 'white' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl overflow-hidden relative"
+            style={{ background: 'linear-gradient(135deg, #1A1A2E 0%, #2D2D5E 60%, #1A1A2E 100%)' }}
+          >
+            {/* Decorative blobs */}
+            <div
+              className="absolute top-0 right-0 rounded-full opacity-20"
+              style={{ width: 350, height: 350, background: '#E91E8C', filter: 'blur(80px)', transform: 'translate(30%,-30%)' }}
+            />
+            <div
+              className="absolute bottom-0 left-0 rounded-full opacity-15"
+              style={{ width: 250, height: 250, background: '#4FC3F7', filter: 'blur(60px)', transform: 'translate(-30%,30%)' }}
+            />
+
+            <div className="relative z-10 p-10 sm:p-14">
+              <div className="grid lg:grid-cols-2 gap-10 items-center">
+                {/* Left: text */}
+                <div>
+                  <div
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm font-semibold"
+                    style={{ background: 'rgba(233,30,140,0.2)', border: '1px solid rgba(233,30,140,0.4)' }}
+                  >
+                    <Smartphone size={14} style={{ color: '#FF6BB5' }} />
+                    <span style={{ color: '#FF6BB5' }}>Aplikasi Mobile</span>
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">
+                    Unduh Aplikasi
+                    <br />
+                    <span style={{ color: '#FF6BB5' }}>OMDC Dental</span>
+                  </h2>
+                  <p className="text-white/70 text-base mb-8 leading-relaxed">
+                    Buat janji, pantau antrian, dan kelola rekam medis Anda langsung dari smartphone. Lebih mudah, lebih cepat.
+                  </p>
+
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href="#"
+                      className="flex items-center gap-3 px-5 py-3 rounded-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                      style={{ background: 'white' }}
+                    >
+                      <Apple size={24} style={{ color: '#1A1A2E' }} />
+                      <div>
+                        <p className="text-xs text-gray-500 leading-none">Download on the</p>
+                        <p className="text-sm font-black" style={{ color: '#1A1A2E' }}>App Store</p>
+                      </div>
+                    </a>
+                    <a
+                      href="#"
+                      className="flex items-center gap-3 px-5 py-3 rounded-2xl transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                      style={{ background: 'white' }}
+                    >
+                      <Play size={24} style={{ color: '#10B981', fill: '#10B981' }} />
+                      <div>
+                        <p className="text-xs text-gray-500 leading-none">Get it on</p>
+                        <p className="text-sm font-black" style={{ color: '#1A1A2E' }}>Google Play</p>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div className="mt-6 flex gap-6 flex-wrap">
+                    {['Gratis Download', 'iOS & Android', '4.9 ⭐ Rating'].map((tag) => (
+                      <div key={tag} className="flex items-center gap-2 text-sm" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                        <CheckCircle size={14} style={{ color: '#10B981' }} />
+                        {tag}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: QR code placeholder */}
+                <div className="flex justify-center lg:justify-end">
+                  <div className="flex flex-col items-center gap-4">
+                    {/* QR placeholder */}
+                    <div
+                      className="w-44 h-44 rounded-2xl flex flex-col items-center justify-center gap-2 relative overflow-hidden"
+                      style={{
+                        background: 'white',
+                        border: '3px solid rgba(233,30,140,0.3)',
+                        boxShadow: '0 0 0 6px rgba(233,30,140,0.1)',
+                      }}
+                    >
+                      {/* QR pattern simulation */}
+                      <div className="grid grid-cols-7 gap-0.5 p-3">
+                        {Array.from({ length: 49 }, (_, i) => (
+                          <div
+                            key={i}
+                            className="w-4 h-4 rounded-sm"
+                            style={{
+                              background: [0,1,2,3,4,5,6,7,13,14,21,27,28,35,41,42,43,44,45,46,47,48,8,16,24,32,40].includes(i) || Math.random() > 0.5
+                                ? '#1A1A2E'
+                                : 'transparent',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                      Scan QR untuk download
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
