@@ -122,7 +122,9 @@ export type MobileScreen =
   | 'medical'
   | 'notifications'
   | 'doctors'
-  | 'promos';
+  | 'promos'
+  | 'history'
+  | 'family';
 
 export interface MobileState {
   screen: MobileScreen;

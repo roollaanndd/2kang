@@ -23,6 +23,14 @@ interface Notification {
 
 const MOCK_NOTIFS: Notification[] = [
   {
+    id: 'n0',
+    type: 'reminder',
+    title: 'Pengingat: Kontrol Kawat Gigi',
+    message: 'Jadwal kontrol kawat gigi Anda dengan drg. Sarah Sella hari ini pukul 14:00. Silakan tiba 10 menit lebih awal.',
+    time: 'Hari ini, 08:00',
+    read: false,
+  },
+  {
     id: 'n1',
     type: 'reminder',
     title: 'Janji Temu Besok',
