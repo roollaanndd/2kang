@@ -66,7 +66,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        background: '#F1F3F6',
+        background: '#FAFAF8',
         overflow: 'hidden',
       }}
     >
@@ -75,17 +75,52 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         style={{
           position: 'relative',
           flexShrink: 0,
-          background: 'linear-gradient(155deg, #9D174D 0%, #BE185D 25%, #E91E8C 60%, #FF6BB5 100%)',
+          background: 'linear-gradient(160deg, #0D1421 0%, #1a1040 50%, #0D2133 100%)',
           paddingBottom: 44,
-          overflow: 'visible',
+          overflow: 'hidden',
         }}
       >
+        {/* Gradient mesh blobs */}
+        <div style={{
+          position: 'absolute',
+          top: -60,
+          right: -40,
+          width: 220,
+          height: 220,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(233,30,140,0.32) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute',
+          top: 40,
+          left: -60,
+          width: 180,
+          height: 180,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(6,182,212,0.22) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 60,
+          width: 150,
+          height: 150,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }} />
+
         {/* Animated bokeh blobs */}
         {[
-          { x: 80, y: 5,  s: 90,  delay: 0,   op: 0.07 },
-          { x: 5,  y: 45, s: 60,  delay: 1.2, op: 0.09 },
-          { x: 60, y: 65, s: 100, delay: 0.7, op: 0.06 },
-          { x: 90, y: 50, s: 50,  delay: 1.8, op: 0.08 },
+          { x: 80, y: 5,  s: 90,  delay: 0,   op: 0.05 },
+          { x: 5,  y: 45, s: 60,  delay: 1.2, op: 0.06 },
+          { x: 60, y: 65, s: 100, delay: 0.7, op: 0.04 },
+          { x: 90, y: 50, s: 50,  delay: 1.8, op: 0.05 },
         ].map((b, i) => (
           <motion.div
             key={i}
@@ -107,8 +142,8 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         {/* Status-bar safe area + top bar */}
         <div className="relative flex items-center justify-between px-5 pt-14 pb-3">
           <div>
-            <p className="text-white/70 text-sm font-medium">{getGreeting()},</p>
-            <h1 className="text-white text-2xl font-black tracking-tight leading-tight">
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 500 }}>{getGreeting()},</p>
+            <h1 style={{ color: 'white', fontSize: 24, fontWeight: 900, letterSpacing: -0.5, lineHeight: 1.15 }}>
               {firstName}! 👋
             </h1>
           </div>
@@ -116,17 +151,48 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             <motion.button
               whileTap={{ scale: 0.88 }}
               onClick={() => setState({ screen: 'notifications' })}
-              className="relative w-11 h-11 rounded-full flex items-center justify-center"
-              style={{ background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)' }}
+              style={{
+                position: 'relative',
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'rgba(255,255,255,0.12)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                cursor: 'pointer',
+              }}
             >
               <Bell size={18} color="white" />
-              <span className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-yellow-400 border-2 border-white" />
+              <span style={{
+                position: 'absolute',
+                top: 9,
+                right: 9,
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: '#FBBF24',
+                border: '2px solid transparent',
+              }} />
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.88 }}
               onClick={() => setState({ screen: 'profile' })}
-              className="w-11 h-11 rounded-full flex items-center justify-center font-black text-base text-white"
-              style={{ background: 'rgba(255,255,255,0.25)', border: '2px solid rgba(255,255,255,0.55)' }}
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 900,
+                fontSize: 16,
+                color: 'white',
+                background: 'rgba(255,255,255,0.18)',
+                border: '2px solid rgba(255,255,255,0.35)',
+                cursor: 'pointer',
+              }}
             >
               {firstName[0]}
             </motion.button>
@@ -139,46 +205,75 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mx-5 rounded-2xl p-4"
             style={{
-              background: 'rgba(255,255,255,0.16)',
-              backdropFilter: 'blur(18px)',
-              WebkitBackdropFilter: 'blur(18px)',
-              border: '1px solid rgba(255,255,255,0.28)',
+              margin: '0 20px',
+              borderRadius: 20,
+              padding: 16,
+              background: 'rgba(255,255,255,0.10)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255,255,255,0.18)',
             }}
           >
             <div className="flex items-center justify-between mb-2.5">
-              <span className="text-white/80 text-[10px] font-bold uppercase tracking-widest">
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 Janji Temu Berikutnya
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-white">
+              <span style={{
+                padding: '2px 10px',
+                borderRadius: 20,
+                fontSize: 10,
+                fontWeight: 700,
+                background: '#10B981',
+                color: 'white',
+              }}>
                 Terkonfirmasi
               </span>
             </div>
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl"
-                style={{ background: 'rgba(255,255,255,0.22)' }}
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 14,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  fontSize: 24,
+                  background: 'rgba(255,255,255,0.16)',
+                }}
               >
                 🦷
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-white font-bold text-sm leading-tight truncate">
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ color: 'white', fontWeight: 700, fontSize: 14, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {appointment.service.name}
                 </p>
-                <p className="text-white/75 text-xs mt-0.5">{appointment.doctor.name}</p>
+                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 12, marginTop: 2 }}>{appointment.doctor.name}</p>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="flex items-center gap-1 text-white/65 text-[11px]">
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.55)', fontSize: 11 }}>
                     <Clock size={10} /> {appointment.time}
                   </span>
-                  <span className="flex items-center gap-1 text-white/65 text-[11px]">
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'rgba(255,255,255,0.55)', fontSize: 11 }}>
                     <Calendar size={10} /> {appointment.date}
                   </span>
                 </div>
               </div>
               <div
-                className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black text-xs"
-                style={{ background: 'rgba(255,255,255,0.28)' }}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  color: 'white',
+                  fontWeight: 900,
+                  fontSize: 12,
+                  background: 'rgba(255,255,255,0.22)',
+                }}
               >
                 {appointment.queue}
               </div>
@@ -189,9 +284,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         {/* Quick actions */}
         <div className="flex gap-2.5 px-5 mt-3.5">
           {[
-            { label: 'Booking',  emoji: '📅', screen: 'booking' as const },
-            { label: 'Antrian',  emoji: '🎫', screen: 'queue'   as const },
-            { label: 'Darurat',  emoji: '📞', screen: 'notifications' as const },
+            { label: 'Booking',  emoji: '📅', screen: 'booking' as const,        bg: 'linear-gradient(135deg, rgba(233,30,140,0.5), rgba(255,107,181,0.35))' },
+            { label: 'Antrian',  emoji: '🎫', screen: 'queue'   as const,        bg: 'linear-gradient(135deg, rgba(6,182,212,0.4), rgba(14,165,233,0.25))' },
+            { label: 'Darurat',  emoji: '📞', screen: 'notifications' as const,  bg: 'linear-gradient(135deg, rgba(239,68,68,0.5), rgba(220,38,38,0.35))' },
           ].map((a, i) => (
             <motion.button
               key={a.label}
@@ -200,14 +295,26 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 + i * 0.06 }}
               onClick={() => setState({ screen: a.screen })}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold text-white"
               style={{
-                background: i === 2 ? 'rgba(239,68,68,0.4)' : 'rgba(255,255,255,0.18)',
+                flex: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 6,
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderRadius: 14,
+                fontSize: 12,
+                fontWeight: 700,
+                color: 'white',
+                background: a.bg,
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.28)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
+                cursor: 'pointer',
               }}
             >
-              <span className="text-sm leading-none">{a.emoji}</span>
+              <span style={{ fontSize: 14, lineHeight: 1 }}>{a.emoji}</span>
               {a.label}
             </motion.button>
           ))}
@@ -220,7 +327,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           left: 0,
           right: 0,
           height: 32,
-          background: '#F1F3F6',
+          background: '#FAFAF8',
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
           pointerEvents: 'none',
@@ -233,9 +340,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           flex: 1,
           overflowY: 'auto',
           overscrollBehavior: 'contain',
-          /* -8px so content sits flush in the wave cutout of the hero */
           marginTop: -8,
           scrollbarWidth: 'none',
+          background: '#FAFAF8',
         }}
       >
         <div className="flex flex-col gap-6 px-4 pt-3 pb-6">
@@ -243,7 +350,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           {/* Services Grid */}
           <section>
             <div className="flex items-center justify-between mb-3.5">
-              <h2 className="font-black text-[15px] text-gray-900">Layanan Kami</h2>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#0D1421' }}>Layanan Kami</h2>
               <button
                 onClick={() => setState({ screen: 'booking' })}
                 className="flex items-center gap-0.5 text-xs font-semibold"
@@ -262,14 +369,23 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   whileTap={{ scale: 0.88 }}
                   onClick={() => handleServiceClick(svc)}
                   className="flex flex-col items-center gap-2"
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
                 >
                   <div
-                    className="w-14 h-14 rounded-[18px] flex items-center justify-center shadow-md"
-                    style={{ background: GRADIENTS[i % GRADIENTS.length] }}
+                    style={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: 18,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: GRADIENTS[i % GRADIENTS.length],
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+                    }}
                   >
                     <DentalIcon id={svc.id} />
                   </div>
-                  <span className="text-[10px] font-semibold text-center leading-tight text-gray-700 w-full">
+                  <span style={{ fontSize: 10, fontWeight: 600, textAlign: 'center', lineHeight: 1.3, color: '#374151', width: '100%' }}>
                     {svc.name.length > 11 ? svc.name.slice(0, 10) + '…' : svc.name}
                   </span>
                 </motion.button>
@@ -280,7 +396,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           {/* Doctors */}
           <section>
             <div className="flex items-center justify-between mb-3.5">
-              <h2 className="font-black text-[15px] text-gray-900">Dokter Rekomendasi</h2>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#0D1421' }}>Dokter Rekomendasi</h2>
               <button
                 onClick={() => setState({ screen: 'doctors' })}
                 className="flex items-center gap-0.5 text-xs font-semibold"
@@ -300,31 +416,48 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     transition={{ delay: i * 0.07 }}
                     whileTap={{ scale: 0.96 }}
                     onClick={() => setState({ screen: 'booking-doctor', selectedDoctor: doc })}
-                    className="flex-shrink-0 w-44 rounded-2xl p-3.5 text-left"
-                    style={{ background: 'white', boxShadow: '0 4px 20px rgba(0,0,0,0.07)' }}
+                    style={{
+                      flexShrink: 0,
+                      width: 176,
+                      borderRadius: 20,
+                      padding: 14,
+                      textAlign: 'left',
+                      background: 'white',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
                   >
                     <div
-                      className="w-14 h-14 rounded-2xl mb-2.5 flex items-center justify-center overflow-hidden"
-                      style={{ background: GRADIENTS[i % GRADIENTS.length] }}
+                      style={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: 16,
+                        marginBottom: 10,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden',
+                        background: GRADIENTS[i % GRADIENTS.length],
+                      }}
                     >
                       {doc.photo ? (
-                        <img src={doc.photo} alt={doc.name} className="w-full h-full object-cover" />
+                        <img src={doc.photo} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
-                        <span className="text-white font-black text-xl">{initials}</span>
+                        <span style={{ color: 'white', fontWeight: 900, fontSize: 20 }}>{initials}</span>
                       )}
                     </div>
-                    <p className="text-xs font-bold leading-tight text-gray-800 line-clamp-2">{doc.name}</p>
-                    <p className="text-[10px] mt-0.5 mb-2.5 leading-snug text-gray-400">{doc.specialty}</p>
+                    <p style={{ fontSize: 12, fontWeight: 700, lineHeight: 1.3, color: '#1F2937', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{doc.name}</p>
+                    <p style={{ fontSize: 10, marginTop: 2, marginBottom: 10, lineHeight: 1.4, color: '#9CA3AF' }}>{doc.specialty}</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">
                         <Star size={10} fill="#F59E0B" color="#F59E0B" />
-                        <span className="text-[10px] font-bold text-gray-700">{doc.rating}</span>
+                        <span style={{ fontSize: 10, fontWeight: 700, color: '#374151' }}>{doc.rating}</span>
                       </div>
                       <span
-                        className="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
                         style={doc.available
-                          ? { background: '#D1FAE5', color: '#065F46' }
-                          : { background: '#FEE2E2', color: '#991B1B' }
+                          ? { background: '#D1FAE5', color: '#065F46', padding: '2px 6px', borderRadius: 20, fontSize: 9, fontWeight: 700 }
+                          : { background: '#FEE2E2', color: '#991B1B', padding: '2px 6px', borderRadius: 20, fontSize: 9, fontWeight: 700 }
                         }
                       >
                         {doc.available ? 'Tersedia' : 'Libur'}
@@ -339,7 +472,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           {/* Promotions */}
           <section>
             <div className="flex items-center justify-between mb-3.5">
-              <h2 className="font-black text-[15px] text-gray-900">Promo Terkini</h2>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#0D1421' }}>Promo Terkini</h2>
               <button
                 onClick={() => setState({ screen: 'promos' })}
                 className="flex items-center gap-0.5 text-xs font-semibold"
@@ -355,34 +488,46 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   initial={{ opacity: 0, x: 24 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07 }}
-                  className="flex-shrink-0 w-60 rounded-2xl overflow-hidden"
-                  style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+                  style={{
+                    flexShrink: 0,
+                    width: 240,
+                    borderRadius: 20,
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                  }}
                 >
                   {/* Gradient header */}
-                  <div className="px-4 pt-4 pb-3 relative overflow-hidden" style={{ background: promo.color }}>
+                  <div style={{ padding: '16px', position: 'relative', overflow: 'hidden', background: promo.color }}>
                     <div style={{
                       position: 'absolute', top: -20, right: -20,
                       width: 80, height: 80, borderRadius: '50%',
                       background: 'rgba(255,255,255,0.12)',
                     }} />
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-white font-black text-sm leading-tight">{promo.title}</span>
+                      <span style={{ color: 'white', fontWeight: 900, fontSize: 14, lineHeight: 1.3 }}>{promo.title}</span>
                       <span
-                        className="text-xs font-black rounded-full px-2.5 py-1 flex-shrink-0"
-                        style={{ background: 'rgba(255,255,255,0.28)', color: 'white' }}
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 900,
+                          borderRadius: 20,
+                          padding: '4px 10px',
+                          flexShrink: 0,
+                          background: 'rgba(255,255,255,0.28)',
+                          color: 'white',
+                        }}
                       >
                         -{promo.discount}%
                       </span>
                     </div>
                   </div>
                   {/* Content */}
-                  <div className="px-4 py-3.5" style={{ background: promo.bgColor || '#FFF5F9' }}>
-                    <p className="text-xs text-gray-600 leading-snug line-clamp-2">{promo.description}</p>
-                    <p className="text-[10px] text-gray-400 mt-1.5">Berlaku s/d {promo.validUntil}</p>
+                  <div style={{ padding: '14px 16px', background: promo.bgColor || '#FFF5F9' }}>
+                    <p style={{ fontSize: 12, color: '#4B5563', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{promo.description}</p>
+                    <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 6 }}>Berlaku s/d {promo.validUntil}</p>
                     <button
                       onClick={() => setState({ screen: 'booking' })}
-                      className="mt-2.5 flex items-center gap-1 text-xs font-bold"
-                      style={{ color: promo.color }}
+                      className="flex items-center gap-1 text-xs font-bold"
+                      style={{ color: promo.color, marginTop: 10, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
                     >
                       Klaim Sekarang <ChevronRight size={11} />
                     </button>
@@ -397,24 +542,47 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="rounded-2xl p-4 flex items-center gap-4"
             style={{
+              borderRadius: 20,
+              padding: 16,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 16,
               background: 'linear-gradient(135deg,#FEF3C7,#FDE68A)',
               border: '1px solid #FCD34D',
             }}
           >
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-              style={{ background: 'rgba(245,158,11,0.2)' }}>
+            <div style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 24,
+              flexShrink: 0,
+              background: 'rgba(245,158,11,0.2)',
+            }}>
               🚨
             </div>
-            <div className="flex-1">
-              <p className="font-black text-sm text-amber-900">Layanan Darurat 24/7</p>
-              <p className="text-xs text-amber-700 mt-0.5">Hubungi kami kapan saja untuk keadaan darurat</p>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 900, fontSize: 14, color: '#78350F' }}>Layanan Darurat 24/7</p>
+              <p style={{ fontSize: 12, color: '#92400E', marginTop: 2 }}>Hubungi kami kapan saja untuk keadaan darurat</p>
             </div>
             <button
               onClick={() => setState({ screen: 'notifications' })}
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ background: 'rgba(245,158,11,0.3)' }}
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 14,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                background: 'rgba(245,158,11,0.3)',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
               <Phone size={16} color="#92400E" />
             </button>
