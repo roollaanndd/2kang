@@ -5,6 +5,7 @@ export interface CMSService { id: string; name: string; description: string; emo
 export interface CMSDoctor { id: string; name: string; specialty: string; experience: string; photo: string | null; rating: number; patients: number; isVisible: boolean; }
 export interface CMSPromo { id: string; title: string; subtitle: string; discount: string; image: string | null; validUntil: string; badge: string; color: string; isVisible: boolean; }
 export interface CMSArticle { id: string; title: string; excerpt: string; thumbnail: string | null; category: string; publishedAt: string; isVisible: boolean; }
+export interface CMSTestimonial { id: string; name: string; treatment: string; rating: number; text: string; avatar: string | null; isVisible: boolean; }
 
 export interface CMSContent {
   hero: {
@@ -70,6 +71,14 @@ export interface CMSContent {
   trust: {
     sectionTitle: string;
     logos: Array<{ name: string; logo: string }>;
+  };
+  testimonials: {
+    sectionTitle: string;
+    sectionSubtitle: string;
+    items: CMSTestimonial[];
+  };
+  kioskSettings: {
+    idleTimeoutSeconds: number;
   };
   /** Custom company logo — base64 data URL. When set, replaces the default tooth SVG everywhere. */
   logoUrl: string | null;
@@ -185,6 +194,21 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
       { name: 'QRIS', logo: 'QRIS' },
     ],
   },
+  testimonials: {
+    sectionTitle: 'Apa Kata Pasien Kami',
+    sectionSubtitle: 'Ribuan pasien telah mempercayakan kesehatan gigi mereka kepada kami',
+    items: [
+      { id: '1', name: 'Rina Kusuma', treatment: 'Kawat Gigi', rating: 5, text: 'Pelayanan sangat ramah dan profesional! Dokternya sabar menjelaskan setiap prosedur. Hasil kawat gigi saya luar biasa dalam 18 bulan!', avatar: null, isVisible: true },
+      { id: '2', name: 'Budi Santoso', treatment: 'Bleaching', rating: 5, text: 'Setelah bleaching, gigi saya putih bersih dan hasilnya natural. Prosesnya nyaman, tidak sakit sama sekali. Sangat puas!', avatar: null, isVisible: true },
+      { id: '3', name: 'Dewi Maharani', treatment: 'Veneer Gigi', rating: 5, text: 'Veneer gigi saya terlihat sangat natural dan cantik. Dokternya sangat teliti dan memastikan saya nyaman selama prosedur.', avatar: null, isVisible: true },
+      { id: '4', name: 'Ahmad Fauzi', treatment: 'Implan Gigi', rating: 5, text: 'Implan gigi berhasil dengan sempurna. Terasa seperti gigi asli! Sudah 2 tahun berjalan sangat baik. Terima kasih OMDC!', avatar: null, isVisible: true },
+      { id: '5', name: 'Sari Indah', treatment: 'Scaling & Polishing', rating: 4, text: 'Gigi bersih dan segar setelah scaling. Dokternya gentle dan penuh perhatian. Kliniknya juga bersih dan modern.', avatar: null, isVisible: true },
+      { id: '6', name: 'Rizky Pratama', treatment: 'Tambal Gigi', rating: 5, text: 'Tambal gigi dengan bahan estetik hasilnya sangat natural, tidak terlihat tambalannya. Harga juga sangat terjangkau.', avatar: null, isVisible: true },
+    ],
+  },
+  kioskSettings: {
+    idleTimeoutSeconds: 30,
+  },
 };
 
 export function loadCMSContent(): CMSContent {
@@ -198,6 +222,8 @@ export function loadCMSContent(): CMSContent {
         hero: { ...DEFAULT_CMS_CONTENT.hero, ...(parsed.hero ?? {}) },
         appearance: { ...DEFAULT_CMS_CONTENT.appearance, ...(parsed.appearance ?? {}) },
         contact: { ...DEFAULT_CMS_CONTENT.contact, ...(parsed.contact ?? {}) },
+        testimonials: { ...DEFAULT_CMS_CONTENT.testimonials, ...(parsed.testimonials ?? {}) },
+        kioskSettings: { ...DEFAULT_CMS_CONTENT.kioskSettings, ...(parsed.kioskSettings ?? {}) },
       };
     }
   } catch {}

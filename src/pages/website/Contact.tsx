@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
+import { useCMS } from '../../context/CMSContext';
 
 interface FormData {
   name: string;
@@ -21,6 +22,8 @@ const subjectOptions = [
 ];
 
 export function Contact() {
+  const { cms } = useCMS();
+  const mapEmbed = cms.contact.mapEmbed;
   const [form, setForm] = useState<FormData>({
     name: '',
     phone: '',
@@ -294,36 +297,37 @@ export function Contact() {
                 className="rounded-2xl overflow-hidden"
                 style={{ border: '1px solid #E5E7EB', height: 280 }}
               >
-                <div
-                  className="w-full h-full flex flex-col items-center justify-center relative"
-                  style={{ background: 'linear-gradient(135deg, #F3F4F6, #E5E7EB)' }}
-                >
-                  <div
-                    className="absolute inset-0 opacity-5"
-                    style={{
-                      backgroundImage: `repeating-linear-gradient(0deg, #374151, #374151 1px, transparent 1px, transparent 40px),
-                                        repeating-linear-gradient(90deg, #374151, #374151 1px, transparent 1px, transparent 40px)`,
-                    }}
+                {mapEmbed ? (
+                  <iframe
+                    src={mapEmbed}
+                    className="w-full h-full border-0"
+                    title="Lokasi Klinik"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
                   />
+                ) : (
                   <div
-                    className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-3"
-                    style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+                    className="w-full h-full flex flex-col items-center justify-center relative"
+                    style={{ background: 'linear-gradient(135deg, #F3F4F6, #E5E7EB)' }}
                   >
-                    <MapPin size={28} className="text-white" />
+                    <div
+                      className="absolute inset-0 opacity-5"
+                      style={{
+                        backgroundImage: `repeating-linear-gradient(0deg, #374151, #374151 1px, transparent 1px, transparent 40px),
+                                          repeating-linear-gradient(90deg, #374151, #374151 1px, transparent 1px, transparent 40px)`,
+                      }}
+                    />
+                    <div
+                      className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-3"
+                      style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+                    >
+                      <MapPin size={28} className="text-white" />
+                    </div>
+                    <p className="relative z-10 text-base font-black" style={{ color: '#1A1A2E' }}>Peta Lokasi</p>
+                    <p className="relative z-10 text-sm text-gray-500 mt-1 text-center px-4">{CLINIC_ADDRESS}</p>
+                    <p className="relative z-10 text-xs text-gray-400 mt-2">Tambahkan Maps embed di Admin → Kontak</p>
                   </div>
-                  <p className="relative z-10 text-base font-black" style={{ color: '#1A1A2E' }}>Peta Lokasi</p>
-                  <p className="relative z-10 text-sm text-gray-500 mt-1 text-center px-4">{CLINIC_ADDRESS}</p>
-                  <a
-                    href="https://maps.google.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative z-10 mt-4 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5"
-                    style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
-                  >
-                    <MapPin size={13} />
-                    Buka Google Maps
-                  </a>
-                </div>
+                )}
               </motion.div>
 
               {/* Emergency */}
