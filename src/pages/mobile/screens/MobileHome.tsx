@@ -1,4 +1,5 @@
 /* eslint-disable */
+import React from 'react';
 import { motion } from 'motion/react';
 import {
   Bell, ChevronRight, Star, Clock, Calendar, Phone,
@@ -12,6 +13,9 @@ interface MobileHomeProps {
 }
 
 const PINK = '#E91E8C';
+const ROSE = '#FF6BB5';
+const AQUA = '#06B6D4';
+
 const GRADIENTS = [
   'linear-gradient(135deg,#E91E8C,#FF6BB5)',
   'linear-gradient(135deg,#4FC3F7,#0288D1)',
@@ -23,24 +27,181 @@ const GRADIENTS = [
   'linear-gradient(135deg,#14B8A6,#0D9488)',
 ];
 
-function DentalIcon({ id }: { id: string }) {
-  const paths: Record<string, string> = {
-    's1': 'M12 3c-3.5 0-6 2.7-6 6 0 2.3.9 4 1.8 5.8.9 1.8 1.7 3.3 1.7 5.2 0 .6.4 1 1 1h3c.6 0 1-.4 1-1 0-1.9.8-3.4 1.7-5.2.9-1.8 1.8-3.5 1.8-5.8 0-3.3-2.5-6-6-6z',
-    's2': 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
-    's3': 'M12 2a7 7 0 0 0-7 7c0 5.25 3.5 9.74 8.08 10.98.2.05.42.05.84 0A11 11 0 0 0 19 9a7 7 0 0 0-7-7z',
-    's4': 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-    's5': 'M14.828 14.828a4 4 0 0 1-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
-    's6': 'M12 22V12m0 0c0-5-6-5-6 0m6 0c0-5 6-5 6 0M6 12v5a6 6 0 0 0 12 0v-5',
-    's7': 'M9 3H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2M9 3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 3h6m-3 5v8m-3-4h6',
-    's8': 'M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
+const SHADOW_COLORS = [
+  '#E91E8C',
+  '#0288D1',
+  '#7C3AED',
+  '#059669',
+  '#D97706',
+  '#DC2626',
+  '#DB2777',
+  '#0D9488',
+];
+
+// ── DENTAL SERVICE ICONS ──────────────────────────────────────────────────────
+function DentalServiceIcon({ id }: { id: string }) {
+  const size = 22;
+  const strokeProps = {
+    fill: 'none' as const,
+    stroke: 'white' as const,
+    strokeWidth: 1.6,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
   };
+
+  switch (id) {
+    // s1 — Pemeriksaan: tooth outline with checkmark
+    case 's1':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Tooth silhouette */}
+          <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+          {/* Checkmark inside tooth */}
+          <path d="M9.5 9.5l2 2 3-3.5" />
+        </svg>
+      );
+
+    // s2 — Scaling: water drops / sparkles
+    case 's2':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Central drop */}
+          <path d="M12 4c0 0-4 4.5-4 7.5a4 4 0 0 0 8 0C16 8.5 12 4 12 4z" />
+          {/* Sparkle left */}
+          <path d="M5 6l1 1M6 5l-1 1M5.5 5.5h1" />
+          {/* Sparkle right */}
+          <path d="M18 8l1 1M19 7l-1 1M18.5 7.5h1" />
+          {/* Sparkle top-right */}
+          <path d="M17 3l.5.5M17.5 3l-.5.5M17 3.5h1" />
+        </svg>
+      );
+
+    // s3 — Tambal: tooth with filling square
+    case 's3':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Tooth body */}
+          <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+          {/* Filling square */}
+          <rect x="9.5" y="7.5" width="5" height="4" rx="1" strokeWidth="1.8" />
+        </svg>
+      );
+
+    // s4 — Cabut: tooth with extraction arrow pointing up
+    case 's4':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Tooth body — slightly smaller, shifted down */}
+          <path d="M8.5 8C6.6 8 5 9.5 5 11.3c0 1.4.6 2.6 1.3 3.8.7 1.3 1.2 2.5 1.2 4.3 0 .4.5.6 1.2.6h6.6c.7 0 1.2-.2 1.2-.6 0-1.8.5-3 1.2-4.3.7-1.2 1.3-2.4 1.3-3.8C19 9.5 17.4 8 15.5 8c-.9 0-1.8.3-2.4.9-.3.3-.7.4-1.1.4-.4 0-.8-.1-1.1-.4C10.3 8.3 9.4 8 8.5 8z" />
+          {/* Up arrow — extraction */}
+          <path d="M12 7V2M9.5 4.5L12 2l2.5 2.5" />
+        </svg>
+      );
+
+    // s5 — Behel: teeth row with wire/bracket
+    case 's5':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Three teeth bumps */}
+          <path d="M4 14 Q4 8 7 8 Q10 8 10 12 Q10 8 12 8 Q14 8 14 12 Q14 8 17 8 Q20 8 20 14" />
+          {/* Bottom base */}
+          <path d="M4 14 Q12 17 20 14" />
+          {/* Wire / braces wire */}
+          <path d="M5.5 11 H18.5" strokeWidth="1.2" />
+          {/* Brackets */}
+          <rect x="8.5" y="9.8" width="2.2" height="2.2" rx="0.4" strokeWidth="1.4" />
+          <rect x="13.3" y="9.8" width="2.2" height="2.2" rx="0.4" strokeWidth="1.4" />
+        </svg>
+      );
+
+    // s6 — Implan: screw/implant in bone
+    case 's6':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Crown on top */}
+          <path d="M9.5 4h5l.5 2h-6l.5-2z" />
+          <path d="M9.5 4C9 3 8 2 8 2h8s-1 1-1.5 2" />
+          {/* Abutment connector */}
+          <rect x="10.5" y="6" width="3" height="2" rx="0.5" />
+          {/* Implant screw body */}
+          <path d="M12 8v10" strokeWidth="2.4" />
+          {/* Screw threads */}
+          <path d="M10.5 10 H13.5 M10 12 H14 M10.5 14 H13.5 M11 16 H13" strokeWidth="1" />
+          {/* Bone line */}
+          <path d="M7 15 Q12 13 17 15" strokeWidth="1.4" />
+        </svg>
+      );
+
+    // s7 — Saluran Akar: tooth with root canal lines
+    case 's7':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Tooth crown */}
+          <path d="M9 3C7.3 3 6 4.5 6 6.2c0 1.3.5 2.4 1 3.5.6 1.2 1 2.4 1 4.3v.5c0 .8.4 1.5 1 1.5h6c.6 0 1-.7 1-1.5v-.5c0-1.9.4-3.1 1-4.3.5-1.1 1-2.2 1-3.5C18 4.5 16.7 3 15 3c-.8 0-1.6.4-2.1.9-.3.3-.5.4-.9.4s-.6-.1-.9-.4C10.6 3.4 9.8 3 9 3z" />
+          {/* Root canal — left root */}
+          <path d="M10 15 Q9.5 18 9 21" />
+          {/* Root canal — right root */}
+          <path d="M14 15 Q14.5 18 15 21" />
+          {/* Center root */}
+          <path d="M12 15 V20" />
+          {/* Pulp chamber indicator */}
+          <path d="M10 9 Q12 7.5 14 9" strokeWidth="1.2" />
+        </svg>
+      );
+
+    // s8 — Veneer: tooth with shine stars
+    case 's8':
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {/* Tooth body */}
+          <path d="M8.5 4C6.8 4 5.5 5.5 5.5 7.2c0 1.5.5 2.7 1.1 4 .7 1.4 1.1 2.8 1.1 4.8 0 .6.4 1 1 1h5.6c.6 0 1-.4 1-1 0-2 .4-3.4 1.1-4.8.6-1.3 1.1-2.5 1.1-4C17.5 5.5 16.2 4 14.5 4c-.8 0-1.6.3-2.1.9-.2.2-.4.3-.4.3s-.2-.1-.4-.3C11.1 4.3 10.3 4 9.3 4" />
+          {/* Veneer shine — three stars */}
+          <path d="M18 4 l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4 1-.4z" />
+          <path d="M16 8 l.3.7.7.3-.7.3-.3.7-.3-.7-.7-.3.7-.3z" />
+          <path d="M19 9.5 l.25.5.5.25-.5.25-.25.5-.25-.5-.5-.25.5-.25z" />
+        </svg>
+      );
+
+    default:
+      return (
+        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+        </svg>
+      );
+  }
+}
+
+// ── DOUBLE-BEZEL SERVICE ICON CONTAINER ───────────────────────────────────────
+function ServiceIconBezel({ gradient, shadowColor, children }: {
+  gradient: string;
+  shadowColor: string;
+  children: React.ReactNode;
+}) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
-      <path d={paths[id] ?? paths['s8']} />
-    </svg>
+    <div style={{
+      width: 60,
+      height: 60,
+      borderRadius: 18,
+      padding: 4,
+      background: 'white',
+      boxShadow: `0 4px 16px ${shadowColor}30`,
+    }}>
+      <div style={{
+        width: '100%',
+        height: '100%',
+        borderRadius: 14,
+        background: gradient,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        {children}
+      </div>
+    </div>
   );
 }
 
+// ── GREETING ──────────────────────────────────────────────────────────────────
 const getGreeting = () => {
   const h = new Date().getHours();
   if (h < 12) return 'Selamat Pagi';
@@ -48,6 +209,7 @@ const getGreeting = () => {
   return 'Selamat Malam';
 };
 
+// ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export function MobileHome({ state, setState }: MobileHomeProps) {
   const firstName = state.user?.name?.split(' ')[0] ?? 'Pengguna';
   const appointment = SAMPLE_APPOINTMENTS[0];
@@ -66,7 +228,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        background: '#FAFAF8',
+        background: '#F8F9FB',
         overflow: 'hidden',
       }}
     >
@@ -80,7 +242,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           overflow: 'hidden',
         }}
       >
-        {/* Thin pink gradient accent strip at very top */}
+        {/* 3px pink→rose→aqua gradient strip at very top */}
         <div style={{
           position: 'absolute',
           top: 0,
@@ -151,14 +313,29 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         ))}
 
         {/* Status-bar safe area + top bar */}
-        <div className="relative flex items-center justify-between px-5 pt-14 pb-3">
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '56px 20px 12px' }}>
           <div>
-            <p style={{ color: '#6B7280', fontSize: 13, fontWeight: 500 }}>{getGreeting()},</p>
-            <h1 style={{ color: '#0D1421', fontSize: 24, fontWeight: 900, letterSpacing: -0.5, lineHeight: 1.15 }}>
+            <p style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: '#9CA3AF',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              marginBottom: 2,
+            }}>
+              {getGreeting()}
+            </p>
+            <h1 style={{
+              color: '#111827',
+              fontSize: 26,
+              fontWeight: 900,
+              letterSpacing: -0.5,
+              lineHeight: 1.1,
+            }}>
               {firstName}! 👋
             </h1>
           </div>
-          <div className="flex gap-2.5">
+          <div style={{ display: 'flex', gap: 10 }}>
             <motion.button
               whileTap={{ scale: 0.88 }}
               onClick={() => setState({ screen: 'notifications' })}
@@ -171,8 +348,8 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 background: '#FFFFFF',
-                border: '1.5px solid rgba(233,30,140,0.25)',
-                boxShadow: '0 2px 8px rgba(233,30,140,0.10)',
+                border: `1.5px solid rgba(233,30,140,0.28)`,
+                boxShadow: '0 2px 12px rgba(233,30,140,0.12)',
                 cursor: 'pointer',
               }}
             >
@@ -202,8 +379,8 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 fontSize: 16,
                 color: PINK,
                 background: '#FFFFFF',
-                border: '1.5px solid rgba(233,30,140,0.35)',
-                boxShadow: '0 2px 8px rgba(233,30,140,0.12)',
+                border: `1.5px solid rgba(233,30,140,0.35)`,
+                boxShadow: '0 2px 12px rgba(233,30,140,0.14)',
                 cursor: 'pointer',
               }}
             >
@@ -220,16 +397,15 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             transition={{ delay: 0.1 }}
             style={{
               margin: '0 20px',
-              borderRadius: 20,
+              borderRadius: 22,
               padding: 16,
               background: '#FFFFFF',
-              boxShadow: '0 4px 24px rgba(233,30,140,0.10), 0 1px 4px rgba(0,0,0,0.06)',
-              border: '1px solid rgba(233,30,140,0.12)',
+              boxShadow: '0 8px 32px rgba(233,30,140,0.12)',
               borderLeft: `3px solid ${PINK}`,
             }}
           >
-            <div className="flex items-center justify-between mb-2.5">
-              <span style={{ color: '#6B7280', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+              <span style={{ color: '#9CA3AF', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                 Janji Temu Berikutnya
               </span>
               <span style={{
@@ -243,7 +419,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 Terkonfirmasi
               </span>
             </div>
-            <div className="flex items-center gap-3">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div
                 style={{
                   width: 48,
@@ -260,11 +436,11 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 🦷
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: '#0D1421', fontWeight: 700, fontSize: 14, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <p style={{ color: '#111827', fontWeight: 700, fontSize: 14, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {appointment.service.name}
                 </p>
                 <p style={{ color: '#6B7280', fontSize: 12, marginTop: 2 }}>{appointment.doctor.name}</p>
-                <div className="flex items-center gap-3 mt-1">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4, color: '#9CA3AF', fontSize: 11 }}>
                     <Clock size={10} /> {appointment.time}
                   </span>
@@ -295,12 +471,46 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           </motion.div>
         )}
 
-        {/* Quick actions */}
-        <div className="flex gap-2.5 px-5 mt-3.5">
+        {/* Quick actions — 3 pill buttons */}
+        <div style={{ display: 'flex', gap: 10, padding: '14px 20px 0' }}>
           {[
-            { label: 'Booking',  emoji: '📅', screen: 'booking' as const,        bg: 'rgba(233,30,140,0.10)',  color: '#E91E8C',  border: 'rgba(233,30,140,0.22)' },
-            { label: 'Antrian',  emoji: '🎫', screen: 'queue'   as const,        bg: 'rgba(6,182,212,0.10)',   color: '#0891B2',  border: 'rgba(6,182,212,0.22)'  },
-            { label: 'Darurat',  emoji: '📞', screen: 'notifications' as const,  bg: 'rgba(239,68,68,0.10)',  color: '#DC2626',  border: 'rgba(239,68,68,0.22)'  },
+            {
+              label: 'Booking',
+              icon: (
+                <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#E91E8C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+              ),
+              screen: 'booking' as const,
+              bg: 'rgba(233,30,140,0.08)',
+              color: '#E91E8C',
+              border: 'rgba(233,30,140,0.20)',
+            },
+            {
+              label: 'Antrian',
+              icon: (
+                <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#0891B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 6h16M4 10h16M4 14h10M4 18h6" />
+                </svg>
+              ),
+              screen: 'queue' as const,
+              bg: 'rgba(6,182,212,0.08)',
+              color: '#0891B2',
+              border: 'rgba(6,182,212,0.20)',
+            },
+            {
+              label: 'Darurat',
+              icon: (
+                <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.43 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13 1.01.35 2 .66 2.96a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.96.31 1.95.53 2.96.66A2 2 0 0 1 22 16.92z" />
+                </svg>
+              ),
+              screen: 'notifications' as const,
+              bg: 'rgba(239,68,68,0.08)',
+              color: '#DC2626',
+              border: 'rgba(239,68,68,0.20)',
+            },
           ].map((a, i) => (
             <motion.button
               key={a.label}
@@ -326,7 +536,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 cursor: 'pointer',
               }}
             >
-              <span style={{ fontSize: 14, lineHeight: 1 }}>{a.emoji}</span>
+              {a.icon}
               {a.label}
             </motion.button>
           ))}
@@ -339,7 +549,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           left: 0,
           right: 0,
           height: 32,
-          background: '#FAFAF8',
+          background: '#F8F9FB',
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
           pointerEvents: 'none',
@@ -354,24 +564,23 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           overscrollBehavior: 'contain',
           marginTop: -8,
           scrollbarWidth: 'none',
-          background: '#FAFAF8',
+          background: '#F8F9FB',
         }}
       >
-        <div className="flex flex-col gap-6 px-4 pt-3 pb-6">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '12px 16px 24px' }}>
 
-          {/* Services Grid */}
+          {/* ── Services Grid ── */}
           <section>
-            <div className="flex items-center justify-between mb-3.5">
-              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#0D1421' }}>Layanan Kami</h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Layanan Kami</h2>
               <button
                 onClick={() => setState({ screen: 'booking' })}
-                className="flex items-center gap-0.5 text-xs font-semibold"
-                style={{ color: PINK }}
+                style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, color: PINK, background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
                 Lihat semua <ChevronRight size={13} />
               </button>
             </div>
-            <div className="grid grid-cols-4 gap-3">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
               {SERVICES.map((svc, i) => (
                 <motion.button
                   key={svc.id}
@@ -380,24 +589,31 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   transition={{ delay: i * 0.04 }}
                   whileTap={{ scale: 0.88 }}
                   onClick={() => handleServiceClick(svc)}
-                  className="flex flex-col items-center gap-2"
-                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 8,
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                  }}
                 >
-                  <div
-                    style={{
-                      width: 56,
-                      height: 56,
-                      borderRadius: 18,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: GRADIENTS[i % GRADIENTS.length],
-                      boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
-                    }}
+                  <ServiceIconBezel
+                    gradient={GRADIENTS[i % GRADIENTS.length]}
+                    shadowColor={SHADOW_COLORS[i % SHADOW_COLORS.length]}
                   >
-                    <DentalIcon id={svc.id} />
-                  </div>
-                  <span style={{ fontSize: 10, fontWeight: 600, textAlign: 'center', lineHeight: 1.3, color: '#374151', width: '100%' }}>
+                    <DentalServiceIcon id={svc.id} />
+                  </ServiceIconBezel>
+                  <span style={{
+                    fontSize: 10,
+                    fontWeight: 600,
+                    textAlign: 'center',
+                    lineHeight: 1.3,
+                    color: '#374151',
+                    width: '100%',
+                  }}>
                     {svc.name.length > 11 ? svc.name.slice(0, 10) + '…' : svc.name}
                   </span>
                 </motion.button>
@@ -405,19 +621,18 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             </div>
           </section>
 
-          {/* Doctors */}
+          {/* ── Doctors ── */}
           <section>
-            <div className="flex items-center justify-between mb-3.5">
-              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#0D1421' }}>Dokter Rekomendasi</h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Dokter Rekomendasi</h2>
               <button
                 onClick={() => setState({ screen: 'doctors' })}
-                className="flex items-center gap-0.5 text-xs font-semibold"
-                style={{ color: PINK }}
+                style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, color: PINK, background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
                 Semua <ChevronRight size={13} />
               </button>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
               {DOCTORS.map((doc, i) => {
                 const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
                 return (
@@ -431,38 +646,53 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     style={{
                       flexShrink: 0,
                       width: 176,
-                      borderRadius: 20,
+                      borderRadius: 22,
                       padding: 14,
                       textAlign: 'left',
                       background: 'white',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
-                      border: 'none',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                      border: '1px solid rgba(0,0,0,0.06)',
                       cursor: 'pointer',
                     }}
                   >
+                    {/* Doctor avatar — elegant monogram in soft gradient circle */}
                     <div
                       style={{
                         width: 56,
                         height: 56,
-                        borderRadius: 16,
+                        borderRadius: 20,
                         marginBottom: 10,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         overflow: 'hidden',
                         background: GRADIENTS[i % GRADIENTS.length],
+                        boxShadow: `0 4px 12px ${SHADOW_COLORS[i % SHADOW_COLORS.length]}30`,
+                        flexShrink: 0,
                       }}
                     >
                       {doc.photo ? (
                         <img src={doc.photo} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
-                        <span style={{ color: 'white', fontWeight: 900, fontSize: 20 }}>{initials}</span>
+                        <span style={{
+                          color: 'white',
+                          fontWeight: 900,
+                          fontSize: 18,
+                          letterSpacing: -0.5,
+                          textShadow: '0 1px 4px rgba(0,0,0,0.2)',
+                        }}>
+                          {initials}
+                        </span>
                       )}
                     </div>
-                    <p style={{ fontSize: 12, fontWeight: 700, lineHeight: 1.3, color: '#1F2937', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{doc.name}</p>
-                    <p style={{ fontSize: 10, marginTop: 2, marginBottom: 10, lineHeight: 1.4, color: '#9CA3AF' }}>{doc.specialty}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
+                    <p style={{ fontSize: 12, fontWeight: 700, lineHeight: 1.3, color: '#1F2937', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {doc.name}
+                    </p>
+                    <p style={{ fontSize: 10, marginTop: 2, marginBottom: 10, lineHeight: 1.4, color: '#9CA3AF' }}>
+                      {doc.specialty}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Star size={10} fill="#F59E0B" color="#F59E0B" />
                         <span style={{ fontSize: 10, fontWeight: 700, color: '#374151' }}>{doc.rating}</span>
                       </div>
@@ -481,19 +711,18 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             </div>
           </section>
 
-          {/* Promotions */}
+          {/* ── Promotions ── */}
           <section>
-            <div className="flex items-center justify-between mb-3.5">
-              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#0D1421' }}>Promo Terkini</h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Promo Terkini</h2>
               <button
                 onClick={() => setState({ screen: 'promos' })}
-                className="flex items-center gap-0.5 text-xs font-semibold"
-                style={{ color: PINK }}
+                style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, color: PINK, background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
                 Semua <ChevronRight size={13} />
               </button>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
               {PROMOTIONS.map((promo, i) => (
                 <motion.div
                   key={promo.id}
@@ -505,17 +734,19 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     width: 240,
                     borderRadius: 20,
                     overflow: 'hidden',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                    border: '1px solid rgba(0,0,0,0.05)',
+                    background: '#FFFFFF',
                   }}
                 >
-                  {/* Gradient header */}
+                  {/* Gradient header — UI element, fine with color */}
                   <div style={{ padding: '16px', position: 'relative', overflow: 'hidden', background: promo.color }}>
                     <div style={{
                       position: 'absolute', top: -20, right: -20,
                       width: 80, height: 80, borderRadius: '50%',
                       background: 'rgba(255,255,255,0.12)',
                     }} />
-                    <div className="flex items-start justify-between gap-2">
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                       <span style={{ color: 'white', fontWeight: 900, fontSize: 14, lineHeight: 1.3 }}>{promo.title}</span>
                       <span
                         style={{
@@ -532,14 +763,27 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                       </span>
                     </div>
                   </div>
-                  {/* Content */}
-                  <div style={{ padding: '14px 16px', background: promo.bgColor || '#FFF5F9' }}>
-                    <p style={{ fontSize: 12, color: '#4B5563', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{promo.description}</p>
+                  {/* Content — white background, no dark bg */}
+                  <div style={{ padding: '14px 16px', background: '#FFFFFF' }}>
+                    <p style={{ fontSize: 12, color: '#4B5563', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {promo.description}
+                    </p>
                     <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 6 }}>Berlaku s/d {promo.validUntil}</p>
                     <button
                       onClick={() => setState({ screen: 'booking' })}
-                      className="flex items-center gap-1 text-xs font-bold"
-                      style={{ color: promo.color, marginTop: 10, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        fontSize: 12,
+                        fontWeight: 700,
+                        color: promo.color,
+                        marginTop: 10,
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 0,
+                      }}
                     >
                       Klaim Sekarang <ChevronRight size={11} />
                     </button>
@@ -549,7 +793,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             </div>
           </section>
 
-          {/* Emergency card */}
+          {/* ── Emergency card ── */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -560,8 +804,8 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               display: 'flex',
               alignItems: 'center',
               gap: 16,
-              background: 'linear-gradient(135deg,#FEF3C7,#FDE68A)',
-              border: '1px solid #FCD34D',
+              background: '#FFF8E7',
+              border: '1px solid rgba(245,158,11,0.2)',
             }}
           >
             <div style={{
@@ -573,7 +817,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               justifyContent: 'center',
               fontSize: 24,
               flexShrink: 0,
-              background: 'rgba(245,158,11,0.2)',
+              background: 'rgba(245,158,11,0.15)',
             }}>
               🚨
             </div>
@@ -591,7 +835,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                background: 'rgba(245,158,11,0.3)',
+                background: 'rgba(245,158,11,0.2)',
                 border: 'none',
                 cursor: 'pointer',
               }}
@@ -599,6 +843,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               <Phone size={16} color="#92400E" />
             </button>
           </motion.div>
+
         </div>
       </div>
     </motion.div>
