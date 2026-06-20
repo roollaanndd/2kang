@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar, ChevronLeft } from 'lucide-react';
+import { Star, ChevronRight, Phone, MessageCircle, ArrowRight, Calendar, ChevronLeft, Quote } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import type { CMSTestimonial } from '../../data/defaultCMSContent';
 
 const PINK = '#E91E8C';
 const BLUE = '#4FC3F7';
@@ -340,6 +341,81 @@ function ServiceCard({ emoji, name, description, price, primaryColor, index }: {
           style={{ background: grad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
         >
           {price}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── TESTIMONIAL CARD ────────────────────────────────────────────────────────
+function TestimonialCard({ item, primaryColor, index }: { item: CMSTestimonial; primaryColor: string; index: number }) {
+  const accents = [
+    `linear-gradient(135deg,${primaryColor},#FF6BB5)`,
+    `linear-gradient(135deg,#4FC3F7,#0288D1)`,
+    `linear-gradient(135deg,#A78BFA,#7C3AED)`,
+    `linear-gradient(135deg,#10B981,#059669)`,
+    `linear-gradient(135deg,#F59E0B,#D97706)`,
+    `linear-gradient(135deg,#EC4899,#DB2777)`,
+  ];
+  const grad = accents[index % accents.length];
+  const initial = item.name[0] ?? 'P';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: (index % 3) * 0.1 }}
+      whileHover={{ y: -5 }}
+      className="relative bg-white rounded-2xl overflow-hidden flex flex-col"
+      style={{
+        boxShadow: '0 2px 20px rgba(0,0,0,0.07)',
+        border: '1px solid rgba(0,0,0,0.04)',
+        transition: 'all 0.25s ease',
+      }}
+    >
+      {/* Top accent bar */}
+      <div className="h-1 w-full" style={{ background: grad }} />
+
+      <div className="p-5 flex flex-col flex-1">
+        {/* Quote icon */}
+        <div className="mb-3" style={{ opacity: 0.15 }}>
+          <Quote size={28} style={{ background: grad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fill: primaryColor }} />
+        </div>
+
+        {/* Stars */}
+        <div className="flex gap-0.5 mb-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star key={i} size={12} fill={i < item.rating ? '#F59E0B' : '#E5E7EB'} className={i < item.rating ? 'text-yellow-400' : 'text-gray-200'} />
+          ))}
+        </div>
+
+        {/* Text */}
+        <p className="text-sm text-gray-600 leading-relaxed flex-1 mb-4 line-clamp-4">"{item.text}"</p>
+
+        {/* Treatment chip */}
+        <div className="mb-4">
+          <span className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white" style={{ background: grad }}>
+            {item.treatment}
+          </span>
+        </div>
+
+        {/* Author */}
+        <div className="flex items-center gap-3 pt-3 border-t border-gray-50">
+          {item.avatar ? (
+            <img src={item.avatar} alt={item.name} className="w-9 h-9 rounded-full object-cover" />
+          ) : (
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
+              style={{ background: grad }}
+            >
+              {initial}
+            </div>
+          )}
+          <div>
+            <div className="text-sm font-bold text-gray-800 leading-tight">{item.name}</div>
+            <div className="text-[10px] text-gray-400 mt-0.5">Pasien OMDC Dental</div>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -695,6 +771,30 @@ export function Home() {
           </div>
         </section>
       )}
+
+      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
+      {(() => {
+        const visibleTestimonials = (cms.testimonials?.items ?? []).filter(t => t.isVisible);
+        if (!visibleTestimonials.length) return null;
+        return (
+          <section className="py-20 bg-white">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center mb-12">
+                <div className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4" style={{ background: `${primary}15`, color: primary }}>
+                  Testimoni
+                </div>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-3">{cms.testimonials.sectionTitle}</h2>
+                <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">{cms.testimonials.sectionSubtitle}</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {visibleTestimonials.map((t, idx) => (
+                  <TestimonialCard key={t.id} item={t} primaryColor={primary} index={idx} />
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ── CLINIC SECTION ────────────────────────────────────────────────── */}
       <section className="py-20 bg-white">

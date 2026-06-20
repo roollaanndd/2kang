@@ -5,12 +5,12 @@ import {
   Globe, Image, Type, List, Users, Tag, Newspaper, Info,
   Phone, Palette, Shield, Plus, Trash2, Eye, EyeOff,
   Upload, X, ChevronDown, ChevronUp, Save, RotateCcw,
-  Star, Check, GripVertical, Edit2, ExternalLink,
+  Star, Check, GripVertical, Edit2, ExternalLink, MessageSquareQuote, Settings,
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import { useAuth } from '../../context/AuthContext';
 import type {
-  CMSStat, CMSService, CMSDoctor, CMSPromo, CMSArticle,
+  CMSStat, CMSService, CMSDoctor, CMSPromo, CMSArticle, CMSTestimonial,
 } from '../../data/defaultCMSContent';
 
 const PINK = '#E91E8C';
@@ -28,6 +28,8 @@ const TABS = [
   { id: 'contact', label: 'Kontak', icon: Phone },
   { id: 'appearance', label: 'Tampilan', icon: Palette },
   { id: 'trust', label: 'Trust', icon: Shield },
+  { id: 'testimonials', label: 'Testimoni', icon: MessageSquareQuote },
+  { id: 'kiosk', label: 'Kiosk', icon: Settings },
 ] as const;
 type TabId = typeof TABS[number]['id'];
 
@@ -978,6 +980,160 @@ function TrustTab() {
   );
 }
 
+// ─── TESTIMONIALS TAB ─────────────────────────────────────────────────────────
+function TestimonialsTab() {
+  const { cms, updateTestimonials } = useCMS();
+  const t = cms.testimonials;
+  const [editing, setEditing] = useState<CMSTestimonial | null>(null);
+  const [editIdx, setEditIdx] = useState<number | null>(null);
+
+  const toggleVisible = (id: string) => updateTestimonials({ items: t.items.map(i => i.id === id ? { ...i, isVisible: !i.isVisible } : i) });
+  const openEdit = (item: CMSTestimonial, idx: number) => { setEditing({ ...item }); setEditIdx(idx); };
+  const saveEdit = () => {
+    if (!editing || editIdx === null) return;
+    updateTestimonials({ items: t.items.map((i, idx) => idx === editIdx ? editing : i) });
+    setEditing(null); setEditIdx(null);
+  };
+  const deleteItem = (id: string) => updateTestimonials({ items: t.items.filter(i => i.id !== id) });
+  const addItem = () => {
+    const id = `tm${Date.now()}`;
+    updateTestimonials({ items: [...t.items, { id, name: 'Nama Pasien', treatment: 'Layanan', rating: 5, text: 'Tuliskan testimoni di sini...', avatar: null, isVisible: true }] });
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Field label="Judul Seksi"><Input value={t.sectionTitle} onChange={v => updateTestimonials({ sectionTitle: v })} /></Field>
+        <Field label="Subjudul Seksi"><Input value={t.sectionSubtitle} onChange={v => updateTestimonials({ sectionSubtitle: v })} multiline /></Field>
+      </div>
+
+      <div className="space-y-2">
+        {t.items.map((item, idx) => (
+          <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: 'linear-gradient(135deg,#E91E8C,#FF6BB5)' }}>
+              {item.name[0]}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-medium text-gray-800 truncate">{item.name}</div>
+              <div className="text-xs text-gray-500">{item.treatment}</div>
+              <div className="flex items-center gap-0.5 mt-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={10} fill={i < item.rating ? '#F59E0B' : '#E5E7EB'} className={i < item.rating ? 'text-yellow-400' : 'text-gray-200'} />
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Toggle checked={item.isVisible} onChange={() => toggleVisible(item.id)} />
+              <button onClick={() => openEdit(item, idx)} className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-lg transition-all"><Edit2 size={14} /></button>
+              <button onClick={() => deleteItem(item.id)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14} /></button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button onClick={addItem} className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl border border-dashed border-gray-300 text-gray-500 hover:border-pink-400 hover:text-pink-500 transition-all">
+        <Plus size={16} /> Tambah Testimoni
+      </button>
+
+      <AnimatePresence>
+        {editing && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+            onClick={e => { if (e.target === e.currentTarget) { setEditing(null); setEditIdx(null); } }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 16 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-gray-800">Edit Testimoni</div>
+                <button onClick={() => { setEditing(null); setEditIdx(null); }} className="p-1.5 rounded-lg hover:bg-gray-100"><X size={16} /></button>
+              </div>
+              <Field label="Nama Pasien"><Input value={editing.name} onChange={v => setEditing({ ...editing, name: v })} /></Field>
+              <Field label="Layanan / Perawatan"><Input value={editing.treatment} onChange={v => setEditing({ ...editing, treatment: v })} /></Field>
+              <Field label="Rating (1-5)">
+                <input type="number" min="1" max="5" step="1" value={editing.rating}
+                  onChange={e => setEditing({ ...editing, rating: Math.min(5, Math.max(1, parseInt(e.target.value) || 5)) })}
+                  className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400" />
+              </Field>
+              <Field label="Teks Testimoni"><Input value={editing.text} onChange={v => setEditing({ ...editing, text: v })} multiline /></Field>
+              <ImageUpload label="Foto Pasien (opsional)" value={editing.avatar} onChange={v => setEditing({ ...editing, avatar: v })} aspectHint="Foto wajah, rasio 1:1 disarankan" />
+              <div className="flex items-center gap-3 pt-2">
+                <button onClick={() => { setEditing(null); setEditIdx(null); }} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all">Batal</button>
+                <button onClick={saveEdit} className="flex-1 py-2.5 rounded-xl text-white text-sm font-medium transition-all" style={{ background: PINK }}>Simpan</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── KIOSK SETTINGS TAB ───────────────────────────────────────────────────────
+function KioskSettingsTab() {
+  const { cms, updateKioskSettings } = useCMS();
+  const k = cms.kioskSettings;
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-sm text-blue-700">
+        Pengaturan ini berlaku untuk tampilan e-Kiosk di layar sentuh klinik.
+      </div>
+
+      <div className="rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+          <div className="text-sm font-semibold text-gray-800">Screensaver Idle</div>
+          <div className="text-xs text-gray-500 mt-0.5">Screensaver akan muncul saat tidak ada aktivitas dalam waktu yang ditentukan</div>
+        </div>
+        <div className="p-5 space-y-4">
+          <Field label="Waktu Idle sebelum Screensaver (detik)" hint="Disarankan: 30–120 detik. Sentuh layar untuk membangunkan kiosk.">
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min={10}
+                max={300}
+                step={5}
+                value={k.idleTimeoutSeconds}
+                onChange={e => updateKioskSettings({ idleTimeoutSeconds: parseInt(e.target.value) })}
+                className="flex-1"
+                style={{ accentColor: PINK }}
+              />
+              <div
+                className="w-20 text-center font-bold text-sm py-2 rounded-lg"
+                style={{ background: `${PINK}15`, color: PINK }}
+              >
+                {k.idleTimeoutSeconds}d
+              </div>
+            </div>
+          </Field>
+
+          <div className="rounded-xl overflow-hidden border border-gray-100">
+            <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+              <div className="text-xs font-medium text-gray-500">Preview Screensaver</div>
+            </div>
+            <div
+              className="relative flex flex-col items-center justify-center py-10 gap-3"
+              style={{ background: 'linear-gradient(145deg,#0D0D1A,#1a0a2e)' }}
+            >
+              <div className="text-5xl">🦷</div>
+              <div className="text-white font-black text-4xl tracking-tight">HH : MM : SS</div>
+              <div className="text-white/50 text-sm">Sabtu, 20 Juni 2026</div>
+              <div
+                className="mt-2 px-8 py-3 rounded-full text-white text-sm font-bold"
+                style={{ background: `linear-gradient(135deg,${PINK},#FF6BB5)` }}
+              >
+                ✋ Sentuh Layar untuk Memulai
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function AdminWebsite() {
   const [activeTab, setActiveTab] = useState<TabId>('hero');
@@ -1011,6 +1167,8 @@ export default function AdminWebsite() {
       case 'contact': return <ContactTab />;
       case 'appearance': return <AppearanceTab />;
       case 'trust': return <TrustTab />;
+      case 'testimonials': return <TestimonialsTab />;
+      case 'kiosk': return <KioskSettingsTab />;
       default: return null;
     }
   };
