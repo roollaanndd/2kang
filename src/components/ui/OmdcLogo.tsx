@@ -54,22 +54,31 @@ export function OmdcLogo({ size = 'md', variant = 'default', showText = true }: 
       >
         <svg
           width={s.icon * 0.6}
-          height={s.icon * 0.6}
-          viewBox="0 0 24 24"
+          height={s.icon * 0.64}
+          viewBox="0 0 22 24"
           fill="none"
         >
+          {/* Premium bicuspid tooth crown */}
           <path
-            d="M12 2C8.5 2 6 4.5 6 8c0 2 .8 3.5 1.5 5 .7 1.5 1 2.5 1 4 0 .6.4 1 1 1h5c.6 0 1-.4 1-1 0-1.5.3-2.5 1-4 .7-1.5 1.5-3 1.5-5 0-3.5-2.5-6-6-6z"
+            d="M7.8 3C5.7 3 4.2 4.6 4.2 6.6c0 1.3.5 2.5 1.1 3.5l2 3.5c.3.6.6 1.4.6 2.6v.3c0 .5.4.9.9.9h6.4c.5 0 .9-.4.9-.9v-.3c0-1.2.3-2 .6-2.6l2-3.5c.6-1 1.1-2.2 1.1-3.5C19.8 4.6 18.3 3 16.2 3c-1 0-1.9.4-2.5 1-.3.3-.8.5-1.2.5-.4 0-.9-.2-1.2-.5C10.7 3.4 9.8 3 7.8 3z"
             fill="white"
-            opacity="0.9"
+            opacity="0.95"
           />
+          {/* Bicuspid cusp groove */}
           <path
-            d="M10 15v4M14 15v4M12 2v3"
-            stroke="white"
-            strokeWidth="1.5"
+            d="M11 3.8V7.8"
+            stroke="rgba(233,30,140,0.28)"
+            strokeWidth="1.2"
             strokeLinecap="round"
+          />
+          {/* 4-point sparkle — top right corner */}
+          <path
+            d="M18.2 1.5l.35 1 1 .35-1 .35-.35 1-.35-1-1-.35 1-.35z"
+            fill="white"
             opacity="0.7"
           />
+          {/* Shine dot — upper left */}
+          <circle cx="7.6" cy="5.4" r="0.9" fill="white" opacity="0.42" />
         </svg>
       </div>
       {showText && (

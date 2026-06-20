@@ -136,4 +136,5 @@ export interface MobileState {
   selectedTime?: string;
   currentQueue?: string;
   onboardingStep: number;
+  tcAccepted?: boolean;
 }
