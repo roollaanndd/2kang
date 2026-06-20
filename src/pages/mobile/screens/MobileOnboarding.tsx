@@ -50,19 +50,25 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -40 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col h-full items-center justify-between py-16 px-8"
-            style={{ background: 'linear-gradient(160deg, #E91E8C 0%, #FF6BB5 60%, #FFB3D9 100%)' }}
+            className="flex flex-col h-full items-center justify-between py-16 px-8 relative overflow-hidden"
+            style={{ background: '#FFFFFF' }}
           >
+            {/* 3px top accent */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+            {/* Soft blobs */}
+            <div style={{ position: 'absolute', top: -80, right: -60, width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', bottom: -60, left: -60, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
             {/* Logo area */}
-            <div className="flex flex-col items-center gap-6 flex-1 justify-center">
+            <div className="flex flex-col items-center gap-6 flex-1 justify-center relative z-10">
               <motion.div
                 initial={{ scale: 0.7, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
                 className="rounded-3xl p-5 mb-2"
-                style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(12px)' }}
+                style={{ background: 'white', boxShadow: '0 8px 40px rgba(233,30,140,0.15)', border: '1px solid rgba(233,30,140,0.1)' }}
               >
-                <OmdcLogo size="xl" variant="white" />
+                <OmdcLogo size="xl" variant="default" />
               </motion.div>
 
               <motion.div
@@ -71,13 +77,13 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
                 transition={{ delay: 0.3 }}
                 className="text-center"
               >
-                <h1 className="text-3xl font-black text-white mb-2 tracking-tight">
+                <h1 className="text-3xl font-black mb-2 tracking-tight" style={{ color: '#111827' }}>
                   Aplikasi OMDC Dental
                 </h1>
-                <p className="text-lg font-semibold text-white/90 mb-3 italic">
+                <p className="text-lg font-semibold mb-3 italic" style={{ color: '#E91E8C' }}>
                   "Senyum Sehat, Percaya Diri Penuh"
                 </p>
-                <p className="text-white/80 text-sm leading-relaxed max-w-xs">
+                <p className="text-sm leading-relaxed max-w-xs" style={{ color: '#6B7280' }}>
                   Kelola kunjungan gigi Anda dengan mudah dan nyaman
                 </p>
               </motion.div>
@@ -93,15 +99,15 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
                     style={{
                       width: i === step ? 24 : 8,
                       height: 8,
-                      background: i === step ? 'white' : 'rgba(255,255,255,0.4)',
+                      background: i === step ? '#E91E8C' : '#F3F4F6',
                     }}
                   />
                 ))}
               </div>
               <button
                 onClick={goNext}
-                className="w-full flex items-center justify-center gap-2 rounded-2xl py-4 font-bold text-base transition-all active:scale-95"
-                style={{ background: 'white', color: '#E91E8C', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
+                className="w-full flex items-center justify-center gap-2 rounded-2xl py-4 font-bold text-base text-white transition-all active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', boxShadow: '0 8px 24px rgba(233,30,140,0.3)' }}
               >
                 Lanjut <ChevronRight size={20} />
               </button>

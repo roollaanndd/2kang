@@ -64,19 +64,20 @@ export function MobileRegister({ setState }: MobileRegisterProps) {
     >
       {/* Header */}
       <div
-        className="flex items-center gap-3 px-4 pt-12 pb-5"
-        style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+        className="flex items-center gap-3 px-4 pt-12 pb-5 relative"
+        style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}
       >
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
         <button
           onClick={() => setState({ screen: 'login' })}
           className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-          style={{ background: 'rgba(255,255,255,0.2)' }}
+          style={{ background: '#FFF0F7', border: '1px solid rgba(233,30,140,0.15)' }}
         >
-          <ArrowLeft size={20} color="white" />
+          <ArrowLeft size={20} style={{ color: '#E91E8C' }} />
         </button>
         <div>
-          <h1 className="text-xl font-black text-white">Buat Akun Baru</h1>
-          <p className="text-white/70 text-xs">Isi data diri Anda untuk mendaftar</p>
+          <h1 className="text-xl font-black" style={{ color: '#111827' }}>Buat Akun Baru</h1>
+          <p className="text-xs" style={{ color: '#9CA3AF' }}>Isi data diri Anda untuk mendaftar</p>
         </div>
       </div>
 
