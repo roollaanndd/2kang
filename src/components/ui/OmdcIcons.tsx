@@ -5,6 +5,7 @@ interface IconProps {
   color?: string;
   style?: CSSProperties;
   className?: string;
+  strokeWidth?: number;
 }
 
 // Shared tooth base path — 48×48 viewBox
@@ -145,6 +146,142 @@ export function OmdcBrandMark({ size = 48, color = '#E91E8C', style, className }
     <svg width={size} height={size} viewBox="0 0 48 48" fill="none" style={style} className={className}>
       <path d={T} fill={color} fillOpacity="0.1" stroke={color} strokeWidth="2.2" strokeLinejoin="round" />
       <path d="M24 15v18M15 24h18" stroke={color} strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// ─── BESPOKE UI ICON SET ──────────────────────────────────────────────
+// Drawn in the OMDC house style: 24-grid, rounded line, tooth-derived cues.
+// No third-party / generic icon packs.
+
+// Nav · Home — friendly house with a tooth-arch roof
+export function IconHome({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <path d="M4 11.5 12 4l8 7.5" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5.6 10.4V19a1 1 0 0 0 1 1H17.4a1 1 0 0 0 1-1v-8.6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.5 20v-4.2c0-1.4 1.1-2.3 2.5-2.3s2.5.9 2.5 2.3V20" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Nav · Booking — calendar with a tooth tick
+export function IconCalendarTooth({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <rect x="3.5" y="5" width="17" height="15.5" rx="3.2" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M3.5 9.5h17M8 3.2v3.4M16 3.2v3.4" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+      <path d="M9 14.2l2.2 2.2 4-4.4" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Nav · Queue — numbered queue ticket
+export function IconQueue({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5V9a2 2 0 0 0 0 6v2.5A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5V15a2 2 0 0 0 0-6z" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+      <path d="M12 8.5v7" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeDasharray="0.4 3" />
+    </svg>
+  );
+}
+
+// Nav · Doctor — tooth with a care heartbeat pulse
+export function IconDoctorTooth({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <path d="M12 3.4c-3.4 0-6 2.4-6 5.4 0 1.9.8 3.4 1.6 5 .9 1.6 1.2 3.3 1.2 5.6 0 .3.2.5.5.5h1.1c.3 0 .5-.2.5-.5l.2-3c0-.6.4-1 .9-1s.9.4.9 1l.2 3c0 .3.2.5.5.5h1.1c.3 0 .5-.2.5-.5 0-2.3.3-4 1.2-5.6.8-1.6 1.6-3.1 1.6-5 0-3-2.6-5.4-6-5.4z" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+      <path d="M8.6 9.4h1.5l1 1.9 1.3-3 .8 1.6h1.6" stroke={color} strokeWidth={strokeWidth * 0.85} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Nav · Profile — person bust
+export function IconProfile({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <circle cx="12" cy="8" r="3.6" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M5 19.4c0-3.4 3.1-5.4 7-5.4s7 2 7 5.4" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// Star — rating
+export function IconStar({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <path d="M12 3.5l2.55 5.17 5.7.83-4.13 4.02.98 5.68L12 16.9l-5.1 2.3.98-5.68L3.75 9.5l5.7-.83z" fill={color} stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Smile — happy patient
+export function IconSmile({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <circle cx="12" cy="12" r="8.5" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M8.4 13.2c.8 1.6 2.1 2.5 3.6 2.5s2.8-.9 3.6-2.5" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+      <circle cx="9" cy="9.6" r="1" fill={color} /><circle cx="15" cy="9.6" r="1" fill={color} />
+    </svg>
+  );
+}
+
+// Phone — call
+export function IconPhone({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <path d="M6.5 4h3l1.4 4-2 1.4a11 11 0 0 0 5.7 5.7l1.4-2 4 1.4v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4z" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Location — clinic pin with tooth dot
+export function IconLocation({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <path d="M12 21c4-4.2 6-7.5 6-10.4A6 6 0 0 0 6 10.6C6 13.5 8 16.8 12 21z" stroke={color} strokeWidth={strokeWidth} strokeLinejoin="round" />
+      <circle cx="12" cy="10.4" r="2.2" stroke={color} strokeWidth={strokeWidth} />
+    </svg>
+  );
+}
+
+// Clock — hours
+export function IconClock({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <circle cx="12" cy="12" r="8.5" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M12 7.5V12l3 2" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Mail — email
+export function IconMail({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="3" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M4.5 7.5 12 13l7.5-5.5" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Mobile app — phone device
+export function IconMobileApp({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <rect x="6.5" y="2.5" width="11" height="19" rx="3" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M10 5.2h4" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
+      <circle cx="12" cy="18.2" r="1" fill={color} />
+    </svg>
+  );
+}
+
+// Kiosk — counter monitor
+export function IconKiosk({ size = 24, color = '#E91E8C', strokeWidth = 1.9, style, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+      <rect x="3.5" y="4" width="17" height="11.5" rx="2.5" stroke={color} strokeWidth={strokeWidth} />
+      <path d="M9 19.5h6M12 15.5v4M7 8.4h6" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" />
     </svg>
   );
 }

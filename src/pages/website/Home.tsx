@@ -13,7 +13,7 @@ import { CountUp } from '../../components/ui/CountUp';
 import { SmoothImage } from '../../components/ui/SmoothImage';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { HeroIllustration } from '../../components/ui/HeroIllustration';
-import { OmdcServiceIcon } from '../../components/ui/OmdcIcons';
+import { OmdcServiceIcon, IconStar, IconSmile } from '../../components/ui/OmdcIcons';
 import { WaveDivider } from '../../components/ui/WaveDivider';
 
 const PINK = '#E91E8C';
@@ -400,7 +400,7 @@ function HeroSection() {
             transition={{ delay: 0.65, type: 'spring', stiffness: 260, damping: 22 }}
             style={{ position: 'absolute', top: '28%', right: '6%', zIndex: 10, background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(16px)', borderRadius: 16, padding: '12px 16px', boxShadow: '0 12px 40px rgba(0,0,0,0.22)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
           >
-            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>⭐</div>
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><IconStar size={19} color="#FFFFFF" /></div>
             <div>
               <div style={{ fontSize: 19, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="4.9" /></div>
               <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Rating Pasien</div>
@@ -411,7 +411,7 @@ function HeroSection() {
             transition={{ delay: 0.8, type: 'spring', stiffness: 260, damping: 22 }}
             style={{ position: 'absolute', bottom: '22%', right: '6%', zIndex: 10, background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(16px)', borderRadius: 16, padding: '12px 16px', boxShadow: '0 12px 40px rgba(0,0,0,0.22)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
           >
-            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${AQUA}, #38BDF8)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>😊</div>
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${AQUA}, #38BDF8)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><IconSmile size={19} color="#FFFFFF" /></div>
             <div>
               <div style={{ fontSize: 19, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="20K+" /></div>
               <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Pasien Puas</div>
