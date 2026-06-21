@@ -185,7 +185,7 @@ export function MobileLayout() {
         <ScreenTransitionBar screen={state.screen} />
         <NotifToast onOpen={() => setState({ screen: 'notifications' })} />
 
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', paddingBottom: showBottomNav ? 108 : 0 }}>
           <AnimatePresence mode="wait">
             <div key={state.screen} style={{ position: 'absolute', inset: 0 }}>
               {renderScreen()}
@@ -203,7 +203,7 @@ export function MobileLayout() {
         {state.isLoggedIn && (
           <div style={{
             position: 'absolute',
-            bottom: showBottomNav ? 68 : 8,
+            bottom: showBottomNav ? 96 : 8,
             right: 10,
             fontSize: 9,
             fontWeight: 600,
