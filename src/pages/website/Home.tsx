@@ -13,6 +13,7 @@ import { CountUp } from '../../components/ui/CountUp';
 import { SmoothImage } from '../../components/ui/SmoothImage';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { HeroIllustration } from '../../components/ui/HeroIllustration';
+import { OmdcServiceIcon } from '../../components/ui/OmdcIcons';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -51,14 +52,15 @@ function useIsMobile(breakpoint = 860) {
 }
 
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
-function Eyebrow({ text }: { text: string }) {
+function Eyebrow({ text, dark }: { text: string; dark?: boolean }) {
   return (
     <div style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
       padding: '5px 14px', borderRadius: 100,
-      background: 'rgba(233,30,140,0.08)',
-      border: '1px solid rgba(233,30,140,0.18)',
-      color: PINK, fontSize: 11, fontWeight: 700,
+      background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(233,30,140,0.08)',
+      border: dark ? '1px solid rgba(255,255,255,0.22)' : '1px solid rgba(233,30,140,0.18)',
+      color: dark ? 'rgba(255,255,255,0.92)' : PINK,
+      fontSize: 11, fontWeight: 700,
       letterSpacing: '0.08em', textTransform: 'uppercase',
       marginBottom: 18,
     }}>
@@ -81,21 +83,22 @@ function GradText({ children, style = {} }: { children: ReactNode; style?: CSSPr
 }
 
 // ── ANIMATED PREMIUM HERO BACKGROUND — dental geometry, no blobs ─────────────
-function AnimatedHeroBg() {
+function AnimatedHeroBg({ dark = false }: { dark?: boolean }) {
+  const w = 'rgba(255,255,255,0.9)';
   const shapes = [
-    { x: 90, y: -4,  s: 92,  d: 0,   t: 15, c: PINK, o: 0.05,  sh: 'tooth'   },
-    { x: 2,  y: 8,   s: 100, d: 1.6, t: 13, c: AQUA, o: 0.038, sh: 'ring'    },
-    { x: 78, y: 55,  s: 28,  d: 0.9, t: 9,  c: PINK, o: 0.06,  sh: 'plus'    },
-    { x: 4,  y: 62,  s: 68,  d: 2.3, t: 17, c: PINK, o: 0.04,  sh: 'tooth'   },
-    { x: 88, y: 72,  s: 22,  d: 1.2, t: 8,  c: AQUA, o: 0.07,  sh: 'sparkle' },
-    { x: 50, y: 88,  s: 72,  d: 0.5, t: 12, c: PINK, o: 0.03,  sh: 'ring'    },
-    { x: 94, y: 30,  s: 22,  d: 1.9, t: 10, c: AQUA, o: 0.06,  sh: 'plus'    },
-    { x: 8,  y: 30,  s: 18,  d: 0.3, t: 7,  c: PINK, o: 0.08,  sh: 'sparkle' },
-    { x: 40, y: 3,   s: 52,  d: 3.2, t: 19, c: AQUA, o: 0.028, sh: 'tooth'   },
-    { x: 60, y: 10,  s: 80,  d: 2.6, t: 16, c: AQUA, o: 0.03,  sh: 'ring'    },
-    { x: 20, y: 78,  s: 16,  d: 1.5, t: 8,  c: PINK, o: 0.055, sh: 'sparkle' },
-    { x: 66, y: 40,  s: 24,  d: 2.9, t: 13, c: PINK, o: 0.042, sh: 'plus'    },
-  ] as const;
+    { x: 90, y: -4,  s: 92,  d: 0,   t: 15, c: dark ? w : PINK, o: dark ? 0.04 : 0.05,  sh: 'tooth'   },
+    { x: 2,  y: 8,   s: 100, d: 1.6, t: 13, c: dark ? w : AQUA, o: dark ? 0.03 : 0.038, sh: 'ring'    },
+    { x: 78, y: 55,  s: 28,  d: 0.9, t: 9,  c: dark ? w : PINK, o: dark ? 0.04 : 0.06,  sh: 'plus'    },
+    { x: 4,  y: 62,  s: 68,  d: 2.3, t: 17, c: dark ? w : PINK, o: dark ? 0.03 : 0.04,  sh: 'tooth'   },
+    { x: 88, y: 72,  s: 22,  d: 1.2, t: 8,  c: dark ? w : AQUA, o: dark ? 0.05 : 0.07,  sh: 'sparkle' },
+    { x: 50, y: 88,  s: 72,  d: 0.5, t: 12, c: dark ? w : PINK, o: dark ? 0.025: 0.03,  sh: 'ring'    },
+    { x: 94, y: 30,  s: 22,  d: 1.9, t: 10, c: dark ? w : AQUA, o: dark ? 0.045: 0.06,  sh: 'plus'    },
+    { x: 8,  y: 30,  s: 18,  d: 0.3, t: 7,  c: dark ? w : PINK, o: dark ? 0.055: 0.08,  sh: 'sparkle' },
+    { x: 40, y: 3,   s: 52,  d: 3.2, t: 19, c: dark ? w : AQUA, o: dark ? 0.022: 0.028, sh: 'tooth'   },
+    { x: 60, y: 10,  s: 80,  d: 2.6, t: 16, c: dark ? w : AQUA, o: dark ? 0.022: 0.03,  sh: 'ring'    },
+    { x: 20, y: 78,  s: 16,  d: 1.5, t: 8,  c: dark ? w : PINK, o: dark ? 0.04 : 0.055, sh: 'sparkle' },
+    { x: 66, y: 40,  s: 24,  d: 2.9, t: 13, c: dark ? w : PINK, o: dark ? 0.032: 0.042, sh: 'plus'    },
+  ];
 
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
@@ -188,6 +191,7 @@ function HeroSection() {
   const images = h.heroImages ?? [];
   const [imgIdx, setImgIdx] = useState(0);
   const isMobile = useIsMobile();
+  const hasImages = images.length > 0;
 
   useEffect(() => {
     if (images.length < 2) return;
@@ -199,54 +203,108 @@ function HeroSection() {
   const stats = h.stats ?? [];
 
   return (
-    <section style={{ position: 'relative', background: '#FFFFFF', paddingTop: isMobile ? 92 : 80, overflow: 'hidden', minHeight: isMobile ? 'auto' : '100dvh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <AnimatedHeroBg />
+    <section style={{
+      position: 'relative',
+      background: hasImages ? '#0D1421' : '#FFFFFF',
+      paddingTop: isMobile ? 92 : 80,
+      overflow: 'hidden',
+      minHeight: isMobile ? 'auto' : '100dvh',
+      display: 'flex', flexDirection: 'column', justifyContent: 'center',
+    }}>
 
-      {/* Diagonal accent lines — geometric, no blobs */}
-      <div style={{ position: 'absolute', top: '20%', right: '-4%', width: '52%', height: 3, background: `linear-gradient(90deg, transparent, ${PINK}22, ${AQUA}28, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', top: '27%', right: '-1%', width: '38%', height: 2, background: `linear-gradient(90deg, transparent, ${AQUA}14, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
+      {/* ── FULL-BLEED BACKGROUND IMAGES (crossfade) ── */}
+      {hasImages && images.map((src, i) => (
+        <motion.div
+          key={src}
+          animate={{ opacity: i === imgIdx ? 1 : 0, scale: i === imgIdx ? 1 : 1.04 }}
+          transition={{ duration: 1.3, ease: [0.32, 0.72, 0, 1] }}
+          style={{
+            position: 'absolute', inset: 0, zIndex: 0,
+            backgroundImage: `url(${src})`,
+            backgroundSize: 'cover',
+            backgroundPosition: isMobile ? 'center center' : 'center 30%',
+          }}
+        />
+      ))}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '54% 46%', gap: isMobile ? 36 : 24, alignItems: 'center', paddingTop: isMobile ? 12 : 44, paddingBottom: isMobile ? 52 : 68 }}>
+      {/* ── BLENDED OVERLAYS ── */}
+      {hasImages && (
+        <>
+          {/* Dark gradient — heavier on left for text, lighter on right to let photo breathe */}
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 1,
+            background: isMobile
+              ? 'linear-gradient(180deg, rgba(13,20,33,0.78) 0%, rgba(13,20,33,0.62) 45%, rgba(13,20,33,0.88) 100%)'
+              : 'linear-gradient(108deg, rgba(13,20,33,0.94) 0%, rgba(13,20,33,0.84) 28%, rgba(13,20,33,0.52) 58%, rgba(13,20,33,0.14) 100%)',
+          }} />
+          {/* Brand tint — pink left, aqua right */}
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 1,
+            background: `linear-gradient(135deg, rgba(233,30,140,0.07) 0%, transparent 48%, rgba(6,182,212,0.05) 100%)`,
+          }} />
+        </>
+      )}
 
-          {/* LEFT: Text content */}
-          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.72, ease: [0.32, 0.72, 0, 1] }}
-            style={{ textAlign: isMobile ? 'center' : 'left' }}>
-            <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} />
+      {/* ── GEOMETRIC SHAPES (white on dark, colored on light) ── */}
+      <AnimatedHeroBg dark={hasImages} />
 
-            {/* Giant headline */}
-            <h1 style={{ fontSize: isMobile ? 'clamp(40px, 10vw, 54px)' : 'clamp(52px, 5.5vw, 76px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', color: DARK, margin: 0, marginBottom: 6 }}>
+      {/* Diagonal accents — only without background images */}
+      {!hasImages && (
+        <>
+          <div style={{ position: 'absolute', top: '20%', right: '-4%', width: '52%', height: 3, background: `linear-gradient(90deg, transparent, ${PINK}22, ${AQUA}28, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: '27%', right: '-1%', width: '38%', height: 2, background: `linear-gradient(90deg, transparent, ${AQUA}14, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
+        </>
+      )}
+
+      {/* ── CONTENT ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: 'relative', zIndex: 2 }}>
+
+        {hasImages ? (
+          /* Full-bleed mode: single column, text over the image */
+          <motion.div
+            initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.72, ease: [0.32, 0.72, 0, 1] }}
+            style={{
+              maxWidth: isMobile ? '100%' : '56%',
+              paddingTop: isMobile ? 16 : 48,
+              paddingBottom: isMobile ? 80 : 80,
+              textAlign: isMobile ? 'center' : 'left',
+            }}
+          >
+            <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} dark />
+
+            <h1 style={{ fontSize: isMobile ? 'clamp(38px,10vw,52px)' : 'clamp(52px,5.5vw,78px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', color: 'white', margin: 0, marginBottom: 6 }}>
               {h.headline || 'Senyum Sehat,'}
             </h1>
-            <h1 style={{ fontSize: isMobile ? 'clamp(40px, 10vw, 54px)' : 'clamp(52px, 5.5vw, 76px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', margin: 0, marginBottom: 22 }}>
+            <h1 style={{ fontSize: isMobile ? 'clamp(38px,10vw,52px)' : 'clamp(52px,5.5vw,78px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', margin: 0, marginBottom: 24 }}>
               <GradText>{h.headlineAccent || 'Percaya Diri Penuh'}</GradText>
             </h1>
 
-            {/* Service pills — in-hero */}
-            <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginBottom: 22, justifyContent: isMobile ? 'center' : 'flex-start' }}>
+            {/* Service pills */}
+            <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginBottom: 24, justifyContent: isMobile ? 'center' : 'flex-start' }}>
               {services.map((sv, i) => (
                 <motion.div key={sv.id}
                   initial={{ opacity: 0, scale: 0.82, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ delay: 0.24 + i * 0.07 }}
-                  style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(233,30,140,0.06)', border: '1px solid rgba(233,30,140,0.14)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
+                  style={{ padding: '5px 13px', borderRadius: 100, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', fontSize: 12.5, color: 'rgba(255,255,255,0.88)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
                   <span style={{ fontSize: 14 }}>{sv.emoji}</span>{sv.name}
                 </motion.div>
               ))}
             </div>
 
-            <p style={{ fontSize: isMobile ? 15.5 : 17, color: '#6B7280', lineHeight: 1.7, maxWidth: 500, margin: isMobile ? '0 auto 28px' : '0 0 32px' }}>
+            <p style={{ fontSize: isMobile ? 15.5 : 17, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, maxWidth: 500, margin: isMobile ? '0 auto 28px' : '0 0 32px' }}>
               {h.subheadline || 'Perawatan gigi modern dengan teknologi terkini untuk Anda dan keluarga tercinta.'}
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: isMobile ? 32 : 40, justifyContent: isMobile ? 'center' : 'flex-start' }}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: isMobile ? 32 : 44, justifyContent: isMobile ? 'center' : 'flex-start' }}>
               <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} style={isMobile ? { flex: '1 1 100%', maxWidth: 320, margin: '0 auto' } : undefined}>
                 <Link to="/booking" style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '15px 32px',
                   width: isMobile ? '100%' : undefined,
                   background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
                   color: 'white', borderRadius: 16, fontWeight: 700, fontSize: 15,
-                  textDecoration: 'none', boxShadow: '0 10px 36px rgba(233,30,140,0.38)',
+                  textDecoration: 'none', boxShadow: '0 10px 36px rgba(233,30,140,0.48)',
                 }}>
                   {h.ctaPrimaryText || 'Booking Sekarang'}
                   <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -258,117 +316,122 @@ function HeroSection() {
                 <Link to="/services" style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '15px 24px',
                   width: isMobile ? '100%' : undefined,
-                  background: 'white', color: DARK,
-                  border: '1.5px solid rgba(0,0,0,0.10)', borderRadius: 16,
+                  background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)',
+                  color: 'white', border: '1.5px solid rgba(255,255,255,0.22)', borderRadius: 16,
                   fontWeight: 600, fontSize: 15, textDecoration: 'none',
-                  boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
                 }}>
                   {h.ctaSecondaryText || 'Lihat Layanan'}
-                  <ChevronRight size={16} color={PINK} />
+                  <ChevronRight size={16} color={ROSE} />
                 </Link>
               </motion.div>
             </div>
 
-            {/* Stats */}
+            {/* Stats — frosted glass on dark bg */}
             <div style={{ display: isMobile ? 'grid' : 'flex', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : undefined, gap: isMobile ? 10 : 14, flexWrap: 'wrap', justifyContent: isMobile ? 'stretch' : 'flex-start' }}>
               {stats.map((s, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '11px 10px' : '12px 20px', background: 'white', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: DARK }}><CountUp value={s.value} /></span>
-                  <span style={{ fontSize: isMobile ? 10 : 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '11px 10px' : '12px 20px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', borderRadius: 14, border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 2px 12px rgba(0,0,0,0.15)' }}>
+                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: 'white' }}><CountUp value={s.value} /></span>
+                  <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.6)', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
-
-          {/* RIGHT: Hero image with floating cards */}
-          <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 36, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.72, delay: 0.16, ease: [0.32, 0.72, 0, 1] }}
-            style={{ position: 'relative' }}>
-
-            {images.length > 0 ? (
-              <>
-                {/* Decorative offset shadow-frame behind image */}
-                {!isMobile && (
-                  <div style={{
-                    position: 'absolute', top: 28, right: -18, bottom: -28, left: 36,
-                    borderRadius: '32px 8px 32px 8px',
-                    background: `linear-gradient(135deg, rgba(233,30,140,0.07), rgba(6,182,212,0.06))`,
-                    border: '1px solid rgba(233,30,140,0.08)',
-                    zIndex: 0,
-                  }} />
-                )}
-
-                {/* Image in asymmetric frame for visual distinction */}
-                <div style={{
-                  borderRadius: isMobile ? 24 : '28px 8px 28px 8px',
-                  overflow: 'hidden', aspectRatio: isMobile ? '4/3' : '3/4',
-                  position: 'relative', boxShadow: '0 28px 72px rgba(0,0,0,0.16)', zIndex: 1,
-                }}>
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 55%, rgba(233,30,140,0.15) 100%)', zIndex: 1 }} />
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={imgIdx} src={images[imgIdx]} alt=""
-                      initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }}
-                      transition={{ duration: 0.7 }}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </AnimatePresence>
-                  {images.length > 1 && (
-                    <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 6, zIndex: 2 }}>
-                      {images.map((_, i) => (
-                        <button key={i} onClick={() => setImgIdx(i)}
-                          style={{ width: i === imgIdx ? 24 : 8, height: 8, borderRadius: 4, background: i === imgIdx ? 'white' : 'rgba(255,255,255,0.45)', border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.3s' }} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Floating rating card */}
-                {!isMobile && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8, x: -10 }} animate={{ opacity: 1, scale: 1, x: 0 }}
-                    transition={{ delay: 0.6, type: 'spring', stiffness: 260, damping: 22 }}
-                    style={{ position: 'absolute', top: 36, left: -24, zIndex: 10, background: 'white', borderRadius: 16, padding: '12px 16px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
-                  >
-                    <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>⭐</div>
-                    <div>
-                      <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="4.9" /></div>
-                      <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Rating Pasien</div>
-                    </div>
+        ) : (
+          /* No-image mode: classic 2-column with SVG illustration */
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '54% 46%', gap: isMobile ? 36 : 24, alignItems: 'center', paddingTop: isMobile ? 12 : 44, paddingBottom: isMobile ? 52 : 68 }}>
+            <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.72, ease: [0.32, 0.72, 0, 1] }}
+              style={{ textAlign: isMobile ? 'center' : 'left' }}>
+              <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} />
+              <h1 style={{ fontSize: isMobile ? 'clamp(40px,10vw,54px)' : 'clamp(52px,5.5vw,76px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', color: DARK, margin: 0, marginBottom: 6 }}>
+                {h.headline || 'Senyum Sehat,'}
+              </h1>
+              <h1 style={{ fontSize: isMobile ? 'clamp(40px,10vw,54px)' : 'clamp(52px,5.5vw,76px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', margin: 0, marginBottom: 22 }}>
+                <GradText>{h.headlineAccent || 'Percaya Diri Penuh'}</GradText>
+              </h1>
+              <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginBottom: 22, justifyContent: isMobile ? 'center' : 'flex-start' }}>
+                {services.map((sv, i) => (
+                  <motion.div key={sv.id} initial={{ opacity: 0, scale: 0.82, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: 0.24 + i * 0.07 }}
+                    style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(233,30,140,0.06)', border: '1px solid rgba(233,30,140,0.14)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ fontSize: 14 }}>{sv.emoji}</span>{sv.name}
                   </motion.div>
-                )}
-
-                {/* Floating patients card */}
-                {!isMobile && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8, x: 10 }} animate={{ opacity: 1, scale: 1, x: 0 }}
-                    transition={{ delay: 0.74, type: 'spring', stiffness: 260, damping: 22 }}
-                    style={{ position: 'absolute', bottom: 32, right: -24, zIndex: 10, background: 'white', borderRadius: 16, padding: '12px 16px', boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
-                  >
-                    <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${AQUA}, #38BDF8)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>😊</div>
-                    <div>
-                      <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="10K+" /></div>
-                      <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Pasien Puas</div>
-                    </div>
+                ))}
+              </div>
+              <p style={{ fontSize: isMobile ? 15.5 : 17, color: '#6B7280', lineHeight: 1.7, maxWidth: 500, margin: isMobile ? '0 auto 28px' : '0 0 32px' }}>
+                {h.subheadline || 'Perawatan gigi modern dengan teknologi terkini untuk Anda dan keluarga tercinta.'}
+              </p>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: isMobile ? 32 : 40, justifyContent: isMobile ? 'center' : 'flex-start' }}>
+                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} style={isMobile ? { flex: '1 1 100%', maxWidth: 320, margin: '0 auto' } : undefined}>
+                  <Link to="/booking" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '15px 32px', width: isMobile ? '100%' : undefined, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white', borderRadius: 16, fontWeight: 700, fontSize: 15, textDecoration: 'none', boxShadow: '0 10px 36px rgba(233,30,140,0.38)' }}>
+                    {h.ctaPrimaryText || 'Booking Sekarang'}
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Calendar size={14} /></div>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} style={isMobile ? { flex: '1 1 100%', maxWidth: 320, margin: '0 auto' } : undefined}>
+                  <Link to="/services" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '15px 24px', width: isMobile ? '100%' : undefined, background: 'white', color: DARK, border: '1.5px solid rgba(0,0,0,0.10)', borderRadius: 16, fontWeight: 600, fontSize: 15, textDecoration: 'none', boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
+                    {h.ctaSecondaryText || 'Lihat Layanan'} <ChevronRight size={16} color={PINK} />
+                  </Link>
+                </motion.div>
+              </div>
+              <div style={{ display: isMobile ? 'grid' : 'flex', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : undefined, gap: isMobile ? 10 : 14, flexWrap: 'wrap', justifyContent: isMobile ? 'stretch' : 'flex-start' }}>
+                {stats.map((s, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '11px 10px' : '12px 20px', background: 'white', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+                    <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: DARK }}><CountUp value={s.value} /></span>
+                    <span style={{ fontSize: isMobile ? 10 : 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
                   </motion.div>
-                )}
-              </>
-            ) : (
-              /* No CMS images — show branded family illustration */
-              <motion.div
-                initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-                style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <HeroIllustration width={520} height={560} />
-              </motion.div>
-            )}
-          </motion.div>
-        </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 36, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.72, delay: 0.16, ease: [0.32, 0.72, 0, 1] }}
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <HeroIllustration width={520} height={560} />
+            </motion.div>
+          </div>
+        )}
       </div>
 
-      {/* Bottom fade */}
+      {/* Floating info cards — positioned over the right side of hero image */}
+      {hasImages && !isMobile && (
+        <>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 20 }} animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ delay: 0.65, type: 'spring', stiffness: 260, damping: 22 }}
+            style={{ position: 'absolute', top: '28%', right: '6%', zIndex: 10, background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(16px)', borderRadius: 16, padding: '12px 16px', boxShadow: '0 12px 40px rgba(0,0,0,0.22)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
+          >
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>⭐</div>
+            <div>
+              <div style={{ fontSize: 19, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="4.9" /></div>
+              <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Rating Pasien</div>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 20 }} animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ delay: 0.8, type: 'spring', stiffness: 260, damping: 22 }}
+            style={{ position: 'absolute', bottom: '22%', right: '6%', zIndex: 10, background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(16px)', borderRadius: 16, padding: '12px 16px', boxShadow: '0 12px 40px rgba(0,0,0,0.22)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
+          >
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${AQUA}, #38BDF8)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>😊</div>
+            <div>
+              <div style={{ fontSize: 19, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="20K+" /></div>
+              <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Pasien Puas</div>
+            </div>
+          </motion.div>
+        </>
+      )}
+
+      {/* Image pagination dots — bottom center, full-bleed mode */}
+      {hasImages && images.length > 1 && (
+        <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 7, zIndex: 10 }}>
+          {images.map((_, i) => (
+            <button key={i} onClick={() => setImgIdx(i)}
+              style={{ width: i === imgIdx ? 28 : 9, height: 9, borderRadius: 5, background: i === imgIdx ? PINK : 'rgba(255,255,255,0.38)', border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.32s ease', boxShadow: i === imgIdx ? `0 0 8px ${PINK}66` : 'none' }} />
+          ))}
+        </div>
+      )}
+
+      {/* Bottom fade into next section */}
       {!isMobile && (
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 60, background: '#F8F9FB', clipPath: 'ellipse(55% 100% at 50% 100%)' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 64, background: hasImages ? 'linear-gradient(transparent, rgba(248,249,251,0.95))' : '#F8F9FB', clipPath: 'ellipse(55% 100% at 50% 100%)', zIndex: 3 }} />
       )}
     </section>
   );
@@ -563,8 +626,8 @@ function ServicesSection() {
                 <div style={{ height: 4, background: `linear-gradient(90deg, ${cardColor}, ${cardColor}AA)` }} />
                 <div style={{ padding: '20px 20px 22px' }}>
                   {/* Icon circle */}
-                  <div style={{ width: 54, height: 54, borderRadius: 16, background: `${cardColor}18`, border: `1.5px solid ${cardColor}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, marginBottom: 14 }}>
-                    {item.emoji}
+                  <div style={{ width: 54, height: 54, borderRadius: 16, background: `${cardColor}18`, border: `1.5px solid ${cardColor}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                    <OmdcServiceIcon id={item.id} size={30} color={cardColor} />
                   </div>
                   <div style={{ fontWeight: 800, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
                   <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.55, marginBottom: 14 }}>{item.description}</div>

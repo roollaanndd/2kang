@@ -173,9 +173,9 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     sectionTitle: 'Artikel & Edukasi',
     sectionSubtitle: 'Tips dan informasi seputar kesehatan gigi untuk Anda dan keluarga',
     items: [
-      { id: '1', title: '5 Tips Menjaga Kesehatan Gigi Sehari-hari', excerpt: 'Pelajari kebiasaan sederhana yang bisa membuat gigi Anda tetap sehat dan bersih sepanjang hari...', thumbnail: null, category: 'Tips Kesehatan', publishedAt: '2026-06-15', isVisible: true },
-      { id: '2', title: 'Kapan Harus Pasang Kawat Gigi? Ini Tanda-tandanya', excerpt: 'Gigi berantakan atau rahang tidak sejajar? Kenali tanda-tanda Anda membutuhkan ortodonti...', thumbnail: null, category: 'Ortodonti', publishedAt: '2026-06-10', isVisible: true },
-      { id: '3', title: 'Perbedaan Veneer dan Mahkota Gigi yang Perlu Anda Tahu', excerpt: 'Sebelum memutuskan perawatan kosmetik gigi, ketahui perbedaan veneer dan mahkota secara lengkap...', thumbnail: null, category: 'Perawatan Kosmetik', publishedAt: '2026-06-05', isVisible: true },
+      { id: '1', title: '5 Tips Menjaga Kesehatan Gigi Sehari-hari', excerpt: 'Pelajari kebiasaan sederhana yang bisa membuat gigi Anda tetap sehat dan bersih sepanjang hari...', thumbnail: 'https://images.pexels.com/photos/6627574/pexels-photo-6627574.jpeg?auto=compress&cs=tinysrgb&w=600&h=360&fit=crop&q=80', category: 'Tips Kesehatan', publishedAt: '2026-06-15', isVisible: true },
+      { id: '2', title: 'Kapan Harus Pasang Kawat Gigi? Ini Tanda-tandanya', excerpt: 'Gigi berantakan atau rahang tidak sejajar? Kenali tanda-tanda Anda membutuhkan ortodonti...', thumbnail: 'https://images.pexels.com/photos/4545205/pexels-photo-4545205.jpeg?auto=compress&cs=tinysrgb&w=600&h=360&fit=crop&q=80', category: 'Ortodonti', publishedAt: '2026-06-10', isVisible: true },
+      { id: '3', title: 'Perbedaan Veneer dan Mahkota Gigi yang Perlu Anda Tahu', excerpt: 'Sebelum memutuskan perawatan kosmetik gigi, ketahui perbedaan veneer dan mahkota secara lengkap...', thumbnail: 'https://images.pexels.com/photos/6812453/pexels-photo-6812453.jpeg?auto=compress&cs=tinysrgb&w=600&h=360&fit=crop&q=80', category: 'Perawatan Kosmetik', publishedAt: '2026-06-05', isVisible: true },
     ],
   },
   about: {

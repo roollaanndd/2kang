@@ -1,10 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageCircle, X } from 'lucide-react';
 import { Navbar } from '../../components/website/Navbar';
 import { Footer } from '../../components/website/Footer';
 import { useCMS } from '../../context/CMSContext';
+import { SplashScreen } from '../../components/ui/SplashScreen';
+import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+
+const PINK = '#E91E8C';
+const ROSE = '#FF6BB5';
+const AQUA = '#06B6D4';
+
+// ── Page-transition loading bar ──────────────────────────────────────────────
+function PageTransitionBar() {
+  const location = useLocation();
+  const [active, setActive] = useState(false);
+  const prevPath = useRef(location.pathname);
+
+  useEffect(() => {
+    if (location.pathname === prevPath.current) return;
+    prevPath.current = location.pathname;
+    setActive(true);
+    const t = setTimeout(() => setActive(false), 650);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
+
+  return (
+    <AnimatePresence>
+      {active && (
+        <motion.div
+          key="ptbar"
+          initial={{ scaleX: 0, transformOrigin: 'left' }}
+          animate={{ scaleX: 1, transformOrigin: 'left' }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, height: 3,
+            background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+            zIndex: 9990, pointerEvents: 'none',
+          }}
+        />
+      )}
+    </AnimatePresence>
+  );
+}
 
 function WhatsAppButton() {
   const { cms } = useCMS();
@@ -38,7 +78,6 @@ function WhatsAppButton() {
           transition={{ type: 'spring', stiffness: 260, damping: 20 }}
           className="fixed bottom-6 right-6 z-50 flex items-center gap-3"
         >
-          {/* Tooltip */}
           <AnimatePresence>
             {tooltip && (
               <motion.div
@@ -56,13 +95,10 @@ function WhatsAppButton() {
                 </button>
                 <p className="text-xs font-semibold text-gray-800 leading-snug">Ada pertanyaan? Chat kami!</p>
                 <p className="text-[10px] text-gray-400 mt-0.5">Respon cepat via WhatsApp</p>
-                {/* Arrow */}
                 <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rotate-45 border-r border-t" style={{ borderColor: 'rgba(37,211,102,0.2)' }} />
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Button */}
           <a
             href={href}
             target="_blank"
@@ -71,7 +107,6 @@ function WhatsAppButton() {
             style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)' }}
             onClick={() => setTooltip(false)}
           >
-            {/* Pulse ring */}
             <span className="absolute inset-0 rounded-full animate-ping opacity-30" style={{ background: '#25D366' }} />
             <MessageCircle size={26} className="text-white relative z-10" fill="white" />
           </a>
@@ -100,27 +135,12 @@ function ReadingProgressBar() {
   }, []);
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: 3,
-        zIndex: 60,
-        pointerEvents: 'none',
-      }}
-      aria-hidden
-    >
-      <div
-        style={{
-          height: '100%',
-          width: `${progress}%`,
-          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
-          transition: 'width 0.1s linear',
-          willChange: 'width',
-        }}
-      />
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 60, pointerEvents: 'none' }} aria-hidden>
+      <div style={{
+        height: '100%', width: `${progress}%`,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        transition: 'width 0.1s linear', willChange: 'width',
+      }} />
     </div>
   );
 }
@@ -133,16 +153,36 @@ export function WebsiteLayout() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA' }}>
-      <ReadingProgressBar />
-      <Navbar />
-      <main className="flex-1 pt-16 lg:pt-18">
-        <div key={location.pathname}>
-          <Outlet />
-        </div>
-      </main>
-      <Footer />
-      <WhatsAppButton />
-    </div>
+    <>
+      {/* First-load splash */}
+      <SplashScreen />
+
+      {/* Fixed dental-geometry background — visible on all pages */}
+      <div
+        style={{
+          position: 'fixed', inset: 0,
+          pointerEvents: 'none', zIndex: 0,
+          overflow: 'hidden', opacity: 0.55,
+        }}
+        aria-hidden
+      >
+        <AnimatedDentalBg size="lg" />
+      </div>
+
+      {/* Page-transition bar */}
+      <PageTransitionBar />
+
+      <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA', position: 'relative', zIndex: 1 }}>
+        <ReadingProgressBar />
+        <Navbar />
+        <main className="flex-1 pt-16 lg:pt-18">
+          <div key={location.pathname}>
+            <Outlet />
+          </div>
+        </main>
+        <Footer />
+        <WhatsAppButton />
+      </div>
+    </>
   );
 }
