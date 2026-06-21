@@ -127,7 +127,11 @@ export function MobileLogin({ setState }: MobileLoginProps) {
           </div>
 
           <div className="flex justify-end">
-            <button className="text-xs font-semibold" style={{ color: '#E91E8C' }}>
+            <button
+              onClick={() => setState({ screen: 'forgot-password' })}
+              className="text-xs font-semibold"
+              style={{ color: '#E91E8C', background: 'none', border: 'none', cursor: 'pointer' }}
+            >
               Lupa Password?
             </button>
           </div>

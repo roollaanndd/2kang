@@ -8,6 +8,9 @@ import { NotificationProvider } from '../../context/NotificationContext';
 import { MobileOnboarding } from './screens/MobileOnboarding';
 import { MobileLogin } from './screens/MobileLogin';
 import { MobileRegister } from './screens/MobileRegister';
+import { MobileOTP } from './screens/MobileOTP';
+import { MobileCreatePin } from './screens/MobileCreatePin';
+import { MobileForgotPassword } from './screens/MobileForgotPassword';
 import { MobileHome } from './screens/MobileHome';
 import { MobileBooking } from './screens/MobileBooking';
 import { MobileDoctorSelect } from './screens/MobileDoctorSelect';
@@ -29,7 +32,7 @@ const INITIAL_STATE: MobileState = {
 };
 
 const HIDE_BOTTOMNAV_SCREENS = new Set([
-  'onboarding', 'login', 'register',
+  'onboarding', 'login', 'register', 'otp', 'create-pin', 'forgot-password',
   'booking', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
 ]);
 
@@ -54,6 +57,12 @@ export function MobileLayout() {
         return <MobileLogin setState={setState} />;
       case 'register':
         return <MobileRegister setState={setState} />;
+      case 'otp':
+        return <MobileOTP state={state} setState={setState} />;
+      case 'create-pin':
+        return <MobileCreatePin state={state} setState={setState} />;
+      case 'forgot-password':
+        return <MobileForgotPassword setState={setState} />;
       case 'home':
         return <MobileHome state={state} setState={setState} />;
       case 'booking':
