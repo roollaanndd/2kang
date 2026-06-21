@@ -202,12 +202,12 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
                   alignItems: 'center',
                   gap: 14,
                   padding: '14px 14px 14px 16px',
-                  borderRadius: 22,
+                  borderRadius: 20,
                   textAlign: 'left',
                   background: isSelected ? '#FFF5F9' : 'white',
-                  border: `1.5px solid ${isSelected ? '#E91E8C' : 'rgba(0,0,0,0.06)'}`,
+                  border: `2px solid ${isSelected ? '#E91E8C' : 'rgba(0,0,0,0.06)'}`,
                   boxShadow: isSelected
-                    ? `0 6px 24px ${shadow}22, 0 2px 8px rgba(0,0,0,0.04)`
+                    ? '0 8px 24px rgba(233,30,140,0.20)'
                     : '0 2px 10px rgba(0,0,0,0.04)',
                   cursor: 'pointer',
                   position: 'relative',

@@ -184,10 +184,10 @@ function ServiceIconBezel({ gradient, shadowColor, children }: {
     <div style={{
       width: 60,
       height: 60,
-      borderRadius: 18,
+      borderRadius: 20,
       padding: 4,
       background: 'white',
-      boxShadow: `0 4px 16px ${shadowColor}30`,
+      boxShadow: `0 8px 20px ${shadowColor}35`,
     }}>
       <div style={{
         width: '100%',
@@ -352,8 +352,24 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         {/* Animated premium dental-geometry background */}
         <MobileHeroBg />
 
+        {/* Decorative tooth watermark — large outline behind header text */}
+        <svg
+          style={{ position: 'absolute', right: -20, top: -10, opacity: 0.06, pointerEvents: 'none', zIndex: 1 }}
+          width={140}
+          height={160}
+          viewBox="0 0 100 115"
+          fill="none"
+        >
+          <path
+            d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+            stroke="white"
+            strokeWidth="3"
+            fill="white"
+          />
+        </svg>
+
         {/* Status-bar safe area + top bar */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '56px 20px 12px' }}>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '56px 20px 12px' }}>
           <div>
             <p style={{
               fontSize: 13,
@@ -450,11 +466,11 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             transition={{ delay: 0.1 }}
             style={{
               margin: '0 20px',
-              borderRadius: 22,
+              borderRadius: 24,
               padding: 16,
               background: '#FFFFFF',
-              boxShadow: '0 8px 32px rgba(233,30,140,0.12)',
-              borderLeft: `3px solid ${PINK}`,
+              boxShadow: '0 12px 32px rgba(0,0,0,0.08), 0 4px 12px rgba(233,30,140,0.10)',
+              borderLeft: `4px solid ${PINK}`,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
@@ -641,7 +657,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 <motion.button
                   key={svc.id}
                   initial={{ opacity: 0, scale: 0.82 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  animate={{ opacity: 1, scale: i % 3 === 1 ? 1.04 : 1 }}
                   transition={{ delay: i * 0.04 }}
                   whileTap={{ scale: 0.88 }}
                   onClick={() => handleServiceClick(svc)}
@@ -785,12 +801,12 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     style={{
                       flexShrink: 0,
                       width: 176,
-                      borderRadius: 22,
+                      borderRadius: 20,
                       padding: 14,
                       textAlign: 'left',
                       background: 'white',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
-                      border: '1px solid rgba(0,0,0,0.06)',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+                      border: '1px solid rgba(0,0,0,0.05)',
                       cursor: 'pointer',
                     }}
                   >
@@ -866,7 +882,8 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 <motion.div
                   key={promo.id}
                   initial={{ opacity: 0, x: 24 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  animate={{ opacity: 1, x: 0, rotate: i % 2 === 0 ? -0.5 : 0.5 }}
+                  whileHover={{ rotate: 0 }}
                   transition={{ delay: i * 0.07 }}
                   style={{
                     flexShrink: 0,
