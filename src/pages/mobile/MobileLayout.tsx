@@ -26,6 +26,12 @@ import { MobileFamily } from './screens/MobileFamily';
 import { MobileLoyalty } from './screens/MobileLoyalty';
 import { MobileDoctors } from './screens/MobileDoctors';
 import { MobileSelectBranch } from './screens/MobileSelectBranch';
+import { MobileDentalTracker } from './screens/MobileDentalTracker';
+import { MobileInsurance } from './screens/MobileInsurance';
+import { MobileEducation } from './screens/MobileEducation';
+import { MobileTelemedicine } from './screens/MobileTelemedicine';
+import { MobileChatDetail } from './screens/MobileChatDetail';
+import { MobilePromos } from './screens/MobilePromos';
 
 const INITIAL_STATE: MobileState = {
   screen: 'onboarding',
@@ -36,6 +42,7 @@ const INITIAL_STATE: MobileState = {
 const HIDE_BOTTOMNAV_SCREENS = new Set([
   'onboarding', 'login', 'register', 'otp', 'create-pin', 'forgot-password',
   'booking', 'booking-branch', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
+  'chat-detail',
 ]);
 
 export function MobileLayout() {
@@ -90,7 +97,17 @@ export function MobileLayout() {
       case 'doctors':
         return <MobileDoctors state={state} setState={setState} />;
       case 'promos':
-        return <MobileHome state={state} setState={setState} />;
+        return <MobilePromos state={state} setState={setState} />;
+      case 'dental-tracker':
+        return <MobileDentalTracker state={state} setState={setState} />;
+      case 'insurance':
+        return <MobileInsurance state={state} setState={setState} />;
+      case 'education':
+        return <MobileEducation state={state} setState={setState} />;
+      case 'telemedicine':
+        return <MobileTelemedicine state={state} setState={setState} />;
+      case 'chat-detail':
+        return <MobileChatDetail state={state} setState={setState} />;
       case 'history':
         return <MobileHistory state={state} setState={setState} />;
       case 'family':
