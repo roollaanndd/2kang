@@ -7,6 +7,7 @@ import {
   Calendar, MapPin, Clock,
 } from 'lucide-react';
 import type { MobileState } from '../../../types';
+import { APP_VERSION } from '../../../version';
 
 interface MobileProfileProps {
   state: MobileState;
@@ -457,7 +458,7 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
           </motion.button>
 
           <p style={{ textAlign: 'center', fontSize: 11, color: '#D1D5DB', marginTop: 4 }}>
-            OMDC Dental v1.0.0 · © {new Date().getFullYear()}
+            OMDC Dental v{APP_VERSION} · © {new Date().getFullYear()}
           </p>
         </div>
       </motion.div>
