@@ -7,6 +7,7 @@ import {
 import { DOCTORS, SERVICES, PROMOTIONS, SAMPLE_APPOINTMENTS } from '../../../data/mockData';
 import { Skeleton, SkeletonText, SkeletonCircle } from '../../../components/ui/Skeleton';
 import { haptic } from '../../../lib/haptics';
+import { useNotifications } from '../../../context/NotificationContext';
 import type { MobileState, Service } from '../../../types/index';
 
 interface MobileHomeProps {
@@ -268,6 +269,7 @@ const getGreeting = () => {
 export function MobileHome({ state, setState }: MobileHomeProps) {
   const firstName = state.user?.name?.split(' ')[0] ?? 'Pengguna';
   const appointment = SAMPLE_APPOINTMENTS[0];
+  const { unreadCount } = useNotifications();
 
   // Skeleton loading on mount (~800ms) to feel like fetching real data.
   const [loading, setLoading] = useState(true);
@@ -358,16 +360,29 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               }}
             >
               <Bell size={18} color={PINK} />
-              <span style={{
-                position: 'absolute',
-                top: 9,
-                right: 9,
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: '#FBBF24',
-                border: '2px solid #FFFFFF',
-              }} />
+              {unreadCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: unreadCount > 9 ? 5 : 6,
+                  right: unreadCount > 9 ? 4 : 6,
+                  minWidth: 16,
+                  height: 16,
+                  paddingLeft: 3,
+                  paddingRight: 3,
+                  borderRadius: 8,
+                  background: '#EF4444',
+                  border: '2px solid #FFFFFF',
+                  color: '#FFFFFF',
+                  fontSize: 9,
+                  fontWeight: 800,
+                  lineHeight: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.88 }}
