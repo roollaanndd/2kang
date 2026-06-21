@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Home, Calendar, Ticket, User } from 'lucide-react';
+import { Home, Calendar, Ticket, Stethoscope, User } from 'lucide-react';
 import { haptic } from '../../lib/haptics';
 import type { MobileScreen } from '../../types';
 
@@ -12,13 +12,17 @@ const NAV_ITEMS = [
   { id: 'home' as MobileScreen, label: 'Beranda', Icon: Home },
   { id: 'booking' as MobileScreen, label: 'Booking', Icon: Calendar },
   { id: 'queue' as MobileScreen, label: 'Antrian', Icon: Ticket },
+  { id: 'doctors' as MobileScreen, label: 'Dokter', Icon: Stethoscope },
   { id: 'profile' as MobileScreen, label: 'Profil', Icon: User },
 ];
 
 export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
   const isActive = (id: MobileScreen) => {
     if (id === 'booking') {
-      return ['booking', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment'].includes(currentScreen);
+      return ['booking', 'booking-branch', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment'].includes(currentScreen);
+    }
+    if (id === 'doctors') {
+      return ['doctors', 'doctor-detail'].includes(currentScreen);
     }
     return currentScreen === id;
   };

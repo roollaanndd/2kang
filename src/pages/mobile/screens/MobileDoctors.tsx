@@ -377,7 +377,7 @@ export function MobileDoctors({ state, setState }: MobileDoctorsProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => { haptic('light'); setDetail({ doc: doctor, idx: globalIdx }); }}
+                onClick={() => { haptic('light'); setState({ screen: 'doctor-detail', selectedDoctor: doctor }); }}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 14,
                   background: 'white', borderRadius: 20, padding: 14,
