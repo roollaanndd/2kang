@@ -91,7 +91,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
             <ChevronLeft size={20} color="white" />
           </motion.button>
 
-          {/* Avatar */}
+          {/* Avatar — photo if available, else monogram */}
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, marginBottom: 16 }}>
             <div style={{
               width: 90, height: 90, borderRadius: 26,
@@ -99,9 +99,12 @@ export function MobileDoctorDetail({ state, setState }: Props) {
               border: '3px solid rgba(255,255,255,0.5)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'white', fontWeight: 900, fontSize: 32,
-              flexShrink: 0,
+              flexShrink: 0, overflow: 'hidden',
             }}>
-              {initials(doctor.name)}
+              {doctor.photo
+                ? <img src={doctor.photo} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : initials(doctor.name)
+              }
             </div>
             <div style={{ flex: 1 }}>
               <span style={{
