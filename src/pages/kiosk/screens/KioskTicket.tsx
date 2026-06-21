@@ -1,9 +1,57 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle, Printer, Home } from 'lucide-react';
+import { CheckCircle, Printer, Home, Clock, Users, Smartphone } from 'lucide-react';
+import { CURRENT_QUEUE } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 
 const AUTO_RETURN_SECONDS = 10;
+const MINUTES_PER_PATIENT = 15;
+
+/** A tasteful, fully-deterministic stylised QR grid (decorative — does not encode data). */
+function QrGrid({ seed, size = 168 }: { seed: string; size?: number }) {
+  const cells = 21; // classic QR module count
+  const cell = size / cells;
+  // Deterministic pseudo-random fill from the seed string.
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  const rng = (i: number) => {
+    const x = Math.sin((h % 1000) + i * 12.9898) * 43758.5453;
+    return x - Math.floor(x);
+  };
+
+  const isFinder = (r: number, c: number) => {
+    const inBox = (br: number, bc: number) =>
+      r >= br && r < br + 7 && c >= bc && c < bc + 7;
+    return inBox(0, 0) || inBox(0, cells - 7) || inBox(cells - 7, 0);
+  };
+
+  const rects: { x: number; y: number }[] = [];
+  for (let r = 0; r < cells; r++) {
+    for (let c = 0; c < cells; c++) {
+      if (isFinder(r, c)) continue;
+      if (rng(r * cells + c) > 0.52) rects.push({ x: c * cell, y: r * cell });
+    }
+  }
+
+  const finder = (br: number, bc: number) => (
+    <g key={`f-${br}-${bc}`}>
+      <rect x={bc * cell} y={br * cell} width={cell * 7} height={cell * 7} rx={cell * 1.4} fill="#1A1A2E" />
+      <rect x={(bc + 1) * cell} y={(br + 1) * cell} width={cell * 5} height={cell * 5} rx={cell} fill="#ffffff" />
+      <rect x={(bc + 2) * cell} y={(br + 2) * cell} width={cell * 3} height={cell * 3} rx={cell * 0.7} fill="#E91E8C" />
+    </g>
+  );
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block' }}>
+      {rects.map((p, i) => (
+        <rect key={i} x={p.x} y={p.y} width={cell * 0.92} height={cell * 0.92} rx={cell * 0.28} fill="#1A1A2E" />
+      ))}
+      {finder(0, 0)}
+      {finder(0, cells - 7)}
+      {finder(cells - 7, 0)}
+    </svg>
+  );
+}
 
 export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
   const t = state.language === 'en';
@@ -34,11 +82,17 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
   const queueLetter = queueNumber.charAt(0);
   const queueNum = queueNumber.slice(1);
 
+  // ─── Estimated wait + people ahead, derived from the live "currently serving" number ───
+  const myNum = parseInt(queueNumber.replace(/\D/g, ''), 10) || 18;
+  const servingNum = parseInt(CURRENT_QUEUE.replace(/\D/g, ''), 10) || 17;
+  const peopleAhead = Math.max(0, myNum - servingNum);
+  const waitMinutes = Math.max(5, peopleAhead * MINUTES_PER_PATIENT);
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.4 }}
       style={{
         width: '100%',
@@ -46,150 +100,245 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
         background: 'linear-gradient(160deg, #FFF5F9 0%, #F0FAFF 100%)',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px',
-        gap: '28px',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {/* Success check animation */}
-      <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.5, type: 'spring', bounce: 0.5 }}
-      >
-        <CheckCircle size={80} color="#10B981" strokeWidth={1.5} />
-      </motion.div>
+      {/* Signature 3px top gradient strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
 
-      {/* Title */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        style={{ textAlign: 'center' }}
-      >
-        <div style={{ fontSize: '32px', fontWeight: '800', color: '#1A1A2E', marginBottom: '6px' }}>
-          {t ? 'Ticket Printed Successfully! 🎉' : 'Tiket Berhasil Dicetak! 🎉'}
-        </div>
-        <div style={{ fontSize: '18px', color: '#6B7280' }}>
-          {t ? 'Please take your ticket and wait to be called' : 'Silakan ambil tiket dan menunggu Anda dipanggil'}
-        </div>
-      </motion.div>
+      {/* Header (flexShrink:0) */}
+      <div style={{
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+        paddingTop: '24px',
+        paddingBottom: '8px',
+      }}>
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.5, type: 'spring', bounce: 0.5 }}
+          style={{ marginBottom: '8px' }}
+        >
+          <CheckCircle size={54} color="#10B981" strokeWidth={1.75} />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+        >
+          <div style={{ fontSize: '28px', fontWeight: '800', color: '#1A1A2E', marginBottom: '2px' }}>
+            {t ? 'Ticket Printed Successfully! 🎉' : 'Tiket Berhasil Dicetak! 🎉'}
+          </div>
+          <div style={{ fontSize: '16px', color: '#6B7280' }}>
+            {t ? 'Please take your ticket and wait to be called' : 'Silakan ambil tiket dan menunggu Anda dipanggil'}
+          </div>
+        </motion.div>
+      </div>
 
-      {/* Queue number card */}
-      <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ delay: 0.4, duration: 0.5, type: 'spring' }}
-        style={{
-          backgroundColor: '#ffffff',
-          borderRadius: '28px',
-          boxShadow: '0 12px 60px rgba(233,30,140,0.2)',
-          padding: '40px 80px',
-          textAlign: 'center',
-          border: '3px solid #FCE7F3',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Decorative dots */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0,
-          height: '8px',
-          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #4FC3F7)',
-          borderRadius: '28px 28px 0 0',
-        }} />
+      {/* Middle — two-column content (flex:1, minHeight:0) */}
+      <div style={{
+        flex: 1,
+        minHeight: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '24px',
+        padding: '8px 56px',
+      }}>
+        {/* Left — ticket / queue card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.35, duration: 0.5, type: 'spring' }}
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '26px',
+            boxShadow: '0 12px 50px rgba(233,30,140,0.16)',
+            padding: '28px 44px 24px',
+            textAlign: 'center',
+            border: '2px solid #FCE7F3',
+            position: 'relative',
+            overflow: 'hidden',
+            flex: '0 0 auto',
+          }}
+        >
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: '7px',
+            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+          }} />
 
-        <div style={{ fontSize: '20px', color: '#9CA3AF', fontWeight: '600', marginBottom: '8px', letterSpacing: '4px' }}>
-          {t ? 'QUEUE NUMBER' : 'NOMOR ANTRIAN'}
-        </div>
+          <div style={{ fontSize: '16px', color: '#9CA3AF', fontWeight: '600', marginBottom: '4px', letterSpacing: '4px' }}>
+            {t ? 'QUEUE NUMBER' : 'NOMOR ANTRIAN'}
+          </div>
 
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '4px' }}>
-          <span style={{
-            fontSize: '72px',
-            fontWeight: '900',
-            color: '#E91E8C',
-            lineHeight: '1',
-            letterSpacing: '-2px',
-          }}>
-            {queueLetter}
-          </span>
-          <span style={{
-            fontSize: '110px',
-            fontWeight: '900',
-            color: '#E91E8C',
-            lineHeight: '1',
-            letterSpacing: '-4px',
-          }}>
-            {queueNum}
-          </span>
-        </div>
-
-        <div style={{
-          marginTop: '16px',
-          fontSize: '15px',
-          color: '#9CA3AF',
-          borderTop: '1px dashed #E5E7EB',
-          paddingTop: '16px',
-          display: 'flex',
-          gap: '24px',
-          justifyContent: 'center',
-        }}>
-          {state.selectedService && (
-            <span>
-              {t ? state.selectedService.nameEn : state.selectedService.name}
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '2px' }}>
+            <span style={{ fontSize: '56px', fontWeight: '900', color: '#E91E8C', lineHeight: '1', letterSpacing: '-2px' }}>
+              {queueLetter}
             </span>
-          )}
-          {state.selectedTime && (
-            <>
-              <span style={{ color: '#D1D5DB' }}>•</span>
-              <span>{state.selectedTime} WIB</span>
-            </>
-          )}
-          {state.selectedDoctor && (
-            <>
-              <span style={{ color: '#D1D5DB' }}>•</span>
-              <span>{state.selectedDoctor.name}</span>
-            </>
-          )}
-        </div>
-      </motion.div>
+            <span style={{ fontSize: '88px', fontWeight: '900', color: '#E91E8C', lineHeight: '1', letterSpacing: '-4px' }}>
+              {queueNum}
+            </span>
+          </div>
 
-      {/* Print reminder */}
+          {/* People-ahead + estimated-wait chips */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55 }}
+            style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '18px' }}
+          >
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '12px 18px', borderRadius: '14px',
+              backgroundColor: '#FFF5F9', border: '1px solid #FCE7F3',
+            }}>
+              <Users size={20} color="#E91E8C" />
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: '600' }}>
+                  {t ? 'Ahead of you' : 'Di depan Anda'}
+                </div>
+                <div style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A2E' }}>
+                  {peopleAhead} {t ? 'people' : 'orang'}
+                </div>
+              </div>
+            </div>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '12px 18px', borderRadius: '14px',
+              backgroundColor: '#F0FAFF', border: '1px solid #CFF1FB',
+            }}>
+              <Clock size={20} color="#06B6D4" />
+              <div style={{ textAlign: 'left' }}>
+                <div style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: '600' }}>
+                  {t ? 'Est. wait' : 'Estimasi tunggu'}
+                </div>
+                <div style={{ fontSize: '18px', fontWeight: '800', color: '#0D1421' }}>
+                  ~{waitMinutes} {t ? 'min' : 'menit'}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Service / time / doctor row */}
+          <div style={{
+            marginTop: '18px',
+            fontSize: '14px',
+            color: '#9CA3AF',
+            borderTop: '1px dashed #E5E7EB',
+            paddingTop: '14px',
+            display: 'flex',
+            gap: '18px',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+          }}>
+            {state.selectedService && (
+              <span>{t ? state.selectedService.nameEn : state.selectedService.name}</span>
+            )}
+            {state.selectedTime && (
+              <>
+                <span style={{ color: '#D1D5DB' }}>•</span>
+                <span>{state.selectedTime} WIB</span>
+              </>
+            )}
+            {state.selectedDoctor && (
+              <>
+                <span style={{ color: '#D1D5DB' }}>•</span>
+                <span>{state.selectedDoctor.name}</span>
+              </>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Right — track-on-phone QR card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.45, duration: 0.5, type: 'spring' }}
+          style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '26px',
+            boxShadow: '0 12px 50px rgba(6,182,212,0.14)',
+            padding: '24px 30px',
+            textAlign: 'center',
+            border: '2px solid #E5E7EB',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
+            flex: '0 0 auto',
+          }}
+        >
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            padding: '7px 16px', borderRadius: '100px',
+            backgroundColor: '#F0FAFF', border: '1px solid #CFF1FB',
+          }}>
+            <Smartphone size={16} color="#06B6D4" />
+            <span style={{ fontSize: '13px', fontWeight: '700', color: '#06B6D4', letterSpacing: '0.5px' }}>
+              {t ? 'TRACK ON YOUR PHONE' : 'PANTAU DI HP ANDA'}
+            </span>
+          </div>
+
+          {/* QR card */}
+          <div style={{
+            padding: '16px',
+            borderRadius: '20px',
+            backgroundColor: '#ffffff',
+            border: '2px solid #F3F4F6',
+            boxShadow: 'inset 0 0 0 6px #ffffff, 0 6px 22px rgba(0,0,0,0.06)',
+          }}>
+            <QrGrid seed={queueNumber} size={168} />
+          </div>
+
+          <div style={{ fontSize: '15px', fontWeight: '600', color: '#374151', maxWidth: '220px', lineHeight: '1.4' }}>
+            {t
+              ? 'Scan to track your queue on your phone'
+              : 'Pindai untuk pantau antrian di HP Anda'}
+          </div>
+
+          {/* Live print reminder */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '8px',
+            padding: '8px 16px', borderRadius: '100px',
+            backgroundColor: '#FFF5F9', border: '1px solid #FCE7F3',
+          }}>
+            <Printer size={16} color="#E91E8C" />
+            <span style={{ fontSize: '13px', color: '#E91E8C', fontWeight: '600' }}>
+              {t ? 'Printing your ticket…' : 'Tiket sedang dicetak…'}
+            </span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Bottom action bar (flexShrink:0) */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
         style={{
+          flexShrink: 0,
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          gap: '12px',
-          padding: '14px 28px',
-          backgroundColor: '#FFF5F9',
-          borderRadius: '14px',
-          border: '1px solid #FCE7F3',
+          gap: '8px',
+          padding: '12px 40px 22px',
         }}
-      >
-        <Printer size={20} color="#E91E8C" />
-        <span style={{ fontSize: '16px', color: '#E91E8C', fontWeight: '600' }}>
-          {t ? 'Your ticket is being printed...' : 'Tiket Anda sedang dicetak...'}
-        </span>
-      </motion.div>
-
-      {/* Done button + countdown */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}
       >
         <button
           onClick={handleDone}
           style={{
             display: 'flex', alignItems: 'center', gap: '12px',
-            padding: '18px 56px', borderRadius: '16px', border: 'none',
+            padding: '16px 56px', borderRadius: '16px', border: 'none',
             background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-            color: '#ffffff', fontSize: '20px', fontWeight: '800',
+            color: '#ffffff', fontSize: '19px', fontWeight: '800',
             cursor: 'pointer', boxShadow: '0 6px 24px rgba(233,30,140,0.4)',
           }}
         >
@@ -203,11 +352,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
-            style={{
-              fontSize: '15px',
-              color: '#9CA3AF',
-              textAlign: 'center',
-            }}
+            style={{ fontSize: '14px', color: '#9CA3AF', textAlign: 'center' }}
           >
             {t
               ? `Auto-return to home in ${countdown} seconds`

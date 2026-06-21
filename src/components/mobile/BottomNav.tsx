@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { Home, Calendar, Ticket, User } from 'lucide-react';
+import { haptic } from '../../lib/haptics';
 import type { MobileScreen } from '../../types';
 
 interface BottomNavProps {
@@ -50,7 +51,7 @@ export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
           return (
             <motion.button
               key={id}
-              onClick={() => onNavigate(id)}
+              onClick={() => { haptic('light'); onNavigate(id); }}
               whileTap={{ scale: 0.88 }}
               style={{
                 display: 'flex',

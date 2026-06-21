@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Calendar, Clock, User, MapPin, Stethoscope, Phone } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { CLINIC_NAME } from '../../../data/mockData';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
 
 interface MobileBookingConfirmProps {
@@ -146,7 +147,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
         style={{ boxShadow: '0 -4px 20px rgba(0,0,0,0.06)' }}
       >
         <button
-          onClick={() => setState({ screen: 'booking-payment' })}
+          onClick={() => { haptic('medium'); setState({ screen: 'booking-payment' }); }}
           className="w-full py-4 rounded-2xl font-bold text-base text-white transition-all active:scale-95"
           style={{
             background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',

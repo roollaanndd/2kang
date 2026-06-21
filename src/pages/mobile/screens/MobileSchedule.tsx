@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { TIME_SLOTS } from '../../../data/mockData';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
 
 interface MobileScheduleProps {
@@ -57,6 +58,7 @@ export function MobileSchedule({ state, setState }: MobileScheduleProps) {
 
   const handleContinue = () => {
     if (!selectedDay || !selectedTime) return;
+    haptic('light');
     const dateLabel = formatDateLabel(viewYear, viewMonth, selectedDay);
     setState({
       screen: 'booking-confirm',
@@ -124,7 +126,7 @@ export function MobileSchedule({ state, setState }: MobileScheduleProps) {
               return (
                 <button
                   key={day}
-                  onClick={() => !past && setSelectedDay(day)}
+                  onClick={() => { if (!past) { haptic('selection'); setSelectedDay(day); } }}
                   disabled={past}
                   className="flex items-center justify-center h-9 rounded-xl mx-0.5 transition-all active:scale-90 text-sm font-semibold"
                   style={{
@@ -174,7 +176,7 @@ export function MobileSchedule({ state, setState }: MobileScheduleProps) {
             {TIME_SLOTS.map(slot => (
               <button
                 key={slot.time}
-                onClick={() => slot.available && setSelectedTime(slot.time)}
+                onClick={() => { if (slot.available) { haptic('selection'); setSelectedTime(slot.time); } }}
                 disabled={!slot.available}
                 className="py-3 rounded-xl text-sm font-bold transition-all active:scale-95"
                 style={{

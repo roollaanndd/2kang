@@ -330,11 +330,20 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
           fontWeight: '700',
           color: '#9CA3AF',
           letterSpacing: '2.5px',
-          marginBottom: '14px',
+          marginBottom: '4px',
           textAlign: 'center',
           textTransform: 'uppercase',
         }}>
           {t ? 'Next in Queue / Antrian Selanjutnya' : 'Antrian Selanjutnya / Next Queue'}
+        </div>
+        <div style={{
+          fontSize: '12px',
+          fontWeight: '500',
+          color: '#B6BCC6',
+          marginBottom: '14px',
+          textAlign: 'center',
+        }}>
+          {t ? 'Est. ~15 min per patient' : 'Estimasi per pasien ~15 menit'}
         </div>
         <div style={{
           display: 'flex',

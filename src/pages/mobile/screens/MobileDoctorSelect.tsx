@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { Star, CheckCircle, XCircle } from 'lucide-react';
 import { DOCTORS } from '../../../data/mockData';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState, Doctor } from '../../../types';
 
 interface MobileDoctorSelectProps {
@@ -12,6 +13,7 @@ interface MobileDoctorSelectProps {
 export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps) {
   const handleSelect = (doctor: Doctor) => {
     if (!doctor.available) return;
+    haptic('selection');
     setState({ screen: 'booking-schedule', selectedDoctor: doctor });
   };
 

@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ChevronLeft, ChevronRight, Banknote, CreditCard, Smartphone, QrCode } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Banknote, CreditCard, Smartphone, QrCode, Check } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { PaymentMethod } from '../../../types';
 
@@ -79,8 +79,16 @@ export function KioskPayment({ state, setState, goTo, goBack }: KioskScreenProps
         backgroundColor: '#F9FAFB',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* Signature 3px top gradient strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header */}
       <div style={{
         padding: '28px 60px 20px',
@@ -184,10 +192,14 @@ export function KioskPayment({ state, setState, goTo, goBack }: KioskScreenProps
                 transition: 'all 0.2s',
               }}>
                 {isSelected && (
-                  <div style={{
-                    width: '10px', height: '10px', borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                  }} />
+                  <motion.div
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 22 }}
+                    style={{ display: 'flex' }}
+                  >
+                    <Check size={16} color="#ffffff" strokeWidth={3.5} />
+                  </motion.div>
                 )}
               </div>
             </motion.button>

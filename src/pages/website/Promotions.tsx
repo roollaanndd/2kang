@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Tag, Clock, Calendar, ChevronDown, ChevronUp, ArrowRight, Star, CheckCircle } from 'lucide-react';
 import { PROMOTIONS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { CountUp } from '../../components/ui/CountUp';
 
 const filterTypes = ['Semua', 'Scaling', 'Whitening', 'Ortodonti', 'Implan'];
 
@@ -124,7 +125,7 @@ export function Promotions() {
                   className="px-6 py-3 rounded-2xl text-center"
                   style={{ background: 'white', border: '1px solid rgba(233,30,140,0.15)', boxShadow: '0 2px 12px rgba(233,30,140,0.08)' }}
                 >
-                  <div className="text-2xl font-black" style={{ color: '#E91E8C' }}>{s.val}</div>
+                  <div className="text-2xl font-black" style={{ color: '#E91E8C' }}><CountUp value={s.val} /></div>
                   <div className="text-sm" style={{ color: '#6B7280' }}>{s.label}</div>
                 </div>
               ))}
