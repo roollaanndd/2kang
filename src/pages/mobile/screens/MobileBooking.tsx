@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Clock, ChevronRight, ChevronDown, X } from 'lucide-react';
+import { Clock, ChevronRight, ChevronDown, X, Sparkles } from 'lucide-react';
 import { SERVICES } from '../../../data/mockData';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { Odontogram } from '../../../components/mobile/Odontogram';
+import {
+  DentalServiceIcon,
+  ServiceIconBezel,
+  SERVICE_GRADIENTS,
+  SERVICE_SHADOWS,
+} from '../../../components/mobile/DentalServiceIcon';
 import { haptic } from '../../../lib/haptics';
 import type { MobileState, Service } from '../../../types';
 
@@ -15,13 +21,9 @@ interface MobileBookingProps {
 const formatPrice = (min: number, max: number) => {
   const fmt = (n: number) =>
     n >= 1_000_000
-      ? `${(n / 1_000_000).toFixed(0)} jt`
+      ? `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)} jt`
       : `${(n / 1000).toFixed(0)} rb`;
-  return `Rp ${fmt(min)} - ${fmt(max)}`;
-};
-
-const SERVICE_EMOJIS: Record<string, string> = {
-  s1: '🦷', s2: '✨', s3: '🔧', s4: '❌', s5: '😁', s6: '🔩', s7: '💊', s8: '➕',
+  return `Rp ${fmt(min)} – ${fmt(max)}`;
 };
 
 export function MobileBooking({ state, setState }: MobileBookingProps) {
@@ -45,7 +47,7 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col h-full bg-white"
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB' }}
     >
       <MobileHeader
         title="Buat Janji"
@@ -53,39 +55,76 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
         onBack={() => setState({ screen: 'home' })}
       />
 
-      <div className="flex-1 overflow-y-auto">
-        {/* Banner */}
-        <div
-          className="mx-5 mt-4 mb-5 rounded-2xl p-4"
-          style={{ background: 'linear-gradient(135deg, #FFF5F9, #FFE0F0)' }}
-        >
-          <p className="font-bold text-sm mb-0.5" style={{ color: '#E91E8C' }}>Pilih Layanan</p>
-          <p className="text-xs" style={{ color: '#6B7280' }}>
-            Pilih jenis perawatan gigi yang Anda butuhkan
-          </p>
+      <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>
+
+        {/* ── Hero banner ── */}
+        <div style={{
+          margin: '16px 20px',
+          borderRadius: 22,
+          padding: '16px 20px',
+          background: 'linear-gradient(135deg, #FFF0F8 0%, #EEF6FF 100%)',
+          border: '1px solid rgba(233,30,140,0.10)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 14,
+        }}>
+          <div style={{
+            width: 46, height: 46, borderRadius: 14,
+            background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0, boxShadow: '0 4px 14px rgba(233,30,140,0.30)',
+          }}>
+            <Sparkles size={20} color="white" />
+          </div>
+          <div>
+            <p style={{ fontWeight: 800, fontSize: 14, color: '#1A1A2E', marginBottom: 3 }}>
+              Pilih Layanan
+            </p>
+            <p style={{ fontSize: 11, color: '#6B7280', lineHeight: 1.5 }}>
+              {SERVICES.length} layanan tersedia · Tim dokter profesional
+            </p>
+          </div>
         </div>
 
-        {/* Interactive dental chart — optional "where does it hurt?" */}
-        <div className="mx-5 mb-5 rounded-2xl overflow-hidden" style={{ background: 'white', border: '1.5px solid #F3F4F6', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        {/* ── Tooth chart accordion ── */}
+        <div style={{
+          margin: '0 20px 16px',
+          borderRadius: 20,
+          overflow: 'hidden',
+          background: 'white',
+          border: '1.5px solid #F0F0F5',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        }}>
           <button
             onClick={() => { haptic('light'); setChartOpen(o => !o); }}
-            className="w-full flex items-center gap-3 p-4 text-left"
-            style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+            style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+              padding: 16, background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left',
+            }}
           >
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 text-xl" style={{ background: 'rgba(233,30,140,0.08)' }}>
-              🦷
+            <div style={{
+              width: 44, height: 44, borderRadius: 14, flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: teeth.length > 0 ? 'rgba(233,30,140,0.10)' : '#F5F5F8',
+            }}>
+              <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke={teeth.length > 0 ? '#E91E8C' : '#9CA3AF'} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+              </svg>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="font-bold text-sm" style={{ color: '#1A1A2E' }}>Di mana lokasi keluhan?</p>
-                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full" style={{ background: '#F3F4F6', color: '#9CA3AF' }}>OPSIONAL</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                <p style={{ fontWeight: 700, fontSize: 13, color: '#1A1A2E' }}>Di mana lokasi keluhan?</p>
+                <span style={{
+                  fontSize: 9, fontWeight: 700, padding: '2px 7px',
+                  borderRadius: 20, background: '#F3F4F6', color: '#9CA3AF',
+                }}>OPSIONAL</span>
               </div>
-              <p className="text-xs mt-0.5" style={{ color: '#6B7280' }}>
+              <p style={{ fontSize: 11, color: teeth.length > 0 ? '#E91E8C' : '#9CA3AF' }}>
                 {teeth.length > 0 ? `${teeth.length} gigi ditandai` : 'Ketuk gigi yang terasa sakit'}
               </p>
             </div>
             <motion.div animate={{ rotate: chartOpen ? 180 : 0 }} transition={{ duration: 0.25 }}>
-              <ChevronDown size={18} style={{ color: '#9CA3AF' }} />
+              <ChevronDown size={16} color="#9CA3AF" />
             </motion.div>
           </button>
 
@@ -102,21 +141,30 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
                   <div style={{ paddingTop: 12 }}>
                     <Odontogram selected={teeth} onToggle={toggleTooth} />
                   </div>
-
                   {teeth.length > 0 && (
-                    <div className="mt-3 flex items-center flex-wrap gap-1.5">
+                    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
                       {[...teeth].sort((a, b) => a - b).map(n => (
-                        <span key={n} className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-full" style={{ background: 'rgba(233,30,140,0.08)', color: '#E91E8C' }}>
+                        <span key={n} style={{
+                          display: 'inline-flex', alignItems: 'center', gap: 4,
+                          fontSize: 11, fontWeight: 700, padding: '4px 10px',
+                          borderRadius: 20, background: 'rgba(233,30,140,0.09)', color: '#E91E8C',
+                        }}>
                           Gigi {n}
-                          <button onClick={() => toggleTooth(n)} style={{ display: 'flex', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}>
-                            <X size={11} style={{ color: '#E91E8C' }} />
+                          <button
+                            onClick={() => toggleTooth(n)}
+                            style={{ display: 'flex', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
+                          >
+                            <X size={11} color="#E91E8C" />
                           </button>
                         </span>
                       ))}
                       <button
                         onClick={() => { haptic('light'); setState({ selectedTeeth: [] }); }}
-                        className="text-[11px] font-semibold px-2 py-1 rounded-full"
-                        style={{ background: '#F9FAFB', color: '#9CA3AF', border: '1px solid #F3F4F6', cursor: 'pointer' }}
+                        style={{
+                          fontSize: 11, fontWeight: 600, padding: '4px 10px',
+                          borderRadius: 20, background: '#F9FAFB', color: '#9CA3AF',
+                          border: '1px solid #F3F4F6', cursor: 'pointer',
+                        }}
                       >
                         Hapus semua
                       </button>
@@ -128,54 +176,102 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
           </AnimatePresence>
         </div>
 
-        {/* Service list */}
-        <div className="px-5 flex flex-col gap-3 pb-24">
-          {SERVICES.map((service, i) => (
-            <motion.button
-              key={service.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              onClick={() => handleSelect(service)}
-              className="flex items-center gap-4 p-4 rounded-2xl text-left active:scale-[0.98] transition-all"
-              style={{
-                background: state.selectedService?.id === service.id ? '#FFF5F9' : 'white',
-                border: `1.5px solid ${state.selectedService?.id === service.id ? '#E91E8C' : '#F3F4F6'}`,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-              }}
-            >
-              {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
-                style={{ background: service.color + '18' }}
-              >
-                {SERVICE_EMOJIS[service.id] ?? '🦷'}
-              </div>
+        {/* ── Section header ── */}
+        <div style={{ padding: '0 20px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: 13, fontWeight: 800, color: '#1A1A2E' }}>Layanan Tersedia</span>
+          <span style={{ fontSize: 11, color: '#9CA3AF' }}>{SERVICES.length} layanan</span>
+        </div>
 
-              {/* Info */}
-              <div className="flex-1">
-                <p className="font-bold text-sm mb-0.5" style={{ color: '#1A1A2E' }}>
-                  {service.name}
-                </p>
-                <p className="text-xs leading-snug mb-2" style={{ color: '#6B7280' }}>
-                  {service.description}
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1">
-                    <Clock size={11} style={{ color: '#9CA3AF' }} />
-                    <span className="text-[10px]" style={{ color: '#9CA3AF' }}>
+        {/* ── Service list ── */}
+        <div style={{ padding: '0 20px 100px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {SERVICES.map((service, i) => {
+            const isSelected = state.selectedService?.id === service.id;
+            const gradient = SERVICE_GRADIENTS[i % SERVICE_GRADIENTS.length];
+            const shadow = SERVICE_SHADOWS[i % SERVICE_SHADOWS.length];
+
+            return (
+              <motion.button
+                key={service.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.045 }}
+                whileTap={{ scale: 0.982 }}
+                onClick={() => handleSelect(service)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 14,
+                  padding: '14px 14px 14px 16px',
+                  borderRadius: 22,
+                  textAlign: 'left',
+                  background: isSelected ? '#FFF5F9' : 'white',
+                  border: `1.5px solid ${isSelected ? '#E91E8C' : 'rgba(0,0,0,0.06)'}`,
+                  boxShadow: isSelected
+                    ? `0 6px 24px ${shadow}22, 0 2px 8px rgba(0,0,0,0.04)`
+                    : '0 2px 10px rgba(0,0,0,0.04)',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Selected accent bar */}
+                {isSelected && (
+                  <div style={{
+                    position: 'absolute',
+                    left: 0, top: 0, bottom: 0,
+                    width: 3,
+                    background: gradient,
+                    borderRadius: '3px 0 0 3px',
+                  }} />
+                )}
+
+                {/* Branded icon bezel */}
+                <ServiceIconBezel gradient={gradient} shadowColor={shadow} size={56} radius={16}>
+                  <DentalServiceIcon id={service.id} size={24} />
+                </ServiceIconBezel>
+
+                {/* Text info */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontWeight: 800, fontSize: 14, color: '#1A1A2E', marginBottom: 3, lineHeight: 1.2 }}>
+                    {service.name}
+                  </p>
+                  <p style={{
+                    fontSize: 11, color: '#9CA3AF', lineHeight: 1.45, marginBottom: 9,
+                    display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                  }}>
+                    {service.description}
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+                    <span style={{
+                      display: 'flex', alignItems: 'center', gap: 4,
+                      fontSize: 10, fontWeight: 600,
+                      padding: '3px 8px', borderRadius: 20,
+                      background: '#F3F4F6', color: '#6B7280',
+                    }}>
+                      <Clock size={9} />
                       {service.duration} menit
                     </span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 800,
+                      padding: '3px 10px', borderRadius: 20,
+                      background: isSelected ? 'rgba(233,30,140,0.13)' : 'rgba(233,30,140,0.07)',
+                      color: '#E91E8C',
+                    }}>
+                      {formatPrice(service.priceMin, service.priceMax)}
+                    </span>
                   </div>
-                  <span className="text-xs font-bold" style={{ color: '#E91E8C' }}>
-                    {formatPrice(service.priceMin, service.priceMax)}
-                  </span>
                 </div>
-              </div>
 
-              <ChevronRight size={18} style={{ color: '#D1D5DB' }} />
-            </motion.button>
-          ))}
+                <div style={{
+                  width: 30, height: 30, borderRadius: 10, flexShrink: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: isSelected ? 'rgba(233,30,140,0.10)' : '#F5F5F8',
+                }}>
+                  <ChevronRight size={15} color={isSelected ? '#E91E8C' : '#C4C4D0'} />
+                </div>
+              </motion.button>
+            );
+          })}
         </div>
       </div>
     </motion.div>

@@ -204,41 +204,75 @@ function ServiceIconBezel({ gradient, shadowColor, children }: {
   );
 }
 
-// ── ANIMATED HERO BG — dental geometry, no blobs ─────────────────────────────
+// ── ANIMATED HERO BG — mesh grid + arcs + floating dental geometry ───────────
 function MobileHeroBg() {
-  const shapes = [
-    { x: 78, y: -8,  s: 52, d: 0,   t: 12, c: PINK, o: 0.06, sh: 'tooth'   },
-    { x: -4, y: 20,  s: 56, d: 1.4, t: 10, c: AQUA, o: 0.05, sh: 'ring'    },
-    { x: 82, y: 55,  s: 18, d: 0.7, t: 8,  c: PINK, o: 0.07, sh: 'plus'    },
-    { x: 60, y: 78,  s: 40, d: 2.1, t: 14, c: AQUA, o: 0.04, sh: 'ring'    },
-    { x: 8,  y: 72,  s: 14, d: 1.0, t: 7,  c: AQUA, o: 0.08, sh: 'sparkle' },
-    { x: 92, y: 80,  s: 12, d: 0.2, t: 6,  c: PINK, o: 0.09, sh: 'sparkle' },
-    { x: 30, y: -5,  s: 36, d: 2.8, t: 16, c: PINK, o: 0.04, sh: 'tooth'   },
-    { x: -2, y: 50,  s: 16, d: 1.7, t: 9,  c: PINK, o: 0.06, sh: 'plus'    },
+  const dentals = [
+    { x: 78, y: -8,  s: 54, d: 0,   t: 13, c: PINK, o: 0.10, sh: 'tooth'   },
+    { x: -5, y: 16,  s: 60, d: 1.4, t: 11, c: AQUA, o: 0.08, sh: 'ring'    },
+    { x: 84, y: 54,  s: 18, d: 0.7, t: 8,  c: PINK, o: 0.12, sh: 'plus'    },
+    { x: 60, y: 76,  s: 44, d: 2.1, t: 15, c: AQUA, o: 0.07, sh: 'ring'    },
+    { x: 6,  y: 70,  s: 14, d: 1.0, t: 7,  c: AQUA, o: 0.13, sh: 'sparkle' },
+    { x: 91, y: 80,  s: 12, d: 0.2, t: 6,  c: PINK, o: 0.14, sh: 'sparkle' },
+    { x: 27, y: -6,  s: 38, d: 2.8, t: 17, c: PINK, o: 0.07, sh: 'tooth'   },
+    { x: -3, y: 46,  s: 16, d: 1.7, t: 9,  c: AQUA, o: 0.10, sh: 'plus'    },
+    { x: 50, y: 88,  s: 10, d: 3.2, t: 7,  c: PINK, o: 0.12, sh: 'sparkle' },
   ] as const;
 
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-      {shapes.map((el, i) => (
+      {/* Dot-grid texture layer */}
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        <defs>
+          <pattern id="heroDot" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#BE185D" opacity="0.1" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#heroDot)" />
+      </svg>
+
+      {/* Flowing arc lines — pink right edge, aqua left edge, diagonal cross-arcs */}
+      <svg
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+        viewBox="0 0 375 300"
+        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+      >
+        <path d="M390 -10 Q310 150 390 310" stroke="#E91E8C" strokeWidth="1.3" opacity="0.09" />
+        <path d="M390 40  Q265 150 390 260" stroke="#FF6BB5" strokeWidth="0.7" opacity="0.06" />
+        <path d="M-15 310 Q70  150 -15 -10" stroke="#06B6D4" strokeWidth="1.1" opacity="0.08" />
+        <path d="M-20  65 Q165  15 400 120" stroke="#06B6D4" strokeWidth="0.7" opacity="0.06" />
+        <path d="M-20 220 Q165 155 400 260" stroke="#E91E8C" strokeWidth="0.5" opacity="0.05" />
+        <path d="M60  -10 Q190  90 375  60" stroke="#FF6BB5" strokeWidth="0.6" opacity="0.05" />
+      </svg>
+
+      {/* Floating dental elements */}
+      {dentals.map((el, i) => (
         <motion.div
           key={i}
           style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, opacity: el.o }}
           animate={{
             y: [-8, 8, -8],
-            rotate: el.sh === 'ring' ? [0, 5, 0] : el.sh === 'plus' ? [0, 16, 0] : el.sh === 'sparkle' ? [0, 20, 0] : [0, 3, 0],
+            rotate:
+              el.sh === 'ring'    ? [0, 5,  0] :
+              el.sh === 'plus'    ? [0, 16, 0] :
+              el.sh === 'sparkle' ? [0, 20, 0] :
+                                    [0, 3,  0],
           }}
           transition={{ duration: el.t, repeat: Infinity, delay: el.d, ease: 'easeInOut' }}
         >
           {el.sh === 'tooth' && (
             <svg width={el.s} height={Math.round(el.s * 1.15)} viewBox="0 0 100 115" fill="none">
-              <path d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
-                stroke={el.c} strokeWidth="4" strokeLinejoin="round" />
+              <path
+                d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+                stroke={el.c} strokeWidth="4" strokeLinejoin="round"
+              />
             </svg>
           )}
           {el.sh === 'ring' && (
             <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
               <circle cx="50" cy="50" r="42" stroke={el.c} strokeWidth="3" />
-              <circle cx="50" cy="50" r="29" stroke={el.c} strokeWidth="1.5" strokeDasharray="8 6" />
+              <circle cx="50" cy="50" r="30" stroke={el.c} strokeWidth="1.5" strokeDasharray="9 6" />
+              <circle cx="50" cy="50" r="18" stroke={el.c} strokeWidth="1" strokeDasharray="4 5" />
             </svg>
           )}
           {el.sh === 'plus' && (
@@ -247,7 +281,7 @@ function MobileHeroBg() {
             </svg>
           )}
           {el.sh === 'sparkle' && (
-            <svg width={el.s} height={el.s} viewBox="0 0 100 100">
+            <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
               <path d="M50 10L55 45L90 50L55 55L50 90L45 55L10 50L45 45Z" fill={el.c} />
             </svg>
           )}
@@ -280,7 +314,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
 
   const handleServiceClick = (svc: Service) => {
     haptic('selection');
-    setState({ screen: 'booking', selectedService: svc });
+    setState({ screen: 'booking-doctor', selectedService: svc });
   };
 
   return (
@@ -302,7 +336,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         style={{
           position: 'relative',
           flexShrink: 0,
-          background: '#FFFFFF',
+          background: 'linear-gradient(145deg, #FFF5FA 0%, #F5F8FF 52%, #EBF8FF 100%)',
           paddingBottom: 44,
           overflow: 'hidden',
         }}
