@@ -81,15 +81,19 @@ function DoctorDetailSheet({
             <X size={17} color="white" />
           </button>
 
-          {/* Large avatar */}
+          {/* Large avatar — photo if available, else monogram */}
           <div style={{
-            width: 76, height: 76, borderRadius: 22,
+            width: 80, height: 80, borderRadius: 22,
             background: 'rgba(255,255,255,0.22)',
-            border: '2.5px solid rgba(255,255,255,0.45)',
+            border: '2.5px solid rgba(255,255,255,0.5)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 12, color: 'white', fontWeight: 900, fontSize: 26,
+            overflow: 'hidden', flexShrink: 0,
           }}>
-            {initials(doctor.name)}
+            {doctor.photo
+              ? <img src={doctor.photo} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : initials(doctor.name)
+            }
           </div>
 
           <p style={{ color: 'white', fontWeight: 900, fontSize: 17, marginBottom: 3 }}>
@@ -386,15 +390,19 @@ export function MobileDoctors({ state, setState }: MobileDoctorsProps) {
                   opacity: doctor.available ? 1 : 0.72,
                 }}
               >
-                {/* Avatar */}
+                {/* Avatar — photo or gradient monogram */}
                 <div style={{
                   width: 58, height: 58, borderRadius: 17, flexShrink: 0,
                   background: `linear-gradient(135deg, ${g1}, ${g2})`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   color: 'white', fontWeight: 900, fontSize: 20,
                   boxShadow: `0 4px 14px ${g1}40`,
+                  overflow: 'hidden',
                 }}>
-                  {initials(doctor.name)}
+                  {doctor.photo
+                    ? <img src={doctor.photo} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : initials(doctor.name)
+                  }
                 </div>
 
                 {/* Info */}

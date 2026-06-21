@@ -103,11 +103,11 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
               btn.style.transform = 'translateY(0)';
             }}
           >
-            {/* Avatar */}
+            {/* Avatar — photo if available, else coloured monogram */}
             <div style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
+              width: '88px',
+              height: '88px',
+              borderRadius: '24px',
               backgroundColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
               display: 'flex',
               alignItems: 'center',
@@ -116,9 +116,13 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
               fontWeight: '800',
               color: '#ffffff',
               flexShrink: 0,
-              boxShadow: doctor.available ? `0 4px 16px ${AVATAR_COLORS[index % AVATAR_COLORS.length]}40` : 'none',
+              overflow: 'hidden',
+              boxShadow: doctor.available ? `0 6px 20px ${AVATAR_COLORS[index % AVATAR_COLORS.length]}40` : 'none',
             }}>
-              {doctor.name.split(' ')[1]?.[0] || doctor.name[0]}
+              {doctor.photo
+                ? <img src={doctor.photo} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : doctor.name.split(' ')[1]?.[0] || doctor.name[0]
+              }
             </div>
 
             {/* Info */}
