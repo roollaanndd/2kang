@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Youtube, Heart, ArrowRight, Calendar } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Heart, ArrowRight, Calendar } from 'lucide-react';
 import { OmdcLogo } from '../ui/OmdcLogo';
+import { IconLocation, IconPhone, IconMail, IconClock, IconKiosk, IconMobileApp } from '../ui/OmdcIcons';
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
 
 const PINK = '#E91E8C';
@@ -20,10 +21,10 @@ const NAV_LINKS = [
 ];
 
 const CONTACT_ITEMS = [
-  { Icon: MapPin, label: 'Alamat', value: CLINIC_ADDRESS },
-  { Icon: Phone, label: 'Telepon', value: CLINIC_PHONE, href: `tel:${CLINIC_PHONE}` },
-  { Icon: Mail, label: 'Email', value: CLINIC_EMAIL, href: `mailto:${CLINIC_EMAIL}` },
-  { Icon: Clock, label: 'Jam Buka', value: CLINIC_HOURS },
+  { Icon: IconLocation, label: 'Alamat', value: CLINIC_ADDRESS },
+  { Icon: IconPhone, label: 'Telepon', value: CLINIC_PHONE, href: `tel:${CLINIC_PHONE}` },
+  { Icon: IconMail, label: 'Email', value: CLINIC_EMAIL, href: `mailto:${CLINIC_EMAIL}` },
+  { Icon: IconClock, label: 'Jam Buka', value: CLINIC_HOURS },
 ];
 
 export function Footer() {
@@ -75,7 +76,7 @@ export function Footer() {
                   border: '1.5px solid rgba(255,255,255,0.35)',
                 }}
               >
-                <Phone size={16} />
+                <IconPhone size={16} color="#FFFFFF" />
                 Hubungi Kami
               </a>
             </div>
@@ -169,8 +170,8 @@ export function Footer() {
               </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {[
-                  { label: 'Kiosk Antrian', to: '/kiosk', desc: 'Daftar antrian mandiri di klinik', icon: '🖥️' },
-                  { label: 'Aplikasi Mobile', to: '/app', desc: 'Booking & pantau antrian dari mana saja', icon: '📱' },
+                  { label: 'Kiosk Antrian', to: '/kiosk', desc: 'Daftar antrian mandiri di klinik', Icon: IconKiosk },
+                  { label: 'Aplikasi Mobile', to: '/app', desc: 'Booking & pantau antrian dari mana saja', Icon: IconMobileApp },
                 ].map(link => (
                   <Link
                     key={link.to}
@@ -192,7 +193,7 @@ export function Footer() {
                       (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
                     }}
                   >
-                    <span style={{ fontSize: 22, lineHeight: 1, flexShrink: 0 }}>{link.icon}</span>
+                    <span style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, background: 'rgba(233,30,140,0.07)', border: '1px solid rgba(233,30,140,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><link.Icon size={20} color={PINK} /></span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13, fontWeight: 700, color: DARK, marginBottom: 3 }}>{link.label}</div>
                       <div style={{ fontSize: 11.5, color: '#9CA3AF', lineHeight: 1.4 }}>{link.desc}</div>

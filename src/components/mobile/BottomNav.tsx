@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Home, Calendar, Ticket, Stethoscope, User } from 'lucide-react';
+import { IconHome, IconCalendarTooth, IconQueue, IconDoctorTooth, IconProfile } from '../ui/OmdcIcons';
 import { haptic } from '../../lib/haptics';
 import type { MobileScreen } from '../../types';
 
@@ -9,11 +9,11 @@ interface BottomNavProps {
 }
 
 const NAV_ITEMS = [
-  { id: 'home' as MobileScreen, label: 'Beranda', Icon: Home },
-  { id: 'booking' as MobileScreen, label: 'Booking', Icon: Calendar },
-  { id: 'queue' as MobileScreen, label: 'Antrian', Icon: Ticket },
-  { id: 'doctors' as MobileScreen, label: 'Dokter', Icon: Stethoscope },
-  { id: 'profile' as MobileScreen, label: 'Profil', Icon: User },
+  { id: 'home' as MobileScreen, label: 'Beranda', Icon: IconHome },
+  { id: 'booking' as MobileScreen, label: 'Booking', Icon: IconCalendarTooth },
+  { id: 'queue' as MobileScreen, label: 'Antrian', Icon: IconQueue },
+  { id: 'doctors' as MobileScreen, label: 'Dokter', Icon: IconDoctorTooth },
+  { id: 'profile' as MobileScreen, label: 'Profil', Icon: IconProfile },
 ];
 
 export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
@@ -93,10 +93,9 @@ export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
                 }}
               >
                 <Icon
-                  size={20}
-                  strokeWidth={active ? 2.5 : 1.8}
-                  style={{ color: active ? 'white' : '#9CA3AF' }}
-                  fill={active ? 'white' : 'none'}
+                  size={22}
+                  strokeWidth={active ? 2.4 : 1.9}
+                  color={active ? '#FFFFFF' : '#9CA3AF'}
                 />
                 <span
                   style={{

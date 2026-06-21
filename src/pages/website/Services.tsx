@@ -135,7 +135,7 @@ export function Services() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Perawatan Terbaik</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Syne', sans-serif" }}>Layanan Dental Kami</h1>
+            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Layanan Dental Kami</h1>
             <p className="text-xl max-w-2xl mx-auto mb-8" style={{ color: '#6B7280' }}>
               Kami menyediakan layanan dental komprehensif dengan teknologi terkini untuk menjaga senyum sehat Anda.
             </p>
@@ -310,7 +310,7 @@ export function Services() {
             className="text-center mb-12"
           >
             <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>FAQ</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
               Pertanyaan yang Sering Diajukan
             </h2>
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />

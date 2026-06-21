@@ -90,7 +90,7 @@ export function About() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tentang Kami</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Syne', sans-serif" }}>Mengenal OMDC Dental</h1>
+            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Mengenal OMDC Dental</h1>
             <p className="text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: '#6B7280' }}>
               Lebih dari 15 tahun kami melayani kesehatan gigi masyarakat Jakarta dengan dedikasi, teknologi modern, dan tim dokter spesialis terbaik.
             </p>
@@ -114,7 +114,7 @@ export function About() {
                 className="text-center p-5 rounded-2xl"
                 style={{ background: '#FFF5F9' }}
               >
-                <div className="text-3xl font-black" style={{ color: '#E91E8C', fontFamily: "'Syne', sans-serif" }}><CountUp value={stat.value} /></div>
+                <div className="text-3xl font-black" style={{ color: '#E91E8C', fontFamily: "'Plus Jakarta Sans', sans-serif" }}><CountUp value={stat.value} /></div>
                 <div className="text-xs mt-1 text-gray-500 font-medium">{stat.label}</div>
               </motion.div>
             ))}
@@ -133,7 +133,7 @@ export function About() {
               transition={{ duration: 0.6 }}
             >
               <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Cerita Kami</p>
-              <h2 className="text-3xl sm:text-4xl font-black mb-6" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-3xl sm:text-4xl font-black mb-6" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Perjalanan 15 Tahun Melayani Senyum Indonesia
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
@@ -233,7 +233,7 @@ export function About() {
             className="text-center mb-14"
           >
             <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>Fondasi Kami</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>Visi & Misi</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Visi & Misi</h2>
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
 
@@ -301,7 +301,7 @@ export function About() {
             className="text-center mb-14"
           >
             <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>Prinsip Kami</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>Nilai-Nilai yang Kami Pegang</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Nilai-Nilai yang Kami Pegang</h2>
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -342,7 +342,7 @@ export function About() {
             className="text-center mb-14"
           >
             <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>Tim Kami</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>Wajah di Balik Senyum Anda</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Wajah di Balik Senyum Anda</h2>
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
 
@@ -406,7 +406,7 @@ export function About() {
             className="text-center mb-14"
           >
             <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>Perjalanan Kami</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>Milestone OMDC Dental</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Milestone OMDC Dental</h2>
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
 
@@ -461,7 +461,7 @@ export function About() {
             className="text-center mb-12"
           >
             <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>Terpercaya</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>Sertifikasi & Penghargaan</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Sertifikasi & Penghargaan</h2>
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
 

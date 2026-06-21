@@ -78,7 +78,7 @@ export function Doctors() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tim Profesional</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Syne', sans-serif" }}>Tim Dokter Kami</h1>
+            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Tim Dokter Kami</h1>
             <p className="text-xl max-w-2xl mx-auto mb-8" style={{ color: '#6B7280' }}>
               Didukung oleh dokter spesialis berpengalaman yang berdedikasi untuk memberikan perawatan dental terbaik.
             </p>
@@ -309,7 +309,7 @@ export function Doctors() {
       {/* CTA */}
       <section className="py-16" style={{ background: 'white' }}>
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>
+          <h2 className="text-2xl sm:text-3xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Tidak Yakin Memilih Dokter?
           </h2>
           <p className="text-gray-500 mb-8">
