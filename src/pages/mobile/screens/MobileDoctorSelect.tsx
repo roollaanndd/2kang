@@ -10,6 +10,21 @@ interface MobileDoctorSelectProps {
   setState: (s: Partial<MobileState>) => void;
 }
 
+const AVATAR_COLORS: [string, string][] = [
+  ['#E91E8C', '#FF6BB5'],
+  ['#06B6D4', '#22D3EE'],
+  ['#8B5CF6', '#C4B5FD'],
+  ['#F59E0B', '#FCD34D'],
+];
+
+function initials(name: string): string {
+  const clean = name.replace(/^drg\.\s*/i, '').trim();
+  const parts = clean.split(/\s+/);
+  if (parts.length === 0) return 'D';
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
 export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps) {
   const handleSelect = (doctor: Doctor) => {
     if (!doctor.available) return;
@@ -25,133 +40,127 @@ export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps)
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col h-full bg-white"
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB' }}
     >
       <MobileHeader title="Pilih Dokter" showBack onBack={back} />
 
       {/* Selected service banner */}
       {state.selectedService && (
-        <div className="mx-5 mt-4 mb-2">
-          <div
-            className="flex items-center gap-2 px-3 py-2 rounded-xl"
-            style={{ background: '#FFF5F9', border: '1px solid #FECDD3' }}
-          >
-            <span className="text-base">{state.selectedService.icon}</span>
+        <div style={{ padding: '10px 20px 0' }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            padding: '10px 14px', borderRadius: 14,
+            background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.15)',
+          }}>
+            <div style={{
+              width: 30, height: 30, borderRadius: 10, flexShrink: 0,
+              background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: 13 }}>🦷</span>
+            </div>
             <div>
-              <p className="text-xs font-bold" style={{ color: '#E91E8C' }}>
-                Layanan: {state.selectedService.name}
+              <p style={{ fontSize: 10, color: '#9CA3AF', marginBottom: 1 }}>Layanan yang dipilih</p>
+              <p style={{ fontSize: 12, fontWeight: 800, color: '#E91E8C' }}>
+                {state.selectedService.name}
               </p>
             </div>
           </div>
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto px-5 py-4 pb-24 flex flex-col gap-4">
-        {DOCTORS.map((doctor, i) => (
-          <motion.button
-            key={doctor.id}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.07 }}
-            onClick={() => handleSelect(doctor)}
-            disabled={!doctor.available}
-            className="w-full text-left rounded-2xl overflow-hidden transition-all active:scale-[0.98]"
-            style={{
-              boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
-              opacity: doctor.available ? 1 : 0.65,
-              border: state.selectedDoctor?.id === doctor.id
-                ? '2px solid #E91E8C'
-                : '2px solid transparent',
-            }}
-          >
-            {/* Card header gradient */}
-            <div
-              className="h-2 w-full"
-              style={{ background: doctor.available ? 'linear-gradient(90deg, #E91E8C, #FF6BB5)' : '#D1D5DB' }}
-            />
+      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 20px 80px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {DOCTORS.map((doctor, i) => {
+          const [g1, g2] = AVATAR_COLORS[i % AVATAR_COLORS.length];
+          const isSelected = state.selectedDoctor?.id === doctor.id;
 
-            <div className="bg-white p-4">
-              <div className="flex items-start gap-4">
-                {/* Avatar */}
-                <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: doctor.available
-                      ? 'linear-gradient(135deg, #FFF5F9, #FFE0F0)'
-                      : '#F3F4F6',
-                  }}
-                >
-                  <span
-                    className="text-2xl font-black"
-                    style={{ color: doctor.available ? '#E91E8C' : '#9CA3AF' }}
-                  >
-                    {doctor.name.split(' ')[1]?.[0] ?? 'D'}
+          return (
+            <motion.button
+              key={doctor.id}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07 }}
+              whileTap={doctor.available ? { scale: 0.98 } : undefined}
+              onClick={() => handleSelect(doctor)}
+              disabled={!doctor.available}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 14,
+                padding: 16, borderRadius: 20, textAlign: 'left',
+                background: 'white',
+                border: `1.5px solid ${isSelected ? '#E91E8C' : '#EEF0F4'}`,
+                boxShadow: isSelected
+                  ? '0 6px 22px rgba(233,30,140,0.15)'
+                  : '0 2px 10px rgba(0,0,0,0.04)',
+                cursor: doctor.available ? 'pointer' : 'default',
+                opacity: doctor.available ? 1 : 0.65,
+                position: 'relative', overflow: 'hidden',
+              }}
+            >
+              {/* Selected left accent */}
+              {isSelected && (
+                <div style={{
+                  position: 'absolute', left: 0, top: 0, bottom: 0, width: 3,
+                  background: 'linear-gradient(180deg, #E91E8C, #FF6BB5)',
+                }} />
+              )}
+
+              {/* Colored avatar */}
+              <div style={{
+                width: 58, height: 58, borderRadius: 17, flexShrink: 0,
+                background: `linear-gradient(135deg, ${g1}, ${g2})`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white', fontWeight: 900, fontSize: 20,
+                boxShadow: doctor.available ? `0 4px 14px ${g1}44` : 'none',
+              }}>
+                {initials(doctor.name)}
+              </div>
+
+              {/* Info */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 3 }}>
+                  <p style={{ fontWeight: 800, fontSize: 13, color: '#1A1A2E', lineHeight: 1.3, flex: 1, paddingRight: 8 }}>
+                    {doctor.name}
+                  </p>
+                  <span style={{
+                    flexShrink: 0, display: 'flex', alignItems: 'center', gap: 3,
+                    fontSize: 9, fontWeight: 700, padding: '3px 8px', borderRadius: 20,
+                    background: doctor.available ? '#D1FAE5' : '#FEE2E2',
+                    color: doctor.available ? '#065F46' : '#991B1B',
+                  }}>
+                    {doctor.available
+                      ? <><CheckCircle size={9} /> Tersedia</>
+                      : <><XCircle size={9} /> Tidak Tersedia</>}
                   </span>
                 </div>
 
-                {/* Info */}
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-1">
-                    <p className="font-black text-sm leading-tight" style={{ color: '#1A1A2E' }}>
-                      {doctor.name}
-                    </p>
-                    <span
-                      className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold flex-shrink-0 ml-2"
-                      style={{
-                        background: doctor.available ? '#D1FAE5' : '#FEE2E2',
-                        color: doctor.available ? '#065F46' : '#991B1B',
-                      }}
-                    >
-                      {doctor.available
-                        ? <><CheckCircle size={10} /> Tersedia</>
-                        : <><XCircle size={10} /> Tidak Tersedia</>
-                      }
+                <p style={{ fontSize: 11, color: '#6B7280', marginBottom: 7 }}>
+                  {doctor.specialty}
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 7 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                    <Star size={11} fill="#F59E0B" color="#F59E0B" />
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#374151' }}>{doctor.rating}</span>
+                    <span style={{ fontSize: 10, color: '#9CA3AF' }}>({doctor.reviewCount})</span>
+                  </div>
+                  <span style={{ fontSize: 9, color: '#D1D5DB' }}>•</span>
+                  <span style={{ fontSize: 10, color: '#6B7280' }}>{doctor.experience} thn pengalaman</span>
+                </div>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                  {doctor.schedule.map(day => (
+                    <span key={day} style={{
+                      fontSize: 9, fontWeight: 600, padding: '2px 8px', borderRadius: 20,
+                      background: '#F3F4F6', color: '#6B7280',
+                    }}>
+                      {day}
                     </span>
-                  </div>
-
-                  <p className="text-xs mb-2" style={{ color: '#6B7280' }}>
-                    {doctor.specialty}
-                  </p>
-
-                  {/* Stats */}
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1">
-                      <Star size={12} fill="#F59E0B" color="#F59E0B" />
-                      <span className="text-xs font-bold" style={{ color: '#374151' }}>
-                        {doctor.rating}
-                      </span>
-                      <span className="text-[10px]" style={{ color: '#9CA3AF' }}>
-                        ({doctor.reviewCount})
-                      </span>
-                    </div>
-                    <span className="text-[10px]" style={{ color: '#9CA3AF' }}>•</span>
-                    <span className="text-[10px]" style={{ color: '#6B7280' }}>
-                      {doctor.experience} thn pengalaman
-                    </span>
-                  </div>
-
-                  {/* Schedule tags */}
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {doctor.schedule.map(day => (
-                      <span
-                        key={day}
-                        className="px-2 py-0.5 rounded-full text-[9px] font-semibold"
-                        style={{ background: '#F3F4F6', color: '#374151' }}
-                      >
-                        {day}
-                      </span>
-                    ))}
-                  </div>
+                  ))}
                 </div>
               </div>
-
-              {/* About */}
-              <p className="text-xs mt-3 leading-relaxed" style={{ color: '#6B7280', borderTop: '1px solid #F3F4F6', paddingTop: 10 }}>
-                {doctor.about}
-              </p>
-            </div>
-          </motion.button>
-        ))}
+            </motion.button>
+          );
+        })}
       </div>
     </motion.div>
   );
