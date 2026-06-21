@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Star, Calendar, Clock, Award, ChevronRight, Search, Filter } from 'lucide-react';
 import { DOCTORS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { WaveDivider } from '../../components/ui/WaveDivider';
 import { CountUp } from '../../components/ui/CountUp';
 
 function DoctorAvatar({ name, size = 96 }: { name: string; size?: number }) {
@@ -77,7 +78,7 @@ export function Doctors() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tim Profesional</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827' }}>Tim Dokter Kami</h1>
+            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Syne', sans-serif" }}>Tim Dokter Kami</h1>
             <p className="text-xl max-w-2xl mx-auto mb-8" style={{ color: '#6B7280' }}>
               Didukung oleh dokter spesialis berpengalaman yang berdedikasi untuk memberikan perawatan dental terbaik.
             </p>
@@ -142,6 +143,9 @@ export function Doctors() {
         </div>
       </section>
 
+      {/* Wave divider after hero */}
+      <WaveDivider fromColor="#FFFFFF" toColor="#FAFAFA" />
+
       {/* Doctors Grid */}
       <section className="py-16" style={{ background: '#FAFAFA' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -161,7 +165,7 @@ export function Doctors() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     className="rounded-2xl overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                    style={{ background: 'white' }}
+                    style={{ background: 'white', marginTop: i % 2 === 1 ? 32 : 0, boxShadow: '0 20px 60px rgba(0,0,0,0.10)', borderRadius: 24 }}
                   >
                     <div className="p-6">
                       <div className="flex gap-5">
@@ -300,10 +304,12 @@ export function Doctors() {
         </div>
       </section>
 
+      <WaveDivider fromColor="#FAFAFA" toColor="#FFFFFF" />
+
       {/* CTA */}
       <section className="py-16" style={{ background: 'white' }}>
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-black mb-4" style={{ color: '#1A1A2E' }}>
+          <h2 className="text-2xl sm:text-3xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Syne', sans-serif" }}>
             Tidak Yakin Memilih Dokter?
           </h2>
           <p className="text-gray-500 mb-8">
