@@ -32,7 +32,7 @@ export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps)
     setState({ screen: 'booking-schedule', selectedDoctor: doctor });
   };
 
-  const back = () => setState({ screen: 'booking' });
+  const back = () => setState({ screen: 'booking-branch' });
 
   return (
     <motion.div

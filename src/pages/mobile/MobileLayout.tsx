@@ -25,6 +25,7 @@ import { MobileHistory } from './screens/MobileHistory';
 import { MobileFamily } from './screens/MobileFamily';
 import { MobileLoyalty } from './screens/MobileLoyalty';
 import { MobileDoctors } from './screens/MobileDoctors';
+import { MobileSelectBranch } from './screens/MobileSelectBranch';
 
 const INITIAL_STATE: MobileState = {
   screen: 'onboarding',
@@ -34,7 +35,7 @@ const INITIAL_STATE: MobileState = {
 
 const HIDE_BOTTOMNAV_SCREENS = new Set([
   'onboarding', 'login', 'register', 'otp', 'create-pin', 'forgot-password',
-  'booking', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
+  'booking', 'booking-branch', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
 ]);
 
 export function MobileLayout() {
@@ -68,6 +69,8 @@ export function MobileLayout() {
         return <MobileHome state={state} setState={setState} />;
       case 'booking':
         return <MobileBooking state={state} setState={setState} />;
+      case 'booking-branch':
+        return <MobileSelectBranch state={state} setState={setState} />;
       case 'booking-doctor':
         return <MobileDoctorSelect state={state} setState={setState} />;
       case 'booking-schedule':

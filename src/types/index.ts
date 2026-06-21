@@ -107,6 +107,19 @@ export interface MobileUser {
   photo: string;
 }
 
+export interface ClinicBranch {
+  id: string;
+  name: string;
+  city: string;
+  address: string;
+  phone: string;
+  whatsapp: string;
+  hours: string;
+  /** Base64 data URL or remote URL. Null = show generated SVG illustration. */
+  image: string | null;
+  isActive: boolean;
+}
+
 export type MobileScreen =
   | 'onboarding'
   | 'login'
@@ -116,6 +129,7 @@ export type MobileScreen =
   | 'forgot-password'
   | 'home'
   | 'booking'
+  | 'booking-branch'
   | 'booking-doctor'
   | 'booking-schedule'
   | 'booking-confirm'
@@ -135,6 +149,7 @@ export interface MobileState {
   user?: MobileUser;
   isLoggedIn: boolean;
   selectedService?: Service;
+  selectedBranch?: ClinicBranch;
   selectedDoctor?: Doctor;
   selectedDate?: string;
   selectedTime?: string;

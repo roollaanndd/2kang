@@ -32,9 +32,7 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
 
   const handleSelect = (service: Service) => {
     haptic('selection');
-    // Skip doctor picker if one was pre-selected (e.g. booking from the Doctors tab).
-    const nextScreen = state.selectedDoctor ? 'booking-schedule' : 'booking-doctor';
-    setState({ screen: nextScreen, selectedService: service });
+    setState({ screen: 'booking-branch', selectedService: service });
   };
 
   const toggleTooth = (fdi: number) => {
