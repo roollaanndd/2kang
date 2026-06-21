@@ -132,7 +132,8 @@ export function MobileLayout() {
         <NotifToast onOpen={() => setState({ screen: 'notifications' })} />
 
         {/* Screen area — fixed size so child screens can scroll internally */}
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        {/* paddingBottom creates space so content isn't hidden behind the floating pill nav */}
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', paddingBottom: showBottomNav ? 108 : 0 }}>
           <AnimatePresence mode="wait">
             {/* position:absolute + inset:0 gives each screen a fixed viewport to fill and scroll within */}
             <div key={state.screen} style={{ position: 'absolute', inset: 0 }}>
@@ -152,7 +153,7 @@ export function MobileLayout() {
         {state.isLoggedIn && (
           <div style={{
             position: 'absolute',
-            bottom: showBottomNav ? 68 : 8,
+            bottom: showBottomNav ? 96 : 8,
             right: 10,
             fontSize: 9,
             fontWeight: 600,

@@ -26,14 +26,20 @@ export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
   return (
     <div
       style={{
-        width: '100%',
-        background: 'rgba(255,255,255,0.9)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderTop: '1px solid rgba(233,30,140,0.08)',
-        boxShadow: '0 -8px 32px rgba(0,0,0,0.08)',
+        position: 'absolute',
+        bottom: 20,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: 'calc(100% - 32px)',
+        background: 'rgba(255,255,255,0.88)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderRadius: 36,
+        border: '1px solid rgba(233,30,140,0.10)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(233,30,140,0.08)',
         flexShrink: 0,
         zIndex: 50,
+        overflow: 'hidden',
       }}
     >
       <div
@@ -69,55 +75,41 @@ export function BottomNav({ currentScreen, onNavigate }: BottomNavProps) {
             >
               <div
                 style={{
-                  padding: '7px 14px',
-                  borderRadius: 14,
+                  padding: '8px 16px',
+                  borderRadius: 24,
                   background: active
-                    ? 'linear-gradient(135deg, rgba(233,30,140,0.13), rgba(233,30,140,0.06))'
+                    ? 'linear-gradient(135deg, #E91E8C, #FF6BB5)'
                     : 'transparent',
                   transition: 'background 0.2s',
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  gap: 2,
                 }}
               >
                 <Icon
-                  size={22}
+                  size={20}
                   strokeWidth={active ? 2.5 : 1.8}
-                  style={{ color: active ? '#E91E8C' : '#D1D5DB' }}
-                  fill={active ? '#E91E8C' : 'none'}
+                  style={{ color: active ? 'white' : '#9CA3AF' }}
+                  fill={active ? 'white' : 'none'}
                 />
-              </div>
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: active ? 700 : 500,
-                  lineHeight: 1,
-                  color: active ? '#E91E8C' : '#D1D5DB',
-                  transition: 'color 0.2s',
-                }}
-              >
-                {label}
-              </span>
-              {active && (
-                <motion.div
-                  layoutId="nav-dot"
+                <span
                   style={{
-                    width: 4,
-                    height: 4,
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-                    marginTop: 2,
+                    fontSize: 10,
+                    fontWeight: active ? 700 : 500,
+                    lineHeight: 1,
+                    color: active ? 'white' : '#9CA3AF',
+                    transition: 'color 0.2s',
                   }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                />
-              )}
-              {!active && <div style={{ width: 4, height: 4, marginTop: 2 }} />}
+                >
+                  {label}
+                </span>
+              </div>
             </motion.button>
           );
         })}
       </div>
-      {/* Safe area padding for iPhone home indicator */}
-      <div className="h-safe-bottom" />
     </div>
   );
 }
