@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import type { MobileState } from '../../types/index';
 import { APP_VERSION } from '../../version';
 import { BottomNav } from '../../components/mobile/BottomNav';
@@ -34,6 +34,38 @@ import { MobileChatDetail } from './screens/MobileChatDetail';
 import { MobilePromos } from './screens/MobilePromos';
 import { MobileVideoCall } from './screens/MobileVideoCall';
 import { MobileDoctorDetail } from './screens/MobileDoctorDetail';
+
+function ScreenTransitionBar({ screen }: { screen: string }) {
+  const [active, setActive] = useState(false);
+  const prevScreen = useRef(screen);
+
+  useEffect(() => {
+    if (screen === prevScreen.current) return;
+    prevScreen.current = screen;
+    setActive(true);
+    const t = setTimeout(() => setActive(false), 500);
+    return () => clearTimeout(t);
+  }, [screen]);
+
+  return (
+    <AnimatePresence>
+      {active && (
+        <motion.div
+          key="mobile-ptbar"
+          initial={{ scaleX: 0, transformOrigin: 'left' }}
+          animate={{ scaleX: 1, transformOrigin: 'left' }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+          style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+            zIndex: 9999, pointerEvents: 'none',
+          }}
+        />
+      )}
+    </AnimatePresence>
+  );
+}
 
 const INITIAL_STATE: MobileState = {
   screen: 'onboarding',
@@ -150,6 +182,7 @@ export function MobileLayout() {
           flexDirection: 'column',
         }}
       >
+        <ScreenTransitionBar screen={state.screen} />
         <NotifToast onOpen={() => setState({ screen: 'notifications' })} />
 
         <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
