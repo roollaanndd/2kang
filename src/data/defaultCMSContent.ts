@@ -1,4 +1,5 @@
 /* eslint-disable */
+import type { ClinicBranch } from '../types';
 
 export interface CMSStat { value: string; label: string; }
 export interface CMSService { id: string; name: string; description: string; emoji: string; price: string; isVisible: boolean; }
@@ -94,6 +95,10 @@ export interface CMSContent {
   };
   /** Custom company logo — base64 data URL. When set, replaces the default tooth SVG everywhere. */
   logoUrl: string | null;
+  /** Clinic branches / locations shown in the mobile booking flow and admin panel. */
+  branches: {
+    items: ClinicBranch[];
+  };
 }
 
 export const DEFAULT_CMS_CONTENT: CMSContent = {
@@ -242,6 +247,54 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
   kioskSettings: {
     idleTimeoutSeconds: 30,
   },
+  branches: {
+    items: [
+      {
+        id: 'b1',
+        name: 'OMDC Dental Jakarta Selatan',
+        city: 'Jakarta Selatan',
+        address: 'Jl. Fatmawati No. 28, Cilandak, Jakarta Selatan 12430',
+        phone: '(021) 7654-3210',
+        whatsapp: '+62 812-0001-0001',
+        hours: 'Sen–Sab: 08:00–20:00',
+        image: null,
+        isActive: true,
+      },
+      {
+        id: 'b2',
+        name: 'OMDC Dental Jakarta Pusat',
+        city: 'Jakarta Pusat',
+        address: 'Jl. Sudirman No. 123, Tanah Abang, Jakarta Pusat 10220',
+        phone: '(021) 2345-6789',
+        whatsapp: '+62 812-0002-0002',
+        hours: 'Sen–Sab: 08:00–20:00',
+        image: null,
+        isActive: true,
+      },
+      {
+        id: 'b3',
+        name: 'OMDC Dental Tangerang',
+        city: 'Tangerang',
+        address: 'Jl. MH Thamrin No. 55, Karawaci, Tangerang 15117',
+        phone: '(021) 5566-7788',
+        whatsapp: '+62 812-0003-0003',
+        hours: 'Sen–Sab: 09:00–19:00',
+        image: null,
+        isActive: true,
+      },
+      {
+        id: 'b4',
+        name: 'OMDC Dental Bekasi',
+        city: 'Bekasi',
+        address: 'Jl. Ahmad Yani No. 88, Bekasi Timur, Bekasi 17111',
+        phone: '(021) 8833-4455',
+        whatsapp: '+62 812-0004-0004',
+        hours: 'Sen–Sab: 08:00–18:00',
+        image: null,
+        isActive: true,
+      },
+    ],
+  },
 };
 
 export function loadCMSContent(): CMSContent {
@@ -259,6 +312,7 @@ export function loadCMSContent(): CMSContent {
         faq: { ...DEFAULT_CMS_CONTENT.faq, ...(parsed.faq ?? {}) },
         gallery: { ...DEFAULT_CMS_CONTENT.gallery, ...(parsed.gallery ?? {}) },
         kioskSettings: { ...DEFAULT_CMS_CONTENT.kioskSettings, ...(parsed.kioskSettings ?? {}) },
+        branches: { ...DEFAULT_CMS_CONTENT.branches, ...(parsed.branches ?? {}) },
       };
     }
   } catch {}

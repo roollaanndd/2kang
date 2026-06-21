@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Clock, User, MapPin, Stethoscope, Phone } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
-import { CLINIC_NAME } from '../../../data/mockData';
 import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
 
@@ -39,6 +38,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
 
   const doctor = state.selectedDoctor;
   const service = state.selectedService;
+  const branch = state.selectedBranch;
   const user = state.user;
 
   return (
@@ -85,7 +85,18 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             <InfoRow icon={<Stethoscope size={16} />} label="Spesialisasi" value={doctor?.specialty ?? '-'} />
             <InfoRow icon={<Calendar size={16} />} label="Tanggal" value={state.selectedDate ?? '-'} />
             <InfoRow icon={<Clock size={16} />} label="Waktu" value={state.selectedTime ?? '-'} />
-            <InfoRow icon={<MapPin size={16} />} label="Klinik" value={CLINIC_NAME} />
+            <InfoRow icon={<MapPin size={16} />} label="Lokasi" value={branch?.name ?? 'OMDC Dental'} />
+            {branch?.address && (
+              <div className="flex items-start gap-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFF5F9' }}>
+                  <MapPin size={14} style={{ color: '#E91E8C' }} />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[10px] font-medium mb-0.5" style={{ color: '#9CA3AF' }}>Alamat</p>
+                  <p className="text-xs font-semibold leading-snug" style={{ color: '#1A1A2E' }}>{branch.address}</p>
+                </div>
+              </div>
+            )}
             {state.selectedTeeth && state.selectedTeeth.length > 0 && (
               <div className="flex items-start gap-3 py-3">
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base" style={{ background: '#FFF5F9' }}>

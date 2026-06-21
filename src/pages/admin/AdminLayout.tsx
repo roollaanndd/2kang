@@ -6,7 +6,7 @@ import { useCMS } from '../../context/CMSContext';
 import {
   LayoutDashboard, Users2, CalendarDays, ClipboardList,
   Stethoscope, Scissors, Tag, BarChart3, Settings, LogOut,
-  Bell, Menu, Activity, Globe, ShieldCheck, UserCog, Eye, EyeOff,
+  Bell, Menu, Activity, Globe, ShieldCheck, UserCog, Eye, EyeOff, MapPin,
 } from 'lucide-react';
 
 import AdminDashboard from './AdminDashboard';
@@ -21,6 +21,7 @@ import AdminSettings from './AdminSettings';
 import AdminWebsite from './AdminWebsite';
 import AdminUsers from './AdminUsers';
 import AdminRoles from './AdminRoles';
+import AdminBranches from './AdminBranches';
 
 import { AuthProvider, useAuth } from '../../context/AuthContext';
 
@@ -45,6 +46,7 @@ const NAV_ITEMS: NavItem[] = [
   { path: 'patients', label: 'Pasien', icon: Users2, group: 'clinic', permission: 'patients.view' },
   { path: 'doctors', label: 'Dokter', icon: Stethoscope, group: 'clinic' },
   { path: 'services', label: 'Layanan', icon: Scissors, group: 'clinic' },
+  { path: 'branches', label: 'Lokasi Cabang', icon: MapPin, group: 'clinic' },
   { path: 'promotions', label: 'Promo', icon: Tag, group: 'content' },
   { path: 'website', label: 'Website', icon: Globe, group: 'content', permission: 'website.view' },
   { path: 'reports', label: 'Laporan', icon: BarChart3, group: 'reports', permission: 'reports.view' },
@@ -65,7 +67,7 @@ const BREADCRUMB_MAP: Record<string, string> = {
   '': 'Dashboard', queue: 'Antrian', appointments: 'Jadwal & Janji',
   patients: 'Data Pasien', doctors: 'Manajemen Dokter', services: 'Layanan & Harga',
   promotions: 'Promo & Diskon', website: 'Manajemen Website', reports: 'Laporan & Analitik',
-  users: 'Pengguna', roles: 'Peran & Akses', settings: 'Pengaturan',
+  users: 'Pengguna', roles: 'Peran & Akses', settings: 'Pengaturan', branches: 'Lokasi Cabang',
 };
 
 // ─── LOGIN FORM ───────────────────────────────────────────────────────────────
@@ -368,6 +370,7 @@ function InnerLayout() {
             <Route path="/reports" element={<AdminReports />} />
             <Route path="/users" element={<AdminUsers />} />
             <Route path="/roles" element={<AdminRoles />} />
+            <Route path="/branches" element={<AdminBranches />} />
             <Route path="/settings" element={<AdminSettings />} />
           </Routes>
         </main>

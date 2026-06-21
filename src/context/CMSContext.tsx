@@ -47,6 +47,7 @@ interface CMSContextValue {
   updateFaq: (patch: Partial<CMSContent['faq']>) => void;
   updateGallery: (patch: Partial<CMSContent['gallery']>) => void;
   updateKioskSettings: (patch: Partial<CMSContent['kioskSettings']>) => void;
+  updateBranches: (patch: Partial<CMSContent['branches']>) => void;
   resetToDefaults: () => void;
 }
 
@@ -227,13 +228,23 @@ export function CMSProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const updateBranches = useCallback((patch: Partial<CMSContent['branches']>) => {
+    setCMS(prev => {
+      const next = { ...prev, branches: { ...prev.branches, ...patch } };
+      saveCMSContent(next);
+      saveToSupabase(next);
+      return next;
+    });
+  }, []);
+
   const resetToDefaults = useCallback(() => persist(DEFAULT_CMS_CONTENT), [persist]);
 
   return (
     <CMSContext.Provider value={{
       cms, synced, updateCMS, updateHero, updateServices, updateDoctors, updateClinic,
       updatePromotions, updateArticles, updateAbout, updateAppearance, updateContact,
-      updateTrust, updateTestimonials, updateFaq, updateGallery, updateKioskSettings, resetToDefaults,
+      updateTrust, updateTestimonials, updateFaq, updateGallery, updateKioskSettings,
+      updateBranches, resetToDefaults,
     }}>
       {children}
     </CMSContext.Provider>
