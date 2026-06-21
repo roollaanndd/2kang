@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
@@ -15,6 +15,9 @@ import {
   UserPlus,
   Circle,
 } from 'lucide-react';
+import { CountUp } from '../../components/ui/CountUp';
+import { Skeleton, SkeletonText, SkeletonCircle } from '../../components/ui/Skeleton';
+import AdminBroadcast from './AdminBroadcast';
 
 // ─── BRAND ───────────────────────────────────────────────────────────────────
 const PINK = '#E91E8C';
@@ -118,6 +121,7 @@ function StatCard({
   color,
   bg,
   trend,
+  index = 0,
 }: {
   icon: any;
   label: string;
@@ -126,12 +130,15 @@ function StatCard({
   color: string;
   bg: string;
   trend?: 'up' | 'down';
+  index?: number;
 }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100"
+      transition={{ delay: index * 0.07, duration: 0.4 }}
+      whileHover={{ y: -3 }}
+      className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 transition-shadow hover:shadow-md"
     >
       <div className="flex items-start justify-between mb-3">
         <div
@@ -147,16 +154,94 @@ function StatCard({
           </div>
         )}
       </div>
-      <div className="text-2xl font-bold text-gray-800 mb-0.5">{value}</div>
+      <div className="text-2xl font-bold text-gray-800 mb-0.5">
+        <CountUp value={value} />
+      </div>
       <div className="text-sm text-gray-500">{label}</div>
       {sub && <div className="text-xs text-gray-400 mt-1">{sub}</div>}
     </motion.div>
   );
 }
 
+// ─── SKELETON SCREEN ──────────────────────────────────────────────────────────
+function DashboardSkeleton() {
+  return (
+    <div className="p-6 space-y-6 max-w-[1400px] mx-auto">
+      {/* header */}
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <Skeleton width={160} height={26} />
+          <SkeletonText width={220} />
+        </div>
+        <Skeleton width={110} height={38} radius={12} />
+      </div>
+
+      {/* top stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
+            <Skeleton width={44} height={44} radius={12} />
+            <Skeleton width="55%" height={24} />
+            <SkeletonText width="70%" />
+          </div>
+        ))}
+      </div>
+
+      {/* middle row — two list panels */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {Array.from({ length: 2 }).map((_, p) => (
+          <div key={p} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-5 py-4 border-b border-gray-50">
+              <SkeletonText width={140} height={14} />
+            </div>
+            <div className="divide-y divide-gray-50">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-3 px-5 py-3">
+                  <SkeletonCircle size={40} />
+                  <div className="flex-1 space-y-2">
+                    <SkeletonText width="50%" />
+                    <SkeletonText width="75%" />
+                  </div>
+                  <Skeleton width={64} height={20} radius={10} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* bottom row — three panels */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 3 }).map((_, p) => (
+          <div key={p} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 space-y-4">
+            <SkeletonText width={150} height={14} />
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <SkeletonCircle size={34} />
+                <div className="flex-1 space-y-2">
+                  <SkeletonText width="60%" />
+                  <SkeletonText width="40%" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── DASHBOARD ────────────────────────────────────────────────────────────────
 export default function AdminDashboard() {
   const today = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 700);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) return <DashboardSkeleton />;
 
   return (
     <div className="p-6 space-y-6 max-w-[1400px] mx-auto">
@@ -177,6 +262,7 @@ export default function AdminDashboard() {
       {/* ── TOP STATS ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
+          index={0}
           icon={CalendarDays}
           label="Janji Hari Ini"
           value={String(MOCK_TODAY_STATS.totalAppointments)}
@@ -186,6 +272,7 @@ export default function AdminDashboard() {
           trend="up"
         />
         <StatCard
+          index={1}
           icon={CheckCircle2}
           label="Selesai"
           value={String(MOCK_TODAY_STATS.completed)}
@@ -194,6 +281,7 @@ export default function AdminDashboard() {
           bg="#F0FDF4"
         />
         <StatCard
+          index={2}
           icon={Clock}
           label="Menunggu"
           value={String(MOCK_TODAY_STATS.waiting)}
@@ -202,6 +290,7 @@ export default function AdminDashboard() {
           bg="#FFFBEB"
         />
         <StatCard
+          index={3}
           icon={DollarSign}
           label="Pendapatan"
           value={formatRupiah(MOCK_TODAY_STATS.revenue)}
@@ -215,7 +304,7 @@ export default function AdminDashboard() {
       {/* ── MIDDLE ROW ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Live Queue */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-shadow hover:shadow-md">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
             <div className="flex items-center gap-2">
               <Activity size={18} style={{ color: PINK }} />
@@ -252,7 +341,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Today Appointments */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-shadow hover:shadow-md">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
             <div className="flex items-center gap-2">
               <CalendarDays size={18} style={{ color: BLUE }} />
@@ -289,18 +378,20 @@ export default function AdminDashboard() {
       {/* ── BOTTOM ROW ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Revenue Chart */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:col-span-1">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 lg:col-span-1 transition-shadow hover:shadow-md">
           <h2 className="font-semibold text-gray-800 text-sm mb-4">Pendapatan Minggu Ini</h2>
           <div className="flex items-end gap-2 h-32">
             {REVENUE_DATA.map((d, i) => {
               const pct = (d.amount / MAX_REVENUE) * 100;
               const isToday = i === 4;
               return (
-                <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className="w-full rounded-t-lg transition-all"
+                <div key={d.day} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
+                  <motion.div
+                    className="w-full rounded-t-lg"
+                    initial={{ height: 0 }}
+                    animate={{ height: `${pct}%` }}
+                    transition={{ delay: 0.15 + i * 0.08, duration: 0.6, ease: 'easeOut' }}
                     style={{
-                      height: `${pct}%`,
                       background: isToday
                         ? `linear-gradient(180deg, ${PINK}, #FF6BB5)`
                         : '#EFF9FF',
@@ -316,13 +407,13 @@ export default function AdminDashboard() {
           <div className="mt-3 pt-3 border-t border-gray-50">
             <div className="text-xs text-gray-400">Total minggu ini</div>
             <div className="text-lg font-bold text-gray-800">
-              {formatRupiah(REVENUE_DATA.reduce((s, d) => s + d.amount, 0))}
+              <CountUp value={formatRupiah(REVENUE_DATA.reduce((s, d) => s + d.amount, 0))} />
             </div>
           </div>
         </div>
 
         {/* Doctor Activity */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 transition-shadow hover:shadow-md">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-gray-800 text-sm">Aktivitas Dokter</h2>
             <Link to="/admin/doctors" className="text-xs" style={{ color: PINK }}>Lihat →</Link>
@@ -352,7 +443,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* New Patients */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 transition-shadow hover:shadow-md">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <UserPlus size={16} style={{ color: GREEN }} />
@@ -391,6 +482,16 @@ export default function AdminDashboard() {
           </Link>
         </div>
       </div>
+
+      {/* ── BROADCAST ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-4"
+      >
+        <AdminBroadcast />
+      </motion.div>
     </div>
   );
 }
