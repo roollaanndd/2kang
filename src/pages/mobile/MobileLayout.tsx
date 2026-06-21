@@ -20,6 +20,7 @@ import { MobileMedical } from './screens/MobileMedical';
 import { MobileNotifications } from './screens/MobileNotifications';
 import { MobileHistory } from './screens/MobileHistory';
 import { MobileFamily } from './screens/MobileFamily';
+import { MobileLoyalty } from './screens/MobileLoyalty';
 
 const INITIAL_STATE: MobileState = {
   screen: 'onboarding',
@@ -81,6 +82,8 @@ export function MobileLayout() {
         return <MobileHistory state={state} setState={setState} />;
       case 'family':
         return <MobileFamily state={state} setState={setState} />;
+      case 'loyalty':
+        return <MobileLoyalty state={state} setState={setState} />;
       default:
         return <MobileHome state={state} setState={setState} />;
     }

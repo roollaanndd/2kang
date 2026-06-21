@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, Banknote, CreditCard, Smartphone, QrCode, Check } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { PaymentMethod } from '../../../types';
+import { kioskSound } from '../../../lib/kioskSound';
 
 interface PaymentOption {
   id: PaymentMethod;
@@ -58,6 +59,7 @@ export function KioskPayment({ state, setState, goTo, goBack }: KioskScreenProps
   const [selected, setSelected] = useState<PaymentMethod | null>(state.paymentMethod || null);
 
   const handleContinue = () => {
+    kioskSound('success');
     setState(prev => ({ ...prev, paymentMethod: selected || undefined }));
     goTo('ticket');
   };
@@ -122,7 +124,7 @@ export function KioskPayment({ state, setState, goTo, goBack }: KioskScreenProps
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.07, duration: 0.35 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setSelected(isSelected ? null : opt.id)}
+              onClick={() => { kioskSound('select'); setSelected(isSelected ? null : opt.id); }}
               style={{
                 display: 'flex',
                 alignItems: 'center',

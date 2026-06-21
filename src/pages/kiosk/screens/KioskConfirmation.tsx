@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, User, Stethoscope, Calendar, Clock, MapPin, Wrench } from 'lucide-react';
 import { CLINIC_NAME } from '../../../data/mockData';
+import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
 
 interface SummaryRowProps {
@@ -37,6 +38,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
   const t = state.language === 'en';
 
   const handleConfirm = () => {
+    kioskSound('success');
     const nextQueue = 'A' + String(Math.floor(Math.random() * 10) + 18).padStart(3, '0');
     setState(prev => ({ ...prev, queueNumber: nextQueue }));
     goTo('payment');

@@ -3,11 +3,13 @@ import { ChevronLeft } from 'lucide-react';
 import { SERVICES } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { Service } from '../../../types';
+import { kioskSound } from '../../../lib/kioskSound';
 
 export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
 
   const handleSelect = (service: Service) => {
+    kioskSound('select');
     setState(prev => ({ ...prev, selectedService: service }));
     goTo('doctor-select');
   };

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { OmdcLogo } from '../../../components/ui/OmdcLogo';
 import { CURRENT_QUEUE } from '../../../data/mockData';
+import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
 
 const PINK = '#E91E8C';
@@ -106,6 +107,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
   }, []);
 
   const handleTouch = () => {
+    kioskSound('tap');
     setState(prev => ({ ...prev, step: 'language', language: 'id' }));
     goTo('language');
   };
