@@ -86,6 +86,23 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             <InfoRow icon={<Calendar size={16} />} label="Tanggal" value={state.selectedDate ?? '-'} />
             <InfoRow icon={<Clock size={16} />} label="Waktu" value={state.selectedTime ?? '-'} />
             <InfoRow icon={<MapPin size={16} />} label="Klinik" value={CLINIC_NAME} />
+            {state.selectedTeeth && state.selectedTeeth.length > 0 && (
+              <div className="flex items-start gap-3 py-3">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base" style={{ background: '#FFF5F9' }}>
+                  🦷
+                </div>
+                <div className="flex-1">
+                  <p className="text-[10px] font-medium mb-1" style={{ color: '#9CA3AF' }}>Lokasi Keluhan</p>
+                  <div className="flex flex-wrap gap-1">
+                    {[...state.selectedTeeth].sort((a, b) => a - b).map(n => (
+                      <span key={n} className="text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(233,30,140,0.08)', color: '#E91E8C' }}>
+                        Gigi {n}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
 

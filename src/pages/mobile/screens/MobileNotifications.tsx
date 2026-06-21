@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import type { ComponentType } from 'react';
 import { motion } from 'motion/react';
-import { Bell, Calendar, Ticket, Tag, X } from 'lucide-react';
+import { Bell, Calendar, Ticket, Tag, X, BellRing, Check, BellOff } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { haptic } from '../../../lib/haptics';
+import { useNotifications, type NotifType } from '../../../context/NotificationContext';
 import type { MobileState } from '../../../types';
 
 interface MobileNotificationsProps {
@@ -11,103 +11,44 @@ interface MobileNotificationsProps {
   setState: (s: Partial<MobileState>) => void;
 }
 
-type NotifType = 'reminder' | 'queue' | 'promo' | 'info';
-
-interface Notification {
-  id: string;
-  type: NotifType;
-  title: string;
-  message: string;
-  time: string;
-  read: boolean;
-}
-
-const MOCK_NOTIFS: Notification[] = [
-  {
-    id: 'n0',
-    type: 'reminder',
-    title: 'Pengingat: Kontrol Kawat Gigi',
-    message: 'Jadwal kontrol kawat gigi Anda dengan drg. Sarah Sella hari ini pukul 14:00. Silakan tiba 10 menit lebih awal.',
-    time: 'Hari ini, 08:00',
-    read: false,
-  },
-  {
-    id: 'n1',
-    type: 'reminder',
-    title: 'Janji Temu Besok',
-    message: 'Anda memiliki janji dengan drg. Sarah Sella besok pukul 09:00. Jangan lupa datang tepat waktu!',
-    time: '2 jam lalu',
-    read: false,
-  },
-  {
-    id: 'n2',
-    type: 'queue',
-    title: 'Antrian Anda Dipanggil',
-    message: 'Nomor antrian A016 sedang dipanggil. Segera menuju klinik!',
-    time: '1 hari lalu',
-    read: false,
-  },
-  {
-    id: 'n3',
-    type: 'promo',
-    title: 'Promo Scaling 30% OFF',
-    message: 'Dapatkan diskon 30% untuk scaling gigi profesional. Berlaku hingga 31 Mei 2025. Booking sekarang!',
-    time: '3 hari lalu',
-    read: true,
-  },
-  {
-    id: 'n4',
-    type: 'reminder',
-    title: 'Kontrol Gigi Rutin',
-    message: 'Sudah 6 bulan sejak kunjungan terakhir Anda. Kami merekomendasikan pemeriksaan rutin.',
-    time: '1 minggu lalu',
-    read: true,
-  },
-  {
-    id: 'n5',
-    type: 'info',
-    title: 'Profil Berhasil Diperbarui',
-    message: 'Informasi profil Anda telah berhasil diperbarui.',
-    time: '2 minggu lalu',
-    read: true,
-  },
-  {
-    id: 'n6',
-    type: 'promo',
-    title: 'Paket Whitening Spesial',
-    message: 'Paket pemutihan gigi profesional diskon 15% untuk member OMDC. Terbatas!',
-    time: '3 minggu lalu',
-    read: true,
-  },
-];
-
 const TYPE_CONFIG: Record<NotifType, { Icon: ComponentType<{ size?: number; color?: string }>; bg: string; color: string }> = {
   reminder: { Icon: Calendar, bg: '#FFF5F9', color: '#E91E8C' },
   queue: { Icon: Ticket, bg: '#EFF6FF', color: '#3B82F6' },
   promo: { Icon: Tag, bg: '#ECFDF5', color: '#10B981' },
-  info: { Icon: Bell, bg: '#F3F4F6', color: '#6B7280' },
+  system: { Icon: Bell, bg: '#F3F4F6', color: '#6B7280' },
 };
 
-export function MobileNotifications({ state, setState }: MobileNotificationsProps) {
-  const [notifs, setNotifs] = useState<Notification[]>(MOCK_NOTIFS);
-
-  const unreadCount = notifs.filter(n => !n.read).length;
+export function MobileNotifications({ setState }: MobileNotificationsProps) {
+  const {
+    notifications,
+    unreadCount,
+    permission,
+    requestPushPermission,
+    markRead,
+    markAllRead,
+    dismiss,
+  } = useNotifications();
 
   const back = () => setState({ screen: 'home' });
 
-  const dismiss = (id: string) => {
+  const handleDismiss = (id: string) => {
     haptic('light');
-    setNotifs(n => n.filter(x => x.id !== id));
+    dismiss(id);
   };
 
-  const markRead = (id: string) => {
+  const handleMarkRead = (id: string) => {
     haptic('selection');
-    setNotifs(n => n.map(x => x.id === id ? { ...x, read: true } : x));
+    markRead(id);
   };
 
-  const markAllRead = () => {
+  const handleMarkAllRead = () => {
     haptic('success');
-    setNotifs(n => n.map(x => ({ ...x, read: true })));
+    markAllRead();
+  };
+
+  const handleEnable = () => {
+    haptic('medium');
+    requestPushPermission();
   };
 
   return (
@@ -126,7 +67,7 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
         rightAction={
           unreadCount > 0 ? (
             <button
-              onClick={markAllRead}
+              onClick={handleMarkAllRead}
               className="text-[11px] font-bold"
               style={{ color: '#E91E8C' }}
             >
@@ -136,9 +77,83 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
         }
       />
 
+      {/* ── Permission card ── */}
+      <div className="mx-5 mt-4">
+        {permission === 'granted' ? (
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+            style={{ background: '#ECFDF5', border: '1px solid #A7F3D0' }}
+          >
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: '#D1FAE5' }}
+            >
+              <Check size={18} color="#059669" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold" style={{ color: '#065F46' }}>Notifikasi Aktif</p>
+              <p className="text-[11px] leading-snug" style={{ color: '#047857' }}>
+                Anda akan menerima pengingat dan info antrean secara langsung.
+              </p>
+            </div>
+          </div>
+        ) : permission === 'denied' || permission === 'unsupported' ? (
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+            style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}
+          >
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: '#F3F4F6' }}
+            >
+              <BellOff size={18} color="#9CA3AF" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold" style={{ color: '#6B7280' }}>
+                {permission === 'unsupported' ? 'Notifikasi Tidak Didukung' : 'Notifikasi Dinonaktifkan'}
+              </p>
+              <p className="text-[11px] leading-snug" style={{ color: '#9CA3AF' }}>
+                {permission === 'unsupported'
+                  ? 'Perangkat Anda tidak mendukung notifikasi push.'
+                  : 'Aktifkan izin notifikasi melalui pengaturan browser Anda.'}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={handleEnable}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all active:scale-[0.98]"
+            style={{
+              background: 'white',
+              border: '1px solid #FECDD3',
+              boxShadow: '0 4px 16px rgba(233,30,140,0.10)',
+            }}
+          >
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg,#E91E8C,#FF6BB5)' }}
+            >
+              <BellRing size={19} color="white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold" style={{ color: '#111827' }}>Aktifkan Notifikasi</p>
+              <p className="text-[11px] leading-snug" style={{ color: '#6B7280' }}>
+                Dapatkan pengingat janji temu & info antrean secara real-time.
+              </p>
+            </div>
+            <span
+              className="text-[11px] font-bold px-3 py-1.5 rounded-full flex-shrink-0"
+              style={{ background: '#FFF5F9', color: '#E91E8C' }}
+            >
+              Izinkan
+            </span>
+          </button>
+        )}
+      </div>
+
       {/* Unread count */}
       {unreadCount > 0 && (
-        <div className="mx-5 mt-4 mb-2">
+        <div className="mx-5 mt-3 mb-2">
           <div
             className="flex items-center gap-2 px-3 py-2 rounded-xl"
             style={{ background: '#FFF5F9', border: '1px solid #FECDD3' }}
@@ -157,14 +172,14 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
       )}
 
       <div className="flex-1 overflow-y-auto px-5 py-3 pb-24 flex flex-col gap-2">
-        {notifs.length === 0 ? (
+        {notifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Bell size={64} style={{ color: '#E5E7EB' }} />
             <p className="text-base font-bold mt-4" style={{ color: '#9CA3AF' }}>Tidak ada notifikasi</p>
             <p className="text-sm mt-1" style={{ color: '#D1D5DB' }}>Anda sudah membaca semua notifikasi</p>
           </div>
         ) : (
-          notifs.map((notif, i) => {
+          notifications.map((notif, i) => {
             const { Icon, bg, color } = TYPE_CONFIG[notif.type];
             return (
               <motion.div
@@ -172,7 +187,7 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                onClick={() => markRead(notif.id)}
+                onClick={() => handleMarkRead(notif.id)}
                 className="relative bg-white rounded-2xl px-4 py-4 transition-all active:scale-[0.98] cursor-pointer"
                 style={{
                   boxShadow: '0 1px 8px rgba(0,0,0,0.05)',
@@ -206,7 +221,7 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
                         {notif.title}
                       </p>
                       <button
-                        onClick={e => { e.stopPropagation(); dismiss(notif.id); }}
+                        onClick={e => { e.stopPropagation(); handleDismiss(notif.id); }}
                         className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full transition-all active:scale-90"
                         style={{ background: '#F3F4F6' }}
                       >
@@ -214,7 +229,7 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
                       </button>
                     </div>
                     <p className="text-xs leading-relaxed mb-2" style={{ color: '#6B7280' }}>
-                      {notif.message}
+                      {notif.body}
                     </p>
                     <p className="text-[10px]" style={{ color: '#9CA3AF' }}>{notif.time}</p>
                   </div>

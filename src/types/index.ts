@@ -137,4 +137,6 @@ export interface MobileState {
   currentQueue?: string;
   onboardingStep: number;
   tcAccepted?: boolean;
+  /** FDI tooth numbers the patient flagged as problematic during booking. */
+  selectedTeeth?: number[];
 }

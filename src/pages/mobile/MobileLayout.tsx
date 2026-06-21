@@ -3,6 +3,8 @@ import { AnimatePresence } from 'motion/react';
 import type { MobileState } from '../../types/index';
 import { APP_VERSION } from '../../version';
 import { BottomNav } from '../../components/mobile/BottomNav';
+import { NotifToast } from '../../components/mobile/NotifToast';
+import { NotificationProvider } from '../../context/NotificationContext';
 import { MobileOnboarding } from './screens/MobileOnboarding';
 import { MobileLogin } from './screens/MobileLogin';
 import { MobileRegister } from './screens/MobileRegister';
@@ -85,6 +87,7 @@ export function MobileLayout() {
   };
 
   return (
+    <NotificationProvider>
     <div
       style={{
         display: 'flex',
@@ -109,6 +112,9 @@ export function MobileLayout() {
           flexDirection: 'column',
         }}
       >
+        {/* In-app notification banner — slides down within the phone frame */}
+        <NotifToast onOpen={() => setState({ screen: 'notifications' })} />
+
         {/* Screen area — fixed size so child screens can scroll internally */}
         <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
           <AnimatePresence mode="wait">
@@ -145,6 +151,7 @@ export function MobileLayout() {
         )}
       </div>
     </div>
+    </NotificationProvider>
   );
 }
 
