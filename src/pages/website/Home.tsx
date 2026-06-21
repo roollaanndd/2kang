@@ -404,6 +404,157 @@ function HeroSection() {
   );
 }
 
+// ─── WHY CHOOSE US SECTION ────────────────────────────────────────────────────
+function WhyChooseUsSection() {
+  const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
+
+  const FEATURES = [
+    {
+      icon: '🏆', grad: [PINK, ROSE], label: 'Dokter Spesialis Bersertifikat',
+      desc: 'Semua dokter kami berlisensi KKI dengan pengalaman klinis 10+ tahun di bidang kedokteran gigi spesialis.',
+      stat: '15+', statLabel: 'Dokter Spesialis',
+    },
+    {
+      icon: '🔬', grad: [AQUA, '#22D3EE'], label: 'Teknologi Digital Terkini',
+      desc: 'Digital X-ray, intraoral scanner, laser treatment & CAD/CAM untuk hasil presisi dan minim rasa sakit.',
+      stat: '20+', statLabel: 'Alat Canggih',
+    },
+    {
+      icon: '😊', grad: ['#10B981', '#34D399'], label: '10,000+ Pasien Puas',
+      desc: 'Ribuan keluarga telah mempercayakan kesehatan gigi mereka kepada kami selama 15+ tahun berturut-turut.',
+      stat: '4.9', statLabel: 'Rating Rata-rata',
+    },
+    {
+      icon: '🛡️', grad: ['#8B5CF6', '#A78BFA'], label: 'Garansi Kepuasan Penuh',
+      desc: 'Kami berkomitmen pada hasil terbaik. Jika belum puas, kami tangani kembali tanpa biaya tambahan.',
+      stat: '100%', statLabel: 'Kepuasan Terjamin',
+    },
+  ] as const;
+
+  return (
+    <section ref={ref} style={{ background: '#FFFFFF', padding: isMobile ? '56px 0' : '88px 0' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 56 }}>
+          <Eyebrow text="Keunggulan Kami" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            Mengapa Pilih <GradText>OMDC Dental?</GradText>
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 520, margin: '0 auto' }}>
+            Standar perawatan gigi kelas dunia dengan sentuhan hangat klinik keluarga Indonesia.
+          </p>
+        </motion.div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)', gap: 20 }}>
+          {FEATURES.map((f, i) => (
+            <motion.div key={f.label}
+              initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1, duration: 0.5 }}
+              whileHover={{ y: -8, boxShadow: `0 24px 56px ${f.grad[0]}22` }}
+              style={{ background: 'white', borderRadius: 24, border: '1.5px solid rgba(0,0,0,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.06)', overflow: 'hidden', transition: 'all 0.3s' }}
+            >
+              <div style={{ height: 4, background: `linear-gradient(90deg, ${f.grad[0]}, ${f.grad[1]})` }} />
+              <div style={{ padding: '24px 22px 28px' }}>
+                <div style={{ width: 62, height: 62, borderRadius: 18, marginBottom: 18, background: `linear-gradient(135deg, ${f.grad[0]}, ${f.grad[1]})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, boxShadow: `0 8px 24px ${f.grad[0]}35` }}>
+                  {f.icon}
+                </div>
+                <div style={{ fontSize: 30, fontWeight: 900, color: DARK, lineHeight: 1, marginBottom: 2 }}>{f.stat}</div>
+                <p style={{ fontSize: 10, color: f.grad[0], fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>{f.statLabel}</p>
+                <h3 style={{ fontSize: 15, fontWeight: 800, color: DARK, lineHeight: 1.3, marginBottom: 10 }}>{f.label}</h3>
+                <p style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.7 }}>{f.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── HOW IT WORKS SECTION ─────────────────────────────────────────────────────
+function HowItWorksSection() {
+  const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
+
+  const STEPS = [
+    { num: '01', icon: '📱', label: 'Pilih & Booking', color: PINK, colorEnd: ROSE, desc: 'Pilih layanan, dokter, tanggal, dan waktu yang sesuai via website, aplikasi mobile, kiosk, atau telepon.' },
+    { num: '02', icon: '📅', label: 'Konfirmasi & Pengingat', color: AQUA, colorEnd: '#22D3EE', desc: 'Dapatkan konfirmasi booking instan lewat SMS/WhatsApp + notifikasi pengingat sehari sebelum kunjungan.' },
+    { num: '03', icon: '🦷', label: 'Kunjungi & Tersenyum', color: '#10B981', colorEnd: '#34D399', desc: 'Datang ke klinik, ditangani dokter spesialis kami dengan penuh perhatian, dan pulang dengan senyum lebih sehat.' },
+  ] as const;
+
+  return (
+    <section ref={ref} style={{ background: '#F8F9FB', padding: isMobile ? '56px 0' : '88px 0', position: 'relative', overflow: 'hidden' }}>
+      {/* Subtle geometric background lines */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, opacity: 0.15 }} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 60 }}>
+          <Eyebrow text="Cara Kerja" />
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+            Booking dalam <GradText>3 Langkah Mudah</GradText>
+          </h2>
+          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480, margin: '0 auto' }}>
+            Dari booking hingga senyum sehat — mudah, cepat, tanpa antri panjang.
+          </p>
+        </motion.div>
+
+        <div style={{ position: 'relative' }}>
+          {/* Connecting gradient line — desktop only */}
+          {!isMobile && (
+            <div style={{
+              position: 'absolute', top: 58, left: '16.7%', right: '16.7%', height: 2,
+              background: `linear-gradient(90deg, ${PINK}44, ${AQUA}44, #10B98144)`,
+              zIndex: 0,
+            }} />
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? 20 : 40, position: 'relative', zIndex: 1 }}>
+            {STEPS.map((step, i) => (
+              <motion.div key={step.num}
+                initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.15, duration: 0.55 }}
+                style={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? 18 : 0, textAlign: isMobile ? 'left' : 'center' }}
+              >
+                <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, marginBottom: isMobile ? 0 : 24 }}>
+                  <div style={{
+                    width: 76, height: 76, borderRadius: '50%',
+                    background: `linear-gradient(135deg, ${step.color}, ${step.colorEnd})`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 32, boxShadow: `0 14px 36px ${step.color}35`,
+                    border: '5px solid white',
+                    position: 'relative',
+                  }}>
+                    {step.icon}
+                    <div style={{ position: 'absolute', top: -4, right: -4, width: 22, height: 22, borderRadius: '50%', background: `linear-gradient(135deg, ${step.color}, ${step.colorEnd})`, border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 900, color: 'white' }}>
+                      {step.num}
+                    </div>
+                  </div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: isMobile ? 16 : 18, fontWeight: 800, color: DARK, marginBottom: 10, lineHeight: 1.3 }}>{step.label}</h3>
+                  <p style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.7 }}>{step.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }}
+          style={{ textAlign: 'center', marginTop: 52 }}>
+          <Link to="/booking" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 40px',
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white',
+            borderRadius: 18, fontWeight: 700, fontSize: 16, textDecoration: 'none',
+            boxShadow: '0 10px 32px rgba(233,30,140,0.35)',
+          }}>
+            Mulai Booking Sekarang <ArrowRight size={18} />
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 // ─── SERVICES SECTION ─────────────────────────────────────────────────────────
 function ServicesSection() {
   const { cms } = useCMS();
@@ -424,21 +575,39 @@ function ServicesSection() {
         </motion.div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 20 }}>
-          {visible.map((item, i) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.06 }}
-              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.10)' }}
-              style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 2px 12px rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.04)', cursor: 'default', transition: 'box-shadow 0.3s, transform 0.3s' }}
-            >
-              <div style={{ fontSize: 36, marginBottom: 14 }}>{item.emoji}</div>
-              <div style={{ fontWeight: 700, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
-              <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 12 }}>{item.description}</div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: PINK }}>{item.price}</div>
-            </motion.div>
-          ))}
+          {visible.map((item, i) => {
+            const CARD_COLORS = [PINK, AQUA, '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', ROSE, '#06B6D4'];
+            const cardColor = CARD_COLORS[i % CARD_COLORS.length];
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                whileHover={{ y: -6 }}
+                style={{ background: 'white', borderRadius: 22, boxShadow: '0 4px 20px rgba(0,0,0,0.07)', border: `1.5px solid ${cardColor}18`, overflow: 'hidden', transition: 'all 0.3s', cursor: 'default' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 44px ${cardColor}22`; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.07)'; }}
+              >
+                {/* Colored top accent */}
+                <div style={{ height: 4, background: `linear-gradient(90deg, ${cardColor}, ${cardColor}AA)` }} />
+                <div style={{ padding: '20px 20px 22px' }}>
+                  {/* Icon circle */}
+                  <div style={{ width: 54, height: 54, borderRadius: 16, background: `${cardColor}18`, border: `1.5px solid ${cardColor}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, marginBottom: 14 }}>
+                    {item.emoji}
+                  </div>
+                  <div style={{ fontWeight: 800, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
+                  <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.55, marginBottom: 14 }}>{item.description}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: 13, fontWeight: 900, color: cardColor }}>{item.price}</span>
+                    <Link to="/booking" style={{ fontSize: 11, fontWeight: 700, color: cardColor, background: `${cardColor}12`, padding: '4px 12px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 3 }}>
+                      Booking <ChevronRight size={11} />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }}
@@ -929,7 +1098,9 @@ export function Home() {
   return (
     <div style={{ background: '#FFFFFF' }}>
       <HeroSection />
+      <WhyChooseUsSection />
       <ServicesSection />
+      <HowItWorksSection />
       <DoctorsSection />
       <TestimonialsSection />
       <GallerySection />
