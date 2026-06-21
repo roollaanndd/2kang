@@ -142,7 +142,12 @@ export type MobileScreen =
   | 'promos'
   | 'history'
   | 'family'
-  | 'loyalty';
+  | 'loyalty'
+  | 'dental-tracker'
+  | 'insurance'
+  | 'education'
+  | 'telemedicine'
+  | 'chat-detail';
 
 export interface MobileState {
   screen: MobileScreen;
@@ -158,4 +163,6 @@ export interface MobileState {
   tcAccepted?: boolean;
   /** FDI tooth numbers the patient flagged as problematic during booking. */
   selectedTeeth?: number[];
+  /** Doctor id currently open in chat-detail screen. */
+  activeChatDoctorId?: string;
 }

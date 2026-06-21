@@ -553,16 +553,16 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               border: 'rgba(6,182,212,0.20)',
             },
             {
-              label: 'Darurat',
+              label: 'Konsultasi',
               icon: (
-                <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.43 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.13 1.01.35 2 .66 2.96a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.96.31 1.95.53 2.96.66A2 2 0 0 1 22 16.92z" />
+                <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="#0891B2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               ),
-              screen: 'notifications' as const,
-              bg: 'rgba(239,68,68,0.08)',
-              color: '#DC2626',
-              border: 'rgba(239,68,68,0.20)',
+              screen: 'telemedicine' as const,
+              bg: 'rgba(6,182,212,0.08)',
+              color: '#0891B2',
+              border: 'rgba(6,182,212,0.20)',
             },
           ].map((a, i) => (
             <motion.button
@@ -671,6 +671,89 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     width: '100%',
                   }}>
                     {svc.name.length > 11 ? svc.name.slice(0, 10) + '…' : svc.name}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+          </section>
+
+          {/* ── Fitur Unggulan ── */}
+          <section>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Fitur Unggulan</h2>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+              {[
+                {
+                  label: 'Dental\nTracker',
+                  screen: 'dental-tracker' as const,
+                  bg: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+                  shadow: 'rgba(233,30,140,0.30)',
+                  icon: (
+                    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 3" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Edukasi\nDental',
+                  screen: 'education' as const,
+                  bg: 'linear-gradient(135deg, #F59E0B, #FCD34D)',
+                  shadow: 'rgba(245,158,11,0.30)',
+                  icon: (
+                    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Konsultasi\nOnline',
+                  screen: 'telemedicine' as const,
+                  bg: 'linear-gradient(135deg, #06B6D4, #22D3EE)',
+                  shadow: 'rgba(6,182,212,0.30)',
+                  icon: (
+                    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Asuransi\nGigi',
+                  screen: 'insurance' as const,
+                  bg: 'linear-gradient(135deg, #10B981, #34D399)',
+                  shadow: 'rgba(16,185,129,0.30)',
+                  icon: (
+                    <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                  ),
+                },
+              ].map((feat, i) => (
+                <motion.button
+                  key={feat.screen}
+                  initial={{ opacity: 0, scale: 0.82 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.06 }}
+                  whileTap={{ scale: 0.88 }}
+                  onClick={() => { haptic('selection'); setState({ screen: feat.screen }); }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
+                >
+                  <div style={{
+                    width: 60, height: 60, borderRadius: 18, padding: 4,
+                    background: 'white', boxShadow: `0 4px 16px ${feat.shadow}`,
+                  }}>
+                    <div style={{
+                      width: '100%', height: '100%', borderRadius: 14,
+                      background: feat.bg,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      {feat.icon}
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 10, fontWeight: 600, textAlign: 'center', lineHeight: 1.3, color: '#374151', width: '100%', whiteSpace: 'pre-line' }}>
+                    {feat.label}
                   </span>
                 </motion.button>
               ))}
