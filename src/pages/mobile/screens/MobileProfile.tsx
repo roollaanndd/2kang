@@ -336,7 +336,7 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18 }}
-              style={{ textAlign: 'center', paddingHorizontal: 24 }}
+              style={{ textAlign: 'center', paddingLeft: 24, paddingRight: 24 }}
             >
               <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: 0, letterSpacing: -0.5 }}>
                 {user?.name ?? 'Pengguna'}
