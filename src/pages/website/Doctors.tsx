@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Star, Calendar, Clock, Award, ChevronRight, Search, Filter } from 'lucide-react';
 import { DOCTORS } from '../../data/mockData';
+import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 
 function DoctorAvatar({ name, size = 96 }: { name: string; size?: number }) {
   const letter = name.replace('drg. ', '')[0];
@@ -71,8 +72,7 @@ export function Doctors() {
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
         <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <div style={{ position: 'absolute', top: -120, right: -80, width: 560, height: 560, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -80, left: -60, width: 440, height: 440, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <AnimatedDentalBg />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tim Profesional</p>

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, UserCheck, Smartphone, ChevronRight } from 'lucide-react';
 import { OmdcLogo } from '../../../components/ui/OmdcLogo';
+import { AnimatedDentalBg } from '../../../components/ui/AnimatedDentalBg';
 import type { MobileState } from '../../../types';
 
 interface MobileOnboardingProps {
@@ -55,9 +56,8 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
           >
             {/* 3px top accent */}
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
-            {/* Soft blobs */}
-            <div style={{ position: 'absolute', top: -80, right: -60, width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', bottom: -60, left: -60, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+            {/* Animated dental geometry */}
+            <AnimatedDentalBg size="sm" />
 
             {/* Logo area */}
             <div className="flex flex-col items-center gap-6 flex-1 justify-center relative z-10">

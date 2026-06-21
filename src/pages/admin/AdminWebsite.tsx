@@ -1321,11 +1321,12 @@ function KioskSettingsTab() {
             </div>
             <div
               className="relative flex flex-col items-center justify-center py-10 gap-3"
-              style={{ background: 'linear-gradient(145deg,#0D0D1A,#1a0a2e)' }}
+              style={{ background: 'linear-gradient(135deg,#F4F6FB,#FDF2F8,#ECFEFF)' }}
             >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg,${PINK},#FF6BB5,#06B6D4)` }} />
               <div className="text-5xl">🦷</div>
-              <div className="text-white font-black text-4xl tracking-tight">HH : MM : SS</div>
-              <div className="text-white/50 text-sm">Sabtu, 20 Juni 2026</div>
+              <div className="font-black text-4xl tracking-tight" style={{ color: '#0D1421' }}>HH : MM : SS</div>
+              <div className="text-sm" style={{ color: '#9CA3AF' }}>Sabtu, 20 Juni 2026</div>
               <div
                 className="mt-2 px-8 py-3 rounded-full text-white text-sm font-bold"
                 style={{ background: `linear-gradient(135deg,${PINK},#FF6BB5)` }}

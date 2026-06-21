@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Phone, Lock, Eye, EyeOff } from 'lucide-react';
 import { OmdcLogo } from '../../../components/ui/OmdcLogo';
+import { AnimatedDentalBg } from '../../../components/ui/AnimatedDentalBg';
 import type { MobileState, MobileUser } from '../../../types';
 
 const MOCK_USER: MobileUser = {
@@ -44,8 +45,7 @@ export function MobileLogin({ setState }: MobileLoginProps) {
       {/* Top decoration */}
       <div className="h-36 w-full flex-shrink-0 relative overflow-hidden" style={{ background: '#FFFFFF' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -30, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <AnimatedDentalBg size="sm" />
       </div>
 
       <div className="flex-1 px-6 pb-8 -mt-4">

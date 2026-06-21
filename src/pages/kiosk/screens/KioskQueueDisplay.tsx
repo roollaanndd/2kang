@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, Volume2 } from 'lucide-react';
 import { CURRENT_QUEUE, QUEUE_UPCOMING } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
+import { AnimatedDentalBg } from '../../../components/ui/AnimatedDentalBg';
 
 const EASE = [0.32, 0.72, 0, 1] as const;
 
@@ -56,40 +57,8 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
         flexShrink: 0,
       }} />
 
-      {/* Soft mesh background blobs */}
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-        {/* Pink blob top-left */}
-        <div style={{
-          position: 'absolute',
-          top: '-120px',
-          left: '-120px',
-          width: '500px',
-          height: '500px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)',
-        }} />
-        {/* Aqua blob bottom-right */}
-        <div style={{
-          position: 'absolute',
-          bottom: '-100px',
-          right: '-100px',
-          width: '460px',
-          height: '460px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)',
-        }} />
-        {/* Rose blob center */}
-        <div style={{
-          position: 'absolute',
-          top: '40%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '600px',
-          height: '400px',
-          borderRadius: '50%',
-          background: 'radial-gradient(ellipse, rgba(255,107,181,0.06) 0%, transparent 70%)',
-        }} />
-      </div>
+      {/* Animated premium dental-geometry background */}
+      <AnimatedDentalBg />
 
       {/* Header */}
       <div style={{

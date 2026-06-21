@@ -3,6 +3,7 @@ import { ChevronLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { KioskStep } from '../../../types';
+import { AnimatedDentalBg } from '../../../components/ui/AnimatedDentalBg';
 
 /* ─── Custom SVG Icons ──────────────────────────────────────────────── */
 
@@ -164,40 +165,8 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         zIndex: 10,
       }} />
 
-      {/* ── Soft radial mesh background blobs ── */}
-      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-        {/* top-left rose blob */}
-        <div style={{
-          position: 'absolute',
-          top: '-120px',
-          left: '-120px',
-          width: '480px',
-          height: '480px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)',
-        }} />
-        {/* bottom-right aqua blob */}
-        <div style={{
-          position: 'absolute',
-          bottom: '-80px',
-          right: '-80px',
-          width: '400px',
-          height: '400px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)',
-        }} />
-        {/* centre amber blob */}
-        <div style={{
-          position: 'absolute',
-          top: '40%',
-          left: '40%',
-          transform: 'translate(-50%, -50%)',
-          width: '500px',
-          height: '500px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(245,158,11,0.04) 0%, transparent 60%)',
-        }} />
-      </div>
+      {/* ── Animated premium dental-geometry background ── */}
+      <AnimatedDentalBg />
 
       {/* ── Header ── */}
       <div style={{
