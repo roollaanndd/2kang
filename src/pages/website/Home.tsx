@@ -12,6 +12,7 @@ import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSConten
 import { CountUp } from '../../components/ui/CountUp';
 import { SmoothImage } from '../../components/ui/SmoothImage';
 import { Skeleton } from '../../components/ui/Skeleton';
+import { HeroIllustration } from '../../components/ui/HeroIllustration';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -353,43 +354,12 @@ function HeroSection() {
                 )}
               </>
             ) : (
-              /* No hero image — show booking card */
+              /* No CMS images — show branded family illustration */
               <motion.div
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
-                style={{ background: 'white', borderRadius: 22, padding: isMobile ? 20 : 24, boxShadow: '0 20px 60px rgba(0,0,0,0.14)', border: '1px solid rgba(255,255,255,0.8)' }}
+                initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+                style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Calendar size={18} color="white" />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 800, fontSize: 15, color: DARK }}>Booking Janji Temu</div>
-                    <div style={{ fontSize: 11, color: '#9CA3AF' }}>Gratis konsultasi awal</div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <input placeholder="Nama Lengkap"
-                    style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #F3F4F6', fontSize: 13, color: DARK, outline: 'none', background: '#FAFBFC' }}
-                    onFocus={e => (e.currentTarget.style.borderColor = ROSE)} onBlur={e => (e.currentTarget.style.borderColor = '#F3F4F6')} />
-                  <select style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #F3F4F6', fontSize: 13, color: DARK, outline: 'none', background: '#FAFBFC', cursor: 'pointer' }}
-                    onFocus={e => (e.currentTarget.style.borderColor = ROSE)} onBlur={e => (e.currentTarget.style.borderColor = '#F3F4F6')}>
-                    <option value="">Pilih Layanan</option>
-                    {services.map(s => <option key={s.id} value={s.id}>{s.emoji} {s.name}</option>)}
-                  </select>
-                  <input type="date" style={{ padding: '10px 14px', borderRadius: 10, border: '1.5px solid #F3F4F6', fontSize: 13, color: DARK, outline: 'none', background: '#FAFBFC' }}
-                    onFocus={e => (e.currentTarget.style.borderColor = ROSE)} onBlur={e => (e.currentTarget.style.borderColor = '#F3F4F6')} />
-                </div>
-                <Link to="/booking" style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 14, padding: '13px', borderRadius: 12,
-                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white', fontWeight: 700, fontSize: 14, textDecoration: 'none',
-                  boxShadow: '0 6px 20px rgba(233,30,140,0.32)',
-                }}>
-                  Booking Sekarang <ArrowRight size={16} />
-                </Link>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, justifyContent: 'center' }}>
-                  <Shield size={12} color="#10B981" />
-                  <span style={{ fontSize: 11, color: '#9CA3AF' }}>Terpercaya · 15+ Tahun Pengalaman</span>
-                </div>
+                <HeroIllustration width={520} height={560} />
               </motion.div>
             )}
           </motion.div>

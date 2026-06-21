@@ -109,8 +109,12 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     subheadline: 'Perawatan gigi modern untuk Anda dan keluarga dalam genggaman. Teknologi terkini, dokter berpengalaman, nyaman & terpercaya.',
     ctaPrimaryText: 'Booking Sekarang',
     ctaSecondaryText: 'Lihat Layanan',
-    heroImage: null,
-    heroImages: [],
+    heroImage: 'https://images.pexels.com/photos/4545205/pexels-photo-4545205.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80',
+    heroImages: [
+      'https://images.pexels.com/photos/4545205/pexels-photo-4545205.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80',
+      'https://images.pexels.com/photos/6627574/pexels-photo-6627574.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80',
+      'https://images.pexels.com/photos/35438269/pexels-photo-35438269.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80',
+    ],
     badgeText: 'Healthy Smile',
     badgeSubtext: 'for Better Life',
     stats: [
@@ -138,16 +142,16 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     sectionTitle: 'Dokter Spesialis Berpengalaman',
     sectionSubtitle: 'Tim dokter gigi kami yang terlatih dan berpengalaman siap memberikan perawatan terbaik untuk Anda',
     items: [
-      { id: '1', name: 'drg. Sarah Sella, Sp.Ort', specialty: 'Spesialis Ortodonti', experience: '8 Tahun', photo: null, rating: 4.9, patients: 342, isVisible: true },
-      { id: '2', name: 'drg. Ivan Kontralizan, Sp.KG', specialty: 'Spesialis Konservasi', experience: '6 Tahun', photo: null, rating: 4.8, patients: 218, isVisible: true },
-      { id: '3', name: 'drg. Andika Andilisa, Sp.Pros', specialty: 'Spesialis Prostodonsi', experience: '7 Tahun', photo: null, rating: 4.7, patients: 165, isVisible: true },
-      { id: '4', name: 'drg. Reza Rizki, Sp.BM', specialty: 'Bedah Mulut & Maksilofasial', experience: '10 Tahun', photo: null, rating: 4.9, patients: 289, isVisible: true },
+      { id: '1', name: 'drg. Sarah Sella, Sp.Ort', specialty: 'Spesialis Ortodonti', experience: '8 Tahun', photo: 'https://images.pexels.com/photos/19963182/pexels-photo-19963182.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&q=80', rating: 4.9, patients: 342, isVisible: true },
+      { id: '2', name: 'drg. Ivan Kontralizan, Sp.KG', specialty: 'Spesialis Konservasi', experience: '6 Tahun', photo: 'https://images.pexels.com/photos/5214964/pexels-photo-5214964.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&q=80', rating: 4.8, patients: 218, isVisible: true },
+      { id: '3', name: 'drg. Andika Andilisa, Sp.Pros', specialty: 'Spesialis Prostodonsi', experience: '7 Tahun', photo: 'https://images.pexels.com/photos/19218034/pexels-photo-19218034.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&q=80', rating: 4.7, patients: 165, isVisible: true },
+      { id: '4', name: 'drg. Reza Rizki, Sp.BM', specialty: 'Bedah Mulut & Maksilofasial', experience: '10 Tahun', photo: 'https://images.pexels.com/photos/7108250/pexels-photo-7108250.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop&q=80', rating: 4.9, patients: 289, isVisible: true },
     ],
   },
   clinic: {
     sectionTitle: 'Klinik Kami',
     description: 'Fasilitas modern berstandar internasional dengan suasana nyaman untuk pengalaman perawatan gigi yang menyenangkan.',
-    photo: null,
+    photo: 'https://images.pexels.com/photos/30902075/pexels-photo-30902075.jpeg?auto=compress&cs=tinysrgb&w=1200&q=80',
     stats: [
       { value: '15+', label: 'Tahun Berdiri' },
       { value: '4', label: 'Ruang Perawatan' },
@@ -215,12 +219,12 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     sectionTitle: 'Apa Kata Pasien Kami',
     sectionSubtitle: 'Ribuan pasien telah mempercayakan kesehatan gigi mereka kepada kami',
     items: [
-      { id: '1', name: 'Rina Kusuma', treatment: 'Kawat Gigi', rating: 5, text: 'Pelayanan sangat ramah dan profesional! Dokternya sabar menjelaskan setiap prosedur. Hasil kawat gigi saya luar biasa dalam 18 bulan!', avatar: null, isVisible: true },
-      { id: '2', name: 'Budi Santoso', treatment: 'Bleaching', rating: 5, text: 'Setelah bleaching, gigi saya putih bersih dan hasilnya natural. Prosesnya nyaman, tidak sakit sama sekali. Sangat puas!', avatar: null, isVisible: true },
-      { id: '3', name: 'Dewi Maharani', treatment: 'Veneer Gigi', rating: 5, text: 'Veneer gigi saya terlihat sangat natural dan cantik. Dokternya sangat teliti dan memastikan saya nyaman selama prosedur.', avatar: null, isVisible: true },
-      { id: '4', name: 'Ahmad Fauzi', treatment: 'Implan Gigi', rating: 5, text: 'Implan gigi berhasil dengan sempurna. Terasa seperti gigi asli! Sudah 2 tahun berjalan sangat baik. Terima kasih OMDC!', avatar: null, isVisible: true },
-      { id: '5', name: 'Sari Indah', treatment: 'Scaling & Polishing', rating: 4, text: 'Gigi bersih dan segar setelah scaling. Dokternya gentle dan penuh perhatian. Kliniknya juga bersih dan modern.', avatar: null, isVisible: true },
-      { id: '6', name: 'Rizky Pratama', treatment: 'Tambal Gigi', rating: 5, text: 'Tambal gigi dengan bahan estetik hasilnya sangat natural, tidak terlihat tambalannya. Harga juga sangat terjangkau.', avatar: null, isVisible: true },
+      { id: '1', name: 'Rina Kusuma', treatment: 'Kawat Gigi', rating: 5, text: 'Pelayanan sangat ramah dan profesional! Dokternya sabar menjelaskan setiap prosedur. Hasil kawat gigi saya luar biasa dalam 18 bulan!', avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&q=80', isVisible: true },
+      { id: '2', name: 'Budi Santoso', treatment: 'Bleaching', rating: 5, text: 'Setelah bleaching, gigi saya putih bersih dan hasilnya natural. Prosesnya nyaman, tidak sakit sama sekali. Sangat puas!', avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&q=80', isVisible: true },
+      { id: '3', name: 'Dewi Maharani', treatment: 'Veneer Gigi', rating: 5, text: 'Veneer gigi saya terlihat sangat natural dan cantik. Dokternya sangat teliti dan memastikan saya nyaman selama prosedur.', avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&q=80', isVisible: true },
+      { id: '4', name: 'Ahmad Fauzi', treatment: 'Implan Gigi', rating: 5, text: 'Implan gigi berhasil dengan sempurna. Terasa seperti gigi asli! Sudah 2 tahun berjalan sangat baik. Terima kasih OMDC!', avatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&q=80', isVisible: true },
+      { id: '5', name: 'Sari Indah', treatment: 'Scaling & Polishing', rating: 4, text: 'Gigi bersih dan segar setelah scaling. Dokternya gentle dan penuh perhatian. Kliniknya juga bersih dan modern.', avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&q=80', isVisible: true },
+      { id: '6', name: 'Rizky Pratama', treatment: 'Tambal Gigi', rating: 5, text: 'Tambal gigi dengan bahan estetik hasilnya sangat natural, tidak terlihat tambalannya. Harga juga sangat terjangkau.', avatar: 'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop&q=80', isVisible: true },
     ],
   },
   faq: {
@@ -239,9 +243,9 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     sectionTitle: 'Transformasi Senyum',
     sectionSubtitle: 'Lihat perubahan nyata pasien kami sebelum dan sesudah perawatan gigi',
     items: [
-      { id: '1', title: 'Kawat Gigi 18 Bulan', treatment: 'Ortodonti', before: null, after: null, isVisible: true },
-      { id: '2', title: 'Veneer Gigi Porselen', treatment: 'Veneer', before: null, after: null, isVisible: true },
-      { id: '3', title: 'Bleaching Laser', treatment: 'Pemutihan', before: null, after: null, isVisible: true },
+      { id: '1', title: 'Kawat Gigi 18 Bulan', treatment: 'Ortodonti', before: 'https://images.pexels.com/photos/6627574/pexels-photo-6627574.jpeg?auto=compress&cs=tinysrgb&w=600&h=450&fit=crop&q=80', after: 'https://images.pexels.com/photos/4545205/pexels-photo-4545205.jpeg?auto=compress&cs=tinysrgb&w=600&h=450&fit=crop&q=80', isVisible: true },
+      { id: '2', title: 'Veneer Gigi Porselen', treatment: 'Veneer', before: 'https://images.pexels.com/photos/30902075/pexels-photo-30902075.jpeg?auto=compress&cs=tinysrgb&w=600&h=450&fit=crop&q=80', after: 'https://images.pexels.com/photos/35438269/pexels-photo-35438269.jpeg?auto=compress&cs=tinysrgb&w=600&h=450&fit=crop&q=80', isVisible: true },
+      { id: '3', title: 'Bleaching Laser', treatment: 'Pemutihan', before: 'https://images.pexels.com/photos/6812453/pexels-photo-6812453.jpeg?auto=compress&cs=tinysrgb&w=600&h=450&fit=crop&q=80', after: 'https://images.pexels.com/photos/925288/pexels-photo-925288.jpeg?auto=compress&cs=tinysrgb&w=600&h=450&fit=crop&q=80', isVisible: true },
     ],
   },
   kioskSettings: {
