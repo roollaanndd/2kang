@@ -206,7 +206,7 @@ function HeroSection() {
   return (
     <section style={{
       position: 'relative',
-      background: hasImages ? '#0D1421' : '#FFFFFF',
+      background: hasImages ? '#FFF5F9' : '#FFFFFF',
       paddingTop: isMobile ? 92 : 80,
       overflow: 'hidden',
       minHeight: isMobile ? 'auto' : '100dvh',
@@ -228,26 +228,26 @@ function HeroSection() {
         />
       ))}
 
-      {/* ── BLENDED OVERLAYS ── */}
+      {/* ── BLENDED OVERLAYS (light) ── */}
       {hasImages && (
         <>
-          {/* Dark gradient — heavier on left for text, lighter on right to let photo breathe */}
+          {/* Light frosted gradient — opaque on left for dark text, clearing to reveal photo on right */}
           <div style={{
             position: 'absolute', inset: 0, zIndex: 1,
             background: isMobile
-              ? 'linear-gradient(180deg, rgba(13,20,33,0.78) 0%, rgba(13,20,33,0.62) 45%, rgba(13,20,33,0.88) 100%)'
-              : 'linear-gradient(108deg, rgba(13,20,33,0.94) 0%, rgba(13,20,33,0.84) 28%, rgba(13,20,33,0.52) 58%, rgba(13,20,33,0.14) 100%)',
+              ? 'linear-gradient(180deg, rgba(255,245,249,0.92) 0%, rgba(255,255,255,0.70) 45%, rgba(255,245,249,0.94) 100%)'
+              : 'linear-gradient(108deg, rgba(255,255,255,0.96) 0%, rgba(255,245,249,0.90) 30%, rgba(255,255,255,0.45) 62%, rgba(255,255,255,0.08) 100%)',
           }} />
           {/* Brand tint — pink left, aqua right */}
           <div style={{
             position: 'absolute', inset: 0, zIndex: 1,
-            background: `linear-gradient(135deg, rgba(233,30,140,0.07) 0%, transparent 48%, rgba(6,182,212,0.05) 100%)`,
+            background: `linear-gradient(135deg, rgba(233,30,140,0.08) 0%, transparent 48%, rgba(6,182,212,0.06) 100%)`,
           }} />
         </>
       )}
 
-      {/* ── GEOMETRIC SHAPES (white on dark, colored on light) ── */}
-      <AnimatedHeroBg dark={hasImages} />
+      {/* ── GEOMETRIC SHAPES (always light theme) ── */}
+      <AnimatedHeroBg dark={false} />
 
       {/* Diagonal accents — only without background images */}
       {!hasImages && (
@@ -272,9 +272,9 @@ function HeroSection() {
               textAlign: isMobile ? 'center' : 'left',
             }}
           >
-            <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} dark />
+            <Eyebrow text={h.badgeText || 'OMDC Dental 2026'} />
 
-            <h1 style={{ fontSize: isMobile ? 'clamp(38px,10vw,52px)' : 'clamp(52px,5.5vw,78px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', color: 'white', margin: 0, marginBottom: 6 }}>
+            <h1 style={{ fontSize: isMobile ? 'clamp(38px,10vw,52px)' : 'clamp(52px,5.5vw,78px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', color: DARK, margin: 0, marginBottom: 6 }}>
               {h.headline || 'Senyum Sehat,'}
             </h1>
             <h1 style={{ fontSize: isMobile ? 'clamp(38px,10vw,52px)' : 'clamp(52px,5.5vw,78px)', fontWeight: 900, lineHeight: 1.0, letterSpacing: '-2px', margin: 0, marginBottom: 24 }}>
@@ -287,13 +287,13 @@ function HeroSection() {
                 <motion.div key={sv.id}
                   initial={{ opacity: 0, scale: 0.82, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ delay: 0.24 + i * 0.07 }}
-                  style={{ padding: '5px 13px', borderRadius: 100, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', fontSize: 12.5, color: 'rgba(255,255,255,0.88)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <span style={{ fontSize: 14 }}>{sv.emoji}</span>{sv.name}
+                  style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(233,30,140,0.16)', backdropFilter: 'blur(8px)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 2px 10px rgba(233,30,140,0.06)' }}>
+                  <OmdcServiceIcon id={sv.id} size={15} color={i % 2 === 0 ? PINK : AQUA} />{sv.name}
                 </motion.div>
               ))}
             </div>
 
-            <p style={{ fontSize: isMobile ? 15.5 : 17, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, maxWidth: 500, margin: isMobile ? '0 auto 28px' : '0 0 32px' }}>
+            <p style={{ fontSize: isMobile ? 15.5 : 17, color: '#6B7280', lineHeight: 1.7, maxWidth: 500, margin: isMobile ? '0 auto 28px' : '0 0 32px' }}>
               {h.subheadline || 'Perawatan gigi modern dengan teknologi terkini untuk Anda dan keluarga tercinta.'}
             </p>
 
@@ -317,23 +317,23 @@ function HeroSection() {
                 <Link to="/services" style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '15px 24px',
                   width: isMobile ? '100%' : undefined,
-                  background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)',
-                  color: 'white', border: '1.5px solid rgba(255,255,255,0.22)', borderRadius: 16,
-                  fontWeight: 600, fontSize: 15, textDecoration: 'none',
+                  background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(12px)',
+                  color: DARK, border: '1.5px solid rgba(233,30,140,0.18)', borderRadius: 16,
+                  fontWeight: 600, fontSize: 15, textDecoration: 'none', boxShadow: '0 2px 16px rgba(233,30,140,0.08)',
                 }}>
                   {h.ctaSecondaryText || 'Lihat Layanan'}
-                  <ChevronRight size={16} color={ROSE} />
+                  <ChevronRight size={16} color={PINK} />
                 </Link>
               </motion.div>
             </div>
 
-            {/* Stats — frosted glass on dark bg */}
+            {/* Stats — frosted white cards on light bg */}
             <div style={{ display: isMobile ? 'grid' : 'flex', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : undefined, gap: isMobile ? 10 : 14, flexWrap: 'wrap', justifyContent: isMobile ? 'stretch' : 'flex-start' }}>
               {stats.map((s, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '11px 10px' : '12px 20px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', borderRadius: 14, border: '1px solid rgba(255,255,255,0.18)', boxShadow: '0 2px 12px rgba(0,0,0,0.15)' }}>
-                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: 'white' }}><CountUp value={s.value} /></span>
-                  <span style={{ fontSize: isMobile ? 10 : 11, color: 'rgba(255,255,255,0.6)', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '11px 10px' : '12px 20px', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(12px)', borderRadius: 14, border: '1px solid rgba(233,30,140,0.10)', boxShadow: '0 4px 20px rgba(233,30,140,0.08)' }}>
+                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: DARK }}><CountUp value={s.value} /></span>
+                  <span style={{ fontSize: isMobile ? 10 : 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
                 </motion.div>
               ))}
             </div>
@@ -353,8 +353,8 @@ function HeroSection() {
               <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginBottom: 22, justifyContent: isMobile ? 'center' : 'flex-start' }}>
                 {services.map((sv, i) => (
                   <motion.div key={sv.id} initial={{ opacity: 0, scale: 0.82, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: 0.24 + i * 0.07 }}
-                    style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(233,30,140,0.06)', border: '1px solid rgba(233,30,140,0.14)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ fontSize: 14 }}>{sv.emoji}</span>{sv.name}
+                    style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(233,30,140,0.06)', border: '1px solid rgba(233,30,140,0.14)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <OmdcServiceIcon id={sv.id} size={15} color={i % 2 === 0 ? PINK : AQUA} />{sv.name}
                   </motion.div>
                 ))}
               </div>
@@ -425,7 +425,7 @@ function HeroSection() {
         <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 7, zIndex: 10 }}>
           {images.map((_, i) => (
             <button key={i} onClick={() => setImgIdx(i)}
-              style={{ width: i === imgIdx ? 28 : 9, height: 9, borderRadius: 5, background: i === imgIdx ? PINK : 'rgba(255,255,255,0.38)', border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.32s ease', boxShadow: i === imgIdx ? `0 0 8px ${PINK}66` : 'none' }} />
+              style={{ width: i === imgIdx ? 28 : 9, height: 9, borderRadius: 5, background: i === imgIdx ? PINK : 'rgba(233,30,140,0.22)', border: 'none', cursor: 'pointer', padding: 0, transition: 'all 0.32s ease', boxShadow: i === imgIdx ? `0 0 8px ${PINK}66` : 'none' }} />
           ))}
         </div>
       )}
@@ -607,10 +607,10 @@ function ServicesSection() {
           <div style={{
             fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
             position: 'absolute', top: -20, right: 0,
-            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Syne', sans-serif",
+            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>01</div>
           <Eyebrow text="Layanan Kami" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {s.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 520, margin: '0 auto' }}>{s.sectionSubtitle}</p>
@@ -633,32 +633,38 @@ function ServicesSection() {
                     whileHover={{ y: -6 }}
                     style={{
                       gridColumn: 'span 2', gridRow: 'span 2',
-                      background: DARK,
+                      background: 'linear-gradient(150deg, #FFF5F9 0%, #FFE4F1 55%, #FFFFFF 100%)',
                       borderRadius: 24,
                       padding: '32px',
                       display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
                       minHeight: 280,
-                      boxShadow: '0 20px 60px rgba(13,20,33,0.25)',
+                      border: '1px solid rgba(233,30,140,0.12)',
+                      boxShadow: '0 20px 60px rgba(233,30,140,0.12)',
                       transition: 'all 0.3s',
                       cursor: 'default',
+                      position: 'relative', overflow: 'hidden',
                     }}
                   >
-                    <div>
+                    {/* decorative oversized tooth glyph */}
+                    <div style={{ position: 'absolute', right: -28, bottom: -28, opacity: 0.06, pointerEvents: 'none' }}>
+                      <OmdcServiceIcon id={item.id} size={200} color={PINK} />
+                    </div>
+                    <div style={{ position: 'relative', zIndex: 1 }}>
                       <div style={{
                         width: 64, height: 64, borderRadius: 20,
-                        background: 'linear-gradient(135deg, rgba(233,30,140,0.3), rgba(255,107,181,0.2))',
-                        border: '1.5px solid rgba(233,30,140,0.4)',
+                        background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         marginBottom: 20,
+                        boxShadow: '0 10px 28px rgba(233,30,140,0.32)',
                       }}>
-                        <OmdcServiceIcon id={item.id} size={36} color={PINK} />
+                        <OmdcServiceIcon id={item.id} size={36} color="#FFFFFF" />
                       </div>
-                      <div style={{ fontWeight: 800, fontSize: 20, color: 'white', marginBottom: 10, lineHeight: 1.2, fontFamily: "'Syne', sans-serif" }}>{item.name}</div>
-                      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: 16 }}>{item.description}</div>
+                      <div style={{ fontWeight: 800, fontSize: 22, color: DARK, marginBottom: 10, lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{item.name}</div>
+                      <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.65, marginBottom: 16 }}>{item.description}</div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: 15, fontWeight: 900, color: PINK }}>{item.price}</span>
-                      <Link to="/booking" style={{ fontSize: 12, fontWeight: 700, color: 'white', background: 'rgba(233,30,140,0.2)', border: '1px solid rgba(233,30,140,0.4)', padding: '6px 14px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
+                      <span style={{ fontSize: 16, fontWeight: 900, color: PINK }}>{item.price}</span>
+                      <Link to="/booking" style={{ fontSize: 12, fontWeight: 700, color: 'white', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, padding: '8px 16px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, boxShadow: '0 4px 14px rgba(233,30,140,0.28)' }}>
                         Booking <ChevronRight size={11} />
                       </Link>
                     </div>
@@ -725,10 +731,10 @@ function DoctorsSection() {
           <div style={{
             fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
             position: 'absolute', top: -20, right: 0,
-            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Syne', sans-serif",
+            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>02</div>
           <Eyebrow text="Tim Dokter Kami" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {d.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480 }}>{d.sectionSubtitle}</p>
@@ -854,10 +860,10 @@ function TestimonialsSection() {
           <div style={{
             fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
             position: 'absolute', top: -20, right: 0,
-            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Syne', sans-serif",
+            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>03</div>
           <Eyebrow text="Testimoni Pasien" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {t.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 500, margin: '0 auto' }}>{t.sectionSubtitle}</p>
@@ -928,7 +934,7 @@ function PromotionsSection() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 52 }}>
           <Eyebrow text="Promo Spesial" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {p.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480, margin: '0 auto' }}>{p.sectionSubtitle}</p>
@@ -991,7 +997,7 @@ function ArticlesSection() {
             style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 44 }}>
             <div>
               <Eyebrow text="Artikel Kesehatan" />
-              <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>
+              <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {a.sectionTitle}
               </h2>
               <p style={{ fontSize: 17, color: '#6B7280' }}>{a.sectionSubtitle}</p>
@@ -1023,7 +1029,7 @@ function ArticlesSection() {
                     <span style={{ fontSize: 10, fontWeight: 700, color: PINK, background: 'rgba(233,30,140,0.08)', padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
                       {item.category}
                     </span>
-                    <h3 style={{ fontSize: isFeatured ? 20 : 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px', fontFamily: isFeatured ? "'Syne', sans-serif" : undefined }}>{item.title}</h3>
+                    <h3 style={{ fontSize: isFeatured ? 20 : 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px', fontFamily: isFeatured ? "'Plus Jakarta Sans', sans-serif" : undefined }}>{item.title}</h3>
                     <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 14, display: '-webkit-box', WebkitLineClamp: isFeatured ? 3 : 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>
                       {item.excerpt}
                     </p>
@@ -1144,7 +1150,7 @@ function CTASection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ position: 'relative', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
           <Eyebrow text="Mulai Perjalanan Sehat Anda" />
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20, fontFamily: "'Syne', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Siap untuk Senyum<br />
             <GradText>yang Lebih Sehat?</GradText>
           </h2>
