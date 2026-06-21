@@ -32,6 +32,8 @@ import { MobileEducation } from './screens/MobileEducation';
 import { MobileTelemedicine } from './screens/MobileTelemedicine';
 import { MobileChatDetail } from './screens/MobileChatDetail';
 import { MobilePromos } from './screens/MobilePromos';
+import { MobileVideoCall } from './screens/MobileVideoCall';
+import { MobileDoctorDetail } from './screens/MobileDoctorDetail';
 
 const INITIAL_STATE: MobileState = {
   screen: 'onboarding',
@@ -41,8 +43,8 @@ const INITIAL_STATE: MobileState = {
 
 const HIDE_BOTTOMNAV_SCREENS = new Set([
   'onboarding', 'login', 'register', 'otp', 'create-pin', 'forgot-password',
-  'booking', 'booking-branch', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
-  'chat-detail',
+  'booking-branch', 'booking-doctor', 'booking-schedule', 'booking-confirm', 'booking-payment',
+  'chat-detail', 'video-call',
 ]);
 
 export function MobileLayout() {
@@ -96,6 +98,8 @@ export function MobileLayout() {
         return <MobileNotifications state={state} setState={setState} />;
       case 'doctors':
         return <MobileDoctors state={state} setState={setState} />;
+      case 'doctor-detail':
+        return <MobileDoctorDetail state={state} setState={setState} />;
       case 'promos':
         return <MobilePromos state={state} setState={setState} />;
       case 'dental-tracker':
@@ -108,6 +112,8 @@ export function MobileLayout() {
         return <MobileTelemedicine state={state} setState={setState} />;
       case 'chat-detail':
         return <MobileChatDetail state={state} setState={setState} />;
+      case 'video-call':
+        return <MobileVideoCall state={state} setState={setState} />;
       case 'history':
         return <MobileHistory state={state} setState={setState} />;
       case 'family':
@@ -126,7 +132,6 @@ export function MobileLayout() {
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        /* Fixed height — NOT minHeight — so child screens have a fixed container to scroll within */
         height: '100dvh',
         background: '#E5E7EB',
         overflow: 'hidden',
@@ -145,13 +150,10 @@ export function MobileLayout() {
           flexDirection: 'column',
         }}
       >
-        {/* In-app notification banner — slides down within the phone frame */}
         <NotifToast onOpen={() => setState({ screen: 'notifications' })} />
 
-        {/* Screen area — fixed size so child screens can scroll internally */}
         <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
           <AnimatePresence mode="wait">
-            {/* position:absolute + inset:0 gives each screen a fixed viewport to fill and scroll within */}
             <div key={state.screen} style={{ position: 'absolute', inset: 0 }}>
               {renderScreen()}
             </div>
@@ -165,7 +167,6 @@ export function MobileLayout() {
           />
         )}
 
-        {/* Version badge — bottom-right, only on logged-in screens */}
         {state.isLoggedIn && (
           <div style={{
             position: 'absolute',

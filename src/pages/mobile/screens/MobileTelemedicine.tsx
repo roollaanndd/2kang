@@ -138,7 +138,7 @@ export function MobileTelemedicine({ state, setState }: Props) {
                   </motion.button>
                   <motion.button
                     whileTap={{ scale: 0.93 }}
-                    onClick={() => haptic('light')}
+                    onClick={() => { if (isOnline) { haptic('medium'); setState({ screen: 'video-call', activeChatDoctorId: doctor.id }); } }}
                     disabled={!isOnline}
                     style={{
                       width: 32, padding: '7px 0', borderRadius: 10, border: '1.5px solid rgba(6,182,212,0.30)', cursor: isOnline ? 'pointer' : 'not-allowed',
@@ -215,7 +215,8 @@ export function MobileTelemedicine({ state, setState }: Props) {
         {/* Video consult promo */}
         <motion.div
           initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-          style={{ margin: '18px 16px 0', borderRadius: 20, padding: '16px 18px', background: 'linear-gradient(135deg, #EBF8FF, #F0F9FF)', border: '1.5px solid rgba(6,182,212,0.18)', display: 'flex', alignItems: 'center', gap: 14 }}
+          onClick={() => { haptic('light'); setState({ screen: 'video-call', activeChatDoctorId: DOCTORS[0].id }); }}
+          style={{ margin: '18px 16px 0', borderRadius: 20, padding: '16px 18px', background: 'linear-gradient(135deg, #EBF8FF, #F0F9FF)', border: '1.5px solid rgba(6,182,212,0.18)', display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer' }}
         >
           <div style={{ width: 46, height: 46, borderRadius: 14, background: AQUA, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 14px rgba(6,182,212,0.35)' }}>
             <Video size={22} color="white" />

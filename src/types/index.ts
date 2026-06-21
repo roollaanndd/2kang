@@ -147,7 +147,9 @@ export type MobileScreen =
   | 'insurance'
   | 'education'
   | 'telemedicine'
-  | 'chat-detail';
+  | 'chat-detail'
+  | 'video-call'
+  | 'doctor-detail';
 
 export interface MobileState {
   screen: MobileScreen;
