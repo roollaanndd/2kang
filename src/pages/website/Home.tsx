@@ -14,6 +14,7 @@ import { SmoothImage } from '../../components/ui/SmoothImage';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { HeroIllustration } from '../../components/ui/HeroIllustration';
 import { OmdcServiceIcon } from '../../components/ui/OmdcIcons';
+import { WaveDivider } from '../../components/ui/WaveDivider';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -595,56 +596,104 @@ function ServicesSection() {
   const visible = s.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
 
+  const CARD_COLORS = [PINK, AQUA, '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', ROSE, '#06B6D4'];
+
   return (
-    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0' }}>
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0 0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 52 }}>
+          style={{ textAlign: 'center', marginBottom: 52, position: 'relative' }}>
+          {/* Decorative section number */}
+          <div style={{
+            fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
+            position: 'absolute', top: -20, right: 0,
+            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Syne', sans-serif",
+          }}>01</div>
           <Eyebrow text="Layanan Kami" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>
             {s.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 520, margin: '0 auto' }}>{s.sectionSubtitle}</p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 20 }}>
-          {visible.map((item, i) => {
-            const CARD_COLORS = [PINK, AQUA, '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', ROSE, '#06B6D4'];
-            const cardColor = CARD_COLORS[i % CARD_COLORS.length];
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: i * 0.06 }}
-                whileHover={{ y: -6 }}
-                style={{ background: 'white', borderRadius: 22, boxShadow: '0 4px 20px rgba(0,0,0,0.07)', border: `1.5px solid ${cardColor}18`, overflow: 'hidden', transition: 'all 0.3s', cursor: 'default' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 16px 44px ${cardColor}22`; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(0,0,0,0.07)'; }}
-              >
-                {/* Colored top accent */}
-                <div style={{ height: 4, background: `linear-gradient(90deg, ${cardColor}, ${cardColor}AA)` }} />
-                <div style={{ padding: '20px 20px 22px' }}>
-                  {/* Icon circle */}
-                  <div style={{ width: 54, height: 54, borderRadius: 16, background: `${cardColor}18`, border: `1.5px solid ${cardColor}28`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
-                    <OmdcServiceIcon id={item.id} size={30} color={cardColor} />
+        {/* Bento grid */}
+        <div style={{ position: 'relative' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+            {visible.map((item, i) => {
+              const cardColor = CARD_COLORS[i % CARD_COLORS.length];
+              const isFeatured = i === 0;
+
+              if (isFeatured) {
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0 }}
+                    whileHover={{ y: -6 }}
+                    style={{
+                      gridColumn: 'span 2', gridRow: 'span 2',
+                      background: DARK,
+                      borderRadius: 24,
+                      padding: '32px',
+                      display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                      minHeight: 280,
+                      boxShadow: '0 20px 60px rgba(13,20,33,0.25)',
+                      transition: 'all 0.3s',
+                      cursor: 'default',
+                    }}
+                  >
+                    <div>
+                      <div style={{
+                        width: 64, height: 64, borderRadius: 20,
+                        background: 'linear-gradient(135deg, rgba(233,30,140,0.3), rgba(255,107,181,0.2))',
+                        border: '1.5px solid rgba(233,30,140,0.4)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        marginBottom: 20,
+                      }}>
+                        <OmdcServiceIcon id={item.id} size={36} color={PINK} />
+                      </div>
+                      <div style={{ fontWeight: 800, fontSize: 20, color: 'white', marginBottom: 10, lineHeight: 1.2, fontFamily: "'Syne', sans-serif" }}>{item.name}</div>
+                      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: 16 }}>{item.description}</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: 15, fontWeight: 900, color: PINK }}>{item.price}</span>
+                      <Link to="/booking" style={{ fontSize: 12, fontWeight: 700, color: 'white', background: 'rgba(233,30,140,0.2)', border: '1px solid rgba(233,30,140,0.4)', padding: '6px 14px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+                        Booking <ChevronRight size={11} />
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              }
+
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: i * 0.06 }}
+                  whileHover={{ y: -4, boxShadow: `0 16px 40px ${cardColor}22` }}
+                  style={{
+                    background: 'white', borderRadius: 20, padding: 24,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                    borderLeft: `3px solid ${cardColor}`,
+                    cursor: 'default', transition: 'all 0.3s',
+                  }}
+                >
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${cardColor}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                    <OmdcServiceIcon id={item.id} size={26} color={cardColor} />
                   </div>
-                  <div style={{ fontWeight: 800, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
-                  <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.55, marginBottom: 14 }}>{item.description}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: 13, fontWeight: 900, color: cardColor }}>{item.price}</span>
-                    <Link to="/booking" style={{ fontSize: 11, fontWeight: 700, color: cardColor, background: `${cardColor}12`, padding: '4px 12px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 3 }}>
-                      Booking <ChevronRight size={11} />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                  <div style={{ fontWeight: 700, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
+                  <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.55, marginBottom: 12 }}>{item.description}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: cardColor }}>{item.price}</div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }}
-          style={{ textAlign: 'center', marginTop: 40 }}>
+          style={{ textAlign: 'center', marginTop: 40, paddingBottom: 0 }}>
           <Link to="/services" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 28px',
             background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white',
@@ -655,6 +704,7 @@ function ServicesSection() {
           </Link>
         </motion.div>
       </div>
+      <WaveDivider fromColor="#F8F9FB" toColor="#FFFFFF" />
     </section>
   );
 }
@@ -667,18 +717,24 @@ function DoctorsSection() {
   const [ref, inView] = useInView();
 
   return (
-    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0' }}>
+    <section ref={ref} style={{ background: '#FAFAFA', padding: '80px 0 0', overflow: 'visible' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ marginBottom: 44 }}>
+          style={{ marginBottom: 56, position: 'relative' }}>
+          {/* Decorative section number */}
+          <div style={{
+            fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
+            position: 'absolute', top: -20, right: 0,
+            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Syne', sans-serif",
+          }}>02</div>
           <Eyebrow text="Tim Dokter Kami" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10 }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>
             {d.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480 }}>{d.sectionSubtitle}</p>
         </motion.div>
 
-        <div style={{ display: 'flex', gap: 20, overflowX: 'auto', paddingBottom: 8, scrollbarWidth: 'none' }}>
+        <div style={{ display: 'flex', gap: 20, overflowX: 'auto', paddingBottom: 20, scrollbarWidth: 'none', alignItems: 'flex-start' }}>
           {visible.map((doc, i) => {
             const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
             return (
@@ -687,37 +743,58 @@ function DoctorsSection() {
                 initial={{ opacity: 0, x: 24 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.5, delay: i * 0.08 }}
-                whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.10)' }}
-                style={{ flexShrink: 0, width: 220, background: 'white', borderRadius: 22, padding: 20, boxShadow: '0 4px 20px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.05)', transition: 'all 0.3s' }}
+                whileHover={{ y: -6 }}
+                style={{
+                  flexShrink: 0, width: 220,
+                  background: 'white', borderRadius: 24,
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.10)',
+                  border: '1px solid rgba(0,0,0,0.04)',
+                  overflow: 'visible',
+                  transition: 'all 0.3s',
+                  marginTop: i % 2 === 1 ? 32 : 0,
+                }}
               >
-                {/* Avatar */}
-                <div style={{ position: 'relative', marginBottom: 14 }}>
-                  <div style={{ width: 72, height: 72, borderRadius: 18, overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* Pink gradient top section */}
+                <div style={{ height: 80, background: `linear-gradient(135deg, ${PINK}14, ${AQUA}0A)`, borderRadius: '24px 24px 0 0', position: 'relative' }}>
+                  {/* Overflow avatar */}
+                  <div style={{
+                    position: 'absolute', bottom: -28, left: 20,
+                    width: 72, height: 72, borderRadius: '50%',
+                    overflow: 'hidden',
+                    background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    border: '4px solid white',
+                    boxShadow: '0 8px 24px rgba(233,30,140,0.2)',
+                  }}>
                     {doc.photo
                       ? <SmoothImage src={doc.photo} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      : <span style={{ fontSize: 28, fontWeight: 900, color: 'white' }}>{initials}</span>
+                      : <span style={{ fontSize: 26, fontWeight: 900, color: 'white' }}>{initials}</span>
                     }
                   </div>
-                  <div style={{ position: 'absolute', bottom: -4, right: 0, width: 22, height: 22, borderRadius: '50%', background: doc.patients > 0 ? '#10B981' : '#D1D5DB', border: '3px solid white' }} />
+                  <div style={{ position: 'absolute', bottom: -6, left: 76, width: 18, height: 18, borderRadius: '50%', background: doc.patients > 0 ? '#10B981' : '#D1D5DB', border: '3px solid white' }} />
                 </div>
-                <div style={{ fontWeight: 800, fontSize: 13, color: DARK, lineHeight: 1.3, marginBottom: 4 }}>{doc.name}</div>
-                <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 12 }}>{doc.specialty} · {doc.experience}</div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Star size={12} fill="#F59E0B" color="#F59E0B" />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: DARK }}>{doc.rating}</span>
+
+                <div style={{ padding: '36px 20px 20px' }}>
+                  <div style={{ fontWeight: 800, fontSize: 13, color: DARK, lineHeight: 1.3, marginBottom: 4 }}>{doc.name}</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 12 }}>{doc.specialty} · {doc.experience}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Star size={12} fill="#F59E0B" color="#F59E0B" />
+                      <span style={{ fontSize: 12, fontWeight: 700, color: DARK }}>{doc.rating}</span>
+                    </div>
+                    <span style={{ fontSize: 10, color: '#9CA3AF' }}>{doc.patients.toLocaleString('id-ID')} pasien</span>
                   </div>
-                  <span style={{ fontSize: 10, color: '#9CA3AF' }}>{doc.patients.toLocaleString('id-ID')} pasien</span>
+                  <Link to="/booking"
+                    style={{ display: 'block', marginTop: 14, padding: '9px', textAlign: 'center', background: 'rgba(233,30,140,0.07)', color: PINK, borderRadius: 10, fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
+                    Buat Janji
+                  </Link>
                 </div>
-                <Link to="/booking"
-                  style={{ display: 'block', marginTop: 14, padding: '9px', textAlign: 'center', background: 'rgba(233,30,140,0.07)', color: PINK, borderRadius: 10, fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
-                  Buat Janji
-                </Link>
               </motion.div>
             );
           })}
         </div>
       </div>
+      <WaveDivider fromColor="#FAFAFA" toColor="#F8F9FB" />
     </section>
   );
 }
@@ -769,44 +846,70 @@ function TestimonialsSection() {
   const next = () => setIdx(i => (i + 1) % visible.length);
 
   return (
-    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0' }}>
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0 0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 52 }}>
+          style={{ textAlign: 'center', marginBottom: 52, position: 'relative' }}>
+          {/* Decorative section number */}
+          <div style={{
+            fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
+            position: 'absolute', top: -20, right: 0,
+            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Syne', sans-serif",
+          }}>03</div>
           <Eyebrow text="Testimoni Pasien" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>
             {t.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 500, margin: '0 auto' }}>{t.sectionSubtitle}</p>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
-          {visible.slice(0, 6).map((item: CMSTestimonial, i) => (
-            <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
-              style={{ background: 'white', borderRadius: 20, padding: 24, boxShadow: '0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)' }}>
-              <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <Star key={j} size={14} fill={j < item.rating ? '#F59E0B' : '#E5E7EB'} color={j < item.rating ? '#F59E0B' : '#E5E7EB'} />
-                ))}
-              </div>
-              <Quote size={24} color="rgba(233,30,140,0.2)" style={{ marginBottom: 10 }} />
-              <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.7, marginBottom: 18, fontStyle: 'italic' }}>{item.text}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  {item.avatar
-                    ? <SmoothImage src={item.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    : <span style={{ fontSize: 16, fontWeight: 900, color: 'white' }}>{item.name[0]}</span>
-                  }
-                </div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 13, color: DARK }}>{item.name}</div>
-                  <div style={{ fontSize: 11, color: '#9CA3AF' }}>{item.treatment}</div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          {/* Giant decorative quote mark */}
+          <div style={{
+            position: 'absolute', top: -20, left: -10,
+            fontSize: 240, fontWeight: 900, color: PINK, opacity: 0.04,
+            lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+            fontFamily: 'Georgia, serif', zIndex: 0,
+          }}>"</div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20, position: 'relative', zIndex: 1 }}>
+            {visible.slice(0, 6).map((item: CMSTestimonial, i) => {
+              const isFeatured = i === 0;
+              return (
+                <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
+                  style={{
+                    background: isFeatured ? `linear-gradient(135deg, ${PINK}08, ${AQUA}05)` : 'white',
+                    borderRadius: 20, padding: isFeatured ? 28 : 24,
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+                    border: isFeatured ? `1.5px solid ${PINK}20` : '1px solid rgba(0,0,0,0.05)',
+                    gridColumn: isFeatured ? 'span 2' : undefined,
+                  }}>
+                  <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star key={j} size={isFeatured ? 16 : 14} fill={j < item.rating ? '#F59E0B' : '#E5E7EB'} color={j < item.rating ? '#F59E0B' : '#E5E7EB'} />
+                    ))}
+                  </div>
+                  <Quote size={isFeatured ? 36 : 24} color="rgba(233,30,140,0.2)" style={{ marginBottom: 10 }} />
+                  <p style={{ fontSize: isFeatured ? 16 : 14, color: '#374151', lineHeight: 1.7, marginBottom: 18, fontStyle: 'italic' }}>{item.text}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {item.avatar
+                        ? <SmoothImage src={item.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <span style={{ fontSize: 16, fontWeight: 900, color: 'white' }}>{item.name[0]}</span>
+                      }
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 13, color: DARK }}>{item.name}</div>
+                      <div style={{ fontSize: 11, color: '#9CA3AF' }}>{item.treatment}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
+      <WaveDivider fromColor="#F8F9FB" toColor="#FFFFFF" />
     </section>
   );
 }
@@ -820,12 +923,12 @@ function PromotionsSection() {
   if (!visible.length) return null;
 
   return (
-    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0' }}>
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0 0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 52 }}>
           <Eyebrow text="Promo Spesial" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14 }}>
+          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Syne', sans-serif" }}>
             {p.sectionTitle}
           </h2>
           <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 480, margin: '0 auto' }}>{p.sectionSubtitle}</p>
@@ -834,10 +937,14 @@ function PromotionsSection() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
           {visible.map((item, i) => (
             <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.10)' }}
-              style={{ background: 'white', borderRadius: 22, overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.07)', transition: 'all 0.3s' }}>
-              {/* Gradient header */}
-              <div style={{ background: `linear-gradient(135deg, ${item.color}, ${item.color}CC)`, padding: '20px 22px', position: 'relative', overflow: 'hidden' }}>
+              whileHover={{ y: -4, rotate: 0, boxShadow: '0 20px 48px rgba(0,0,0,0.12)' }}
+              style={{
+                background: 'white', borderRadius: 22, overflow: 'hidden',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.07)', transition: 'all 0.3s',
+                transform: i % 2 === 1 ? 'rotate(0.5deg)' : 'rotate(-0.3deg)',
+              }}>
+              {/* Gradient header with clip path */}
+              <div style={{ background: `linear-gradient(135deg, ${item.color}, ${item.color}CC)`, padding: '28px 24px 36px', position: 'relative', overflow: 'hidden', clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)' }}>
                 <div style={{ position: 'absolute', top: -16, right: -16, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.12)' }} />
                 {item.badge && (
                   <span style={{ fontSize: 10, fontWeight: 800, background: 'rgba(255,255,255,0.25)', color: 'white', padding: '3px 10px', borderRadius: 20, marginBottom: 8, display: 'inline-block' }}>
@@ -862,6 +969,7 @@ function PromotionsSection() {
           ))}
         </div>
       </div>
+      <WaveDivider fromColor="#F8F9FB" toColor="#FFFFFF" />
     </section>
   );
 }
@@ -875,52 +983,64 @@ function ArticlesSection() {
   if (!visible.length) return null;
 
   return (
-    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 44 }}>
-          <div>
-            <Eyebrow text="Artikel Kesehatan" />
-            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10 }}>
-              {a.sectionTitle}
-            </h2>
-            <p style={{ fontSize: 17, color: '#6B7280' }}>{a.sectionSubtitle}</p>
-          </div>
-          <Link to="/articles" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: PINK, textDecoration: 'none', whiteSpace: 'nowrap' }}>
-            Semua artikel <ChevronRight size={16} />
-          </Link>
-        </motion.div>
+    <>
+      <WaveDivider fromColor="#FFFFFF" toColor="#F8F9FB" />
+      <section ref={ref} style={{ background: '#F8F9FB', padding: '100px 0 80px' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
+            style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 44 }}>
+            <div>
+              <Eyebrow text="Artikel Kesehatan" />
+              <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Syne', sans-serif" }}>
+                {a.sectionTitle}
+              </h2>
+              <p style={{ fontSize: 17, color: '#6B7280' }}>{a.sectionSubtitle}</p>
+            </div>
+            <Link to="/articles" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: PINK, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              Semua artikel <ChevronRight size={16} />
+            </Link>
+          </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
-          {visible.slice(0, 3).map((item, i) => (
-            <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}
-              style={{ background: 'white', borderRadius: 20, overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)', transition: 'all 0.3s' }}>
-              {item.thumbnail ? (
-                <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: 180 }} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
-              ) : (
-                <div style={{ width: '100%', height: 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
-              )}
-              <div style={{ padding: '18px 20px' }}>
-                <span style={{ fontSize: 10, fontWeight: 700, color: PINK, background: 'rgba(233,30,140,0.08)', padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
-                  {item.category}
-                </span>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px' }}>{item.title}</h3>
-                <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 14, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>
-                  {item.excerpt}
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 11, color: '#C0C4CC' }}>{item.publishedAt}</span>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: PINK, display: 'flex', alignItems: 'center', gap: 4 }}>
-                    Baca <ChevronRight size={12} />
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+          {/* Magazine layout grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'auto', gap: 24 }}>
+            {visible.slice(0, 3).map((item, i) => {
+              const isFeatured = i === 0;
+              return (
+                <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.1 }}
+                  whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}
+                  style={{
+                    background: 'white', borderRadius: 20, overflow: 'hidden',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)',
+                    transition: 'all 0.3s',
+                    gridColumn: isFeatured ? 'span 2' : undefined,
+                  }}>
+                  {item.thumbnail ? (
+                    <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: isFeatured ? 260 : 180 }} style={{ width: '100%', height: isFeatured ? 260 : 180, objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: '100%', height: isFeatured ? 260 : 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
+                  )}
+                  <div style={{ padding: '18px 20px' }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: PINK, background: 'rgba(233,30,140,0.08)', padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
+                      {item.category}
+                    </span>
+                    <h3 style={{ fontSize: isFeatured ? 20 : 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px', fontFamily: isFeatured ? "'Syne', sans-serif" : undefined }}>{item.title}</h3>
+                    <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 14, display: '-webkit-box', WebkitLineClamp: isFeatured ? 3 : 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>
+                      {item.excerpt}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: 11, color: '#C0C4CC' }}>{item.publishedAt}</span>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: PINK, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        Baca <ChevronRight size={12} />
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -1013,13 +1133,18 @@ function CTASection() {
 
   return (
     <section ref={ref} style={{ position: 'relative', padding: '80px 0', overflow: 'hidden' }}>
-      {/* Soft pastel gradient background — no blobs */}
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, #FFF5F9 0%, #F0FFFE 50%, #FFF5FC 100%)` }} />
+      {/* Light gradient background */}
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, rgba(233,30,140,0.06) 0%, rgba(6,182,212,0.04) 100%)` }} />
+      {/* Diagonal top accent */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 4,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+      }} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ position: 'relative', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
           <Eyebrow text="Mulai Perjalanan Sehat Anda" />
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20 }}>
+          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20, fontFamily: "'Syne', sans-serif" }}>
             Siap untuk Senyum<br />
             <GradText>yang Lebih Sehat?</GradText>
           </h2>
