@@ -7,6 +7,7 @@ import {
   useRef,
   type ReactNode,
 } from 'react';
+import { getBroadcasts, subscribeBroadcasts } from '../lib/broadcastStore';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type NotifType = 'reminder' | 'queue' | 'promo' | 'system';
@@ -165,6 +166,27 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       });
     }, 12000);
     return () => clearTimeout(t);
+  }, [addNotification]);
+
+  // Live admin → app broadcasts. Existing broadcasts at mount are treated as
+  // already-seen (don't replay history as toasts); only newer ones are added.
+  const seenBroadcasts = useRef<Set<string>>(new Set(getBroadcasts().map((b) => b.id)));
+  useEffect(() => {
+    const unsub = subscribeBroadcasts((list) => {
+      // Oldest-first so multiple new broadcasts arrive in chronological order.
+      [...list].reverse().forEach((b) => {
+        if (seenBroadcasts.current.has(b.id)) return;
+        seenBroadcasts.current.add(b.id);
+        addNotification({
+          id: b.id,
+          type: b.type,
+          title: b.title,
+          body: b.body,
+          time: 'Baru saja',
+        });
+      });
+    });
+    return unsub;
   }, [addNotification]);
 
   const value: NotificationContextValue = {
