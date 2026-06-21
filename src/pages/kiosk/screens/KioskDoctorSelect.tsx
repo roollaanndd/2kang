@@ -5,6 +5,8 @@ import type { KioskScreenProps } from '../KioskLayout';
 import type { Doctor } from '../../../types';
 import { kioskSound } from '../../../lib/kioskSound';
 
+const PINK = '#E91E8C';
+const DARK = '#0D1421';
 const AVATAR_COLORS = ['#E91E8C', '#4FC3F7', '#F59E0B', '#10B981'];
 
 export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
@@ -36,19 +38,22 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
     >
       {/* Header */}
       <div style={{
-        padding: '28px 60px 20px',
+        padding: '24px 60px 18px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: PINK, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+          {t ? 'Step 2 of 4' : 'Langkah 2 dari 4'}
+        </div>
+        <div style={{ fontSize: 36, fontWeight: 900, color: DARK, marginBottom: 4, lineHeight: 1.1 }}>
           {t ? 'Select Doctor' : 'Pilih Dokter'}
         </div>
-        <div style={{ fontSize: '17px', color: '#6B7280' }}>
+        <div style={{ fontSize: 16, color: '#6B7280' }}>
           {state.selectedService && (
             <>
               {t ? 'For' : 'Untuk'}{' '}
-              <span style={{ color: '#E91E8C', fontWeight: '700' }}>
+              <span style={{ color: PINK, fontWeight: 700 }}>
                 {t ? state.selectedService.nameEn : state.selectedService.name}
               </span>
             </>
@@ -71,86 +76,102 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.08, duration: 0.35 }}
+            whileHover={doctor.available ? { y: -3 } : {}}
             whileTap={doctor.available ? { scale: 0.98 } : {}}
             onClick={() => handleSelect(doctor)}
             disabled={!doctor.available}
             style={{
-              borderRadius: '20px',
-              border: `2px solid ${doctor.available ? '#E91E8C22' : '#E5E7EB'}`,
+              borderRadius: 20,
+              border: `2px solid ${doctor.available ? PINK + '22' : '#E5E7EB'}`,
               backgroundColor: doctor.available ? '#ffffff' : '#F9FAFB',
               cursor: doctor.available ? 'pointer' : 'not-allowed',
               display: 'flex',
               alignItems: 'center',
-              gap: '24px',
-              padding: '24px 28px',
-              boxShadow: doctor.available ? '0 2px 12px rgba(0,0,0,0.06)' : 'none',
-              opacity: doctor.available ? 1 : 0.6,
+              gap: 24,
+              padding: '22px 28px',
+              boxShadow: doctor.available ? '0 4px 18px rgba(0,0,0,0.07)' : 'none',
+              opacity: doctor.available ? 1 : 0.55,
               transition: 'all 0.2s',
               textAlign: 'left',
+              position: 'relative',
+              overflow: 'hidden',
             }}
             onMouseEnter={e => {
               if (!doctor.available) return;
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.borderColor = '#E91E8C';
-              btn.style.boxShadow = '0 6px 24px rgba(233,30,140,0.18)';
-              btn.style.transform = 'translateY(-2px)';
+              btn.style.borderColor = PINK;
+              btn.style.boxShadow = `0 8px 32px rgba(233,30,140,0.22)`;
             }}
             onMouseLeave={e => {
               if (!doctor.available) return;
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.borderColor = '#E91E8C22';
-              btn.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-              btn.style.transform = 'translateY(0)';
+              btn.style.borderColor = PINK + '22';
+              btn.style.boxShadow = '0 4px 18px rgba(0,0,0,0.07)';
             }}
           >
-            {/* Avatar */}
+            {/* Left accent stripe */}
+            {doctor.available && (
+              <div style={{
+                position: 'absolute', top: 0, left: 0, bottom: 0, width: 4,
+                background: `linear-gradient(180deg, ${PINK}, #FF6BB5)`,
+                borderRadius: '4px 0 0 4px',
+              }} />
+            )}
+
+            {/* Avatar with photo support */}
             <div style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
+              width: 88,
+              height: 88,
+              borderRadius: 24,
               backgroundColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '32px',
-              fontWeight: '800',
+              fontSize: 32,
+              fontWeight: 800,
               color: '#ffffff',
               flexShrink: 0,
-              boxShadow: doctor.available ? `0 4px 16px ${AVATAR_COLORS[index % AVATAR_COLORS.length]}40` : 'none',
+              overflow: 'hidden',
+              boxShadow: doctor.available ? `0 6px 20px ${AVATAR_COLORS[index % AVATAR_COLORS.length]}40` : 'none',
             }}>
-              {doctor.name.split(' ')[1]?.[0] || doctor.name[0]}
+              {doctor.photo
+                ? <img src={doctor.photo} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : doctor.name.split(' ')[1]?.[0] || doctor.name[0]
+              }
             </div>
 
             {/* Info */}
             <div style={{ flex: 1 }}>
               <div style={{
-                fontSize: '22px',
-                fontWeight: '800',
-                color: '#1A1A2E',
-                marginBottom: '4px',
+                fontSize: 24,
+                fontWeight: 900,
+                color: DARK,
+                marginBottom: 4,
+                lineHeight: 1.2,
               }}>
                 {doctor.name}
               </div>
               <div style={{
-                fontSize: '16px',
+                fontSize: 15,
                 color: '#6B7280',
-                marginBottom: '10px',
+                marginBottom: 10,
+                fontWeight: 500,
               }}>
                 {t ? doctor.specialtyEn : doctor.specialty}
               </div>
-              <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                   <Star size={14} color="#F59E0B" fill="#F59E0B" />
-                  <span style={{ fontSize: '14px', fontWeight: '700', color: '#1A1A2E' }}>
+                  <span style={{ fontSize: 14, fontWeight: 800, color: DARK }}>
                     {doctor.rating}
                   </span>
-                  <span style={{ fontSize: '13px', color: '#9CA3AF' }}>
+                  <span style={{ fontSize: 13, color: '#9CA3AF' }}>
                     ({doctor.reviewCount})
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                   <Clock size={14} color="#9CA3AF" />
-                  <span style={{ fontSize: '13px', color: '#6B7280' }}>
+                  <span style={{ fontSize: 13, color: '#6B7280' }}>
                     {doctor.experience} {t ? 'yrs exp.' : 'thn pengalaman'}
                   </span>
                 </div>
@@ -160,12 +181,12 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
             {/* Availability badge */}
             <div style={{
               flexShrink: 0,
-              padding: '8px 20px',
-              borderRadius: '40px',
+              padding: '10px 22px',
+              borderRadius: 40,
               backgroundColor: doctor.available ? '#D1FAE5' : '#FEE2E2',
               color: doctor.available ? '#065F46' : '#991B1B',
-              fontSize: '15px',
-              fontWeight: '700',
+              fontSize: 15,
+              fontWeight: 800,
             }}>
               {doctor.available
                 ? (t ? 'Available' : 'Tersedia')

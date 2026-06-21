@@ -3,8 +3,12 @@ import { ChevronLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { KioskStep } from '../../../types';
-import { AnimatedDentalBg } from '../../../components/ui/AnimatedDentalBg';
 import { kioskSound } from '../../../lib/kioskSound';
+
+const PINK = '#E91E8C';
+const ROSE = '#FF6BB5';
+const AQUA = '#06B6D4';
+const DARK = '#0D1421';
 
 /* ─── Custom SVG Icons ──────────────────────────────────────────────── */
 
@@ -84,7 +88,7 @@ interface MenuCard {
   step: KioskStep;
   gradient: string;
   shadowColor: string;
-  tint: string;
+  accentColor: string;
   queueType?: 'new' | 'checkin' | 'register';
 }
 
@@ -96,7 +100,7 @@ const MENU_CARDS: MenuCard[] = [
     step: 'service-select',
     gradient: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
     shadowColor: 'rgba(233,30,140,0.3)',
-    tint: 'rgba(233,30,140,0.04)',
+    accentColor: PINK,
     queueType: 'new',
   },
   {
@@ -106,7 +110,7 @@ const MENU_CARDS: MenuCard[] = [
     step: 'checkin',
     gradient: 'linear-gradient(135deg, #06B6D4, #0284C7)',
     shadowColor: 'rgba(6,182,212,0.3)',
-    tint: 'rgba(6,182,212,0.04)',
+    accentColor: AQUA,
     queueType: 'checkin',
   },
   {
@@ -116,7 +120,7 @@ const MENU_CARDS: MenuCard[] = [
     step: 'new-patient',
     gradient: 'linear-gradient(135deg, #10B981, #059669)',
     shadowColor: 'rgba(16,185,129,0.3)',
-    tint: 'rgba(16,185,129,0.04)',
+    accentColor: '#10B981',
     queueType: 'register',
   },
   {
@@ -126,7 +130,7 @@ const MENU_CARDS: MenuCard[] = [
     step: 'info-promo',
     gradient: 'linear-gradient(135deg, #F59E0B, #D97706)',
     shadowColor: 'rgba(245,158,11,0.3)',
-    tint: 'rgba(245,158,11,0.04)',
+    accentColor: '#F59E0B',
   },
 ];
 
@@ -152,157 +156,207 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
       style={{
         width: '100%',
         height: '100%',
-        backgroundColor: '#F8F9FB',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
+        background: '#FAFAFA',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* ── Pink accent strip at very top ── */}
+      {/* ── LEFT DARK SIDEBAR ── */}
       <div style={{
-        height: '3px',
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        width: 320,
         flexShrink: 0,
-        zIndex: 10,
-      }} />
-
-      {/* ── Animated premium dental-geometry background ── */}
-      <AnimatedDentalBg />
-
-      {/* ── Header ── */}
-      <div style={{
-        padding: '32px 60px 24px',
-        flexShrink: 0,
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        {/* Eyebrow pill badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            backgroundColor: 'rgba(233,30,140,0.08)',
-            border: '1px solid rgba(233,30,140,0.18)',
-            borderRadius: '999px',
-            padding: '5px 14px',
-            marginBottom: '14px',
-          }}
-        >
-          <div style={{
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            background: '#E91E8C',
-          }} />
-          <span style={{
-            fontSize: '12px',
-            fontWeight: 700,
-            color: '#E91E8C',
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-          }}>
-            {t ? 'OMDC Dental Kiosk' : 'Kiosk OMDC Dental'}
-          </span>
-        </motion.div>
-
-        {/* Big title */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          style={{
-            fontSize: '36px',
-            fontWeight: 900,
-            color: '#111827',
-            lineHeight: 1.15,
-            marginBottom: '6px',
-          }}
-        >
-          {t ? 'Please Select a Service' : 'Silakan Pilih Layanan'}
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          style={{ fontSize: '16px', color: '#6B7280', fontWeight: 500 }}
-        >
-          {t ? 'What brings you here today?' : 'Apa yang bisa kami bantu hari ini?'}
-        </motion.div>
-      </div>
-
-      {/* ── Cards Grid ── */}
-      <div style={{
-        flex: 1,
-        padding: '8px 52px 24px',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gridTemplateRows: '1fr 1fr',
-        gap: '20px',
-        position: 'relative',
-        zIndex: 1,
-      }}>
-        {MENU_CARDS.map((card, index) => (
-          <MenuCardItem
-            key={card.step}
-            card={card}
-            index={index}
-            onSelect={() => handleSelect(card)}
-          />
-        ))}
-      </div>
-
-      {/* ── Bottom Bar ── */}
-      <div style={{
-        padding: '14px 52px 18px',
+        background: DARK,
         display: 'flex',
-        alignItems: 'center',
-        flexShrink: 0,
+        flexDirection: 'column',
+        padding: '44px 36px',
         position: 'relative',
-        zIndex: 1,
+        overflow: 'hidden',
       }}>
-        <motion.button
+        {/* Top gradient strip */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 4,
+          background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+        }} />
+
+        {/* Decorative tooth watermark */}
+        <svg
+          style={{ position: 'absolute', bottom: -20, right: -40, opacity: 0.05, pointerEvents: 'none' }}
+          width={240} height={280} viewBox="0 0 100 115" fill="none"
+        >
+          <path
+            d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+            fill="white"
+          />
+        </svg>
+
+        {/* Decorative ring accents */}
+        <div style={{
+          position: 'absolute', top: -40, right: -40, width: 180, height: 180,
+          borderRadius: '50%', border: `1px solid rgba(233,30,140,0.12)`, pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', top: 80, right: -20, width: 100, height: 100,
+          borderRadius: '50%', border: `1px solid rgba(255,107,181,0.08)`, pointerEvents: 'none',
+        }} />
+
+        {/* Logo / Brand */}
+        <motion.div
+          initial={{ opacity: 0, y: -14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          style={{ marginBottom: 40 }}
+        >
+          <div style={{ fontSize: 26, fontWeight: 900, color: 'white', letterSpacing: '-0.5px' }}>
+            OMDC{' '}
+            <span style={{
+              background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>Dental</span>
+          </div>
+          <div style={{
+            fontSize: 11, color: 'rgba(255,255,255,0.38)', marginTop: 4,
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+          }}>
+            {t ? 'Healthy Smile · Confident' : 'Senyum Sehat · Percaya Diri'}
+          </div>
+        </motion.div>
+
+        {/* Quick stats */}
+        {[
+          { num: '5000+', label: t ? 'Happy Patients' : 'Pasien Puas' },
+          { num: '15 Thn', label: t ? 'Experience' : 'Pengalaman' },
+          { num: '8 Dokter', label: t ? 'Specialists' : 'Spesialis' },
+        ].map((s, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45, delay: 0.18 + i * 0.08 }}
+            style={{ marginBottom: 28 }}
+          >
+            <div style={{ fontSize: 30, fontWeight: 900, color: PINK, lineHeight: 1, letterSpacing: '-0.5px' }}>
+              {s.num}
+            </div>
+            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.46)', marginTop: 3, fontWeight: 500 }}>
+              {s.label}
+            </div>
+          </motion.div>
+        ))}
+
+        {/* Active status badge */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={goBack}
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 26px',
-            borderRadius: '999px',
-            border: '1.5px solid rgba(0,0,0,0.10)',
-            backgroundColor: 'white',
-            color: '#6B7280',
-            fontSize: '15px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            transition: 'all 0.18s',
-          }}
-          onMouseEnter={e => {
-            const el = e.currentTarget as HTMLButtonElement;
-            el.style.borderColor = '#E91E8C';
-            el.style.color = '#E91E8C';
-            el.style.boxShadow = '0 4px 16px rgba(233,30,140,0.15)';
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLButtonElement;
-            el.style.borderColor = 'rgba(0,0,0,0.10)';
-            el.style.color = '#6B7280';
-            el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+            display: 'inline-flex', alignItems: 'center', gap: 7,
+            background: 'rgba(16,185,129,0.14)', border: '1px solid rgba(16,185,129,0.22)',
+            borderRadius: 20, padding: '6px 14px', marginBottom: 24, alignSelf: 'flex-start',
           }}
         >
-          <ChevronLeft size={18} />
-          {t ? 'Back' : 'Kembali'}
-        </motion.button>
+          <span style={{
+            width: 7, height: 7, borderRadius: '50%', background: '#10B981', display: 'block',
+            boxShadow: '0 0 6px #10B981',
+          }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#6EE7B7' }}>
+            {t ? 'Kiosk Active' : 'Kiosk Aktif'}
+          </span>
+        </motion.div>
+
+        {/* Bottom: date */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          style={{ marginTop: 'auto' }}
+        >
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.06em', lineHeight: 1.6 }}>
+            {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── RIGHT CONTENT PANEL ── */}
+      <div style={{
+        flex: 1,
+        padding: '44px 48px 20px',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          style={{ marginBottom: 28, flexShrink: 0 }}
+        >
+          <div style={{
+            fontSize: 13, fontWeight: 700, color: PINK,
+            letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8,
+          }}>
+            {t ? 'Welcome' : 'Selamat Datang'}
+          </div>
+          <h1 style={{ fontSize: 36, fontWeight: 900, color: DARK, lineHeight: 1.1, margin: 0 }}>
+            {t ? 'How can we help\nyou today?' : 'Apa yang bisa\nkami bantu hari ini?'}
+          </h1>
+        </motion.div>
+
+        {/* Menu cards grid */}
+        <div style={{
+          flex: 1,
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gridTemplateRows: '1fr 1fr',
+          gap: '18px',
+          overflow: 'hidden',
+        }}>
+          {MENU_CARDS.map((card, index) => (
+            <MenuCardItem
+              key={card.step}
+              card={card}
+              index={index}
+              onSelect={() => handleSelect(card)}
+            />
+          ))}
+        </div>
+
+        {/* Back button */}
+        <div style={{ paddingTop: 16, flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={goBack}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '11px 24px', borderRadius: 999,
+              border: '1.5px solid rgba(0,0,0,0.10)', backgroundColor: 'white',
+              color: '#6B7280', fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              transition: 'all 0.18s',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLButtonElement;
+              el.style.borderColor = PINK;
+              el.style.color = PINK;
+              el.style.boxShadow = '0 4px 16px rgba(233,30,140,0.15)';
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLButtonElement;
+              el.style.borderColor = 'rgba(0,0,0,0.10)';
+              el.style.color = '#6B7280';
+              el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+            }}
+          >
+            <ChevronLeft size={18} />
+            {t ? 'Back' : 'Kembali'}
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );
@@ -319,81 +373,67 @@ interface MenuCardItemProps {
 function MenuCardItem({ card, index, onSelect }: MenuCardItemProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -6 }}
-      style={{ cursor: 'pointer' }}
+      transition={{ delay: 0.15 + index * 0.09, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -4, scale: 1.01 }}
+      whileTap={{ scale: 0.98 }}
+      style={{ cursor: 'pointer', position: 'relative' }}
       onClick={onSelect}
     >
-      {/* ── Outer shell (double-bezel layer 1) ── */}
       <div
         style={{
-          borderRadius: '32px',
-          padding: '6px',
           background: 'white',
-          border: '1px solid rgba(233,30,140,0.08)',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.06)',
+          borderRadius: 24,
+          padding: '28px 24px 24px',
+          border: '2px solid transparent',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
           height: '100%',
           boxSizing: 'border-box',
-          transition: 'box-shadow 0.22s, border-color 0.22s',
+          transition: 'all 0.2s',
+          position: 'relative',
+          overflow: 'hidden',
         }}
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLDivElement;
-          el.style.boxShadow = `0 16px 48px ${card.shadowColor}`;
-          el.style.borderColor = card.shadowColor.replace('0.3)', '0.25)');
+          el.style.boxShadow = `0 12px 40px ${card.shadowColor}`;
+          el.style.borderColor = card.accentColor + '40';
         }}
         onMouseLeave={e => {
           const el = e.currentTarget as HTMLDivElement;
-          el.style.boxShadow = '0 8px 40px rgba(0,0,0,0.06)';
-          el.style.borderColor = 'rgba(233,30,140,0.08)';
+          el.style.boxShadow = '0 4px 24px rgba(0,0,0,0.06)';
+          el.style.borderColor = 'transparent';
         }}
       >
-        {/* ── Inner core (double-bezel layer 2) ── */}
+        {/* Left accent bar */}
         <div style={{
-          borderRadius: '26px',
-          background: card.tint,
-          padding: '32px',
-          height: '100%',
-          boxSizing: 'border-box',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-        }}>
-          {/* Icon container */}
-          <div style={{
-            width: '96px',
-            height: '96px',
-            borderRadius: '28px',
-            background: card.gradient,
-            boxShadow: `0 12px 32px ${card.shadowColor}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
-            {card.icon}
-          </div>
+          position: 'absolute', top: 0, left: 0, bottom: 0, width: 4,
+          background: card.gradient,
+          borderRadius: '4px 0 0 4px',
+        }} />
 
-          {/* Text */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: 900,
-              color: '#111827',
-              lineHeight: 1.2,
-              marginBottom: '8px',
-            }}>
-              {card.label}
-            </div>
-            <div style={{
-              fontSize: '14px',
-              color: '#6B7280',
-              lineHeight: 1.5,
-              fontWeight: 400,
-            }}>
-              {card.subtitle}
-            </div>
+        {/* Icon container */}
+        <div style={{
+          width: 72, height: 72, borderRadius: 20,
+          background: card.gradient,
+          boxShadow: `0 8px 24px ${card.shadowColor}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          marginBottom: 18, flexShrink: 0,
+        }}>
+          {card.icon}
+        </div>
+
+        {/* Text */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+          <div style={{ fontSize: 20, fontWeight: 900, color: DARK, lineHeight: 1.2, marginBottom: 6 }}>
+            {card.label}
+          </div>
+          <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5, fontWeight: 400 }}>
+            {card.subtitle}
           </div>
         </div>
       </div>

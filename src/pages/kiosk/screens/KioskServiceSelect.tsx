@@ -5,6 +5,9 @@ import type { KioskScreenProps } from '../KioskLayout';
 import type { Service } from '../../../types';
 import { kioskSound } from '../../../lib/kioskSound';
 
+const PINK = '#E91E8C';
+const DARK = '#0D1421';
+
 export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
 
@@ -30,15 +33,18 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
     >
       {/* Header */}
       <div style={{
-        padding: '28px 60px 20px',
+        padding: '24px 60px 18px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: PINK, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+          {t ? 'Step 1 of 4' : 'Langkah 1 dari 4'}
+        </div>
+        <div style={{ fontSize: 36, fontWeight: 900, color: DARK, marginBottom: 4, lineHeight: 1.1 }}>
           {t ? 'Select Service' : 'Pilih Layanan'}
         </div>
-        <div style={{ fontSize: '17px', color: '#6B7280' }}>
+        <div style={{ fontSize: 16, color: '#6B7280' }}>
           {t ? 'Choose the dental service you need' : 'Pilih layanan gigi yang Anda butuhkan'}
         </div>
       </div>
@@ -59,10 +65,11 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.06, duration: 0.35 }}
+            whileHover={{ y: -4 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelect(service)}
             style={{
-              borderRadius: '20px',
+              borderRadius: 20,
               border: `2px solid ${service.color}22`,
               backgroundColor: '#ffffff',
               cursor: 'pointer',
@@ -70,38 +77,43 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '14px',
+              gap: 14,
               padding: '24px 16px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+              minHeight: 120,
+              boxShadow: '0 4px 18px rgba(0,0,0,0.07)',
               transition: 'all 0.2s',
               position: 'relative',
               overflow: 'hidden',
             }}
             onMouseEnter={e => {
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.backgroundColor = service.color + '12';
-              btn.style.borderColor = service.color;
-              btn.style.boxShadow = `0 6px 24px ${service.color}30`;
-              btn.style.transform = 'translateY(-3px)';
+              btn.style.border = `3px solid ${PINK}`;
+              btn.style.boxShadow = `0 0 0 4px rgba(233,30,140,0.12), 0 8px 28px ${service.color}30`;
             }}
             onMouseLeave={e => {
               const btn = e.currentTarget as HTMLButtonElement;
-              btn.style.backgroundColor = '#ffffff';
-              btn.style.borderColor = service.color + '22';
-              btn.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
-              btn.style.transform = 'translateY(0)';
+              btn.style.border = `2px solid ${service.color}22`;
+              btn.style.boxShadow = '0 4px 18px rgba(0,0,0,0.07)';
             }}
           >
+            {/* Left accent bar */}
+            <div style={{
+              position: 'absolute', top: 0, left: 0, bottom: 0, width: 4,
+              background: `linear-gradient(180deg, ${service.color}, ${service.color}88)`,
+              borderRadius: '4px 0 0 4px',
+            }} />
+
             {/* Icon circle */}
             <div style={{
-              width: '72px',
-              height: '72px',
+              width: 80,
+              height: 80,
               borderRadius: '50%',
-              backgroundColor: service.color + '20',
+              backgroundColor: service.color + '18',
+              border: `2px solid ${service.color}30`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '36px',
+              fontSize: 40,
               flexShrink: 0,
             }}>
               {service.icon}
@@ -109,19 +121,20 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
 
             <div>
               <div style={{
-                fontSize: '17px',
-                fontWeight: '700',
-                color: '#1A1A2E',
+                fontSize: 16,
+                fontWeight: 800,
+                color: DARK,
                 textAlign: 'center',
-                lineHeight: '1.3',
-                marginBottom: '4px',
+                lineHeight: 1.3,
+                marginBottom: 4,
               }}>
                 {t ? service.nameEn : service.name}
               </div>
               <div style={{
-                fontSize: '13px',
+                fontSize: 12,
                 color: '#9CA3AF',
                 textAlign: 'center',
+                fontWeight: 500,
               }}>
                 {service.duration} menit
               </div>

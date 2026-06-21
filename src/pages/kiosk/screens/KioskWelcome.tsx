@@ -180,10 +180,16 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           style={{ textAlign: 'center' }}
         >
           <div style={{
-            fontSize: 34, fontWeight: 800, color: '#0D1421',
-            letterSpacing: -0.5, marginBottom: 10, lineHeight: 1.2,
+            fontSize: 42, fontWeight: 900, color: '#0D1421',
+            letterSpacing: -1, marginBottom: 10, lineHeight: 1.15,
           }}>
-            Senyum Sehat, Percaya Diri Penuh
+            Senyum Sehat,{' '}
+            <span style={{
+              background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>
+              Percaya Diri
+            </span>
           </div>
           <div style={{ fontSize: 18, color: '#9CA3AF', fontWeight: 400, letterSpacing: 0.2 }}>
             Gigi lebih sehat, senyum lebih percaya diri
@@ -195,43 +201,46 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ position: 'relative', marginTop: 12 }}
+          style={{ position: 'relative', marginTop: 12, display: 'inline-block' }}
         >
-          {/* Soft pulsing halo ring */}
+          {/* Soft pulsing halo rings */}
           {[1, 2].map((n) => (
             <motion.div
               key={n}
-              animate={{ scale: [1, 1.4 + n * 0.1, 1], opacity: [0.2, 0, 0.2] }}
-              transition={{ duration: 3, repeat: Infinity, delay: n * 0.5, ease: 'easeInOut' }}
+              animate={{ scale: [1, 1.15 + n * 0.08, 1], opacity: [0.3, 0, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: n * 0.55, ease: 'easeInOut' }}
               style={{
                 position: 'absolute',
                 inset: -(n * 16),
-                borderRadius: 70,
-                border: `1.5px solid rgba(233,30,140,${0.28 - n * 0.08})`,
+                borderRadius: 80,
+                background: n === 1 ? 'rgba(233,30,140,0.18)' : undefined,
+                border: n === 2 ? `1.5px solid rgba(233,30,140,0.22)` : undefined,
                 pointerEvents: 'none',
               }}
             />
           ))}
 
           <motion.div
-            animate={{ y: [0, -4, 0] }}
+            animate={{ y: [0, -5, 0] }}
             transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
             style={{
-              padding: '26px 68px',
+              padding: '28px 72px',
               background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-              borderRadius: 70,
-              boxShadow: '0 20px 60px rgba(233,30,140,0.35)',
+              borderRadius: 80,
+              boxShadow: '0 20px 60px rgba(233,30,140,0.38)',
+              minHeight: 88,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             }}
           >
             <div style={{
-              fontSize: 27, fontWeight: 800, color: 'white',
+              fontSize: 28, fontWeight: 800, color: 'white',
               textAlign: 'center', letterSpacing: 0.2,
               display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center',
             }}>
               <motion.span
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ display: 'inline-block' }}
+                style={{ display: 'inline-block', fontSize: 28 }}
               >
                 👆
               </motion.span>
