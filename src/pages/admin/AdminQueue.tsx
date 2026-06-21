@@ -21,18 +21,30 @@ const GREEN = '#10B981';
 const AMBER = '#F59E0B';
 const RED = '#EF4444';
 
-// TODO: Replace with API call — queueService.getLiveQueue()
-const INITIAL_QUEUE = [
-  { id: '1', number: 'A017', patientName: 'Budi Santoso', service: 'Scaling & Polishing', doctor: 'drg. Sarah Sella', room: 'Ruang 2', status: 'serving' as const, arrivedAt: '09:15', phone: '0812-3456-7890' },
-  { id: '2', number: 'A018', patientName: 'Andi Pratama', service: 'Scaling & Polishing', doctor: 'drg. Sarah Sella', room: 'Ruang 2', status: 'waiting' as const, arrivedAt: '09:20', phone: '0823-4567-8901' },
-  { id: '3', number: 'A019', patientName: 'Siti Nurhaliza', service: 'Tambal Gigi', doctor: 'drg. Ivan Kontralizan', room: 'Ruang 1', status: 'waiting' as const, arrivedAt: '09:30', phone: '0834-5678-9012' },
-  { id: '4', number: 'A020', patientName: 'Ahmad Fauzi', service: 'Pemeriksaan Gigi', doctor: 'drg. Andika Andilisa', room: 'Ruang 3', status: 'waiting' as const, arrivedAt: '09:45', phone: '0845-6789-0123' },
-  { id: '5', number: 'A021', patientName: 'Rina Permatasari', service: 'Cabut Gigi', doctor: 'drg. Reza Rizki', room: 'Ruang 4', status: 'waiting' as const, arrivedAt: '10:00', phone: '0856-7890-1234' },
-  { id: '6', number: 'A016', patientName: 'Dewi Susanti', service: 'Behel Kontrol', doctor: 'drg. Andika Andilisa', room: 'Ruang 3', status: 'done' as const, arrivedAt: '08:45', phone: '0867-8901-2345' },
-  { id: '7', number: 'A015', patientName: 'Hendra Kusuma', service: 'Scaling', doctor: 'drg. Sarah Sella', room: 'Ruang 2', status: 'done' as const, arrivedAt: '08:30', phone: '0878-9012-3456' },
-];
-
 type QueueStatus = 'serving' | 'waiting' | 'done' | 'skipped';
+
+interface QueuePatient {
+  id: string;
+  number: string;
+  patientName: string;
+  service: string;
+  doctor: string;
+  room: string;
+  status: QueueStatus;
+  arrivedAt: string;
+  phone: string;
+}
+
+// TODO: Replace with API call — queueService.getLiveQueue()
+const INITIAL_QUEUE: QueuePatient[] = [
+  { id: '1', number: 'A017', patientName: 'Budi Santoso', service: 'Scaling & Polishing', doctor: 'drg. Sarah Sella', room: 'Ruang 2', status: 'serving', arrivedAt: '09:15', phone: '0812-3456-7890' },
+  { id: '2', number: 'A018', patientName: 'Andi Pratama', service: 'Scaling & Polishing', doctor: 'drg. Sarah Sella', room: 'Ruang 2', status: 'waiting', arrivedAt: '09:20', phone: '0823-4567-8901' },
+  { id: '3', number: 'A019', patientName: 'Siti Nurhaliza', service: 'Tambal Gigi', doctor: 'drg. Ivan Kontralizan', room: 'Ruang 1', status: 'waiting', arrivedAt: '09:30', phone: '0834-5678-9012' },
+  { id: '4', number: 'A020', patientName: 'Ahmad Fauzi', service: 'Pemeriksaan Gigi', doctor: 'drg. Andika Andilisa', room: 'Ruang 3', status: 'waiting', arrivedAt: '09:45', phone: '0845-6789-0123' },
+  { id: '5', number: 'A021', patientName: 'Rina Permatasari', service: 'Cabut Gigi', doctor: 'drg. Reza Rizki', room: 'Ruang 4', status: 'waiting', arrivedAt: '10:00', phone: '0856-7890-1234' },
+  { id: '6', number: 'A016', patientName: 'Dewi Susanti', service: 'Behel Kontrol', doctor: 'drg. Andika Andilisa', room: 'Ruang 3', status: 'done', arrivedAt: '08:45', phone: '0867-8901-2345' },
+  { id: '7', number: 'A015', patientName: 'Hendra Kusuma', service: 'Scaling', doctor: 'drg. Sarah Sella', room: 'Ruang 2', status: 'done', arrivedAt: '08:30', phone: '0878-9012-3456' },
+];
 
 const ROOM_MAP = [
   { room: 'Ruang 1', doctor: 'drg. Ivan Kontralizan', status: 'busy' },
@@ -136,7 +148,7 @@ export default function AdminQueue() {
 
   // TODO: Replace with API call — queueService.skipPatient(id)
   const skipPatient = (id: string) => {
-    setQueue(prev => prev.map(q => q.id === id ? { ...q, status: 'skipped' as any } : q));
+    setQueue(prev => prev.map(q => q.id === id ? { ...q, status: 'skipped' } : q));
   };
 
   // TODO: Replace with API call — queueService.callPatient(id)
