@@ -163,11 +163,12 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         overflow: 'hidden',
       }}
     >
-      {/* ── LEFT DARK SIDEBAR ── */}
+      {/* ── LEFT BRAND SIDEBAR (light) ── */}
       <div style={{
         width: 320,
         flexShrink: 0,
-        background: DARK,
+        background: 'linear-gradient(165deg, #FFF5F9 0%, #FFE4F1 52%, #ECFEFF 100%)',
+        borderRight: '1px solid rgba(233,30,140,0.10)',
         display: 'flex',
         flexDirection: 'column',
         padding: '44px 36px',
@@ -187,7 +188,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         >
           <path
             d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
-            fill="white"
+            fill={PINK}
           />
         </svg>
 
@@ -208,7 +209,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           transition={{ duration: 0.5, delay: 0.1 }}
           style={{ marginBottom: 40 }}
         >
-          <div style={{ fontSize: 26, fontWeight: 900, color: 'white', letterSpacing: '-0.5px' }}>
+          <div style={{ fontSize: 26, fontWeight: 900, color: DARK, letterSpacing: '-0.5px' }}>
             OMDC{' '}
             <span style={{
               background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
@@ -216,7 +217,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
             }}>Dental</span>
           </div>
           <div style={{
-            fontSize: 11, color: 'rgba(255,255,255,0.38)', marginTop: 4,
+            fontSize: 11, color: '#9CA3AF', marginTop: 4,
             letterSpacing: '0.12em', textTransform: 'uppercase',
           }}>
             {t ? 'Healthy Smile · Confident' : 'Senyum Sehat · Percaya Diri'}
@@ -239,7 +240,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
             <div style={{ fontSize: 30, fontWeight: 900, color: PINK, lineHeight: 1, letterSpacing: '-0.5px' }}>
               {s.num}
             </div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.46)', marginTop: 3, fontWeight: 500 }}>
+            <div style={{ fontSize: 13, color: '#6B7280', marginTop: 3, fontWeight: 500 }}>
               {s.label}
             </div>
           </motion.div>
@@ -272,7 +273,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           transition={{ delay: 0.6 }}
           style={{ marginTop: 'auto' }}
         >
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.06em', lineHeight: 1.6 }}>
+          <div style={{ fontSize: 11, color: '#9CA3AF', letterSpacing: '0.06em', lineHeight: 1.6 }}>
             {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}
           </div>
         </motion.div>

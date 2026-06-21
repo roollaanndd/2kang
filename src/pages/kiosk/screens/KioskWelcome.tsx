@@ -31,12 +31,12 @@ function LiveClock() {
 function QRCodeSVG() {
   return (
     <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4" y="4" width="24" height="24" rx="3" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5"/>
-      <rect x="9" y="9" width="14" height="14" rx="1" fill="rgba(255,255,255,0.7)"/>
-      <rect x="52" y="4" width="24" height="24" rx="3" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5"/>
-      <rect x="57" y="9" width="14" height="14" rx="1" fill="rgba(255,255,255,0.7)"/>
-      <rect x="4" y="52" width="24" height="24" rx="3" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5"/>
-      <rect x="9" y="57" width="14" height="14" rx="1" fill="rgba(255,255,255,0.7)"/>
+      <rect x="4" y="4" width="24" height="24" rx="3" fill="none" stroke="#0D1421" strokeWidth="2.5"/>
+      <rect x="9" y="9" width="14" height="14" rx="1" fill="#E91E8C"/>
+      <rect x="52" y="4" width="24" height="24" rx="3" fill="none" stroke="#0D1421" strokeWidth="2.5"/>
+      <rect x="57" y="9" width="14" height="14" rx="1" fill="#E91E8C"/>
+      <rect x="4" y="52" width="24" height="24" rx="3" fill="none" stroke="#0D1421" strokeWidth="2.5"/>
+      <rect x="9" y="57" width="14" height="14" rx="1" fill="#E91E8C"/>
       {[
         [34,4],[38,4],[42,4],[46,4],[34,8],[42,8],[46,8],
         [34,12],[38,12],[34,16],[42,16],[46,16],[38,20],[42,20],
@@ -50,7 +50,7 @@ function QRCodeSVG() {
         [34,64],[42,64],[46,64],[52,64],[56,64],[60,64],[64,64],[68,64],[72,64],
         [38,68],[46,68],[52,68],[60,68],[64,68],[72,68],
       ].map(([cx, cy], i) => (
-        <rect key={i} x={cx} y={cy} width="4" height="4" fill="rgba(255,255,255,0.65)" />
+        <rect key={i} x={cx} y={cy} width="4" height="4" fill="#0D1421" opacity="0.7" />
       ))}
     </svg>
   );
@@ -93,25 +93,26 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       {/* 4px brand strip */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
 
-      {/* ─── LEFT PANEL: Dark branded side ─────────────────────────────── */}
+      {/* ─── LEFT PANEL: Light branded side ─────────────────────────────── */}
       <div style={{
         width: '40%', flexShrink: 0, height: '100%',
-        background: `linear-gradient(160deg, #141b2d 0%, ${DARK} 50%, #0a1520 100%)`,
+        background: `linear-gradient(160deg, #FFF5F9 0%, #FFE4F1 50%, #ECFEFF 100%)`,
+        borderRight: '1px solid rgba(233,30,140,0.10)',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
         padding: '40px 32px 32px', position: 'relative', overflow: 'hidden',
       }}>
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', border: `1px solid rgba(233,30,140,0.12)`, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: 60, left: -40, width: 160, height: 160, borderRadius: '50%', border: `1px solid rgba(6,182,212,0.10)`, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: '50%', left: -20, right: -20, height: 1, background: 'rgba(255,255,255,0.04)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', border: `1px solid rgba(233,30,140,0.14)`, pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: 60, left: -40, width: 160, height: 160, borderRadius: '50%', border: `1px solid rgba(6,182,212,0.16)`, pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '50%', left: -20, right: -20, height: 1, background: 'rgba(233,30,140,0.06)', pointerEvents: 'none' }} />
 
         <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}>
-          <OmdcLogo size="lg" variant="white" />
+          <OmdcLogo size="lg" variant="default" />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.5 }}
           style={{ textAlign: 'center', width: '100%' }}>
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, fontWeight: 800, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#9CA3AF', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
               SEDANG DILAYANI
             </div>
             <div style={{
@@ -124,15 +125,15 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 0, borderRadius: 16, overflow: 'hidden', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 20 }}>
+          <div style={{ display: 'flex', gap: 0, borderRadius: 16, overflow: 'hidden', background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(233,30,140,0.10)', boxShadow: '0 4px 16px rgba(233,30,140,0.06)', marginBottom: 20 }}>
             {[
               { label: 'Menunggu', value: '12' },
               { label: 'Est. Tunggu', value: '~8 mnt' },
               { label: 'Dokter', value: '4' },
             ].map((stat, i) => (
-              <div key={stat.label} style={{ flex: 1, padding: '12px 6px', textAlign: 'center', borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
-                <div style={{ fontSize: 18, fontWeight: 900, color: 'white', lineHeight: 1 }}>{stat.value}</div>
-                <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.45)', fontWeight: 600, marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{stat.label}</div>
+              <div key={stat.label} style={{ flex: 1, padding: '12px 6px', textAlign: 'center', borderLeft: i > 0 ? '1px solid rgba(233,30,140,0.08)' : 'none' }}>
+                <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}>{stat.value}</div>
+                <div style={{ fontSize: 9, color: '#9CA3AF', fontWeight: 600, marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -150,11 +151,11 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }}
           style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16, padding: '14px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(233,30,140,0.12)', borderRadius: 16, padding: '14px 16px', boxShadow: '0 4px 16px rgba(233,30,140,0.06)' }}>
             <QRCodeSVG />
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: 12, fontWeight: 800, color: 'white', marginBottom: 4, lineHeight: 1.3 }}>Download<br />OMDC App</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>Booking &<br />pantau antrian</div>
+              <div style={{ fontSize: 12, fontWeight: 800, color: DARK, marginBottom: 4, lineHeight: 1.3 }}>Download<br />OMDC App</div>
+              <div style={{ fontSize: 10, color: '#6B7280', lineHeight: 1.5 }}>Booking &<br />pantau antrian</div>
             </div>
           </div>
         </motion.div>
