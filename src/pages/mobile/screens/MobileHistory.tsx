@@ -5,6 +5,7 @@ import {
   Stethoscope, Calendar, Star,
 } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
 
 interface MobileHistoryProps {
@@ -131,7 +132,7 @@ export function MobileHistory({ state, setState }: MobileHistoryProps) {
         {TABS.map(tab => (
           <button
             key={tab.key}
-            onClick={() => setFilter(tab.key)}
+            onClick={() => { haptic('selection'); setFilter(tab.key); }}
             className="flex-1 py-2 rounded-xl text-xs font-bold transition-all"
             style={
               filter === tab.key
@@ -187,7 +188,7 @@ export function MobileHistory({ state, setState }: MobileHistoryProps) {
                       style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
                     >
                       <button
-                        onClick={() => setExpanded(isOpen ? null : item.id)}
+                        onClick={() => { haptic('light'); setExpanded(isOpen ? null : item.id); }}
                         className="w-full text-left px-4 py-4 transition-all active:bg-gray-50"
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -263,6 +264,7 @@ export function MobileHistory({ state, setState }: MobileHistoryProps) {
 
                               {item.status === 'done' && (
                                 <button
+                                  onClick={() => { haptic('light'); setState({ screen: 'booking' }); }}
                                   className="mt-3 w-full py-2.5 rounded-xl text-xs font-bold transition-all active:scale-[0.97]"
                                   style={{ background: `${PINK}15`, color: PINK }}
                                 >

@@ -81,6 +81,50 @@ function WhatsAppButton() {
   );
 }
 
+function ReadingProgressBar() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      setProgress(Math.min(100, Math.max(0, pct)));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 3,
+        zIndex: 60,
+        pointerEvents: 'none',
+      }}
+      aria-hidden
+    >
+      <div
+        style={{
+          height: '100%',
+          width: `${progress}%`,
+          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+          transition: 'width 0.1s linear',
+          willChange: 'width',
+        }}
+      />
+    </div>
+  );
+}
+
 export function WebsiteLayout() {
   const location = useLocation();
 
@@ -90,6 +134,7 @@ export function WebsiteLayout() {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA' }}>
+      <ReadingProgressBar />
       <Navbar />
       <main className="flex-1 pt-16 lg:pt-18">
         <div key={location.pathname}>

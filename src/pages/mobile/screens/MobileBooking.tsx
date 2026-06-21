@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { Clock, ChevronRight } from 'lucide-react';
 import { SERVICES } from '../../../data/mockData';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState, Service } from '../../../types';
 
 interface MobileBookingProps {
@@ -23,6 +24,7 @@ const SERVICE_EMOJIS: Record<string, string> = {
 
 export function MobileBooking({ state, setState }: MobileBookingProps) {
   const handleSelect = (service: Service) => {
+    haptic('selection');
     setState({ screen: 'booking-doctor', selectedService: service });
   };
 

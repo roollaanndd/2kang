@@ -3,6 +3,7 @@ import type { ComponentType } from 'react';
 import { motion } from 'motion/react';
 import { Bell, Calendar, Ticket, Tag, X } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
 
 interface MobileNotificationsProps {
@@ -95,14 +96,17 @@ export function MobileNotifications({ state, setState }: MobileNotificationsProp
   const back = () => setState({ screen: 'home' });
 
   const dismiss = (id: string) => {
+    haptic('light');
     setNotifs(n => n.filter(x => x.id !== id));
   };
 
   const markRead = (id: string) => {
+    haptic('selection');
     setNotifs(n => n.map(x => x.id === id ? { ...x, read: true } : x));
   };
 
   const markAllRead = () => {
+    haptic('success');
     setNotifs(n => n.map(x => ({ ...x, read: true })));
   };
 

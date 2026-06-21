@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Star, Calendar, Clock, Award, ChevronRight, Search, Filter } from 'lucide-react';
 import { DOCTORS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { CountUp } from '../../components/ui/CountUp';
 
 function DoctorAvatar({ name, size = 96 }: { name: string; size?: number }) {
   const letter = name.replace('drg. ', '')[0];
@@ -91,7 +92,7 @@ export function Doctors() {
                   className="px-6 py-3 rounded-2xl text-center"
                   style={{ background: 'white', border: '1px solid rgba(233,30,140,0.15)', boxShadow: '0 2px 12px rgba(233,30,140,0.08)' }}
                 >
-                  <div className="text-2xl font-black" style={{ color: '#E91E8C' }}>{s.val}</div>
+                  <div className="text-2xl font-black" style={{ color: '#E91E8C' }}><CountUp value={s.val} /></div>
                   <div className="text-sm" style={{ color: '#6B7280' }}>{s.label}</div>
                 </div>
               ))}

@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Award, Shield, Heart, Users, Star, CheckCircle, ArrowRight, Calendar } from 'lucide-react';
 import { DOCTORS, CLINIC_NAME, CLINIC_ADDRESS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { CountUp } from '../../components/ui/CountUp';
 
 function DoctorAvatar({ name, size = 72 }: { name: string; size?: number }) {
   const letter = name.replace('drg. ', '')[0];
@@ -110,7 +111,7 @@ export function About() {
                 className="text-center p-5 rounded-2xl"
                 style={{ background: '#FFF5F9' }}
               >
-                <div className="text-3xl font-black" style={{ color: '#E91E8C' }}>{stat.value}</div>
+                <div className="text-3xl font-black" style={{ color: '#E91E8C' }}><CountUp value={stat.value} /></div>
                 <div className="text-xs mt-1 text-gray-500 font-medium">{stat.label}</div>
               </motion.div>
             ))}
@@ -189,7 +190,7 @@ export function About() {
                         className="rounded-xl p-3 text-center"
                         style={{ background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.12)' }}
                       >
-                        <div className="text-xl font-black" style={{ color: '#E91E8C' }}>{s.val}</div>
+                        <div className="text-xl font-black" style={{ color: '#E91E8C' }}><CountUp value={s.val} /></div>
                         <div className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{s.label}</div>
                       </div>
                     ))}
@@ -207,7 +208,7 @@ export function About() {
                   {[1,2,3,4,5].map((s) => (
                     <Star key={s} size={16} fill="#F59E0B" style={{ color: '#F59E0B' }} />
                   ))}
-                  <span className="text-base font-black ml-1" style={{ color: '#1A1A2E' }}>4.9</span>
+                  <span className="text-base font-black ml-1" style={{ color: '#1A1A2E' }}><CountUp value="4.9" /></span>
                 </div>
                 <p className="text-xs text-gray-400 mt-0.5">Berdasarkan 450+ ulasan</p>
               </div>

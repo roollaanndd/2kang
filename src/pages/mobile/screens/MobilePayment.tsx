@@ -3,6 +3,7 @@ import type { ComponentType } from 'react';
 import { motion } from 'motion/react';
 import { Banknote, CreditCard, Wallet, QrCode, CheckCircle } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState, PaymentMethod } from '../../../types';
 
 interface MobilePaymentProps {
@@ -25,6 +26,7 @@ export function MobilePayment({ state, setState }: MobilePaymentProps) {
 
   const handlePay = () => {
     if (!selected) return;
+    haptic('success');
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -89,7 +91,7 @@ export function MobilePayment({ state, setState }: MobilePaymentProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07 }}
-                onClick={() => setSelected(id)}
+                onClick={() => { haptic('selection'); setSelected(id); }}
                 className="flex items-center gap-4 p-4 rounded-2xl text-left transition-all active:scale-[0.98]"
                 style={{
                   background: active ? '#FFF5F9' : 'white',

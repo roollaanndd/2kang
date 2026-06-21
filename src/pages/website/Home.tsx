@@ -9,6 +9,9 @@ import {
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSContent';
+import { CountUp } from '../../components/ui/CountUp';
+import { SmoothImage } from '../../components/ui/SmoothImage';
+import { Skeleton } from '../../components/ui/Skeleton';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -136,6 +139,8 @@ function AnimatedHeroBg() {
 // ─── BEFORE/AFTER SLIDER ─────────────────────────────────────────────────────
 function BeforeAfterSlider({ before, after, title }: { before: string; after: string; title: string }) {
   const [pos, setPos] = useState(50);
+  const [beforeLoaded, setBeforeLoaded] = useState(false);
+  const [afterLoaded, setAfterLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
 
@@ -157,9 +162,10 @@ function BeforeAfterSlider({ before, after, title }: { before: string; after: st
       onTouchEnd={() => { dragging.current = false; }}
       style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', cursor: 'ew-resize', userSelect: 'none', aspectRatio: '4/3' }}
     >
-      <img src={before} alt="Sebelum" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      {(!beforeLoaded || !afterLoaded) && <Skeleton width="100%" height="100%" radius={0} style={{ position: 'absolute', inset: 0 }} />}
+      <img src={before} alt="Sebelum" onLoad={() => setBeforeLoaded(true)} onError={() => setBeforeLoaded(true)} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: beforeLoaded ? 1 : 0, transition: 'opacity 0.6s ease' }} />
       <div style={{ position: 'absolute', inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <img src={after} alt="Sesudah" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <img src={after} alt="Sesudah" onLoad={() => setAfterLoaded(true)} onError={() => setAfterLoaded(true)} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: afterLoaded ? 1 : 0, transition: 'opacity 0.6s ease' }} />
       </div>
       <div style={{ position: 'absolute', top: 0, bottom: 0, left: `${pos}%`, transform: 'translateX(-50%)', width: 3, background: 'white', boxShadow: '0 0 12px rgba(0,0,0,0.3)' }}>
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 40, height: 40, borderRadius: '50%', background: 'white', boxShadow: '0 4px 16px rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
@@ -267,7 +273,7 @@ function HeroSection() {
               {stats.map((s, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: isMobile ? '11px 10px' : '12px 20px', background: 'white', borderRadius: 14, border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: DARK }}>{s.value}</span>
+                  <span style={{ fontSize: isMobile ? 19 : 22, fontWeight: 900, color: DARK }}><CountUp value={s.value} /></span>
                   <span style={{ fontSize: isMobile ? 10 : 11, color: '#9CA3AF', fontWeight: 500, marginTop: 2, whiteSpace: 'nowrap' }}>{s.label}</span>
                 </motion.div>
               ))}
@@ -325,7 +331,7 @@ function HeroSection() {
                   >
                     <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>⭐</div>
                     <div>
-                      <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}>4.9</div>
+                      <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="4.9" /></div>
                       <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Rating Pasien</div>
                     </div>
                   </motion.div>
@@ -340,7 +346,7 @@ function HeroSection() {
                   >
                     <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${AQUA}, #38BDF8)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>😊</div>
                     <div>
-                      <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}>10K+</div>
+                      <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="10K+" /></div>
                       <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Pasien Puas</div>
                     </div>
                   </motion.div>
@@ -486,7 +492,7 @@ function DoctorsSection() {
                 <div style={{ position: 'relative', marginBottom: 14 }}>
                   <div style={{ width: 72, height: 72, borderRadius: 18, overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {doc.photo
-                      ? <img src={doc.photo} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ? <SmoothImage src={doc.photo} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       : <span style={{ fontSize: 28, fontWeight: 900, color: 'white' }}>{initials}</span>
                     }
                   </div>
@@ -586,7 +592,7 @@ function TestimonialsSection() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 40, height: 40, borderRadius: '50%', overflow: 'hidden', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   {item.avatar
-                    ? <img src={item.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ? <SmoothImage src={item.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     : <span style={{ fontSize: 16, fontWeight: 900, color: 'white' }}>{item.name[0]}</span>
                   }
                 </div>
@@ -689,7 +695,7 @@ function ArticlesSection() {
               whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(0,0,0,0.08)' }}
               style={{ background: 'white', borderRadius: 20, overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)', transition: 'all 0.3s' }}>
               {item.thumbnail ? (
-                <img src={item.thumbnail} alt={item.title} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
+                <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: 180 }} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
               ) : (
                 <div style={{ width: '100%', height: 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
               )}

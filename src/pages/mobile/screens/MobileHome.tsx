@@ -1,10 +1,12 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Bell, ChevronRight, Star, Clock, Calendar, Phone,
 } from 'lucide-react';
 import { DOCTORS, SERVICES, PROMOTIONS, SAMPLE_APPOINTMENTS } from '../../../data/mockData';
+import { Skeleton, SkeletonText, SkeletonCircle } from '../../../components/ui/Skeleton';
+import { haptic } from '../../../lib/haptics';
 import type { MobileState, Service } from '../../../types/index';
 
 interface MobileHomeProps {
@@ -267,7 +269,15 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
   const firstName = state.user?.name?.split(' ')[0] ?? 'Pengguna';
   const appointment = SAMPLE_APPOINTMENTS[0];
 
+  // Skeleton loading on mount (~800ms) to feel like fetching real data.
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
+
   const handleServiceClick = (svc: Service) => {
+    haptic('selection');
     setState({ screen: 'booking', selectedService: svc });
   };
 
@@ -332,7 +342,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           <div style={{ display: 'flex', gap: 10 }}>
             <motion.button
               whileTap={{ scale: 0.88 }}
-              onClick={() => setState({ screen: 'notifications' })}
+              onClick={() => { haptic('light'); setState({ screen: 'notifications' }); }}
               style={{
                 position: 'relative',
                 width: 44,
@@ -361,7 +371,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.88 }}
-              onClick={() => setState({ screen: 'profile' })}
+              onClick={() => { haptic('light'); setState({ screen: 'profile' }); }}
               style={{
                 width: 44,
                 height: 44,
@@ -512,7 +522,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 + i * 0.06 }}
-              onClick={() => setState({ screen: a.screen })}
+              onClick={() => { haptic('light'); setState({ screen: a.screen }); }}
               style={{
                 flex: 1,
                 display: 'flex',
@@ -561,6 +571,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           background: '#F8F9FB',
         }}
       >
+        {loading ? (
+          <HomeContentSkeleton />
+        ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '12px 16px 24px' }}>
 
           {/* ── Services Grid ── */}
@@ -568,7 +581,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Layanan Kami</h2>
               <button
-                onClick={() => setState({ screen: 'booking' })}
+                onClick={() => { haptic('light'); setState({ screen: 'booking' }); }}
                 style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, color: PINK, background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
                 Lihat semua <ChevronRight size={13} />
@@ -620,7 +633,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Dokter Rekomendasi</h2>
               <button
-                onClick={() => setState({ screen: 'doctors' })}
+                onClick={() => { haptic('light'); setState({ screen: 'doctors' }); }}
                 style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, color: PINK, background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
                 Semua <ChevronRight size={13} />
@@ -636,7 +649,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.07 }}
                     whileTap={{ scale: 0.96 }}
-                    onClick={() => setState({ screen: 'booking-doctor', selectedDoctor: doc })}
+                    onClick={() => { haptic('selection'); setState({ screen: 'booking-doctor', selectedDoctor: doc }); }}
                     style={{
                       flexShrink: 0,
                       width: 176,
@@ -710,7 +723,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <h2 style={{ fontWeight: 900, fontSize: 15, color: '#111827' }}>Promo Terkini</h2>
               <button
-                onClick={() => setState({ screen: 'promos' })}
+                onClick={() => { haptic('light'); setState({ screen: 'promos' }); }}
                 style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, color: PINK, background: 'transparent', border: 'none', cursor: 'pointer' }}
               >
                 Semua <ChevronRight size={13} />
@@ -764,7 +777,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     </p>
                     <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 6 }}>Berlaku s/d {promo.validUntil}</p>
                     <button
-                      onClick={() => setState({ screen: 'booking' })}
+                      onClick={() => { haptic('light'); setState({ screen: 'booking' }); }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -820,7 +833,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               <p style={{ fontSize: 12, color: '#92400E', marginTop: 2 }}>Hubungi kami kapan saja untuk keadaan darurat</p>
             </div>
             <button
-              onClick={() => setState({ screen: 'notifications' })}
+              onClick={() => { haptic('medium'); setState({ screen: 'notifications' }); }}
               style={{
                 width: 40,
                 height: 40,
@@ -839,7 +852,68 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
           </motion.div>
 
         </div>
+        )}
       </div>
     </motion.div>
+  );
+}
+
+// ── Skeleton placeholder for the home scroll content ──────────────
+function HomeContentSkeleton() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: '12px 16px 24px' }}>
+      {/* Services grid skeleton */}
+      <section>
+        <SkeletonText width={120} height={15} style={{ marginBottom: 14 }} />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <Skeleton width={60} height={60} radius={18} />
+              <SkeletonText width={44} height={9} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Doctors row skeleton */}
+      <section>
+        <SkeletonText width={150} height={15} style={{ marginBottom: 14 }} />
+        <div style={{ display: 'flex', gap: 12, overflow: 'hidden' }}>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} style={{ flexShrink: 0, width: 176, borderRadius: 22, padding: 14, background: 'white', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
+              <Skeleton width={56} height={56} radius={20} style={{ marginBottom: 10 }} />
+              <SkeletonText width="80%" height={12} style={{ marginBottom: 6 }} />
+              <SkeletonText width="60%" height={10} style={{ marginBottom: 10 }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <SkeletonText width={36} height={10} />
+                <SkeletonText width={48} height={14} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Promo row skeleton */}
+      <section>
+        <SkeletonText width={130} height={15} style={{ marginBottom: 14 }} />
+        <div style={{ display: 'flex', gap: 12, overflow: 'hidden' }}>
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} style={{ flexShrink: 0 }}>
+              <Skeleton width={240} height={150} radius={20} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Emergency card skeleton */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: 16, borderRadius: 20, background: 'white' }}>
+        <Skeleton width={48} height={48} radius={14} />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <SkeletonText width="60%" height={14} />
+          <SkeletonText width="80%" height={11} />
+        </div>
+        <SkeletonCircle size={40} />
+      </div>
+    </div>
   );
 }
