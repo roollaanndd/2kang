@@ -86,6 +86,7 @@ export default function App() {
             <Route path="/kiosk/*" element={<KioskLayout />} />
 
             {/* Mobile PWA */}
+            <Route path="/mobile/*" element={<MobileLayout />} />
             <Route path="/app/*" element={<MobileLayout />} />
 
             {/* Admin CMS */}

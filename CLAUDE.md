@@ -6,7 +6,7 @@
 
 | Platform | Route | Description |
 |---|---|---|
-| **Mobile App** | `/mobile` | Patient-facing mobile PWA |
+| **Mobile App** | `/mobile` or `/app` | Patient-facing mobile PWA |
 | **eKiosk** | `/kiosk` | Touchscreen check-in terminal (1024×768 landscape) |
 | **Website** | `/` | Public marketing site + booking |
 | **Admin** | `/admin` | Internal clinic dashboard |
