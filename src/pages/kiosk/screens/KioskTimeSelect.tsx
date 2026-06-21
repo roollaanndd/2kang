@@ -2,11 +2,13 @@ import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { TIME_SLOTS } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
+import { kioskSound } from '../../../lib/kioskSound';
 
 export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
 
   const handleSelect = (time: string) => {
+    kioskSound('select');
     setState(prev => ({ ...prev, selectedTime: time }));
     goTo('confirmation');
   };

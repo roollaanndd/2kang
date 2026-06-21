@@ -26,6 +26,7 @@ const MENU_GROUPS = [
     items: [
       { id: 'profile-data',  icon: User,          label: 'Data Diri',          sublabel: 'Informasi profil Anda',          screen: undefined     as undefined },
       { id: 'history',       icon: ClipboardList,  label: 'Riwayat Kunjungan', sublabel: 'Rekam medis & kunjungan',         screen: 'history'     as const    },
+      { id: 'loyalty',       icon: Gift,           label: 'Poin & Reward',      sublabel: 'Tukar poin jadi hadiah',          screen: 'loyalty'     as const    },
       { id: 'family',        icon: Users,          label: 'Profil Keluarga',    sublabel: 'Kelola anggota keluarga',         screen: 'family'      as const    },
     ],
   },

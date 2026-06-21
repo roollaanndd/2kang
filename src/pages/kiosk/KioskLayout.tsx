@@ -19,6 +19,26 @@ import { KioskNewPatient } from './screens/KioskNewPatient';
 import { KioskInfoPromo } from './screens/KioskInfoPromo';
 import { useCMS } from '../../context/CMSContext';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { kioskSound } from '../../lib/kioskSound';
+
+/* Accessibility-mode persistence */
+const A11Y_STORAGE_KEY = 'omdc:kiosk:a11y';
+
+function readA11yPref(): boolean {
+  try {
+    return localStorage.getItem(A11Y_STORAGE_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function writeA11yPref(on: boolean): void {
+  try {
+    localStorage.setItem(A11Y_STORAGE_KEY, on ? '1' : '0');
+  } catch {
+    /* no-op — private mode / storage unavailable */
+  }
+}
 
 /* Design canvas — all kiosk screens are authored at this resolution */
 const DESIGN_W = 1280;
@@ -155,6 +175,7 @@ export default function KioskLayout() {
   const [state, setState] = useState<KioskState>(INITIAL_STATE);
   const [scale, setScale] = useState(1);
   const [idle, setIdle] = useState(false);
+  const [a11y, setA11y] = useState<boolean>(readA11yPref);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeoutSec = cms.kioskSettings?.idleTimeoutSeconds ?? 30;
   const primary = cms.appearance?.primaryColor ?? '#E91E8C';
@@ -192,6 +213,15 @@ export default function KioskLayout() {
     resetTimer();
   }, [resetTimer]);
 
+  const toggleA11y = useCallback(() => {
+    kioskSound('tap');
+    setA11y(prev => {
+      const next = !prev;
+      writeA11yPref(next);
+      return next;
+    });
+  }, []);
+
   const goTo = (step: KioskStep) => {
     setState(prev => ({ ...prev, step }));
   };
@@ -219,20 +249,35 @@ export default function KioskLayout() {
         background: 'linear-gradient(135deg, #F4F6FB 0%, #FDF2F8 50%, #ECFEFF 100%)',
       }}
     >
+      {/* Accessibility-mode focus affordance — scoped to the canvas, purely presentational */}
+      {a11y && (
+        <style>{`
+          .kiosk-a11y :focus { outline: 4px solid #06B6D4 !important; outline-offset: 2px !important; }
+          .kiosk-a11y :focus-visible { outline: 4px solid #06B6D4 !important; outline-offset: 2px !important; }
+          .kiosk-a11y button, .kiosk-a11y [role="button"] { outline-offset: 2px; }
+          .kiosk-a11y button:focus, .kiosk-a11y [role="button"]:focus { box-shadow: 0 0 0 4px rgba(6,182,212,0.45) !important; }
+        `}</style>
+      )}
+
       {/* Inner canvas — always DESIGN_W × DESIGN_H, scaled to fit viewport */}
       <div
+        className={a11y ? 'kiosk-a11y' : undefined}
         style={{
           width: DESIGN_W,
           height: DESIGN_H,
           /* Scale around center so it stays centred in the outer shell */
           transform: `scale(${scale})`,
           transformOrigin: 'center center',
+          /* High-contrast / high-readability treatment when accessibility mode is ON.
+             Purely presentational — does not affect layout or the scale math. */
+          filter: a11y ? 'contrast(1.18) saturate(1.12)' : undefined,
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
           fontFamily: "'Inter', 'Segoe UI', system-ui, sans-serif",
           backgroundColor: '#F9FAFB',
           flexShrink: 0,
+          position: 'relative',
         }}
       >
         {showHeader && <KioskHeader />}
@@ -242,6 +287,73 @@ export default function KioskLayout() {
             {renderScreen(state.step, { state, setState, goTo, goBack })}
           </AnimatePresence>
         </div>
+
+        {/* Accessibility-mode active indicator */}
+        {a11y && !idle && (
+          <div style={{
+            position: 'absolute',
+            top: 10,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 120,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '7px 16px',
+            borderRadius: 999,
+            background: 'linear-gradient(135deg, #06B6D4, #0EA5C4)',
+            color: '#FFFFFF',
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: '0.08em',
+            boxShadow: '0 6px 20px rgba(6,182,212,0.35)',
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="4" r="2" fill="#FFFFFF" />
+              <path d="M4 8h16M12 8v5M12 13l-3 7M12 13l3 7" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            MODE AKSESIBILITAS AKTIF
+          </div>
+        )}
+
+        {/* Accessibility toggle — bottom-left, on-brand, light theme */}
+        {!idle && (
+          <button
+            type="button"
+            onClick={toggleA11y}
+            aria-pressed={a11y}
+            aria-label={a11y ? 'Matikan Mode Aksesibilitas' : 'Aktifkan Mode Aksesibilitas'}
+            title={a11y ? 'Matikan Mode Aksesibilitas' : 'Aktifkan Mode Aksesibilitas'}
+            style={{
+              position: 'absolute',
+              bottom: 14,
+              left: 16,
+              zIndex: 120,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '10px 16px',
+              borderRadius: 999,
+              border: a11y ? '2px solid #06B6D4' : '1.5px solid rgba(233,30,140,0.25)',
+              background: a11y ? '#ECFEFF' : '#FFFFFF',
+              color: a11y ? '#0E7490' : '#E91E8C',
+              fontSize: 14,
+              fontWeight: 800,
+              cursor: 'pointer',
+              boxShadow: a11y ? '0 6px 20px rgba(6,182,212,0.25)' : '0 4px 14px rgba(233,30,140,0.15)',
+              userSelect: 'none',
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="4" r="2.2" fill="currentColor" />
+              <path d="M4 8h16M12 8v5.5M12 13.5l-3.2 7M12 13.5l3.2 7"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            Aksesibilitas
+          </button>
+        )}
 
         {/* Version badge */}
         {!idle && (

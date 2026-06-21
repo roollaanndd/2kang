@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { KioskStep } from '../../../types';
 import { AnimatedDentalBg } from '../../../components/ui/AnimatedDentalBg';
+import { kioskSound } from '../../../lib/kioskSound';
 
 /* ─── Custom SVG Icons ──────────────────────────────────────────────── */
 
@@ -135,6 +136,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
   const t = state.language === 'en';
 
   const handleSelect = (card: MenuCard) => {
+    kioskSound('select');
     if (card.queueType) {
       setState(prev => ({ ...prev, queueType: card.queueType }));
     }

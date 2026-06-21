@@ -3,6 +3,7 @@ import { ChevronLeft, Star, Clock } from 'lucide-react';
 import { DOCTORS } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { Doctor } from '../../../types';
+import { kioskSound } from '../../../lib/kioskSound';
 
 const AVATAR_COLORS = ['#E91E8C', '#4FC3F7', '#F59E0B', '#10B981'];
 
@@ -10,7 +11,11 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
   const t = state.language === 'en';
 
   const handleSelect = (doctor: Doctor) => {
-    if (!doctor.available) return;
+    if (!doctor.available) {
+      kioskSound('error');
+      return;
+    }
+    kioskSound('select');
     setState(prev => ({ ...prev, selectedDoctor: doctor }));
     goTo('date-select');
   };

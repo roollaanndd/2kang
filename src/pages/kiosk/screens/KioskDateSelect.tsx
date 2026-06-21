@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
+import { kioskSound } from '../../../lib/kioskSound';
 
 const DAY_ABBR_ID = ['Min', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'];
 const MONTH_NAMES_ID = [
@@ -49,6 +50,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
 
   const handleSelect = (day: number) => {
     if (isPast(day)) return;
+    kioskSound('select');
     setState(prev => ({ ...prev, selectedDate: formatDateStr(day) }));
     goTo('time-select');
   };
