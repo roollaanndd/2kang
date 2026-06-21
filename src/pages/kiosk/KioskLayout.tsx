@@ -18,6 +18,7 @@ import { KioskCheckin } from './screens/KioskCheckin';
 import { KioskNewPatient } from './screens/KioskNewPatient';
 import { KioskInfoPromo } from './screens/KioskInfoPromo';
 import { useCMS } from '../../context/CMSContext';
+import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 
 /* Design canvas — all kiosk screens are authored at this resolution */
 const DESIGN_W = 1280;
@@ -97,65 +98,52 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
       onTouchStart={onWake}
       style={{
         position: 'absolute', inset: 0, zIndex: 9000,
-        background: `linear-gradient(145deg, #0D0D1A 0%, #1a0a2e 40%, ${primaryColor}22 100%)`,
+        background: '#FFFFFF',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         cursor: 'pointer', userSelect: 'none',
         overflow: 'hidden',
       }}
     >
-      {/* Animated background blobs */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.12, 0.22, 0.12] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute', width: 600, height: 600, borderRadius: '50%',
-          background: primaryColor, top: -200, right: -200,
-          filter: 'blur(80px)',
-        }}
-      />
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.08, 0.18, 0.08] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        style={{
-          position: 'absolute', width: 400, height: 400, borderRadius: '50%',
-          background: '#4FC3F7', bottom: -150, left: -100,
-          filter: 'blur(60px)',
-        }}
-      />
+      {/* Signature top gradient strip */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${primaryColor}, #FF6BB5, #06B6D4)`, zIndex: 20 }} />
+
+      {/* Animated premium dental-geometry background — light, no blur */}
+      <AnimatedDentalBg />
 
       {/* Logo / tooth */}
       <motion.div
         animate={{ y: [0, -12, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ fontSize: 96, marginBottom: 24 }}
+        style={{ fontSize: 96, marginBottom: 24, position: 'relative', zIndex: 10 }}
       >
         🦷
       </motion.div>
 
       {/* Clock */}
-      <div style={{ fontSize: 88, fontWeight: 900, color: 'white', letterSpacing: '-2px', lineHeight: 1, marginBottom: 8 }}>
+      <div style={{ fontSize: 96, fontWeight: 900, color: '#0D1421', letterSpacing: '-3px', lineHeight: 1, marginBottom: 10, fontVariantNumeric: 'tabular-nums', position: 'relative', zIndex: 10 }}>
         {timeStr}
       </div>
-      <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.6)', marginBottom: 48, fontWeight: 500 }}>
+      <div style={{ fontSize: 22, color: '#9CA3AF', marginBottom: 48, fontWeight: 500, position: 'relative', zIndex: 10 }}>
         {dateStr}
       </div>
 
       {/* Tap to start */}
       <motion.div
-        animate={{ opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ y: [0, -5, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
         style={{
           background: `linear-gradient(135deg, ${primaryColor}, #FF6BB5)`,
-          borderRadius: 50, padding: '18px 56px',
-          fontSize: 24, fontWeight: 700, color: 'white',
-          boxShadow: `0 8px 40px ${primaryColor}60`,
+          borderRadius: 60, padding: '20px 60px',
+          fontSize: 24, fontWeight: 800, color: 'white',
+          boxShadow: `0 16px 50px ${primaryColor}40`,
+          position: 'relative', zIndex: 10,
         }}
       >
         ✋ Sentuh Layar untuk Memulai
       </motion.div>
 
       {/* Version */}
-      <div style={{ position: 'absolute', bottom: 16, right: 20, fontSize: 12, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>
+      <div style={{ position: 'absolute', bottom: 16, right: 20, fontSize: 12, color: 'rgba(0,0,0,0.25)', fontWeight: 600, zIndex: 10 }}>
         e-Kiosk v{APP_VERSION}
       </div>
     </motion.div>
@@ -228,7 +216,7 @@ export default function KioskLayout() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#0D0D1A',
+        background: 'linear-gradient(135deg, #F4F6FB 0%, #FDF2F8 50%, #ECFEFF 100%)',
       }}
     >
       {/* Inner canvas — always DESIGN_W × DESIGN_H, scaled to fit viewport */}

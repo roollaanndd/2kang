@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
 import { useCMS } from '../../context/CMSContext';
+import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 
 interface FormData {
   name: string;
@@ -89,8 +90,7 @@ export function Contact() {
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
         <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <div style={{ position: 'absolute', top: -120, right: -80, width: 560, height: 560, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.06) 0%, transparent 65%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -80, left: -60, width: 440, height: 440, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <AnimatedDentalBg />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Kami Siap Membantu</p>
