@@ -44,7 +44,7 @@ export function MobileRegister({ setState }: MobileRegisterProps) {
         dob: form.dob || MOCK_USER.dob,
         gender: form.gender,
       };
-      setState({ screen: 'home', isLoggedIn: true, user });
+      setState({ screen: 'otp', user });
     }, 800);
   };
 
