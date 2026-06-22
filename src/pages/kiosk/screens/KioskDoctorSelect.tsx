@@ -4,6 +4,7 @@ import { DOCTORS } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { Doctor } from '../../../types';
 import { kioskSound } from '../../../lib/kioskSound';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const PINK = '#E91E8C';
 const DARK = '#0D1421';
@@ -11,6 +12,7 @@ const AVATAR_COLORS = ['#E91E8C', '#4FC3F7', '#F59E0B', '#10B981'];
 
 export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
+  const portrait = useIsPortrait();
 
   const handleSelect = (doctor: Doctor) => {
     if (!doctor.available) {
@@ -38,7 +40,7 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
     >
       {/* Header */}
       <div style={{
-        padding: '24px 60px 18px',
+        padding: portrait ? '24px 32px 18px' : '24px 60px 18px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
@@ -64,7 +66,7 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
       {/* Doctors list */}
       <div style={{
         flex: 1,
-        padding: '28px 60px',
+        padding: portrait ? '24px 32px' : '28px 60px',
         display: 'flex',
         flexDirection: 'column',
         gap: '16px',

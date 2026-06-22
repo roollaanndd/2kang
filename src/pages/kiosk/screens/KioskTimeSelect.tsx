@@ -3,9 +3,11 @@ import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
 import { TIME_SLOTS } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import { kioskSound } from '../../../lib/kioskSound';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
+  const portrait = useIsPortrait();
 
   const handleSelect = (time: string) => {
     kioskSound('select');
@@ -29,7 +31,7 @@ export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenPr
     >
       {/* Header */}
       <div style={{
-        padding: '28px 60px 20px',
+        padding: portrait ? '28px 32px 20px' : '28px 60px 20px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
@@ -73,7 +75,7 @@ export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenPr
         {/* Grid of time slots */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: portrait ? 'repeat(3, 1fr)' : 'repeat(4, 1fr)',
           gap: '16px',
           width: '100%',
           maxWidth: '760px',
