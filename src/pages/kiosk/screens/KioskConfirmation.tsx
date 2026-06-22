@@ -4,6 +4,7 @@ import { ChevronLeft, User, Stethoscope, Calendar, Clock, MapPin, Wrench } from 
 import { CLINIC_NAME } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 interface SummaryRowProps {
   icon: ReactNode;
@@ -36,6 +37,7 @@ function SummaryRow({ icon, label, value, highlight }: SummaryRowProps) {
 
 export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
+  const portrait = useIsPortrait();
 
   const handleConfirm = () => {
     kioskSound('success');
@@ -63,10 +65,10 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
       </div>
 
       {/* Content — flex:1 with minHeight:0 so it truly shrinks */}
-      <div style={{ flex: 1, minHeight: 0, padding: '14px 56px', display: 'flex', alignItems: 'stretch', gap: 20, overflow: 'hidden' }}>
+      <div style={{ flex: 1, minHeight: 0, padding: portrait ? '14px 32px' : '14px 56px', display: 'flex', flexDirection: portrait ? 'column' : 'row', alignItems: 'stretch', gap: portrait ? 14 : 20, overflow: portrait ? 'auto' : 'hidden' }}>
 
         {/* Left: Summary card */}
-        <div style={{ flex: 1, backgroundColor: '#ffffff', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: portrait ? '0 0 auto' : 1, backgroundColor: '#ffffff', borderRadius: 18, boxShadow: '0 4px 24px rgba(0,0,0,0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           {/* Pink gradient header */}
           <div style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', flexShrink: 0 }}>
             <div style={{ fontSize: 16, fontWeight: 800, color: '#ffffff' }}>
@@ -74,7 +76,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
             </div>
           </div>
           {/* Rows — scrollable fallback */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 12px' }}>
+          <div style={{ flex: 1, overflowY: portrait ? 'visible' : 'auto', padding: '0 24px 12px' }}>
             <SummaryRow icon={<User size={16} />} label={t ? 'Patient Name' : 'Nama Pasien'} value={state.patientName || (t ? 'New Patient' : 'Pasien Baru')} />
             <SummaryRow icon={<Wrench size={16} />} label={t ? 'Service' : 'Layanan'} value={state.selectedService ? (t ? state.selectedService.nameEn : state.selectedService.name) : '-'} highlight />
             <SummaryRow icon={<Stethoscope size={16} />} label={t ? 'Doctor' : 'Dokter'} value={state.selectedDoctor?.name || '-'} />
@@ -84,8 +86,8 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
           </div>
         </div>
 
-        {/* Right: Info boxes */}
-        <div style={{ width: 260, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {/* Right: Info boxes (stacks below summary in portrait) */}
+        <div style={{ width: portrait ? '100%' : 260, flexShrink: 0, display: 'flex', flexDirection: portrait ? 'row' : 'column', flexWrap: portrait ? 'wrap' : 'nowrap', gap: 12 }}>
           <div style={{ backgroundColor: '#EFF6FF', borderRadius: 14, padding: '16px 18px', border: '1px solid #BFDBFE' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#1D4ED8', marginBottom: 6 }}>💡 {t ? 'Reminder' : 'Pengingat'}</div>
             <div style={{ fontSize: 13, color: '#3B82F6', lineHeight: 1.55 }}>

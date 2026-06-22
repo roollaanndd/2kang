@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { KioskStep } from '../../../types';
 import { kioskSound } from '../../../lib/kioskSound';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -138,6 +139,7 @@ const MENU_CARDS: MenuCard[] = [
 
 export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
+  const portrait = useIsPortrait();
 
   const handleSelect = (card: MenuCard) => {
     kioskSound('select');
@@ -157,21 +159,26 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         width: '100%',
         height: '100%',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: portrait ? 'column' : 'row',
         background: '#FAFAFA',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* ── LEFT BRAND SIDEBAR (light) ── */}
+      {/* ── BRAND PANEL — left sidebar in landscape, top band in portrait ── */}
       <div style={{
-        width: 320,
+        width: portrait ? '100%' : 320,
         flexShrink: 0,
         background: 'linear-gradient(165deg, #FFF5F9 0%, #FFE4F1 52%, #ECFEFF 100%)',
-        borderRight: '1px solid rgba(233,30,140,0.10)',
+        borderRight: portrait ? 'none' : '1px solid rgba(233,30,140,0.10)',
+        borderBottom: portrait ? '1px solid rgba(233,30,140,0.10)' : 'none',
         display: 'flex',
-        flexDirection: 'column',
-        padding: '44px 36px',
+        flexDirection: portrait ? 'row' : 'column',
+        alignItems: portrait ? 'center' : 'stretch',
+        justifyContent: portrait ? 'space-between' : 'flex-start',
+        gap: portrait ? 24 : 0,
+        flexWrap: portrait ? 'wrap' : 'nowrap',
+        padding: portrait ? '24px 40px' : '44px 36px',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -207,7 +214,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           initial={{ opacity: 0, y: -14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          style={{ marginBottom: 40 }}
+          style={{ marginBottom: portrait ? 0 : 40 }}
         >
           <div style={{ fontSize: 26, fontWeight: 900, color: DARK, letterSpacing: '-0.5px' }}>
             OMDC{' '}
@@ -235,7 +242,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45, delay: 0.18 + i * 0.08 }}
-            style={{ marginBottom: 28 }}
+            style={{ marginBottom: portrait ? 0 : 28 }}
           >
             <div style={{ fontSize: 30, fontWeight: 900, color: PINK, lineHeight: 1, letterSpacing: '-0.5px' }}>
               {s.num}
@@ -252,9 +259,9 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
           style={{
-            display: 'inline-flex', alignItems: 'center', gap: 7,
+            display: portrait ? 'none' : 'inline-flex', alignItems: 'center', gap: 7,
             background: 'rgba(16,185,129,0.14)', border: '1px solid rgba(16,185,129,0.22)',
-            borderRadius: 20, padding: '6px 14px', marginBottom: 24, alignSelf: 'flex-start',
+            borderRadius: 20, padding: '6px 14px', marginBottom: portrait ? 0 : 24, alignSelf: portrait ? 'center' : 'flex-start',
           }}
         >
           <span style={{
@@ -271,7 +278,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          style={{ marginTop: 'auto' }}
+          style={{ marginTop: portrait ? 0 : 'auto', display: portrait ? 'none' : 'block' }}
         >
           <div style={{ fontSize: 11, color: '#9CA3AF', letterSpacing: '0.06em', lineHeight: 1.6 }}>
             {new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' })}
