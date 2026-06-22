@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Star, ChevronRight, Phone, MessageCircle, ArrowRight,
   Calendar, ChevronLeft, Quote, ChevronDown, ChevronUp,
-  Sparkles, CheckCircle, MapPin, Clock, Shield,
+  CheckCircle, MapPin, Clock, Shield,
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSContent';
@@ -55,19 +55,35 @@ function useIsMobile(breakpoint = 860) {
 // ─── HELPER COMPONENTS ────────────────────────────────────────────────────────
 function Eyebrow({ text, dark }: { text: string; dark?: boolean }) {
   return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', gap: 6,
-      padding: '5px 14px', borderRadius: 100,
-      background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(233,30,140,0.08)',
-      border: dark ? '1px solid rgba(255,255,255,0.22)' : '1px solid rgba(233,30,140,0.18)',
-      color: dark ? 'rgba(255,255,255,0.92)' : PINK,
-      fontSize: 11, fontWeight: 700,
-      letterSpacing: '0.08em', textTransform: 'uppercase',
-      marginBottom: 18,
-    }}>
-      <Sparkles size={11} />
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 9,
+        padding: '7px 16px 7px 12px', borderRadius: 100,
+        background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.85)',
+        border: dark ? '1px solid rgba(255,255,255,0.22)' : '1px solid rgba(233,30,140,0.18)',
+        color: dark ? 'rgba(255,255,255,0.92)' : PINK,
+        fontSize: 11, fontWeight: 800,
+        letterSpacing: '0.12em', textTransform: 'uppercase',
+        marginBottom: 18,
+        boxShadow: dark ? 'none' : '0 4px 16px rgba(233,30,140,0.10)',
+        backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+      }}
+    >
+      {/* Animated pulse dot replaces the static sparkle */}
+      <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }}>
+        <motion.span
+          animate={{ scale: [1, 2.4, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeOut' }}
+          style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: dark ? '#FFFFFF' : ROSE }}
+        />
+        <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: `linear-gradient(135deg, ${PINK}, ${ROSE})` }} />
+      </span>
       {text}
-    </div>
+    </motion.div>
   );
 }
 
