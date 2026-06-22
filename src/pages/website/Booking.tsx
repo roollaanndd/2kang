@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ComponentType } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import {
@@ -7,12 +7,17 @@ import {
 } from 'lucide-react';
 import { DOCTORS, SERVICES, TIME_SLOTS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import {
+  IconCheckup, IconScaling, IconFilling, IconExtraction,
+  IconBraces, IconImplant, IconVeneer, IconBleaching,
+} from '../../components/ui/OmdcIcons';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
 
-const serviceIcons: Record<string, string> = {
-  s1: '🦷', s2: '✨', s3: '🔧', s4: '❌', s5: '😁', s6: '🔩', s7: '💊', s8: '➕',
+const SERVICE_ICON_CMPS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
+  s1: IconCheckup, s2: IconScaling, s3: IconFilling, s4: IconExtraction,
+  s5: IconBraces, s6: IconImplant, s7: IconVeneer, s8: IconBleaching,
 };
 
 function DoctorAvatar({ name, size = 56 }: { name: string; size?: number }) {
@@ -215,7 +220,9 @@ export function Booking() {
               <h2 className="text-2xl font-black mb-2" style={{ color: '#1A1A2E' }}>Pilih Layanan</h2>
               <p className="text-gray-500 mb-6">Pilih jenis layanan yang Anda butuhkan</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {SERVICES.map((service) => (
+                {SERVICES.map((service) => {
+                  const SvcIcon = SERVICE_ICON_CMPS[service.id];
+                  return (
                   <button
                     key={service.id}
                     onClick={() => setBooking({ ...booking, serviceId: service.id })}
@@ -228,10 +235,10 @@ export function Booking() {
                   >
                     <div className="flex items-start gap-4">
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                         style={{ background: service.color + '18' }}
                       >
-                        {serviceIcons[service.id]}
+                        {SvcIcon && <SvcIcon size={24} color={service.color} />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
@@ -258,7 +265,8 @@ export function Booking() {
                       </div>
                     </div>
                   </button>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
           )}
@@ -562,13 +570,15 @@ export function Booking() {
                   {/* Service */}
                   <div className="rounded-2xl p-5" style={{ background: 'white', border: '1px solid #E5E7EB' }}>
                     <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Layanan</p>
-                    {selectedService && (
+                    {selectedService && (() => {
+                      const SvcIcon = SERVICE_ICON_CMPS[selectedService.id];
+                      return (
                       <div className="flex items-center gap-4">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                           style={{ background: selectedService.color + '18' }}
                         >
-                          {serviceIcons[selectedService.id]}
+                          {SvcIcon && <SvcIcon size={24} color={selectedService.color} />}
                         </div>
                         <div>
                           <p className="font-bold" style={{ color: '#1A1A2E' }}>{selectedService.name}</p>
@@ -578,7 +588,8 @@ export function Booking() {
                           </p>
                         </div>
                       </div>
-                    )}
+                      );
+                    })()}
                   </div>
 
                   {/* Doctor */}

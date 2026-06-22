@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { motion } from 'motion/react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCircle, ArrowRight, Instagram, Facebook } from 'lucide-react';
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
 import { useCMS } from '../../context/CMSContext';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
@@ -80,9 +80,9 @@ export function Contact() {
   ];
 
   const socialLinks = [
-    { name: 'Instagram', handle: '@omdcdental', color: '#E4405F', icon: '📸' },
-    { name: 'Facebook', handle: 'OMDC Dental Jakarta', color: '#1877F2', icon: '📘' },
-    { name: 'WhatsApp', handle: '+62 812 9999 8888', color: '#25D366', icon: '💬' },
+    { name: 'Instagram', handle: '@omdcdental', color: '#E4405F', icon: <Instagram size={18} color="#E4405F" /> },
+    { name: 'Facebook', handle: 'OMDC Dental Jakarta', color: '#1877F2', icon: <Facebook size={18} color="#1877F2" /> },
+    { name: 'WhatsApp', handle: '+62 812 9999 8888', color: '#25D366', icon: <MessageCircle size={18} color="#25D366" /> },
   ];
 
   return (
@@ -379,7 +379,7 @@ export function Contact() {
                       className="flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:-translate-x-1"
                       style={{ background: '#FAFAFA' }}
                     >
-                      <span className="text-xl">{s.icon}</span>
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: s.color + '18' }}>{s.icon}</div>
                       <div>
                         <p className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{s.name}</p>
                         <p className="text-xs text-gray-500">{s.handle}</p>

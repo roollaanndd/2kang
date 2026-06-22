@@ -99,8 +99,10 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             )}
             {state.selectedTeeth && state.selectedTeeth.length > 0 && (
               <div className="flex items-start gap-3 py-3">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base" style={{ background: '#FFF5F9' }}>
-                  🦷
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFF5F9' }}>
+                  <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#E91E8C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+                  </svg>
                 </div>
                 <div className="flex-1">
                   <p className="text-[10px] font-medium mb-1" style={{ color: '#9CA3AF' }}>Lokasi Keluhan</p>
