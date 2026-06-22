@@ -388,7 +388,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               letterSpacing: -0.5,
               lineHeight: 1.1,
             }}>
-              {firstName}! 👋
+              {firstName}!
             </h1>
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
@@ -498,11 +498,12 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
-                  fontSize: 24,
                   background: 'rgba(233,30,140,0.08)',
                 }}
               >
-                🦷
+                <svg viewBox="0 0 24 24" width={26} height={26} fill="none" stroke="#E91E8C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+                </svg>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ color: '#111827', fontWeight: 700, fontSize: 14, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -971,11 +972,14 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 24,
               flexShrink: 0,
               background: 'rgba(245,158,11,0.15)',
             }}>
-              🚨
+              <svg viewBox="0 0 24 24" width={24} height={24} fill="none" stroke="#92400E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
             </div>
             <div style={{ flex: 1 }}>
               <p style={{ fontWeight: 900, fontSize: 14, color: '#78350F' }}>Layanan Darurat 24/7</p>

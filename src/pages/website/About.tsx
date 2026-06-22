@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Award, Shield, Heart, Users, Star, CheckCircle, ArrowRight, Calendar } from 'lucide-react';
+import { Award, Shield, Heart, Users, Star, CheckCircle, ArrowRight, Calendar, Stethoscope, Building2, Target, Rocket } from 'lucide-react';
 import { DOCTORS, CLINIC_NAME, CLINIC_ADDRESS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { WaveDivider } from '../../components/ui/WaveDivider';
@@ -34,10 +34,10 @@ const milestones = [
 ];
 
 const certifications = [
-  { name: 'ISO 9001:2015', body: 'Bureau Veritas', year: '2018', icon: '🏅' },
-  { name: 'PDGI Tersertifikasi', body: 'Persatuan Dokter Gigi Indonesia', year: '2010', icon: '⚕️' },
-  { name: 'Kemenkes RI', body: 'Kementerian Kesehatan', year: '2010', icon: '🏥' },
-  { name: 'BPJS Partner', body: 'BPJS Kesehatan', year: '2015', icon: '🤝' },
+  { name: 'ISO 9001:2015', body: 'Bureau Veritas', year: '2018', icon: <Award size={22} color="#E91E8C" /> },
+  { name: 'PDGI Tersertifikasi', body: 'Persatuan Dokter Gigi Indonesia', year: '2010', icon: <Stethoscope size={22} color="#E91E8C" /> },
+  { name: 'Kemenkes RI', body: 'Kementerian Kesehatan', year: '2010', icon: <Building2 size={22} color="#E91E8C" /> },
+  { name: 'BPJS Partner', body: 'BPJS Kesehatan', year: '2015', icon: <Heart size={22} color="#E91E8C" /> },
 ];
 
 const values = [
@@ -178,7 +178,9 @@ export function About() {
                 style={{ background: 'white', border: '1.5px solid rgba(233,30,140,0.12)', boxShadow: '0 8px 48px rgba(233,30,140,0.08)' }}
               >
                 <div className="relative z-10">
-                  <div className="text-6xl mb-4">🏥</div>
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#FFF5F9' }}>
+                    <Building2 size={32} color="#E91E8C" />
+                  </div>
                   <h3 className="text-2xl font-black mb-2" style={{ color: '#111827' }}>{CLINIC_NAME}</h3>
                   <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>{CLINIC_ADDRESS}</p>
                   <div className="grid grid-cols-2 gap-4">
@@ -242,7 +244,7 @@ export function About() {
               {
                 type: 'Visi',
                 content: 'Menjadi klinik gigi pilihan utama masyarakat Indonesia dengan memberikan pelayanan dental berkualitas internasional yang mudah diakses oleh semua kalangan.',
-                icon: '🎯',
+                icon: <Target size={32} color="#E91E8C" />,
                 color: '#E91E8C',
                 bg: '#FFF5F9',
               },
@@ -254,7 +256,7 @@ export function About() {
                   'Mengadopsi teknologi dental terkini untuk hasil perawatan optimal',
                   'Menciptakan lingkungan klinik yang nyaman, bersih, dan menyenangkan bagi pasien',
                 ],
-                icon: '🚀',
+                icon: <Rocket size={32} color="#4FC3F7" />,
                 color: '#4FC3F7',
                 bg: '#F0FAFF',
               },
@@ -268,7 +270,7 @@ export function About() {
                 className="rounded-2xl p-8"
                 style={{ background: item.bg, border: `1px solid ${item.color}20` }}
               >
-                <div className="text-4xl mb-5">{item.icon}</div>
+                <div className="flex mb-5">{item.icon}</div>
                 <h3 className="text-2xl font-black mb-4" style={{ color: item.color }}>{item.type}</h3>
                 {typeof item.content === 'string' ? (
                   <p className="text-gray-700 leading-relaxed">{item.content}</p>
@@ -476,7 +478,9 @@ export function About() {
                 className="p-6 rounded-2xl border border-gray-100 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 style={{ background: '#FAFAFA' }}
               >
-                <div className="text-4xl mb-3">{cert.icon}</div>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: '#FFF5F9' }}>
+                  {cert.icon}
+                </div>
                 <h3 className="font-black text-base mb-1" style={{ color: '#1A1A2E' }}>{cert.name}</h3>
                 <p className="text-xs text-gray-500 mb-2">{cert.body}</p>
                 <span

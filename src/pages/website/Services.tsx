@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import type { ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Clock, ChevronDown, ChevronUp, Calendar, ArrowRight, Star } from 'lucide-react';
 import { SERVICES } from '../../data/mockData';
+import {
+  IconCheckup, IconScaling, IconFilling, IconExtraction,
+  IconBraces, IconImplant, IconVeneer, IconBleaching,
+} from '../../components/ui/OmdcIcons';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { WaveDivider } from '../../components/ui/WaveDivider';
 
@@ -22,8 +27,9 @@ const serviceCategoryMap: Record<string, string> = {
   s8: 'Perawatan Dasar',
 };
 
-const serviceIcons: Record<string, string> = {
-  s1: '🦷', s2: '✨', s3: '🔧', s4: '❌', s5: '😁', s6: '🔩', s7: '💊', s8: '➕',
+const SERVICE_ICON_CMPS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
+  s1: IconCheckup, s2: IconScaling, s3: IconFilling, s4: IconExtraction,
+  s5: IconBraces, s6: IconImplant, s7: IconVeneer, s8: IconBleaching,
 };
 
 const serviceDetails: Record<string, {
@@ -182,6 +188,7 @@ export function Services() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {filtered.map((service, i) => {
               const detail = serviceDetails[service.id];
+              const SvcIcon = SERVICE_ICON_CMPS[service.id];
               return (
                 <motion.div
                   key={service.id}
@@ -198,10 +205,10 @@ export function Services() {
                     style={{ background: service.color + '10', borderBottom: `2px solid ${service.color}20` }}
                   >
                     <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
                       style={{ background: service.color + '20' }}
                     >
-                      {serviceIcons[service.id]}
+                      {SvcIcon && <SvcIcon size={32} color={service.color} />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-black text-xl" style={{ color: '#1A1A2E' }}>{service.name}</h3>

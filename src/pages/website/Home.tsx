@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   Star, ChevronRight, Phone, MessageCircle, ArrowRight,
   Calendar, ChevronLeft, Quote, ChevronDown, ChevronUp,
-  CheckCircle, MapPin, Clock, Shield,
+  CheckCircle, MapPin, Clock, Shield, Award, Microscope, Smile, Smartphone, Play,
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSContent';
@@ -401,8 +401,8 @@ function HeroSection() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 36, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.72, delay: 0.16, ease: [0.32, 0.72, 0, 1] }}
-              style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <HeroIllustration width={520} height={560} />
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: '100%', overflow: 'hidden' }}>
+              <HeroIllustration width={isMobile ? 300 : 520} height={isMobile ? 324 : 560} />
             </motion.div>
           </div>
         )}
@@ -459,28 +459,28 @@ function WhyChooseUsSection() {
   const [ref, inView] = useInView();
   const isMobile = useIsMobile();
 
-  const FEATURES = [
+  const FEATURES: { icon: ReactNode; grad: [string, string]; label: string; desc: string; stat: string; statLabel: string }[] = [
     {
-      icon: '🏆', grad: [PINK, ROSE], label: 'Dokter Spesialis Bersertifikat',
+      icon: <Award size={26} color="white" />, grad: [PINK, ROSE], label: 'Dokter Spesialis Bersertifikat',
       desc: 'Semua dokter kami berlisensi KKI dengan pengalaman klinis 10+ tahun di bidang kedokteran gigi spesialis.',
       stat: '15+', statLabel: 'Dokter Spesialis',
     },
     {
-      icon: '🔬', grad: [AQUA, '#22D3EE'], label: 'Teknologi Digital Terkini',
+      icon: <Microscope size={26} color="white" />, grad: [AQUA, '#22D3EE'], label: 'Teknologi Digital Terkini',
       desc: 'Digital X-ray, intraoral scanner, laser treatment & CAD/CAM untuk hasil presisi dan minim rasa sakit.',
       stat: '20+', statLabel: 'Alat Canggih',
     },
     {
-      icon: '😊', grad: ['#10B981', '#34D399'], label: '10,000+ Pasien Puas',
+      icon: <Smile size={26} color="white" />, grad: ['#10B981', '#34D399'], label: '10,000+ Pasien Puas',
       desc: 'Ribuan keluarga telah mempercayakan kesehatan gigi mereka kepada kami selama 15+ tahun berturut-turut.',
       stat: '4.9', statLabel: 'Rating Rata-rata',
     },
     {
-      icon: '🛡️', grad: ['#8B5CF6', '#A78BFA'], label: 'Garansi Kepuasan Penuh',
+      icon: <Shield size={26} color="white" />, grad: ['#8B5CF6', '#A78BFA'], label: 'Garansi Kepuasan Penuh',
       desc: 'Kami berkomitmen pada hasil terbaik. Jika belum puas, kami tangani kembali tanpa biaya tambahan.',
       stat: '100%', statLabel: 'Kepuasan Terjamin',
     },
-  ] as const;
+  ];
 
   return (
     <section ref={ref} style={{ background: '#FFFFFF', padding: isMobile ? '56px 0' : '88px 0' }}>
@@ -526,11 +526,11 @@ function HowItWorksSection() {
   const [ref, inView] = useInView();
   const isMobile = useIsMobile();
 
-  const STEPS = [
-    { num: '01', icon: '📱', label: 'Pilih & Booking', color: PINK, colorEnd: ROSE, desc: 'Pilih layanan, dokter, tanggal, dan waktu yang sesuai via website, aplikasi mobile, kiosk, atau telepon.' },
-    { num: '02', icon: '📅', label: 'Konfirmasi & Pengingat', color: AQUA, colorEnd: '#22D3EE', desc: 'Dapatkan konfirmasi booking instan lewat SMS/WhatsApp + notifikasi pengingat sehari sebelum kunjungan.' },
-    { num: '03', icon: '🦷', label: 'Kunjungi & Tersenyum', color: '#10B981', colorEnd: '#34D399', desc: 'Datang ke klinik, ditangani dokter spesialis kami dengan penuh perhatian, dan pulang dengan senyum lebih sehat.' },
-  ] as const;
+  const STEPS: { num: string; icon: ReactNode; label: string; color: string; colorEnd: string; desc: string }[] = [
+    { num: '01', icon: <Smartphone size={32} color="white" />, label: 'Pilih & Booking', color: PINK, colorEnd: ROSE, desc: 'Pilih layanan, dokter, tanggal, dan waktu yang sesuai via website, aplikasi mobile, kiosk, atau telepon.' },
+    { num: '02', icon: <Calendar size={32} color="white" />, label: 'Konfirmasi & Pengingat', color: AQUA, colorEnd: '#22D3EE', desc: 'Dapatkan konfirmasi booking instan lewat SMS/WhatsApp + notifikasi pengingat sehari sebelum kunjungan.' },
+    { num: '03', icon: <svg viewBox="0 0 24 24" width={32} height={32} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" /></svg>, label: 'Kunjungi & Tersenyum', color: '#10B981', colorEnd: '#34D399', desc: 'Datang ke klinik, ditangani dokter spesialis kami dengan penuh perhatian, dan pulang dengan senyum lebih sehat.' },
+  ];
 
   return (
     <section ref={ref} style={{ background: '#F8F9FB', padding: isMobile ? '56px 0' : '88px 0', position: 'relative', overflow: 'hidden' }}>
@@ -611,6 +611,7 @@ function ServicesSection() {
   const s = cms.services;
   const visible = s.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   const CARD_COLORS = [PINK, AQUA, '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', ROSE, '#06B6D4'];
 
@@ -634,7 +635,7 @@ function ServicesSection() {
 
         {/* Bento grid */}
         <div style={{ position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 12 : 20 }}>
             {visible.map((item, i) => {
               const cardColor = CARD_COLORS[i % CARD_COLORS.length];
               const isFeatured = i === 0;
@@ -648,7 +649,7 @@ function ServicesSection() {
                     transition={{ duration: 0.5, delay: 0 }}
                     whileHover={{ y: -6 }}
                     style={{
-                      gridColumn: 'span 2', gridRow: 'span 2',
+                      gridColumn: 'span 2', gridRow: isMobile ? undefined : 'span 2',
                       background: 'linear-gradient(150deg, #FFF5F9 0%, #FFE4F1 55%, #FFFFFF 100%)',
                       borderRadius: 24,
                       padding: '32px',
@@ -861,6 +862,7 @@ function TestimonialsSection() {
   const visible = t.items.filter(i => i.isVisible);
   const [idx, setIdx] = useState(0);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   if (!visible.length) return null;
 
@@ -894,7 +896,7 @@ function TestimonialsSection() {
             fontFamily: 'Georgia, serif', zIndex: 0,
           }}>"</div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20, position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(300px, 1fr))', gap: isMobile ? 14 : 20, position: 'relative', zIndex: 1 }}>
             {visible.slice(0, 6).map((item: CMSTestimonial, i) => {
               const isFeatured = i === 0;
               return (
@@ -904,7 +906,7 @@ function TestimonialsSection() {
                     borderRadius: 20, padding: isFeatured ? 28 : 24,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
                     border: isFeatured ? `1.5px solid ${PINK}20` : '1px solid rgba(0,0,0,0.05)',
-                    gridColumn: isFeatured ? 'span 2' : undefined,
+                    gridColumn: isFeatured && !isMobile ? 'span 2' : undefined,
                   }}>
                   <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
                     {Array.from({ length: 5 }).map((_, j) => (
@@ -1002,6 +1004,7 @@ function ArticlesSection() {
   const a = cms.articles;
   const visible = a.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
   if (!visible.length) return null;
 
   return (
@@ -1024,7 +1027,7 @@ function ArticlesSection() {
           </motion.div>
 
           {/* Magazine layout grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'auto', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gridTemplateRows: 'auto', gap: isMobile ? 16 : 24 }}>
             {visible.slice(0, 3).map((item, i) => {
               const isFeatured = i === 0;
               return (
@@ -1034,12 +1037,14 @@ function ArticlesSection() {
                     background: 'white', borderRadius: 20, overflow: 'hidden',
                     boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)',
                     transition: 'all 0.3s',
-                    gridColumn: isFeatured ? 'span 2' : undefined,
+                    gridColumn: isFeatured && !isMobile ? 'span 2' : undefined,
                   }}>
                   {item.thumbnail ? (
                     <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: isFeatured ? 260 : 180 }} style={{ width: '100%', height: isFeatured ? 260 : 180, objectFit: 'cover' }} />
                   ) : (
-                    <div style={{ width: '100%', height: isFeatured ? 260 : 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
+                    <div style={{ width: '100%', height: isFeatured ? 260 : 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <svg viewBox="0 0 24 24" width={48} height={48} fill="none" stroke="rgba(233,30,140,0.35)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
+                    </div>
                   )}
                   <div style={{ padding: '18px 20px' }}>
                     <span style={{ fontSize: 10, fontWeight: 700, color: PINK, background: 'rgba(233,30,140,0.08)', padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
@@ -1238,10 +1243,10 @@ function AppPromoSection() {
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: isMobile ? 'center' : 'flex-start', flexWrap: 'wrap' }}>
               <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white', borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}>
-                📱 App Store
+                <Smartphone size={14} /> App Store
               </Link>
               <Link to="/app" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', background: 'white', color: DARK, borderRadius: 14, fontWeight: 700, fontSize: 13, textDecoration: 'none', border: '1.5px solid rgba(233,30,140,0.15)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-                🤖 Google Play
+                <Play size={14} /> Google Play
               </Link>
             </div>
           </motion.div>
@@ -1250,7 +1255,9 @@ function AppPromoSection() {
             {/* Outer shell — double-bezel */}
             <div style={{ padding: 10, borderRadius: 46, background: 'white', boxShadow: '0 24px 72px rgba(233,30,140,0.14), 0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(233,30,140,0.1)' }}>
               <div style={{ width: 200, height: 400, borderRadius: 38, background: 'linear-gradient(160deg, #FFF0F7 0%, #FFFFFF 50%, #F0FFFE 100%)', border: '1.5px solid rgba(233,30,140,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-                <div style={{ width: 56, height: 56, borderRadius: 16, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, boxShadow: '0 8px 24px rgba(233,30,140,0.3)' }}>🦷</div>
+                <div style={{ width: 56, height: 56, borderRadius: 16, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 24px rgba(233,30,140,0.3)' }}>
+                  <svg viewBox="0 0 24 24" width={28} height={28} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" /></svg>
+                </div>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ color: DARK, fontWeight: 900, fontSize: 16 }}>OMDC Dental</div>
                   <div style={{ color: '#9CA3AF', fontSize: 11, marginTop: 4 }}>Versi 2.0</div>

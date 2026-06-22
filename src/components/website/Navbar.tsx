@@ -1,19 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, ChevronRight, Bell, Download, Monitor, ChevronDown, Languages } from 'lucide-react';
 import { OmdcLogo } from '../ui/OmdcLogo';
+import {
+  IconCheckup, IconScaling, IconFilling, IconExtraction,
+  IconBraces, IconImplant, IconVeneer, IconBleaching,
+} from '../ui/OmdcIcons';
 import { useLanguage } from '../../context/LanguageContext';
 
-const SERVICES_MENU = [
-  { label: 'Pemeriksaan Gigi', icon: '🦷', to: '/services' },
-  { label: 'Scaling & Polishing', icon: '✨', to: '/services' },
-  { label: 'Tambal Gigi', icon: '🔧', to: '/services' },
-  { label: 'Cabut Gigi', icon: '❌', to: '/services' },
-  { label: 'Behel / Ortodonsi', icon: '😁', to: '/services' },
-  { label: 'Implan Gigi', icon: '🔩', to: '/services' },
-  { label: 'Perawatan Saluran Akar', icon: '💊', to: '/services' },
-  { label: 'Veneer Gigi', icon: '➕', to: '/services' },
+const SERVICES_MENU: { label: string; icon: ReactNode; to: string }[] = [
+  { label: 'Pemeriksaan Gigi',      icon: <IconCheckup   size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Scaling & Polishing',   icon: <IconScaling   size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Tambal Gigi',           icon: <IconFilling   size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Cabut Gigi',            icon: <IconExtraction size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Behel / Ortodonsi',     icon: <IconBraces    size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Implan Gigi',           icon: <IconImplant   size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Perawatan Saluran Akar',icon: <IconVeneer    size={18} color="#E91E8C" />, to: '/services' },
+  { label: 'Veneer Gigi',           icon: <IconBleaching size={18} color="#E91E8C" />, to: '/services' },
 ];
 
 export function Navbar() {

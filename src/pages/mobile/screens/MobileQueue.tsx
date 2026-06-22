@@ -207,7 +207,7 @@ export function MobileQueue({ state, setState }: MobileQueueProps) {
                   animate={{ opacity: 1 }}
                   className="text-sm font-bold text-white/90 mt-2 text-center"
                 >
-                  Silakan menuju ruang perawatan 🦷
+                  Silakan menuju ruang perawatan
                 </motion.p>
               )}
             </div>

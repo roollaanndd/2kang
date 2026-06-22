@@ -88,7 +88,9 @@ export function MobileSelectBranch({ state, setState }: MobileSelectBranchProps)
               background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <span style={{ fontSize: 13 }}>🦷</span>
+              <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" />
+              </svg>
             </div>
             <div>
               <p style={{ fontSize: 10, color: '#9CA3AF', marginBottom: 1 }}>Layanan yang dipilih</p>
