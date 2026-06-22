@@ -306,26 +306,12 @@ export function Contact() {
                     referrerPolicy="no-referrer-when-downgrade"
                   />
                 ) : (
-                  <div
-                    className="w-full h-full flex flex-col items-center justify-center relative"
-                    style={{ background: 'linear-gradient(135deg, #F3F4F6, #E5E7EB)' }}
-                  >
-                    <div
-                      className="absolute inset-0 opacity-5"
-                      style={{
-                        backgroundImage: `repeating-linear-gradient(0deg, #374151, #374151 1px, transparent 1px, transparent 40px),
-                                          repeating-linear-gradient(90deg, #374151, #374151 1px, transparent 1px, transparent 40px)`,
-                      }}
+                  <div className="w-full h-full relative overflow-hidden rounded-2xl">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ-NzQRffqsufz-ZgcvYhGVDiH-B6B_iXSNUWBqfnilWtH0xwQkP4laV6AxGdOCgRM4dq0gpK27LgLXgNEVwo-hvMnLRivkEQ1nou1enM_RGx534xwPQFehnK4cea72Vx_bQnuQPGisKgegdccgWTZBElEpTx634xB3Jdx5sW83ut2wHbggwlWadsOvhMlQklRZIWRjNoPTmVuRxR1LJbcbUImf9AswUFloFlJuTfuAgd-7f9wdSg7Qx0wp-srDvO3L0LOAZdi0X8"
+                      alt="Lokasi Klinik OMDC"
+                      className="w-full h-full object-cover"
                     />
-                    <div
-                      className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center mb-3"
-                      style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
-                    >
-                      <MapPin size={28} className="text-white" />
-                    </div>
-                    <p className="relative z-10 text-base font-black" style={{ color: '#1A1A2E' }}>Peta Lokasi</p>
-                    <p className="relative z-10 text-sm text-gray-500 mt-1 text-center px-4">{CLINIC_ADDRESS}</p>
-                    <p className="relative z-10 text-xs text-gray-400 mt-2">Tambahkan Maps embed di Admin → Kontak</p>
                   </div>
                 )}
               </motion.div>

@@ -1,91 +1,76 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Clock, ChevronDown, ChevronUp, Calendar, ArrowRight, Star } from 'lucide-react';
+import { Clock, CheckCircle, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
 import { SERVICES } from '../../data/mockData';
-import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
-import { WaveDivider } from '../../components/ui/WaveDivider';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
 
-const categories = ['Semua', 'Perawatan Dasar', 'Estetika', 'Bedah', 'Ortodonti'];
+const categories = ['Semua', 'Pencegahan', 'Estetika', 'Restorasi', 'Bedah'];
 
 const serviceCategoryMap: Record<string, string> = {
-  s1: 'Perawatan Dasar',
-  s2: 'Perawatan Dasar',
-  s3: 'Perawatan Dasar',
+  s1: 'Pencegahan',
+  s2: 'Pencegahan',
+  s3: 'Restorasi',
   s4: 'Bedah',
-  s5: 'Ortodonti',
+  s5: 'Estetika',
   s6: 'Bedah',
-  s7: 'Perawatan Dasar',
-  s8: 'Perawatan Dasar',
-};
-
-const serviceIcons: Record<string, string> = {
-  s1: '🦷', s2: '✨', s3: '🔧', s4: '❌', s5: '😁', s6: '🔩', s7: '💊', s8: '➕',
+  s7: 'Restorasi',
+  s8: 'Pencegahan',
 };
 
 const serviceDetails: Record<string, {
   benefits: string[];
-  process: string[];
   duration: string;
   rating: number;
   reviewCount: number;
 }> = {
   s1: {
-    benefits: ['Deteksi dini masalah gigi', 'X-ray digital modern', 'Konsultasi dokter spesialis', 'Rekomendasi perawatan personal'],
-    process: ['Anamnesis & riwayat kesehatan', 'Pemeriksaan visual menyeluruh', 'X-ray jika diperlukan', 'Konsultasi & rencana perawatan'],
-    duration: '30 - 45 menit',
+    benefits: ['Deteksi dini karies', 'Rencana perawatan tepat'],
+    duration: '30 mnt',
     rating: 4.9,
     reviewCount: 234,
   },
   s2: {
-    benefits: ['Gigi bersih dari karang', 'Napas lebih segar', 'Gusi lebih sehat', 'Tampilan gigi lebih cerah'],
-    process: ['Pemeriksaan awal', 'Ultrasonic scaling', 'Hand scaling detail', 'Polishing & fluoride'],
-    duration: '45 - 60 menit',
+    benefits: ['Gusi lebih sehat', 'Nafas segar'],
+    duration: '45 mnt',
     rating: 4.8,
     reviewCount: 189,
   },
   s3: {
-    benefits: ['Material komposit estetis', 'Tahan lama & kuat', 'Warna sesuai gigi asli', 'Minimal invasif'],
-    process: ['Anestesi lokal', 'Pembersihan lubang', 'Pemasangan matriks', 'Penambalan & curing'],
-    duration: '60 - 90 menit',
+    benefits: ['Material komposit estetis', 'Warna sesuai gigi asli'],
+    duration: '60 mnt',
     rating: 4.7,
     reviewCount: 156,
   },
   s4: {
-    benefits: ['Prosedur aman & steril', 'Anestesi modern', 'Minimal rasa sakit', 'Pemulihan cepat'],
-    process: ['Konsultasi & X-ray', 'Anestesi lokal', 'Pencabutan gigi', 'Instruksi pasca pencabutan'],
-    duration: '30 - 60 menit',
+    benefits: ['Prosedur aman & steril', 'Pemulihan cepat'],
+    duration: '45 mnt',
     rating: 4.7,
     reviewCount: 143,
   },
   s5: {
-    benefits: ['Gigi lebih rapi & estetis', 'Pilihan metal/keramik/clear', 'Kontrol rutin terjadwal', 'Hasil permanen'],
-    process: ['Konsultasi & foto', 'Percetakan gigi', 'Pemasangan behel', 'Kontrol berkala 3-4 minggu'],
-    duration: '90 - 120 menit',
+    benefits: ['Gigi lebih rapi & estetis', 'Hasil permanen'],
+    duration: '90 mnt',
     rating: 4.9,
     reviewCount: 312,
   },
   s6: {
-    benefits: ['Pengganti gigi permanen', 'Tampilan natural', 'Kekuatan seperti gigi asli', 'Tidak merusak gigi sebelah'],
-    process: ['Evaluasi tulang rahang', 'Pemasangan implan titanium', 'Masa osseointegration', 'Pemasangan mahkota'],
-    duration: '120 - 180 menit',
+    benefits: ['Pengganti gigi permanen', 'Kekuatan seperti gigi asli'],
+    duration: '120 mnt',
     rating: 4.8,
     reviewCount: 97,
   },
   s7: {
-    benefits: ['Menyelamatkan gigi asli', 'Bebas nyeri', 'Hasil jangka panjang', 'Teknologi rotary modern'],
-    process: ['Anestesi & akses saluran', 'Pembersihan saluran akar', 'Pengisian saluran', 'Restorasi mahkota'],
-    duration: '60 - 120 menit',
+    benefits: ['Menyelamatkan gigi asli', 'Bebas nyeri'],
+    duration: '90 mnt',
     rating: 4.8,
     reviewCount: 178,
   },
   s8: {
-    benefits: ['Konsultasi mendalam', 'Solusi personal', 'Rujukan ke spesialis', 'Harga transparan'],
-    process: ['Konsultasi awal', 'Pemeriksaan lengkap', 'Rencana perawatan', 'Pelaksanaan sesuai kebutuhan'],
-    duration: '30 - 60 menit',
+    benefits: ['Solusi personal', 'Harga transparan'],
+    duration: '30 mnt',
     rating: 4.7,
     reviewCount: 89,
   },
@@ -127,181 +112,114 @@ export function Services() {
   );
 
   return (
-    <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <AnimatedDentalBg />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Perawatan Terbaik</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Layanan Dental Kami</h1>
-            <p className="text-xl max-w-2xl mx-auto mb-8" style={{ color: '#6B7280' }}>
-              Kami menyediakan layanan dental komprehensif dengan teknologi terkini untuk menjaga senyum sehat Anda.
-            </p>
-            <Link
-              to="/booking"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-base text-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
-              style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}
-            >
-              <Calendar size={18} />
-              Buat Janji Sekarang
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Category Filter */}
-      <section className="sticky top-16 z-30 shadow-sm" style={{ background: 'white' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className="px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 flex-shrink-0"
-                style={{
-                  background: activeCategory === cat ? '#E91E8C' : '#F9FAFB',
-                  color: activeCategory === cat ? 'white' : '#6B7280',
-                  border: `1px solid ${activeCategory === cat ? '#E91E8C' : '#E5E7EB'}`,
-                }}
-              >
-                {cat}
-              </button>
-            ))}
+    <div className="bg-[#FFF5F9]">
+      {/* Hero Section */}
+      <section className="pt-16 pb-12 px-6 md:px-12 max-w-7xl mx-auto text-center">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <div className="inline-block bg-[#ECFEFF] text-[#06B6D4] px-4 py-1.5 rounded-full font-semibold text-sm mb-6 tracking-wide uppercase">
+            Perawatan Terbaik
           </div>
+          <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-[#0D1421] tracking-tight mb-6">
+            Layanan Dental{' '}
+            <span
+              className="text-transparent bg-clip-text"
+              style={{ backgroundImage: 'linear-gradient(to right, #E91E8C, #FF6BB5)' }}
+            >
+              Kami
+            </span>
+          </h1>
+          <p className="font-body text-[#6B7280] text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            Menghadirkan senyum sehat dan percaya diri penuh melalui perawatan gigi premium dengan teknologi terkini dan dokter spesialis berpengalaman.
+          </p>
+        </motion.div>
+      </section>
+
+      {/* Filter Chips */}
+      <section className="px-6 md:px-12 max-w-7xl mx-auto mb-12">
+        <div
+          className="flex overflow-x-auto space-x-3 pb-4 justify-start md:justify-center"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}
+        >
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className="px-6 py-2.5 rounded-full font-semibold whitespace-nowrap transition-all duration-200"
+              style={
+                activeCategory === cat
+                  ? { background: '#E91E8C', color: 'white', boxShadow: '0 4px 12px rgba(233,30,140,0.3)' }
+                  : { background: 'white', color: '#6B7280', border: '1px solid #fce7f3' }
+              }
+            >
+              {cat}
+            </button>
+          ))}
         </div>
       </section>
 
-      {/* Wave divider after hero */}
-      <WaveDivider fromColor="#FFFFFF" toColor="#FAFAFA" />
-
-      {/* Services List */}
-      <section className="py-16" style={{ background: '#FAFAFA' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {filtered.map((service, i) => {
-              const detail = serviceDetails[service.id];
-              return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.07 }}
-                  className="rounded-2xl overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                  style={{ background: 'white' }}
+      {/* Service Grid */}
+      <section className="px-6 md:px-12 max-w-7xl mx-auto pb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {filtered.map((service, i) => {
+            const detail = serviceDetails[service.id];
+            return (
+              <motion.article
+                key={service.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                className="bg-white rounded-[24px] p-6 shadow-sm border border-pink-50 hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
+              >
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
+                  style={{ background: 'linear-gradient(135deg, #FFF5F9, #ECFEFF)' }}
                 >
-                  {/* Header */}
-                  <div
-                    className="px-6 py-5 flex items-center gap-4"
-                    style={{ background: service.color + '10', borderBottom: `2px solid ${service.color}20` }}
-                  >
-                    <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
-                      style={{ background: service.color + '20' }}
-                    >
-                      {serviceIcons[service.id]}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-black text-xl" style={{ color: '#1A1A2E' }}>{service.name}</h3>
-                      <p className="text-sm text-gray-500 mt-0.5">{service.nameEn}</p>
-                    </div>
-                    {detail && (
-                      <div className="text-right flex-shrink-0">
-                        <div className="flex items-center gap-1 justify-end mb-1">
-                          <Star size={13} fill="#F59E0B" style={{ color: '#F59E0B' }} />
-                          <span className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{detail.rating}</span>
-                          <span className="text-xs text-gray-400">({detail.reviewCount})</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-gray-500">
-                          <Clock size={12} />
-                          {detail.duration}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Body */}
-                  <div className="px-6 py-5">
-                    <p className="text-sm text-gray-600 leading-relaxed mb-5">{service.description}</p>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                      {/* Benefits */}
-                      {detail && (
-                        <div>
-                          <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Manfaat</p>
-                          <ul className="space-y-2">
-                            {detail.benefits.map((b) => (
-                              <li key={b} className="flex items-start gap-2 text-sm text-gray-600">
-                                <div
-                                  className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                                  style={{ background: service.color + '20' }}
-                                >
-                                  <span style={{ color: service.color, fontSize: 10 }}>✓</span>
-                                </div>
-                                {b}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      {/* Process */}
-                      {detail && (
-                        <div>
-                          <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Proses</p>
-                          <ol className="space-y-2">
-                            {detail.process.map((p, idx) => (
-                              <li key={p} className="flex items-start gap-2 text-sm text-gray-600">
-                                <div
-                                  className="w-5 h-5 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 mt-0.5 text-xs"
-                                  style={{ background: service.color }}
-                                >
-                                  {idx + 1}
-                                </div>
-                                {p}
-                              </li>
-                            ))}
-                          </ol>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Footer */}
-                  <div
-                    className="px-6 py-4 flex items-center justify-between gap-4"
-                    style={{ background: '#FAFAFA', borderTop: '1px solid #f3f4f6' }}
-                  >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E91E8C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2C8 2 5 5 5 9c0 3 1.5 5.5 3 7.5l1 5.5h6l1-5.5C17.5 14.5 19 12 19 9c0-4-3-7-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="font-headline font-bold text-xl mb-3 text-[#0D1421]">{service.name}</h3>
+                <p className="text-[#6B7280] text-sm mb-6 flex-grow leading-relaxed">{service.description}</p>
+                {detail && (
+                  <div className="space-y-4 mb-6">
                     <div>
-                      <p className="text-xs text-gray-400 mb-0.5">Estimasi Biaya</p>
-                      <p className="text-base font-black" style={{ color: service.color }}>
-                        {formatPrice(service.priceMin)} – {formatPrice(service.priceMax)}
+                      <h4 className="text-xs font-semibold text-[#0D1421] uppercase tracking-wider mb-2">Manfaat</h4>
+                      <ul className="text-sm text-[#6B7280] space-y-1">
+                        {detail.benefits.map((b) => (
+                          <li key={b} className="flex items-start gap-2">
+                            <CheckCircle size={16} className="text-[#06B6D4] flex-shrink-0 mt-0.5" />
+                            {b}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                <div className="pt-4 border-t border-pink-50 mt-auto">
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-xs text-[#6B7280] mb-1">Estimasi Biaya</p>
+                      <p className="font-headline font-bold text-[#E91E8C]">
+                        Mulai {formatPrice(service.priceMin)}
                       </p>
                     </div>
-                    <Link
-                      to="/booking"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg flex-shrink-0"
-                      style={{
-                        background: `linear-gradient(135deg, ${service.color}, ${service.color}cc)`,
-                      }}
-                    >
-                      <Calendar size={14} />
-                      Buat Janji
-                      <ArrowRight size={14} />
-                    </Link>
+                    {detail && (
+                      <p className="text-xs text-[#6B7280] flex items-center gap-1">
+                        <Clock size={12} /> {detail.duration}
+                      </p>
+                    )}
                   </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-20" style={{ background: 'white' }}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -309,11 +227,10 @@ export function Services() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: '#E91E8C' }}>FAQ</p>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <p className="text-sm font-bold uppercase tracking-widest mb-3 text-[#E91E8C]">FAQ</p>
+            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-[#0D1421] mb-4">
               Pertanyaan yang Sering Diajukan
             </h2>
-            <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
 
           <div className="space-y-3">
@@ -326,7 +243,7 @@ export function Services() {
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 className="rounded-2xl border overflow-hidden transition-all duration-200"
                 style={{
-                  borderColor: openFaq === i ? '#E91E8C40' : '#E5E7EB',
+                  borderColor: openFaq === i ? 'rgba(233,30,140,0.25)' : '#E5E7EB',
                   boxShadow: openFaq === i ? '0 4px 20px rgba(233,30,140,0.08)' : 'none',
                 }}
               >
@@ -335,19 +252,19 @@ export function Services() {
                   className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors duration-200"
                   style={{ background: openFaq === i ? '#FFF5F9' : 'white' }}
                 >
-                  <span className="font-semibold text-sm pr-4" style={{ color: '#1A1A2E' }}>{faq.q}</span>
+                  <span className="font-semibold text-sm pr-4 text-[#0D1421]">{faq.q}</span>
                   <div
                     className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors duration-200"
                     style={{ background: openFaq === i ? '#E91E8C' : '#F3F4F6' }}
                   >
                     {openFaq === i
                       ? <ChevronUp size={15} className="text-white" />
-                      : <ChevronDown size={15} style={{ color: '#6B7280' }} />}
+                      : <ChevronDown size={15} className="text-[#6B7280]" />}
                   </div>
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-5 pt-1" style={{ background: '#FFF5F9' }}>
-                    <p className="text-sm text-gray-600 leading-relaxed">{faq.a}</p>
+                  <div className="px-6 pb-5 pt-1 bg-[#FFF5F9]">
+                    <p className="text-sm text-[#6B7280] leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </motion.div>
@@ -355,17 +272,38 @@ export function Services() {
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-500 mb-4">Masih punya pertanyaan?</p>
+            <p className="text-[#6B7280] mb-4">Masih punya pertanyaan?</p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-200 hover:-translate-y-0.5"
-              style={{
-                color: '#E91E8C',
-                border: '2px solid #E91E8C',
-                background: 'transparent',
-              }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all duration-200 hover:-translate-y-0.5"
+              style={{ color: '#E91E8C', border: '2px solid #E91E8C' }}
             >
-              Hubungi Kami <ArrowRight size={16} />
+              Hubungi Kami
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-6 md:px-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <div
+            className="rounded-[32px] p-8 md:p-12 text-white"
+            style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}
+          >
+            <h2 className="font-headline font-black text-3xl md:text-4xl mb-4">
+              Siap Mulai Perawatan?
+            </h2>
+            <p className="text-lg opacity-90 mb-8">
+              Jadwalkan konsultasi dengan dokter spesialis kami hari ini.
+            </p>
+            <Link
+              to="/booking"
+              className="inline-flex items-center gap-2 bg-white px-8 py-4 rounded-full font-headline font-bold hover:shadow-lg transition-all hover:-translate-y-0.5"
+              style={{ color: '#E91E8C' }}
+            >
+              <Calendar size={18} />
+              Booking Sekarang
             </Link>
           </div>
         </div>
