@@ -81,6 +81,17 @@ const HIDE_BOTTOMNAV_SCREENS = new Set([
 
 export function MobileLayout() {
   const [state, setStateRaw] = useState<MobileState>(INITIAL_STATE);
+  /* Desktop shows a centred phone-frame preview; real phones render edge-to-edge. */
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== 'undefined' ? window.innerWidth > 480 : false
+  );
+
+  useEffect(() => {
+    const onResize = () => setIsDesktop(window.innerWidth > 480);
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   const setState = useCallback((partial: Partial<MobileState>) => {
     setStateRaw(prev => ({ ...prev, ...partial }));
@@ -162,30 +173,34 @@ export function MobileLayout() {
     <div
       style={{
         display: 'flex',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
         height: '100dvh',
-        background: '#E5E7EB',
+        background: isDesktop ? '#E5E7EB' : 'white',
+        padding: isDesktop ? '16px 0' : 0,
         overflow: 'hidden',
       }}
     >
       <div
         style={{
           position: 'relative',
-          maxWidth: 430,
+          maxWidth: isDesktop ? 430 : '100%',
           width: '100%',
-          height: '100dvh',
+          height: isDesktop ? 'min(100dvh - 32px, 932px)' : '100dvh',
           background: 'white',
           overscrollBehavior: 'contain',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
+          borderRadius: isDesktop ? 44 : 0,
+          boxShadow: isDesktop ? '0 24px 70px rgba(0,0,0,0.28)' : 'none',
+          border: isDesktop ? '10px solid #111418' : 'none',
         }}
       >
         <ScreenTransitionBar screen={state.screen} />
         <NotifToast onOpen={() => setState({ screen: 'notifications' })} />
 
-        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', paddingBottom: showBottomNav ? 108 : 0 }}>
+        <div style={{ flex: 1, position: 'relative', overflow: 'hidden', paddingBottom: showBottomNav ? 'calc(108px + env(safe-area-inset-bottom, 0px))' : 0 }}>
           <AnimatePresence mode="wait">
             <div key={state.screen} style={{ position: 'absolute', inset: 0 }}>
               {renderScreen()}

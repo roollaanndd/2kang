@@ -4,6 +4,7 @@ import { OmdcLogo } from '../../../components/ui/OmdcLogo';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -64,6 +65,7 @@ const TICKER_ITEMS = [
 ];
 
 export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
+  const portrait = useIsPortrait();
   const [tickerIdx, setTickerIdx] = useState(0);
   const [tickerVis, setTickerVis] = useState(true);
 
@@ -88,16 +90,17 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       onClick={handleTouch}
-      style={{ width: '100%', height: '100%', display: 'flex', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
+      style={{ width: '100%', height: '100%', display: 'flex', flexDirection: portrait ? 'column' : 'row', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
     >
       {/* 4px brand strip */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
 
-      {/* ─── LEFT PANEL: Light branded side ─────────────────────────────── */}
+      {/* ─── LEFT PANEL: Light branded side (top band in portrait) ─────── */}
       <div style={{
-        width: '40%', flexShrink: 0, height: '100%',
+        width: portrait ? '100%' : '40%', flexShrink: 0, height: portrait ? '42%' : '100%',
         background: `linear-gradient(160deg, #FFF5F9 0%, #FFE4F1 50%, #ECFEFF 100%)`,
-        borderRight: '1px solid rgba(233,30,140,0.10)',
+        borderRight: portrait ? 'none' : '1px solid rgba(233,30,140,0.10)',
+        borderBottom: portrait ? '1px solid rgba(233,30,140,0.10)' : 'none',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
         padding: '40px 32px 32px', position: 'relative', overflow: 'hidden',
       }}>
