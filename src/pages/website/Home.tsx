@@ -401,8 +401,8 @@ function HeroSection() {
               </div>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 36, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.72, delay: 0.16, ease: [0.32, 0.72, 0, 1] }}
-              style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <HeroIllustration width={520} height={560} />
+              style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: '100%', overflow: 'hidden' }}>
+              <HeroIllustration width={isMobile ? 300 : 520} height={isMobile ? 324 : 560} />
             </motion.div>
           </div>
         )}
@@ -611,6 +611,7 @@ function ServicesSection() {
   const s = cms.services;
   const visible = s.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   const CARD_COLORS = [PINK, AQUA, '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', ROSE, '#06B6D4'];
 
@@ -634,7 +635,7 @@ function ServicesSection() {
 
         {/* Bento grid */}
         <div style={{ position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 12 : 20 }}>
             {visible.map((item, i) => {
               const cardColor = CARD_COLORS[i % CARD_COLORS.length];
               const isFeatured = i === 0;
@@ -648,7 +649,7 @@ function ServicesSection() {
                     transition={{ duration: 0.5, delay: 0 }}
                     whileHover={{ y: -6 }}
                     style={{
-                      gridColumn: 'span 2', gridRow: 'span 2',
+                      gridColumn: 'span 2', gridRow: isMobile ? undefined : 'span 2',
                       background: 'linear-gradient(150deg, #FFF5F9 0%, #FFE4F1 55%, #FFFFFF 100%)',
                       borderRadius: 24,
                       padding: '32px',
@@ -861,6 +862,7 @@ function TestimonialsSection() {
   const visible = t.items.filter(i => i.isVisible);
   const [idx, setIdx] = useState(0);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   if (!visible.length) return null;
 
@@ -894,7 +896,7 @@ function TestimonialsSection() {
             fontFamily: 'Georgia, serif', zIndex: 0,
           }}>"</div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20, position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(300px, 1fr))', gap: isMobile ? 14 : 20, position: 'relative', zIndex: 1 }}>
             {visible.slice(0, 6).map((item: CMSTestimonial, i) => {
               const isFeatured = i === 0;
               return (
@@ -904,7 +906,7 @@ function TestimonialsSection() {
                     borderRadius: 20, padding: isFeatured ? 28 : 24,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
                     border: isFeatured ? `1.5px solid ${PINK}20` : '1px solid rgba(0,0,0,0.05)',
-                    gridColumn: isFeatured ? 'span 2' : undefined,
+                    gridColumn: isFeatured && !isMobile ? 'span 2' : undefined,
                   }}>
                   <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
                     {Array.from({ length: 5 }).map((_, j) => (
@@ -1002,6 +1004,7 @@ function ArticlesSection() {
   const a = cms.articles;
   const visible = a.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
   if (!visible.length) return null;
 
   return (
@@ -1024,7 +1027,7 @@ function ArticlesSection() {
           </motion.div>
 
           {/* Magazine layout grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'auto', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gridTemplateRows: 'auto', gap: isMobile ? 16 : 24 }}>
             {visible.slice(0, 3).map((item, i) => {
               const isFeatured = i === 0;
               return (
@@ -1034,7 +1037,7 @@ function ArticlesSection() {
                     background: 'white', borderRadius: 20, overflow: 'hidden',
                     boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)',
                     transition: 'all 0.3s',
-                    gridColumn: isFeatured ? 'span 2' : undefined,
+                    gridColumn: isFeatured && !isMobile ? 'span 2' : undefined,
                   }}>
                   {item.thumbnail ? (
                     <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: isFeatured ? 260 : 180 }} style={{ width: '100%', height: isFeatured ? 260 : 180, objectFit: 'cover' }} />
