@@ -1,58 +1,23 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Star, Calendar, Clock, Award, ChevronRight, Search, Filter } from 'lucide-react';
+import { Star, Calendar, Search } from 'lucide-react';
 import { DOCTORS } from '../../data/mockData';
-import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
-import { WaveDivider } from '../../components/ui/WaveDivider';
-import { CountUp } from '../../components/ui/CountUp';
 
-function DoctorAvatar({ name, size = 96 }: { name: string; size?: number }) {
-  const letter = name.replace('drg. ', '')[0];
-  const colors = [
-    'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-    'linear-gradient(135deg, #4FC3F7, #0288D1)',
-    'linear-gradient(135deg, #A78BFA, #7C3AED)',
-    'linear-gradient(135deg, #10B981, #059669)',
-  ];
-  const idx = name.charCodeAt(5) % colors.length;
-  return (
-    <div
-      className="rounded-full flex items-center justify-center text-white font-black flex-shrink-0"
-      style={{ width: size, height: size, background: colors[idx], fontSize: size * 0.38 }}
-    >
-      {letter}
-    </div>
-  );
-}
+const DOCTOR_PHOTOS: Record<string, string> = {
+  d1: 'https://lh3.googleusercontent.com/aida/AP1WRLsJm6Hd3zuvQHAHO-2tZZTLKwucUMxPrVYakmwVrfOx5lQgn7H8rPUHO0E9FvxApcbh9i385scrC8chYANySbYJtsMy4Hmspv7NnWHRljsap8pRDF5UQ0HucY3JJW-PIzrYR6UHUTfU1WACFIsZKvj7SBe-Pv9OE-HUvpbBHmIqrKi6DWM87NPGer4TtoxBjkAFTi4X6ifT7hm35ORakGAiqThN9FxGY1br8lXTaEcAzDjpzPMDzLD00g',
+  d2: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAIhrxctfPERdl-c4tEYYsHgOpqbOvzY3yKmMQ8b2dmhSNUt2vjVhAWtRZn5QziC_yxd58ibtFhBeYCPJ6phozfZcYsDgEcMusplCR5iBkccspmGf-mZdDg8-N9Ojbcq_Mc9bkhLgk7IhdUH_DxoRa2eNP2-hh63uYOTmk2aQjLJIRNYNdtcYqd3G0MGKtxOySWW-b0iOkOGWoXe0KPo7AJo2tUSc5hcaUxsYGVwC11d3eATNj1H-5lwsNWkB9CbljJJOzi436QrQU',
+  d3: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBsBVbwaQO9whDMgd7dsLfxbQj9z4HC47UBF8p8IC2RkJW_-6IKyn75aV5ata31EBobh3nkNHUzMS82rlGFUbTWIgAVdE6pgroyfTU3H73cTj0bk42RC7nb7QsA39oMEqiwfcI28ozIS0DzrGZoR3mz6ed0-hF0T44yLY0LXDhybnXqZUoYvlMVZvB2Kp82s8_u41fLh5esLZkGgFF3S7gbxAC0dMdFS_mZhs1q7sl9ghBvmsV7a0V-26zwOh5ixOebv2O7BWWXJ1s',
+  d4: 'https://lh3.googleusercontent.com/aida-public/AB6AXuArpj-4DGMkvfk78dhLYiaN2_BZrtenHjnv0X0TwpcuOP8Mbj6ilSiQftBLB4OFgew8NGk5Lk_qRyHIk5z3AWVn4ATvvnru52jVAa7SgdhHNPcaiM33xnESa-UAKiXpF4y9bjTravQ1w4od2UopXUmFuSy1seTdqfOYVtfMnuKEqebmY5PgWmGDgNwxV-rRNfYu7xwKEWVdw_TB9gYgjvb374JIWb8RMUUFLq98Xn8tP-DCUE1u8sJT_0980fGhOm6hoAiKM4AYGHs',
+};
 
-const specialties = ['Semua', 'Periodonsia', 'Ortodonsia', 'Bedah Mulut', 'Konservasi Gigi'];
+const specialties = ['Semua', 'Gigi Umum', 'Ortodonti', 'Bedah Mulut', 'Konservasi', 'Pedodonti'];
 
 const doctorDetails = [
-  {
-    education: 'Universitas Indonesia, Sp.Perio',
-    certifications: ['PDGI Tersertifikasi', 'ISO 9001:2015'],
-    languages: ['Indonesia', 'English'],
-    consultFee: 350000,
-  },
-  {
-    education: 'Universitas Airlangga, Sp.Ort',
-    certifications: ['PDGI Tersertifikasi', 'Invisalign Provider'],
-    languages: ['Indonesia', 'English'],
-    consultFee: 300000,
-  },
-  {
-    education: 'Universitas Gadjah Mada, Sp.BM',
-    certifications: ['PDGI Tersertifikasi', 'IAOMS Member'],
-    languages: ['Indonesia'],
-    consultFee: 400000,
-  },
-  {
-    education: 'Universitas Padjadjaran',
-    certifications: ['PDGI Tersertifikasi', 'ADA Member'],
-    languages: ['Indonesia', 'English'],
-    consultFee: 280000,
-  },
+  { fee: 'Rp 250.000', schedule: 'Senin - Jumat', hours: '10:00 - 18:00 WIB', available: true },
+  { fee: 'Rp 450.000', schedule: 'Selasa, Kamis, Sabtu', hours: '14:00 - 20:00 WIB', available: false },
+  { fee: 'Rp 500.000', schedule: 'Senin, Rabu, Jumat', hours: '09:00 - 15:00 WIB', available: true },
+  { fee: 'Rp 400.000', schedule: 'Sabtu & Minggu', hours: '08:00 - 16:00 WIB', available: false },
 ];
 
 export function Doctors() {
@@ -66,74 +31,65 @@ export function Doctors() {
     return matchSpecialty && matchSearch;
   });
 
-  const formatPrice = (p: number) =>
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
-
   return (
-    <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <AnimatedDentalBg />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
+    <div className="bg-white">
+      {/* Hero Section */}
+      <section className="relative pt-16 pb-12 overflow-hidden bg-[#FFF5F9]/30">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tim Profesional</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Tim Dokter Kami</h1>
-            <p className="text-xl max-w-2xl mx-auto mb-8" style={{ color: '#6B7280' }}>
-              Didukung oleh dokter spesialis berpengalaman yang berdedikasi untuk memberikan perawatan dental terbaik.
+            <span className="inline-block py-1 px-3 rounded-full bg-pink-50 text-[#E91E8C] font-semibold text-sm tracking-wider uppercase mb-4 shadow-sm border border-pink-100">
+              Tim Profesional
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0D1421] tracking-tight mb-6 font-headline">
+              Temui{' '}
+              <span
+                className="text-transparent bg-clip-text"
+                style={{ backgroundImage: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }}
+              >
+                Tim Dokter
+              </span>{' '}
+              Kami
+            </h1>
+            <p className="text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto font-body leading-relaxed">
+              Dedikasi tim medis profesional kami siap memberikan perawatan gigi terbaik untuk senyum sehat dan penuh percaya diri Anda.
             </p>
-            <div className="flex justify-center gap-6 flex-wrap">
-              {[
-                { val: '10+', label: 'Dokter Spesialis' },
-                { val: '500+', label: 'Pasien Ditangani' },
-                { val: '15+', label: 'Tahun Pengalaman' },
-              ].map((s) => (
-                <div
-                  key={s.val}
-                  className="px-6 py-3 rounded-2xl text-center"
-                  style={{ background: 'white', border: '1px solid rgba(233,30,140,0.15)', boxShadow: '0 2px 12px rgba(233,30,140,0.08)' }}
-                >
-                  <div className="text-2xl font-black" style={{ color: '#E91E8C' }}><CountUp value={s.val} /></div>
-                  <div className="text-sm" style={{ color: '#6B7280' }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Filter & Search */}
-      <section className="sticky top-16 z-30 shadow-sm" style={{ background: 'white' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            {/* Search */}
-            <div className="relative flex-1 max-w-sm">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* Search & Filter Section */}
+      <section className="py-8 bg-white border-b border-gray-100 sticky top-16 z-40 backdrop-blur-md bg-white/80">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+            {/* Search Bar */}
+            <div className="relative w-full md:w-96 flex-shrink-0">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                <Search size={18} />
+              </div>
               <input
                 type="text"
                 placeholder="Cari dokter atau spesialisasi..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pink-400 transition-colors"
+                className="block w-full pl-11 pr-4 py-3.5 border border-gray-200 rounded-2xl text-sm font-body bg-gray-50 focus:outline-none focus:ring-2 focus:border-[#E91E8C] transition-all shadow-sm placeholder-gray-400"
+                style={{ focusBorderColor: '#E91E8C' } as React.CSSProperties}
               />
             </div>
-
-            {/* Specialty Filter */}
-            <div className="flex gap-2 flex-wrap">
-              <div className="flex items-center gap-1 text-xs text-gray-500 mr-1">
-                <Filter size={14} />
-                Filter:
-              </div>
+            {/* Specialty Filters */}
+            <div
+              className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto items-center"
+              style={{ scrollbarWidth: 'none' }}
+            >
               {specialties.map((s) => (
                 <button
                   key={s}
                   onClick={() => setActiveSpecialty(s)}
-                  className="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200"
-                  style={{
-                    background: activeSpecialty === s ? '#E91E8C' : '#F9FAFB',
-                    color: activeSpecialty === s ? 'white' : '#6B7280',
-                    border: `1px solid ${activeSpecialty === s ? '#E91E8C' : '#E5E7EB'}`,
-                  }}
+                  className="whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-semibold transition-all active:scale-95 shadow-sm"
+                  style={
+                    activeSpecialty === s
+                      ? { background: '#E91E8C', color: 'white', boxShadow: '0 4px 12px rgba(233,30,140,0.3)' }
+                      : { background: 'white', color: '#6B7280', border: '1px solid #E5E7EB' }
+                  }
                 >
                   {s}
                 </button>
@@ -143,157 +99,104 @@ export function Doctors() {
         </div>
       </section>
 
-      {/* Wave divider after hero */}
-      <WaveDivider fromColor="#FFFFFF" toColor="#FAFAFA" />
-
-      {/* Doctors Grid */}
-      <section className="py-16" style={{ background: '#FAFAFA' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Doctor Grid Section */}
+      <section className="py-16 bg-gray-50/50">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           {filtered.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-gray-400 text-lg">Tidak ada dokter ditemukan.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {filtered.map((doctor, i) => {
-                const detail = doctorDetails[DOCTORS.indexOf(doctor)];
+                const detail = doctorDetails[DOCTORS.indexOf(doctor)] || doctorDetails[0];
+                const photoUrl = DOCTOR_PHOTOS[doctor.id] || DOCTOR_PHOTOS['d1'];
+                const isAvailable = doctor.available;
                 return (
                   <motion.div
                     key={doctor.id}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="rounded-2xl overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                    style={{ background: 'white', marginTop: i % 2 === 1 ? 32 : 0, boxShadow: '0 20px 60px rgba(0,0,0,0.10)', borderRadius: 24 }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                    className="bg-white rounded-[24px] shadow-sm hover:shadow-xl transition-all duration-300 border border-pink-50/50 overflow-hidden flex flex-col group hover:-translate-y-1"
                   >
-                    <div className="p-6">
-                      <div className="flex gap-5">
-                        {/* Avatar */}
-                        <div className="relative flex-shrink-0">
-                          <DoctorAvatar name={doctor.name} size={96} />
-                          <div
-                            className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                            style={{
-                              background: doctor.available ? '#10B981' : '#94A3B8',
-                              border: '2px solid white',
-                            }}
-                          >
-                            {doctor.available ? '✓' : '✗'}
-                          </div>
-                        </div>
-
-                        {/* Info */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2 flex-wrap">
-                            <div>
-                              <h3 className="font-black text-lg" style={{ color: '#1A1A2E' }}>{doctor.name}</h3>
-                              <p className="text-sm font-semibold" style={{ color: '#E91E8C' }}>{doctor.specialty}</p>
-                            </div>
-                            <span
-                              className="text-xs px-3 py-1 rounded-xl font-semibold flex-shrink-0"
-                              style={{
-                                background: doctor.available ? '#F0FDF4' : '#F1F5F9',
-                                color: doctor.available ? '#10B981' : '#94A3B8',
-                              }}
-                            >
-                              {doctor.available ? '● Tersedia' : '○ Tidak Tersedia'}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-3 mt-2 flex-wrap">
-                            <div className="flex items-center gap-1">
-                              {[1,2,3,4,5].map((s) => (
-                                <Star key={s} size={13} fill={s <= Math.round(doctor.rating) ? '#F59E0B' : 'none'} style={{ color: '#F59E0B' }} />
-                              ))}
-                              <span className="text-sm font-bold ml-1" style={{ color: '#1A1A2E' }}>{doctor.rating}</span>
-                              <span className="text-xs text-gray-400">({doctor.reviewCount} ulasan)</span>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-4 mt-3 flex-wrap">
-                            <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                              <Award size={13} style={{ color: '#E91E8C' }} />
-                              {doctor.experience} tahun pengalaman
-                            </div>
-                            <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                              <Clock size={13} style={{ color: '#E91E8C' }} />
-                              {doctor.schedule.length} hari/minggu
-                            </div>
-                          </div>
-                        </div>
+                    {/* Photo */}
+                    <div className="relative pt-[100%] bg-[#FFF5F9] overflow-hidden">
+                      <img
+                        src={photoUrl}
+                        alt={doctor.name}
+                        className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div
+                        className="absolute top-4 right-4 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold shadow-sm flex items-center gap-1.5"
+                        style={
+                          isAvailable
+                            ? { background: 'rgba(255,255,255,0.9)', color: '#16a34a', border: '1px solid #dcfce7' }
+                            : { background: 'rgba(255,255,255,0.9)', color: '#6B7280', border: '1px solid #F3F4F6' }
+                        }
+                      >
+                        <span
+                          className="w-2 h-2 rounded-full"
+                          style={{ background: isAvailable ? '#22c55e' : '#9CA3AF' }}
+                        />
+                        {isAvailable ? 'Tersedia Hari Ini' : 'Tersedia Besok'}
                       </div>
-
-                      {/* About */}
-                      <p className="text-sm text-gray-600 leading-relaxed mt-4 pt-4" style={{ borderTop: '1px solid #f3f4f6' }}>
-                        {doctor.about}
-                      </p>
-
-                      {/* Schedule */}
-                      <div className="mt-4">
-                        <p className="text-xs font-bold text-gray-500 mb-2">Jadwal Praktek:</p>
-                        <div className="flex gap-2 flex-wrap">
-                          {['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'].map((day) => (
-                            <span
-                              key={day}
-                              className="px-2.5 py-1 rounded-lg text-xs font-semibold"
-                              style={{
-                                background: doctor.schedule.includes(day) ? '#FFF5F9' : '#F9FAFB',
-                                color: doctor.schedule.includes(day) ? '#E91E8C' : '#9CA3AF',
-                                border: `1px solid ${doctor.schedule.includes(day) ? '#E91E8C40' : '#E5E7EB'}`,
-                              }}
-                            >
-                              {day.slice(0, 3)}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Certs & Fee */}
-                      {detail && (
-                        <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
-                          <div className="flex gap-2 flex-wrap">
-                            {detail.certifications.map((cert) => (
-                              <span
-                                key={cert}
-                                className="px-2 py-1 rounded-lg text-xs font-semibold"
-                                style={{ background: '#F0FDF4', color: '#10B981' }}
-                              >
-                                ✓ {cert}
-                              </span>
-                            ))}
-                          </div>
-                          <div className="text-right">
-                            <p className="text-xs text-gray-400">Biaya Konsultasi</p>
-                            <p className="text-sm font-black" style={{ color: '#E91E8C' }}>
-                              {formatPrice(detail.consultFee)}
-                            </p>
-                          </div>
-                        </div>
-                      )}
                     </div>
 
-                    {/* Footer CTA */}
-                    <div
-                      className="px-6 py-4 flex items-center justify-between gap-4"
-                      style={{ background: '#FAFAFA', borderTop: '1px solid #f3f4f6' }}
-                    >
-                      <p className="text-xs text-gray-500">
-                        Tersedia: {doctor.schedule.join(', ')}
-                      </p>
+                    {/* Content */}
+                    <div className="p-6 flex flex-col flex-grow">
+                      <div className="mb-1">
+                        <span className="text-xs font-bold uppercase tracking-wider bg-pink-50 px-2.5 py-1 rounded-md" style={{ color: '#FF6BB5' }}>
+                          {doctor.specialty}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold text-[#0D1421] font-headline mt-2 mb-1 group-hover:text-[#E91E8C] transition-colors">
+                        {doctor.name}
+                      </h3>
+                      <div className="flex items-center gap-1 mb-4">
+                        <div className="flex text-yellow-400 text-sm">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star
+                              key={s}
+                              size={14}
+                              fill={s <= Math.round(doctor.rating) ? '#FBBF24' : 'none'}
+                              className="text-yellow-400"
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs text-[#6B7280] font-medium ml-1">
+                          {doctor.rating} ({doctor.reviewCount} Ulasan)
+                        </span>
+                      </div>
+
+                      <div className="space-y-3 mb-6 flex-grow">
+                        <div className="flex items-start gap-2.5 text-sm text-[#6B7280]">
+                          <Calendar size={16} className="text-gray-400 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium text-gray-700">{detail.schedule}</p>
+                            <p className="text-xs">{detail.hours}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2.5 text-sm text-[#6B7280]">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                            <rect x="2" y="5" width="20" height="14" rx="2" />
+                            <path d="M2 10h20" />
+                          </svg>
+                          <p>Mulai <span className="font-bold text-[#0D1421]">{detail.fee}</span></p>
+                        </div>
+                      </div>
+
                       <Link
                         to="/booking"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg flex-shrink-0"
-                        style={{
-                          background: doctor.available
-                            ? 'linear-gradient(135deg, #E91E8C, #FF6BB5)'
-                            : '#94A3B8',
-                          boxShadow: doctor.available ? '0 4px 14px rgba(233,30,140,0.3)' : 'none',
-                        }}
+                        className="w-full text-center py-3 rounded-xl font-bold font-headline text-sm shadow-md transition-all active:scale-95 group-hover:opacity-90 block"
+                        style={
+                          isAvailable
+                            ? { background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)', color: 'white', boxShadow: '0 4px 12px rgba(233,30,140,0.3)' }
+                            : { background: 'white', color: '#E91E8C', border: '2px solid #E91E8C' }
+                        }
                       >
-                        <Calendar size={14} />
-                        Jadwalkan
-                        <ChevronRight size={14} />
+                        {isAvailable ? 'Booking Jadwal' : 'Cek Jadwal Lain'}
                       </Link>
                     </div>
                   </motion.div>
@@ -304,25 +207,31 @@ export function Doctors() {
         </div>
       </section>
 
-      <WaveDivider fromColor="#FAFAFA" toColor="#FFFFFF" />
-
-      {/* CTA */}
-      <section className="py-16" style={{ background: 'white' }}>
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-black mb-4" style={{ color: '#1A1A2E', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Tidak Yakin Memilih Dokter?
-          </h2>
-          <p className="text-gray-500 mb-8">
-            Tim kami siap membantu Anda memilih dokter yang paling sesuai dengan kebutuhan perawatan Anda.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
-            style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}
+      {/* Closing CTA */}
+      <section className="py-20 relative overflow-hidden bg-[#FFF5F9]">
+        <div className="max-w-5xl mx-auto px-6 md:px-12">
+          <div
+            className="bg-white rounded-[32px] p-8 md:p-12 shadow-xl border border-pink-50 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left"
           >
-            Hubungi Kami
-            <ChevronRight size={18} />
-          </Link>
+            <div className="max-w-xl">
+              <h2 className="text-3xl font-bold font-headline text-[#0D1421] mb-4 tracking-tight">
+                Butuh konsultasi mendadak?
+              </h2>
+              <p className="text-[#6B7280] font-body text-lg">
+                Layanan darurat kami siap membantu Anda. Jangan biarkan sakit gigi mengganggu hari Anda.
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <Link
+                to="/booking"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold font-headline text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-95 text-white"
+                style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)', boxShadow: '0 4px 20px rgba(233,30,140,0.3)' }}
+              >
+                <Calendar size={20} />
+                Booking Sekarang
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </div>

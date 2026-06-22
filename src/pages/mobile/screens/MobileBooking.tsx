@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Clock, ChevronRight, ChevronDown, X, Sparkles } from 'lucide-react';
+import { Clock, ChevronRight, ChevronDown, X } from 'lucide-react';
 import { SERVICES } from '../../../data/mockData';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { Odontogram } from '../../../components/mobile/Odontogram';
@@ -50,40 +50,21 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB' }}
     >
       <MobileHeader
-        title="Buat Janji"
+        title="Pilih Layanan"
         showBack
         onBack={() => setState({ screen: 'home' })}
       />
 
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>
 
-        {/* ── Hero banner ── */}
-        <div style={{
-          margin: '16px 20px',
-          borderRadius: 22,
-          padding: '16px 20px',
-          background: 'linear-gradient(135deg, #FFF0F8 0%, #EEF6FF 100%)',
-          border: '1px solid rgba(233,30,140,0.10)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
-        }}>
-          <div style={{
-            width: 46, height: 46, borderRadius: 14,
-            background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, boxShadow: '0 4px 14px rgba(233,30,140,0.30)',
-          }}>
-            <Sparkles size={20} color="white" />
-          </div>
-          <div>
-            <p style={{ fontWeight: 800, fontSize: 14, color: '#1A1A2E', marginBottom: 3 }}>
-              Pilih Layanan
-            </p>
-            <p style={{ fontSize: 11, color: '#6B7280', lineHeight: 1.5 }}>
-              {SERVICES.length} layanan tersedia · Tim dokter profesional
-            </p>
-          </div>
+        {/* ── Welcome banner ── */}
+        <div style={{ padding: '16px 20px 4px' }}>
+          <h2 style={{ fontWeight: 800, fontSize: 20, color: '#0D1421', marginBottom: 4 }}>
+            Halo, Kawan OMDC! 👋
+          </h2>
+          <p style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5 }}>
+            Silakan pilih layanan yang kamu butuhkan hari ini.
+          </p>
         </div>
 
         {/* ── Tooth chart accordion ── */}

@@ -201,7 +201,10 @@ export function Booking() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+        {/* Wizard content (2/3) */}
+        <div className="w-full lg:w-2/3">
         <AnimatePresence mode="wait">
           {/* Step 0: Select Service */}
           {currentStep === 0 && (
@@ -738,6 +741,73 @@ export function Booking() {
         <p className="text-center text-xs text-gray-400 mt-4">
           Langkah {currentStep + 1} dari {steps.length}
         </p>
+        </div>{/* end wizard content */}
+
+        {/* Sticky sidebar (1/3) */}
+        <div className="hidden lg:block w-full lg:w-1/3 lg:sticky lg:top-32">
+          <div className="rounded-2xl p-6" style={{ background: 'white', border: '1px solid #F3F4F6', boxShadow: '0 2px 20px rgba(0,0,0,0.04)' }}>
+            <h3 className="font-black text-base mb-5 flex items-center gap-2 pb-4" style={{ color: '#1A1A2E', borderBottom: '1px solid #F3F4F6' }}>
+              <CheckCircle size={18} style={{ color: '#E91E8C' }} />
+              Ringkasan Pesanan
+            </h3>
+            <div className="space-y-4 mb-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">Layanan</p>
+                  {selectedService ? (
+                    <p className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{selectedService.name}</p>
+                  ) : (
+                    <p className="text-sm italic text-gray-300">Belum dipilih</p>
+                  )}
+                </div>
+                {selectedService && (
+                  <span className="text-sm font-black" style={{ color: '#E91E8C' }}>Rp {(selectedService.priceMin / 1000).toFixed(0)}rb+</span>
+                )}
+              </div>
+              <div className="flex justify-between items-start pt-3" style={{ borderTop: '1px solid #F9FAFB' }}>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">Dokter</p>
+                  {selectedDoctor ? (
+                    <p className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{selectedDoctor.name}</p>
+                  ) : (
+                    <p className="text-sm italic text-gray-300">Belum dipilih</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex justify-between items-start pt-3" style={{ borderTop: '1px solid #F9FAFB' }}>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-gray-400 mb-1">Jadwal</p>
+                  {booking.date && booking.timeSlot ? (
+                    <p className="text-sm font-bold" style={{ color: '#1A1A2E' }}>{booking.date} · {booking.timeSlot}</p>
+                  ) : (
+                    <p className="text-sm italic text-gray-300">Belum dipilih</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            {selectedService && (
+              <div className="flex justify-between items-center py-3 mb-4" style={{ borderTop: '1px solid #F3F4F6' }}>
+                <span className="font-bold text-sm" style={{ color: '#1A1A2E' }}>Estimasi Biaya</span>
+                <span className="font-black text-lg" style={{ color: '#E91E8C' }}>
+                  {formatPrice(selectedService.priceMin)}+
+                </span>
+              </div>
+            )}
+            <button
+              onClick={() => canProceed() && (currentStep < 4 ? setCurrentStep(Math.min(4, currentStep + 1)) : handleSubmit())}
+              disabled={!canProceed()}
+              className="w-full py-3.5 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)', boxShadow: canProceed() ? '0 4px 14px rgba(233,30,140,0.3)' : 'none' }}
+            >
+              {currentStep < 4 ? 'Lanjutkan' : 'Konfirmasi Janji'}
+              <ArrowRight size={16} />
+            </button>
+            <p className="text-xs text-center text-gray-400 mt-3">
+              Pembayaran dilakukan di klinik setelah perawatan.
+            </p>
+          </div>
+        </div>
+        </div>{/* end flex container */}
       </div>
 
       {/* Info bar */}

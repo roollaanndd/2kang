@@ -1,29 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Award, Shield, Heart, Users, Star, CheckCircle, ArrowRight, Calendar } from 'lucide-react';
-import { DOCTORS, CLINIC_NAME, CLINIC_ADDRESS } from '../../data/mockData';
+import { Heart, Shield, Award, Users, Star, CheckCircle, ArrowRight, Calendar } from 'lucide-react';
+import { CLINIC_NAME, CLINIC_ADDRESS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { WaveDivider } from '../../components/ui/WaveDivider';
 import { CountUp } from '../../components/ui/CountUp';
-
-function DoctorAvatar({ name, size = 72 }: { name: string; size?: number }) {
-  const letter = name.replace('drg. ', '')[0];
-  const colors = [
-    'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-    'linear-gradient(135deg, #4FC3F7, #0288D1)',
-    'linear-gradient(135deg, #A78BFA, #7C3AED)',
-    'linear-gradient(135deg, #10B981, #059669)',
-  ];
-  const idx = name.charCodeAt(5) % colors.length;
-  return (
-    <div
-      className="rounded-full flex items-center justify-center text-white font-black flex-shrink-0"
-      style={{ width: size, height: size, background: colors[idx], fontSize: size * 0.38 }}
-    >
-      {letter}
-    </div>
-  );
-}
 
 const milestones = [
   { year: '2010', title: 'Berdiri', desc: 'OMDC Dental didirikan di Jakarta Selatan dengan 2 dokter gigi dan misi memberikan pelayanan dental terbaik.' },
@@ -165,7 +146,7 @@ export function About() {
               </div>
             </motion.div>
 
-            {/* Decorative visual */}
+            {/* Clinic photo */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -173,38 +154,16 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div
-                className="rounded-3xl p-8 relative overflow-hidden"
-                style={{ background: 'white', border: '1.5px solid rgba(233,30,140,0.12)', boxShadow: '0 8px 48px rgba(233,30,140,0.08)' }}
-              >
-                <div className="relative z-10">
-                  <div className="text-6xl mb-4">🏥</div>
-                  <h3 className="text-2xl font-black mb-2" style={{ color: '#111827' }}>{CLINIC_NAME}</h3>
-                  <p className="text-sm mb-6" style={{ color: '#9CA3AF' }}>{CLINIC_ADDRESS}</p>
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { val: 'A+', label: 'Akreditasi Klinik' },
-                      { val: '100%', label: 'Pasien Puas' },
-                      { val: 'ISO', label: '9001:2015' },
-                      { val: '24h', label: 'Layanan Darurat' },
-                    ].map((s) => (
-                      <div
-                        key={s.val}
-                        className="rounded-xl p-3 text-center"
-                        style={{ background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.12)' }}
-                      >
-                        <div className="text-xl font-black" style={{ color: '#E91E8C' }}><CountUp value={s.val} /></div>
-                        <div className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>{s.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
+              <img
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKJplFRi4nZVbG6qEpXdvTzIklDzxC2rkfqnANtiqieo0SNdjlGabr__i82pi4PvbyrLF4QyhDoIqOmiuS-CfmIrP2XkJ0LEPd26Oii9Pw67bk5aLzKqz1Guz4rmcGHO3ObZvf5KLSNUDOthskRiLj2I0V9MLDMnEki5xVy-irVr-3pEIIEB0GdbTNlgB-DZA9pprSC8lWSJ9MKFhOPkVgHW2K6aT5R0VRbEEPNSM8HL9TsXNVyOq1cUfjn4Ea4mEoKcf7zuPDr5A"
+                alt="Klinik OMDC"
+                className="rounded-3xl w-full object-cover"
+                style={{ height: 480, boxShadow: '0 20px 40px -10px rgba(0,0,0,0.08)' }}
+              />
               {/* Rating card */}
               <div
                 className="absolute -bottom-5 -left-5 rounded-2xl p-4 shadow-xl"
-                style={{ background: 'white', minWidth: 180 }}
+                style={{ background: 'white', minWidth: 200, border: '1px solid rgba(233,30,140,0.1)' }}
               >
                 <p className="text-xs text-gray-500 mb-1">Rating Pasien</p>
                 <div className="flex items-center gap-1.5">
@@ -346,36 +305,49 @@ export function About() {
             <div className="w-16 h-1.5 rounded-full mx-auto" style={{ background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }} />
           </motion.div>
 
+          {/* Featured 4 doctors with real photos */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {DOCTORS.map((doctor, i) => (
+            {[
+              {
+                name: 'drg. Sarah Wijaya',
+                specialty: 'Dokter Gigi Umum',
+                photo: 'https://lh3.googleusercontent.com/aida/AP1WRLsJm6Hd3zuvQHAHO-2tZZTLKwucUMxPrVYakmwVrfOx5lQgn7H8rPUHO0E9FvxApcbh9i385scrC8chYANySbYJtsMy4Hmspv7NnWHRljsap8pRDF5UQ0HucY3JJW-PIzrYR6UHUTfU1WACFIsZKvj7SBe-Pv9OE-HUvpbBHmIqrKi6DWM87NPGer4TtoxBjkAFTi4X6ifT7hm35ORakGAiqThN9FxGY1br8lXTaEcAzDjpzPMDzLD00g',
+              },
+              {
+                name: 'drg. Budi Santoso, Sp.Ort',
+                specialty: 'Spesialis Ortodonsia',
+                photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXouSwFWJsNZn1pJmRbQ7qV8JuY_usefbmHSWwjMzRVi0j_YI5A6MEdc7gduheE0xF6pqgd_p1qh12BdNPM9QPSmeND4V-x4b7rxb11wgxRVM7XWtY6M5GkZkGySyk_dSWIkno4_E7DjRfLvN88s7byqQ22m3qPdSiRp9IixB1ATAscaa6HLSK0AyDZ-Uw-yDL5iPwaYM72_bJo7Y6yjm33EfwxoqYQI7MIJuaRW9dJWgvX4gKVOjLfYi2lQEwwVjRotubs2AGs_o',
+              },
+              {
+                name: 'drg. Amanda Putri, Sp.KGA',
+                specialty: 'Spesialis Gigi Anak',
+                photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBk3rZ7NFZAP8zM18TlwMRLgFtUMz45aKhSlndxKs0271T5B6YKJkGtnmYCAp4Kc2SQ5YFbVbvDDwuiDyYI-X6S6bMKmN19BIWOQH-NhSHHO5uqaG3V6dK4l_lxNaQ1TPR8Bc3RqWcHgX2YG_OwmUzed6Xepi_bFRWxcR26hUuziBnpAX88zo-6iSfvz15vTe2xu5QFgM2S1dE7ZkF6ySXcehnDEuM08LEHlAZnuMHpugf7o26pvWBayyXt0RRsIjg7jd69XUYhOQ8',
+              },
+              {
+                name: 'drg. Reza Pratama, Sp.BM',
+                specialty: 'Spesialis Bedah Mulut',
+                photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAg9nXEC8Nt9CPBec93pGNpMNRGJN35j4lusppN_BOQ_Gtr3UX8wiQtqLd_yNwbspfJQMBZnMWXmFhLBYpIgvVGKSvMh7vsXvP0lgq316bbp3uPb1Ar8feLiIs1M3na5AEG9wvIMCFIZqLgRrba6F72Mh9z8tgmvP1ZACbN12fMhNZZXwzwWmCV_rph69j5iF6pj3zkMAIPzTyTA_ypjwPHqDORO4HSLTkkWYDeP--Oz4Wbf6xFFkNSUFHPeol8WqHhVfO2GB2ol6s',
+              },
+            ].map((doctor, i) => (
               <motion.div
-                key={doctor.id}
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="rounded-2xl overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl text-center"
+                className="rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group"
                 style={{ background: 'white' }}
               >
-                <div
-                  className="py-8 px-4"
-                  style={{ background: 'linear-gradient(135deg, #FFF5F9, white)' }}
-                >
-                  <div className="flex justify-center mb-4">
-                    <DoctorAvatar name={doctor.name} size={80} />
-                  </div>
-                  <h3 className="font-black text-sm mb-1" style={{ color: '#1A1A2E' }}>{doctor.name}</h3>
-                  <p className="text-xs font-semibold mb-3" style={{ color: '#E91E8C' }}>{doctor.specialty}</p>
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    {[1,2,3,4,5].map((s) => (
-                      <Star key={s} size={12} fill={s <= Math.round(doctor.rating) ? '#F59E0B' : 'none'} style={{ color: '#F59E0B' }} />
-                    ))}
-                    <span className="text-xs font-bold ml-1" style={{ color: '#1A1A2E' }}>{doctor.rating}</span>
-                  </div>
-                  <p className="text-xs text-gray-500">{doctor.experience} tahun pengalaman</p>
+                <div className="aspect-[4/5] overflow-hidden relative">
+                  <img
+                    src={doctor.photo}
+                    alt={doctor.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
-                <div className="p-4">
-                  <p className="text-xs text-gray-500 text-center leading-relaxed">{doctor.about}</p>
+                <div className="p-5">
+                  <h3 className="font-black text-base mb-1" style={{ color: '#1A1A2E' }}>{doctor.name}</h3>
+                  <p className="text-sm font-semibold" style={{ color: '#E91E8C' }}>{doctor.specialty}</p>
                 </div>
               </motion.div>
             ))}

@@ -4,10 +4,11 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   User, ClipboardList, Bell, Pill, Star, Gift, HelpCircle, LogOut,
   ChevronRight, Users, Shield, CheckCircle, X, ScrollText,
-  Calendar, MapPin, Clock,
+  Calendar, ArrowLeft, Edit3, Globe, Language,
 } from 'lucide-react';
 import type { MobileState } from '../../../types';
 import { APP_VERSION } from '../../../version';
+import { haptic } from '../../../lib/haptics';
 
 interface MobileProfileProps {
   state: MobileState;
@@ -19,36 +20,22 @@ const ROSE = '#FF6BB5';
 const AQUA = '#06B6D4';
 const DARK = '#0D1421';
 
-// ── MENU GROUP CONFIG ─────────────────────────────────────────────────────────
 const MENU_GROUPS = [
   {
-    title: 'Akun',
+    title: 'Akun & Keamanan',
     items: [
-      { id: 'profile-data',  icon: User,          label: 'Data Diri',          sublabel: 'Informasi profil Anda',          screen: undefined     as undefined },
-      { id: 'history',       icon: ClipboardList,  label: 'Riwayat Kunjungan', sublabel: 'Rekam medis & kunjungan',         screen: 'history'     as const    },
-      { id: 'loyalty',       icon: Gift,           label: 'Poin & Reward',      sublabel: 'Tukar poin jadi hadiah',          screen: 'loyalty'     as const    },
-      { id: 'family',        icon: Users,          label: 'Profil Keluarga',    sublabel: 'Kelola anggota keluarga',         screen: 'family'      as const    },
-    ],
-  },
-  {
-    title: 'Medis',
-    items: [
-      { id: 'medical',       icon: Pill,           label: 'Riwayat Medis',      sublabel: 'Catatan & diagnosa Anda',         screen: 'medical'     as const    },
-      { id: 'reviews',       icon: Star,           label: 'Ulasan Saya',        sublabel: 'Ulasan yang telah dibuat',        screen: undefined     as undefined },
+      { id: 'profile-data',  icon: User,         label: 'Data Diri',         screen: undefined     as undefined },
+      { id: 'medical',       icon: Pill,          label: 'Rekam Medis',       screen: 'medical'     as const    },
+      { id: 'family',        icon: Users,         label: 'Keluarga',          screen: 'family'      as const    },
+      { id: 'insurance',     icon: Shield,        label: 'Asuransi',          screen: undefined     as undefined },
     ],
   },
   {
     title: 'Pengaturan',
     items: [
-      { id: 'notifications', icon: Bell,           label: 'Notifikasi',         sublabel: 'Atur preferensi notifikasi',      screen: 'notifications' as const  },
-      { id: 'promos',        icon: Gift,           label: 'Promo & Voucher',    sublabel: 'Voucher aktif Anda',              screen: 'promos'      as const    },
-    ],
-  },
-  {
-    title: 'Informasi',
-    items: [
-      { id: 'help',          icon: HelpCircle,     label: 'Bantuan',            sublabel: 'FAQ & hubungi kami',              screen: undefined     as undefined },
-      { id: 'tnc',           icon: ScrollText,     label: 'Syarat & Ketentuan', sublabel: 'Perjanjian penggunaan layanan',    screen: undefined     as undefined },
+      { id: 'notifications', icon: Bell,          label: 'Notifikasi',        screen: 'notifications' as const  },
+      { id: 'language',      icon: Globe,         label: 'Bahasa',            screen: undefined     as undefined, sublabel: 'Indonesia' },
+      { id: 'help',          icon: HelpCircle,    label: 'Bantuan',           screen: undefined     as undefined },
     ],
   },
 ];
@@ -70,20 +57,11 @@ Kami menghormati privasi Anda. Data pribadi Anda — termasuk nama, kontak, dan 
 Informasi medis yang Anda berikan bersifat rahasia dan dilindungi. Hanya tenaga medis yang berwenang di OMDC Dental yang dapat mengakses rekam medis Anda sesuai prosedur klinis yang berlaku.
 
 5. PEMESANAN JANJI TEMU
-Pemesanan janji temu melalui Aplikasi tunduk pada ketersediaan jadwal dokter. OMDC Dental berhak mengubah atau membatalkan jadwal dengan pemberitahuan sebelumnya. Kami mohon Anda hadir tepat waktu atau membatalkan minimal 2 jam sebelum jadwal.
+Pemesanan janji temu melalui Aplikasi tunduk pada ketersediaan jadwal dokter. OMDC Dental berhak mengubah atau membatalkan jadwal dengan pemberitahuan sebelumnya.
 
-6. PEMBATASAN TANGGUNG JAWAB
-OMDC Dental tidak bertanggung jawab atas kerugian yang timbul dari penggunaan atau ketidakmampuan menggunakan Aplikasi, atau dari keputusan medis yang diambil berdasarkan informasi di Aplikasi. Konsultasikan selalu dengan dokter untuk keputusan medis.
+6. PERUBAHAN KETENTUAN
+OMDC Dental berhak mengubah Syarat dan Ketentuan ini sewaktu-waktu. Perubahan akan diberitahukan melalui Aplikasi.`;
 
-7. PERUBAHAN KETENTUAN
-OMDC Dental berhak mengubah Syarat dan Ketentuan ini sewaktu-waktu. Perubahan akan diberitahukan melalui Aplikasi. Penggunaan Aplikasi setelah perubahan dianggap sebagai penerimaan atas ketentuan yang baru.
-
-8. HUKUM YANG BERLAKU
-Syarat dan Ketentuan ini tunduk pada hukum yang berlaku di Republik Indonesia.
-
-Dengan menekan "Saya Setuju", Anda menyatakan telah membaca, memahami, dan menyetujui seluruh Syarat dan Ketentuan di atas.`;
-
-// ── T&C MODAL ─────────────────────────────────────────────────────────────────
 function TnCModal({ accepted, onAccept, onClose }: { accepted: boolean; onAccept: () => void; onClose: () => void }) {
   return (
     <motion.div
@@ -109,7 +87,6 @@ function TnCModal({ accepted, onAccept, onClose }: { accepted: boolean; onAccept
           boxShadow: '0 -8px 40px rgba(0,0,0,0.18)',
         }}
       >
-        {/* Header */}
         <div style={{
           padding: '20px 20px 16px', display: 'flex', alignItems: 'center', gap: 12,
           borderBottom: '1px solid rgba(0,0,0,0.06)', flexShrink: 0,
@@ -133,8 +110,6 @@ function TnCModal({ accepted, onAccept, onClose }: { accepted: boolean; onAccept
             <X size={16} color="#6B7280" />
           </button>
         </div>
-
-        {/* Scrollable content */}
         <div style={{
           flex: 1, overflowY: 'auto', padding: '16px 20px',
           scrollbarWidth: 'none', lineHeight: 1.7,
@@ -142,15 +117,12 @@ function TnCModal({ accepted, onAccept, onClose }: { accepted: boolean; onAccept
           {TNC_TEXT.split('\n\n').map((para, i) => (
             <p key={i} style={{
               fontSize: 13, color: para.match(/^\d+\./) ? DARK : '#4B5563',
-              fontWeight: para.match(/^\d+\./) ? 700 : 400,
-              marginBottom: 14,
+              fontWeight: para.match(/^\d+\./) ? 700 : 400, marginBottom: 14,
             }}>
               {para}
             </p>
           ))}
         </div>
-
-        {/* Footer */}
         <div style={{ padding: '16px 20px 28px', borderTop: '1px solid rgba(0,0,0,0.06)', flexShrink: 0 }}>
           {accepted ? (
             <div style={{
@@ -183,61 +155,15 @@ function TnCModal({ accepted, onAccept, onClose }: { accepted: boolean; onAccept
   );
 }
 
-// ── MENU ITEM ─────────────────────────────────────────────────────────────────
-function MenuItem({
-  icon: Icon, label, sublabel, badge, delay = 0, onClick,
-}: {
-  icon: React.ComponentType<{ size?: number; color?: string }>;
-  label: string;
-  sublabel?: string;
-  badge?: React.ReactNode;
-  delay?: number;
-  onClick?: () => void;
-}) {
-  return (
-    <motion.button
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      style={{
-        width: '100%', display: 'flex', alignItems: 'center', gap: 14,
-        padding: '13px 16px', borderRadius: 16, background: 'white',
-        border: '1px solid rgba(0,0,0,0.05)',
-        boxShadow: '0 1px 6px rgba(0,0,0,0.04)',
-        cursor: 'pointer', textAlign: 'left',
-      }}
-    >
-      <div style={{
-        width: 40, height: 40, borderRadius: 12, flexShrink: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'rgba(233,30,140,0.07)',
-      }}>
-        <Icon size={18} color={PINK} />
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ fontSize: 13.5, fontWeight: 700, color: DARK, margin: 0, lineHeight: 1.2 }}>{label}</p>
-        {sublabel && <p style={{ fontSize: 11, color: '#9CA3AF', margin: '2px 0 0' }}>{sublabel}</p>}
-      </div>
-      {badge}
-      <ChevronRight size={15} color="#D1D5DB" />
-    </motion.button>
-  );
-}
-
-// ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 export function MobileProfile({ state, setState }: MobileProfileProps) {
   const [showTnC, setShowTnC] = useState(false);
   const user = state.user;
-  const initial = user?.name?.[0]?.toUpperCase() ?? 'U';
   const tcAccepted = state.tcAccepted ?? false;
 
-  const handleAcceptTnC = () => {
-    setState({ tcAccepted: true });
-  };
+  const handleAcceptTnC = () => setState({ tcAccepted: true });
 
   const handleLogout = () => {
+    haptic('medium');
     setState({ isLoggedIn: false, screen: 'onboarding', user: undefined, onboardingStep: 0 });
   };
 
@@ -251,6 +177,7 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
   };
 
   const handleMenuClick = (id: string) => {
+    haptic('selection');
     if (id === 'tnc') { setShowTnC(true); return; }
     const screen = getScreenForItem(id);
     if (screen) setState({ screen });
@@ -263,208 +190,179 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.22 }}
-        style={{ display: 'flex', flexDirection: 'column', height: '100%', overflowY: 'auto', background: '#F8F9FB', scrollbarWidth: 'none' }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF5F9' }}
       >
-        {/* ── HEADER ───────────────────────────────────────────────── */}
-        <div style={{ position: 'relative', background: '#FFFFFF', paddingBottom: 28, overflow: 'hidden', flexShrink: 0 }}>
-          {/* 3px gradient strip */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 2 }} />
+        {/* 3px gradient strip */}
+        <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
 
-          {/* Subtle dental geometry bg */}
-          {[
-            { x: 76, y: -6, s: 54, c: PINK, o: 0.06, r: [0, 4, 0] as [number, number, number] },
-            { x: -4, y: 18, s: 60, c: AQUA, o: 0.05, r: [0, 0, 0] as [number, number, number] },
-            { x: 84, y: 52, s: 20, c: PINK, o: 0.07, r: [0, 16, 0] as [number, number, number] },
-            { x: 10, y: 70, s: 14, c: AQUA, o: 0.08, r: [0, 20, 0] as [number, number, number] },
-          ].map((el, i) => (
-            <motion.div
-              key={i}
-              style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, opacity: el.o, pointerEvents: 'none' }}
-              animate={{ y: [-6, 6, -6], rotate: el.r }}
-              transition={{ duration: 10 + i * 2, repeat: Infinity, delay: i * 0.8, ease: 'easeInOut' }}
+        {/* Header */}
+        <div style={{
+          flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 16px', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid rgba(252,231,243,0.8)', boxShadow: '0 1px 8px rgba(233,30,140,0.06)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button
+              onClick={() => setState({ screen: 'home' })}
+              style={{ display: 'flex', width: 36, height: 36, background: 'none', border: 'none', cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}
             >
-              <svg width={el.s} height={el.s} viewBox="0 0 100 100" fill="none">
-                <circle cx="50" cy="50" r="40" stroke={el.c} strokeWidth="3" />
-                <circle cx="50" cy="50" r="28" stroke={el.c} strokeWidth="1.5" strokeDasharray="7 5" />
-              </svg>
-            </motion.div>
-          ))}
-
-          {/* Avatar + info */}
-          <div style={{ position: 'relative', zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, paddingTop: 48 }}>
-            {/* Avatar */}
-            <motion.div
-              initial={{ scale: 0.7, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
-              style={{ position: 'relative' }}
-            >
-              {/* Outer ring */}
-              <div style={{
-                width: 96, height: 96, borderRadius: '50%',
-                padding: 3,
-                background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
-              }}>
-                <div style={{
-                  width: '100%', height: '100%', borderRadius: '50%',
-                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  border: '3px solid white',
-                }}>
-                  <span style={{ color: 'white', fontWeight: 900, fontSize: 34, letterSpacing: -1 }}>{initial}</span>
-                </div>
-              </div>
-              {/* Online indicator */}
-              <div style={{
-                position: 'absolute', bottom: 4, right: 4,
-                width: 16, height: 16, borderRadius: '50%',
-                background: '#10B981', border: '2.5px solid white',
-              }} />
-              {/* T&C check badge */}
-              {tcAccepted && (
-                <div style={{
-                  position: 'absolute', top: 2, right: 2,
-                  width: 22, height: 22, borderRadius: '50%',
-                  background: '#10B981', border: '2px solid white',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <CheckCircle size={13} color="white" />
-                </div>
-              )}
-            </motion.div>
-
-            {/* Name + email + record */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.18 }}
-              style={{ textAlign: 'center', paddingLeft: 24, paddingRight: 24 }}
-            >
-              <h2 style={{ fontSize: 22, fontWeight: 900, color: DARK, margin: 0, letterSpacing: -0.5 }}>
-                {user?.name ?? 'Pengguna'}
-              </h2>
-              <p style={{ fontSize: 13, color: '#9CA3AF', margin: '4px 0 10px' }}>{user?.email ?? ''}</p>
-
-              <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <span style={{
-                  padding: '4px 12px', borderRadius: 20, fontSize: 11, fontWeight: 700,
-                  background: 'rgba(233,30,140,0.08)', color: PINK,
-                  border: '1px solid rgba(233,30,140,0.15)',
-                }}>
-                  📋 {user?.medicalRecordNo ?? 'RM-2024-001'}
-                </span>
-                <span style={{
-                  padding: '4px 12px', borderRadius: 20, fontSize: 11, fontWeight: 700,
-                  background: 'rgba(6,182,212,0.08)', color: '#0891B2',
-                  border: '1px solid rgba(6,182,212,0.15)',
-                }}>
-                  ✦ Member
-                </span>
-              </div>
-            </motion.div>
+              <ArrowLeft size={22} color={DARK} />
+            </button>
+            <h1 style={{ fontSize: 18, fontWeight: 900, color: PINK, letterSpacing: -0.3 }}>Profil</h1>
           </div>
+          <button
+            onClick={() => { haptic('light'); setState({ screen: 'notifications' }); }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            <Bell size={22} color={DARK} />
+          </button>
         </div>
 
-        {/* ── STATS ROW ────────────────────────────────────────────── */}
-        <div style={{ margin: '0 16px', marginTop: -14, zIndex: 5, position: 'relative' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.22 }}
-            style={{
-              background: 'white', borderRadius: 20, padding: '14px 8px',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.09)',
-              border: '1px solid rgba(0,0,0,0.04)',
-              display: 'flex', alignItems: 'stretch',
-            }}
-          >
-            {[
-              { value: '12', label: 'Kunjungan', Icon: Calendar, color: PINK },
-              { value: '4.9', label: 'Rating', Icon: Star, color: '#F59E0B' },
-              { value: '3', label: 'Aktif', Icon: Clock, color: AQUA },
-            ].map((stat, i) => (
-              <div key={stat.label} style={{
-                flex: 1, textAlign: 'center', paddingTop: 4, paddingBottom: 4,
-                borderRight: i < 2 ? '1px solid #F3F4F6' : 'none',
-              }}>
-                <stat.Icon size={15} color={stat.color} style={{ margin: '0 auto 4px' }} />
-                <p style={{ fontSize: 20, fontWeight: 900, color: DARK, margin: 0, lineHeight: 1 }}>{stat.value}</p>
-                <p style={{ fontSize: 10, color: '#9CA3AF', margin: '3px 0 0' }}>{stat.label}</p>
-              </div>
-            ))}
-          </motion.div>
-        </div>
+        <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>
+          <div style={{ padding: '16px 16px 0', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-        {/* ── MENU GROUPS ──────────────────────────────────────────── */}
-        <div style={{ padding: '20px 16px 100px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-          {MENU_GROUPS.map((group, gi) => (
-            <div key={group.title}>
-              <p style={{
-                fontSize: 10.5, fontWeight: 800, color: '#9CA3AF',
-                letterSpacing: '0.1em', textTransform: 'uppercase',
-                marginBottom: 10, paddingLeft: 4,
-              }}>
-                {group.title}
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {group.items.map((item, ii) => {
-                  const badge = item.id === 'tnc' ? (
-                    tcAccepted
-                      ? <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, fontWeight: 700, color: '#10B981', background: 'rgba(16,185,129,0.1)', padding: '3px 8px', borderRadius: 20 }}>
-                          <CheckCircle size={10} /> Disetujui
-                        </span>
-                      : <span style={{ fontSize: 10, fontWeight: 700, color: '#F59E0B', background: 'rgba(245,158,11,0.1)', padding: '3px 8px', borderRadius: 20 }}>
-                          Perlu disetujui
-                        </span>
-                  ) : undefined;
-
-                  return (
-                    <MenuItem
-                      key={item.id}
-                      icon={item.icon}
-                      label={item.label}
-                      sublabel={item.sublabel}
-                      badge={badge}
-                      delay={gi * 0.06 + ii * 0.04}
-                      onClick={() => handleMenuClick(item.id)}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-
-          {/* Logout */}
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.45 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={handleLogout}
-            style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 14,
-              padding: '13px 16px', borderRadius: 16,
-              background: '#FEF2F2', border: '1.5px solid #FEE2E2',
-              cursor: 'pointer', textAlign: 'left',
-            }}
-          >
+            {/* ── Profile Card ── */}
             <div style={{
-              width: 40, height: 40, borderRadius: 12, flexShrink: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: '#FEE2E2',
+              background: 'white', borderRadius: 20, padding: '24px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
+              border: '1px solid rgba(252,231,243,0.8)',
+              boxShadow: '0 4px 20px rgba(233,30,140,0.05)',
+              position: 'relative', overflow: 'hidden',
             }}>
-              <LogOut size={18} color="#EF4444" />
+              <div style={{
+                position: 'relative', marginBottom: 14,
+              }}>
+                <img
+                  src="https://lh3.googleusercontent.com/aida/AP1WRLsJm6Hd3zuvQHAHO-2tZZTLKwucUMxPrVYakmwVrfOx5lQgn7H8rPUHO0E9FvxApcbh9i385scrC8chYANySbYJtsMy4Hmspv7NnWHRljsap8pRDF5UQ0HucY3JJW-PIzrYR6UHUTfU1WACFIsZKvj7SBe-Pv9OE-HUvpbBHmIqrKi6DWM87NPGer4TtoxBjkAFTi4X6ifT7hm35ORakGAiqThN9FxGY1br8lXTaEcAzDjpzPMDzLD00g"
+                  alt="Profile Avatar"
+                  style={{ width: 96, height: 96, borderRadius: '50%', objectFit: 'cover', border: '4px solid white', boxShadow: '0 4px 16px rgba(0,0,0,0.10)' }}
+                />
+                <button style={{
+                  position: 'absolute', bottom: 2, right: 2,
+                  background: PINK, border: 'none', borderRadius: '50%',
+                  width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0 2px 8px rgba(233,30,140,0.3)',
+                }}>
+                  <Edit3 size={13} color="white" />
+                </button>
+              </div>
+              <h2 style={{ fontSize: 20, fontWeight: 700, color: DARK, marginBottom: 4 }}>
+                {user?.name ?? 'Budi Santoso'}
+              </h2>
+              <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 12 }}>
+                ID: {user?.medicalRecordNo ?? 'OMDC-88291'}
+              </p>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                background: 'rgba(233,30,140,0.07)', color: PINK,
+                padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600,
+              }}>
+                <Star size={14} fill={PINK} color={PINK} />
+                Gold Member
+              </div>
             </div>
-            <span style={{ fontSize: 13.5, fontWeight: 700, color: '#EF4444', flex: 1 }}>Keluar dari Akun</span>
-          </motion.button>
 
-          <p style={{ textAlign: 'center', fontSize: 11, color: '#D1D5DB', marginTop: 4 }}>
-            OMDC Dental v{APP_VERSION} · © {new Date().getFullYear()}
-          </p>
+            {/* ── Quick Stats ── */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+              {[
+                { value: '12', label: 'Kunjungan', color: AQUA, icon: <Calendar size={24} color={AQUA} /> },
+                { value: '2.450', label: 'Poin', color: ROSE, icon: (
+                  <svg viewBox="0 0 24 24" width={24} height={24} fill="none" stroke={ROSE} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                  </svg>
+                )},
+                { value: '4', label: 'Keluarga', color: PINK, icon: <Users size={24} color={PINK} /> },
+              ].map((stat) => (
+                <div key={stat.label} style={{
+                  background: 'white', borderRadius: 18, padding: '14px 8px',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
+                  border: '1px solid rgba(252,231,243,0.8)',
+                  boxShadow: '0 2px 10px rgba(233,30,140,0.04)',
+                }}>
+                  <div style={{ marginBottom: 8 }}>{stat.icon}</div>
+                  <span style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}>{stat.value}</span>
+                  <span style={{ fontSize: 10, color: '#6B7280', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 500 }}>
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* ── Menu Groups ── */}
+            {MENU_GROUPS.map((group) => (
+              <section key={group.title} style={{
+                background: 'white', borderRadius: 18, overflow: 'hidden',
+                border: '1px solid rgba(252,231,243,0.8)',
+                boxShadow: '0 2px 10px rgba(233,30,140,0.04)',
+              }}>
+                <div style={{ padding: '12px 18px 10px', background: 'rgba(249,250,251,0.5)', borderBottom: '1px solid #F3F4F6' }}>
+                  <h3 style={{ fontSize: 11, fontWeight: 700, color: DARK, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    {group.title}
+                  </h3>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {group.items.map((item, ii) => {
+                    const Icon = item.icon;
+                    const iconBg = group.title === 'Pengaturan' ? `rgba(6,182,212,0.10)` : 'rgba(233,30,140,0.08)';
+                    const iconColor = group.title === 'Pengaturan' ? AQUA : PINK;
+                    return (
+                      <motion.button
+                        key={item.id}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => handleMenuClick(item.id)}
+                        style={{
+                          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                          padding: '14px 16px',
+                          borderBottom: ii < group.items.length - 1 ? '1px solid #F9FAFB' : 'none',
+                          background: 'transparent', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <div style={{
+                            width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                            background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          }}>
+                            <Icon size={18} color={iconColor} />
+                          </div>
+                          <span style={{ fontSize: 14, fontWeight: 500, color: DARK }}>{item.label}</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          {'sublabel' in item && item.sublabel && (
+                            <span style={{ fontSize: 12, color: '#6B7280' }}>{item.sublabel}</span>
+                          )}
+                          <ChevronRight size={18} color="#6B7280" />
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+
+            {/* ── Logout ── */}
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleLogout}
+              style={{
+                width: '100%', background: 'white', borderRadius: 18,
+                border: '1px solid #FEE2E2', padding: '14px 16px',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                fontSize: 14, fontWeight: 700, color: '#EF4444', cursor: 'pointer',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+              }}
+            >
+              <LogOut size={18} color="#EF4444" />
+              Keluar
+            </motion.button>
+
+            <p style={{ textAlign: 'center', fontSize: 11, color: '#D1D5DB', paddingBottom: 100 }}>
+              OMDC Dental App v{APP_VERSION}
+            </p>
+
+          </div>
         </div>
       </motion.div>
 
-      {/* ── T&C MODAL ────────────────────────────────────────────────── */}
       <AnimatePresence>
         {showTnC && (
           <TnCModal
