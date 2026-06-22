@@ -4,12 +4,14 @@ import { SERVICES } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { Service } from '../../../types';
 import { kioskSound } from '../../../lib/kioskSound';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const PINK = '#E91E8C';
 const DARK = '#0D1421';
 
 export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
+  const portrait = useIsPortrait();
 
   const handleSelect = (service: Service) => {
     kioskSound('select');
@@ -33,7 +35,7 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
     >
       {/* Header */}
       <div style={{
-        padding: '24px 60px 18px',
+        padding: portrait ? '24px 32px 18px' : '24px 60px 18px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
@@ -52,12 +54,12 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
       {/* Services grid */}
       <div style={{
         flex: 1,
-        padding: '24px 60px',
+        padding: portrait ? '24px 32px' : '24px 60px',
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gridTemplateRows: 'repeat(2, 1fr)',
-        gap: '20px',
-        overflow: 'hidden',
+        gridTemplateColumns: portrait ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
+        gridTemplateRows: portrait ? 'repeat(4, 1fr)' : 'repeat(2, 1fr)',
+        gap: portrait ? '16px' : '20px',
+        overflow: portrait ? 'auto' : 'hidden',
       }}>
         {SERVICES.map((service, index) => (
           <motion.button

@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import { kioskSound } from '../../../lib/kioskSound';
+import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const DAY_ABBR_ID = ['Min', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'];
 const MONTH_NAMES_ID = [
@@ -12,6 +13,7 @@ const MONTH_NAMES_ID = [
 
 export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
+  const portrait = useIsPortrait();
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
@@ -81,7 +83,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
     >
       {/* Header */}
       <div style={{
-        padding: '28px 60px 20px',
+        padding: portrait ? '28px 32px 20px' : '28px 60px 20px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
@@ -97,7 +99,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
       {/* Calendar */}
       <div style={{
         flex: 1,
-        padding: '24px 60px',
+        padding: portrait ? '24px 28px' : '24px 60px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
