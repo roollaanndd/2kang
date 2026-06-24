@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Star, Calendar, Search } from 'lucide-react';
 import { DOCTORS } from '../../data/mockData';
 import { SeoHead } from '../../components/ui/SeoHead';
+import { PageHero } from '../../components/website/PageHero';
 
 const DOCTOR_PHOTOS: Record<string, string> = {
   d1: 'https://lh3.googleusercontent.com/aida/AP1WRLsJm6Hd3zuvQHAHO-2tZZTLKwucUMxPrVYakmwVrfOx5lQgn7H8rPUHO0E9FvxApcbh9i385scrC8chYANySbYJtsMy4Hmspv7NnWHRljsap8pRDF5UQ0HucY3JJW-PIzrYR6UHUTfU1WACFIsZKvj7SBe-Pv9OE-HUvpbBHmIqrKi6DWM87NPGer4TtoxBjkAFTi4X6ifT7hm35ORakGAiqThN9FxGY1br8lXTaEcAzDjpzPMDzLD00g',
@@ -41,29 +42,25 @@ export function Doctors() {
       path="/doctors"
     />
     <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-12 overflow-hidden bg-[#FFF5F9]/30">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="inline-block py-1 px-3 rounded-full bg-pink-50 text-[#E91E8C] font-semibold text-sm tracking-wider uppercase mb-4 shadow-sm border border-pink-100">
-              Tim Profesional
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0D1421] tracking-tight mb-6 font-headline">
-              Temui{' '}
-              <span
-                className="text-transparent bg-clip-text"
-                style={{ backgroundImage: 'linear-gradient(90deg, #E91E8C, #FF6BB5)' }}
-              >
-                Tim Dokter
-              </span>{' '}
-              Kami
-            </h1>
-            <p className="text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto font-body leading-relaxed">
-              Dedikasi tim medis profesional kami siap memberikan perawatan gigi terbaik untuk senyum sehat dan penuh percaya diri Anda.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        badge="Tim Profesional"
+        title="Temui Tim"
+        titleAccent="Dokter Kami"
+        description="Tim dokter spesialis berpengalaman kami siap memberikan perawatan terbaik dengan pendekatan personal dan teknologi medis terkini."
+        ctaPrimaryLabel="Booking Sekarang"
+        ctaPrimaryTo="/booking"
+        ctaSecondaryLabel="Lihat Layanan"
+        ctaSecondaryTo="/services"
+        photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuAIhrxctfPERdl-c4tEYYsHgOpqbOvzY3yKmMQ8b2dmhSNUt2vjVhAWtRZn5QziC_yxd58ibtFhBeYCPJ6phozfZcYsDgEcMusplCR5iBkccspmGf-mZdDg8-N9Ojbcq_Mc9bkhLgk7IhdUH_DxoRa2eNP2-hh63uYOTmk2aQjLJIRNYNdtcYqd3G0MGKtxOySWW-b0iOkOGWoXe0KPo7AJo2tUSc5hcaUxsYGVwC11d3eATNj1H-5lwsNWkB9CbljJJOzi436QrQU"
+        photoAlt="Dokter gigi OMDC Dental"
+        floatingCard={{
+          avatar: "https://lh3.googleusercontent.com/aida/AP1WRLsJm6Hd3zuvQHAHO-2tZZTLKwucUMxPrVYakmwVrfOx5lQgn7H8rPUHO0E9FvxApcbh9i385scrC8chYANySbYJtsMy4Hmspv7NnWHRljsap8pRDF5UQ0HucY3JJW-PIzrYR6UHUTfU1WACFIsZKvj7SBe-Pv9OE-HUvpbBHmIqrKi6DWM87NPGer4TtoxBjkAFTi4X6ifT7hm35ORakGAiqThN9FxGY1br8lXTaEcAzDjpzPMDzLD00g",
+          avatarAlt: "drg. Sarah Wijaya",
+          name: "drg. Sarah Wijaya",
+          subtitle: "Spesialis Ortodonti",
+          rating: true,
+        }}
+      />
 
       {/* Search & Filter Section */}
       <section className="py-8 bg-white border-b border-gray-100 sticky top-16 z-40 backdrop-blur-md bg-white/80">

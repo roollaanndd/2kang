@@ -4,8 +4,8 @@ import { motion } from 'motion/react';
 import { Clock, CheckCircle, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
 import { SERVICES } from '../../data/mockData';
 import { DentalServiceIcon, ServiceIconBezel, SERVICE_GRADIENTS, SERVICE_SHADOWS } from '../../components/mobile/DentalServiceIcon';
-import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { SeoHead } from '../../components/ui/SeoHead';
+import { PageHero } from '../../components/website/PageHero';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
@@ -123,27 +123,24 @@ export function Services() {
       path="/services"
     />
     <div className="bg-[#FFF5F9]">
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-12 px-6 md:px-12 max-w-7xl mx-auto text-center overflow-hidden">
-        <AnimatedDentalBg size="lg" />
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-          <div className="inline-block bg-[#ECFEFF] text-[#06B6D4] px-4 py-1.5 rounded-full font-semibold text-sm mb-6 tracking-wide uppercase">
-            Perawatan Terbaik
-          </div>
-          <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-[#0D1421] tracking-tight mb-6">
-            Layanan Dental{' '}
-            <span
-              className="text-transparent bg-clip-text"
-              style={{ backgroundImage: 'linear-gradient(to right, #E91E8C, #FF6BB5)' }}
-            >
-              Kami
-            </span>
-          </h1>
-          <p className="font-body text-[#6B7280] text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Menghadirkan senyum sehat dan percaya diri penuh melalui perawatan gigi premium dengan teknologi terkini dan dokter spesialis berpengalaman.
-          </p>
-        </motion.div>
-      </section>
+      <PageHero
+        badge="Perawatan Terbaik"
+        title="Layanan Dental"
+        titleAccent="Premium Kami"
+        description="Menghadirkan senyum sehat dan percaya diri penuh melalui 8 layanan perawatan gigi dengan teknologi terkini dan dokter spesialis berpengalaman."
+        ctaPrimaryLabel="Booking Sekarang"
+        ctaPrimaryTo="/booking"
+        ctaSecondaryLabel="Konsultasi Gratis"
+        ctaSecondaryTo="/contact"
+        photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuC0EolqzvY1WD2WOp6SMJdKAfmWFjfpNCMwTSa1ndh1x4It-v1j41ymL_OfNorfUA6mjRRuFakD-6K6WIRBoBtyttbuE5Ivgg8YTOseynTdlYroGQmGEdhf03RUWPZfuF76uArIkLfxm9a1Z14vb5Yh0VFlDIfJurcRoLF8l_ZqsCxQOFj8Pr2tmJnqKaiNHgfNcwpiUXhfmhjN6PbBxnqw9GtG9z5lbBi4bUiKS0hpL74lPZ4jnwrIMC_ALmA4HxPenTr68oA9VF8"
+        photoAlt="Perawatan gigi di OMDC Dental"
+        floatingCard={{
+          color: 'pink',
+          name: "8 Layanan Unggulan",
+          subtitle: "Ditangani Spesialis",
+          stat: { value: "4.9★", label: "rata-rata rating" },
+        }}
+      />
 
       {/* Filter Chips */}
       <section className="px-6 md:px-12 max-w-7xl mx-auto mb-12">

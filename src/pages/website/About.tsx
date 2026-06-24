@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Heart, Shield, Award, Users, Star, CheckCircle, ArrowRight, Calendar } from 'lucide-react';
 import { CLINIC_NAME, CLINIC_ADDRESS } from '../../data/mockData';
-import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { WaveDivider } from '../../components/ui/WaveDivider';
 import { SeoHead } from '../../components/ui/SeoHead';
+import { PageHero } from '../../components/website/PageHero';
 import { CountUp } from '../../components/ui/CountUp';
 
 const milestones = [
@@ -72,22 +72,26 @@ export function About() {
       path="/about"
     />
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <AnimatedDentalBg />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Tentang Kami</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Mengenal OMDC Dental</h1>
-            <p className="text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: '#6B7280' }}>
-              Lebih dari 15 tahun kami melayani kesehatan gigi masyarakat Jakarta dengan dedikasi, teknologi modern, dan tim dokter spesialis terbaik.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        badge="Tentang Kami"
+        title="Mengenal"
+        titleAccent="OMDC Dental"
+        description="Lebih dari 15 tahun melayani kesehatan gigi masyarakat Jakarta dengan dedikasi, teknologi modern, dan tim dokter spesialis terbaik pilihan kami."
+        ctaPrimaryLabel="Booking Sekarang"
+        ctaPrimaryTo="/booking"
+        ctaSecondaryLabel="Tim Dokter Kami"
+        ctaSecondaryTo="/doctors"
+        photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuDKJplFRi4nZVbG6qEpXdvTzIklDzxC2rkfqnANtiqieo0SNdjlGabr__i82pi4PvbyrLF4QyhDoIqOmiuS-CfmIrP2XkJ0LEPd26Oii9Pw67bk5aLzKqz1Guz4rmcGHO3ObZvf5KLSNUDOthskRiLj2I0V9MLDMnEki5xVy-irVr-3pEIIEB0GdbTNlgB-DZA9pprSC8lWSJ9MKFhOPkVgHW2K6aT5R0VRbEEPNSM8HL9TsXNVyOq1cUfjn4Ea4mEoKcf7zuPDr5A"
+        photoAlt="Tim OMDC Dental"
+        floatingCard={{
+          color: 'aqua',
+          name: "Berdiri Sejak 2010",
+          subtitle: "15+ Tahun Melayani",
+          stat: { value: "15.000+", label: "pasien puas" },
+        }}
+      />
 
-      <WaveDivider fromColor="#FFFFFF" toColor="white" />
+      <WaveDivider fromColor="#FFF5F9" toColor="white" />
 
       {/* Stats */}
       <section style={{ background: 'white' }}>
