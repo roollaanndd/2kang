@@ -6,7 +6,8 @@ import {
   User, Star, ArrowRight, CheckCircle, Phone, Mail,
 } from 'lucide-react';
 import { DOCTORS, SERVICES, TIME_SLOTS } from '../../data/mockData';
-import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { SeoHead } from '../../components/ui/SeoHead';
+import { PageHero } from '../../components/website/PageHero';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
@@ -152,16 +153,34 @@ export function Booking() {
   }
 
   return (
+    <>
+    <SeoHead
+      title="Booking Jadwal"
+      description="Booking jadwal pemeriksaan dan perawatan gigi di OMDC Dental secara online. Pilih layanan, dokter, dan waktu yang sesuai — cepat, mudah, dan terpercaya."
+      keywords="booking klinik gigi online, jadwal dokter gigi, reservasi klinik gigi Jakarta, appointment dokter gigi"
+      path="/booking"
+    />
     <div style={{ background: '#FAFAFA', minHeight: '100vh' }}>
-      {/* Hero */}
-      <div className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <AnimatedDentalBg />
-        <div className="max-w-4xl mx-auto px-4 py-12 text-center relative z-10">
-          <h1 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: '#111827' }}>Buat Janji Temu</h1>
-          <p className="text-base" style={{ color: '#6B7280' }}>Isi formulir berikut untuk menjadwalkan kunjungan Anda</p>
-        </div>
-      </div>
+      <PageHero
+        badge="Booking Online"
+        title="Buat Janji"
+        titleAccent="Temu Dokter"
+        description="Jadwalkan kunjungan Anda dengan mudah — pilih layanan, dokter, dan waktu yang sesuai. Konfirmasi instan, tanpa antre panjang."
+        ctaPrimaryLabel="Mulai Booking"
+        ctaPrimaryTo="#booking-form"
+        ctaSecondaryLabel="Lihat Tim Dokter"
+        ctaSecondaryTo="/doctors"
+        photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuBsBVbwaQO9whDMgd7dsLfxbQj9z4HC47UBF8p8IC2RkJW_-6IKyn75aV5ata31EBobh3nkNHUzMS82rlGFUbTWIgAVdE6pgroyfTU3H73cTj0bk42RC7nb7QsA39oMEqiwfcI28ozIS0DzrGZoR3mz6ed0-hF0T44yLY0LXDhybnXqZUoYvlMVZvB2Kp82s8_u41fLh5esLZkGgFF3S7gbxAC0dMdFS_mZhs1q7sl9ghBvmsV7a0V-26zwOh5ixOebv2O7BWWXJ1s"
+        photoAlt="Konsultasi dengan dokter gigi"
+        floatingCard={{
+          color: 'pink',
+          name: "Konfirmasi Instan",
+          subtitle: "Booking dalam 2 menit",
+          stat: { value: "500+", label: "booking per bulan" },
+        }}
+      />
+      {/* Booking form section anchor */}
+      <div id="booking-form" />
 
       {/* Progress Bar */}
       <div className="bg-white shadow-sm sticky top-16 z-20">
@@ -831,5 +850,6 @@ export function Booking() {
         </div>
       </div>
     </div>
+    </>
   );
 }

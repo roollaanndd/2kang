@@ -15,7 +15,7 @@ const NAV_LINKS = [
   { label: 'Layanan', to: '/services' },
   { label: 'Tim Dokter', to: '/doctors' },
   { label: 'Promo', to: '/promotions' },
-  { label: 'Artikel', to: '/articles' },
+  { label: 'Booking', to: '/booking' },
   { label: 'Tentang Kami', to: '/about' },
   { label: 'Kontak', to: '/contact' },
 ];

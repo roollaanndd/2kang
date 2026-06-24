@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, Copy, CheckCircle } from 'lucide-react';
 import { PROMOTIONS } from '../../data/mockData';
+import { SeoHead } from '../../components/ui/SeoHead';
+import { PageHero } from '../../components/website/PageHero';
 
 const filterTypes = ['Semua', 'Pembersihan', 'Behel', 'Estetika', 'Anak'];
 
@@ -82,28 +84,33 @@ export function Promotions() {
   };
 
   return (
+    <>
+    <SeoHead
+      title="Promo & Penawaran Spesial"
+      description="Temukan promo dan diskon perawatan gigi terbaik di OMDC Dental — paket scaling, behel, pemutihan gigi, dan perawatan anak dengan harga spesial. Penawaran terbatas!"
+      keywords="promo klinik gigi, diskon scaling, paket behel, promo gigi anak, voucher dental, penawaran gigi Jakarta"
+      path="/promotions"
+    />
     <div className="bg-white">
-      {/* Hero Section */}
-      <main className="pt-10 pb-20">
-        <section className="px-6 md:px-12 max-w-7xl mx-auto mt-8 mb-16">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-50 text-[#E91E8C] text-sm font-semibold tracking-wide mb-6">
-              🔥 PROMO TERBATAS
-            </span>
-            <h1 className="text-4xl md:text-6xl font-black font-headline text-[#0D1421] tracking-tight mb-6 leading-tight">
-              Promo Spesial{' '}
-              <span
-                className="text-transparent bg-clip-text"
-                style={{ backgroundImage: 'linear-gradient(90deg, #E91E8C, #06B6D4)' }}
-              >
-                OMDC
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl text-[#6B7280] font-body leading-relaxed mb-10">
-              Nikmati perawatan gigi premium dengan penawaran eksklusif untuk senyum sehat Anda dan keluarga.
-            </p>
-          </div>
-        </section>
+      <PageHero
+        badge="Promo Terbatas"
+        title="Penawaran Spesial"
+        titleAccent="OMDC Dental"
+        description="Nikmati perawatan gigi premium dengan diskon eksklusif. Paket scaling, behel, pemutihan gigi, dan perawatan anak dengan harga terbaik — penawaran terbatas!"
+        ctaPrimaryLabel="Klaim Promo"
+        ctaPrimaryTo="/booking"
+        ctaSecondaryLabel="Lihat Semua Promo"
+        ctaSecondaryTo="#promos"
+        photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuDBQk_b6jng2mEPno7VXagapwXl1CkG4E81hmEyQmi9FdpbKNr5tRUQ5CYR6hNDlooO_0iR6Lv0wqdEnrfkvYinMUMJxoLtBt3H4YFFj2qTOKsKUk_zwMaNpfRe1u38FIKjWLM2CF0_JGoDt_JAtdErga_rG_Z6FHbxEAkhT4AF0WShP63UfbkCQVgzw79X5oiGwIC4HEDMclfU9zY7N6vZVE2geRlznMrOV-HU3cKgSeRKQWQELGBh4PNwV89gC9lo3-hVV-EIzsY"
+        photoAlt="Promo perawatan gigi OMDC Dental"
+        floatingCard={{
+          color: 'pink',
+          name: "Hemat Hingga 40%",
+          subtitle: "Untuk member baru",
+          stat: { value: "6 Promo", label: "aktif sekarang" },
+        }}
+      />
+      <main className="pb-20">
 
         {/* Category Filter */}
         <section className="px-6 md:px-12 max-w-7xl mx-auto mb-12">
@@ -291,5 +298,6 @@ export function Promotions() {
         </section>
       </main>
     </div>
+    </>
   );
 }

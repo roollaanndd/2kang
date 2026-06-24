@@ -3,7 +3,8 @@ import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
 import { useCMS } from '../../context/CMSContext';
-import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { SeoHead } from '../../components/ui/SeoHead';
+import { PageHero } from '../../components/website/PageHero';
 
 interface FormData {
   name: string;
@@ -86,21 +87,32 @@ export function Contact() {
   ];
 
   return (
+    <>
+    <SeoHead
+      title="Hubungi Kami"
+      description="Hubungi OMDC Dental — klinik gigi terpercaya di Jakarta Selatan. Buka Senin–Sabtu 08.00–20.00. Layanan darurat 24/7 tersedia. Jl. Kemang Raya No. 12."
+      keywords="kontak klinik gigi, alamat OMDC Dental, telepon dokter gigi Jakarta, jam buka klinik gigi"
+      path="/contact"
+    />
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
-        <AnimatedDentalBg />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-sm font-bold uppercase tracking-widest mb-4" style={{ color: '#E91E8C' }}>Kami Siap Membantu</p>
-            <h1 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: '#111827' }}>Hubungi Kami</h1>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: '#6B7280' }}>
-              Ada pertanyaan atau ingin membuat janji? Tim kami siap membantu Anda kapan saja.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        badge="Kami Siap Membantu"
+        title="Hubungi"
+        titleAccent="Tim Kami"
+        description="Ada pertanyaan atau ingin membuat janji? Tim kami siap membantu Anda kapan saja. Buka Senin–Sabtu 08.00–20.00, layanan darurat 24/7."
+        ctaPrimaryLabel="Booking Sekarang"
+        ctaPrimaryTo="/booking"
+        ctaSecondaryLabel="WhatsApp Kami"
+        ctaSecondaryTo="https://wa.me/628129999888"
+        photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ-NzQRffqsufz-ZgcvYhGVDiH-B6B_iXSNUWBqfnilWtH0xwQkP4laV6AxGdOCgRM4dq0gpK27LgLXgNEVwo-hvMnLRivkEQ1nou1enM_RGx534xwPQFehnK4cea72Vx_bQnuQPGisKgegdccgWTZBElEpTx634xB3Jdx5sW83ut2wHbggwlWadsOvhMlQklRZIWRjNoPTmVuRxR1LJbcbUImf9AswUFloFlJuTfuAgd-7f9wdSg7Qx0wp-srDvO3L0LOAZdi0X8"
+        photoAlt="Klinik OMDC Dental Jakarta"
+        floatingCard={{
+          color: 'aqua',
+          name: "Buka Setiap Hari",
+          subtitle: "08:00 – 20:00 WIB",
+          stat: { value: "24/7", label: "layanan darurat" },
+        }}
+      />
 
       {/* Contact Cards */}
       <section className="py-16" style={{ background: 'white' }}>
@@ -456,5 +468,6 @@ export function Contact() {
         </div>
       </section>
     </div>
+    </>
   );
 }

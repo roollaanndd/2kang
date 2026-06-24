@@ -14,6 +14,7 @@ import { SmoothImage } from '../../components/ui/SmoothImage';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { OmdcServiceIcon, IconStar, IconSmile } from '../../components/ui/OmdcIcons';
 import { WaveDivider } from '../../components/ui/WaveDivider';
+import { SeoHead } from '../../components/ui/SeoHead';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -1319,6 +1320,13 @@ function AppPromoSection() {
 // ─── MAIN HOME COMPONENT ──────────────────────────────────────────────────────
 export function Home() {
   return (
+    <>
+    <SeoHead
+      title="Senyum Sehat, Percaya Diri Penuh"
+      description="OMDC Dental — klinik gigi modern di Jakarta Selatan dengan dokter spesialis berpengalaman, teknologi terkini, dan layanan BPJS. Booking online sekarang!"
+      keywords="klinik gigi Jakarta, dokter gigi terbaik, OMDC Dental, klinik gigi BPJS, perawatan gigi modern"
+      path="/"
+    />
     <div style={{ background: '#FFFFFF' }}>
       <HeroSection />
       <WhyChooseUsSection />
@@ -1334,5 +1342,6 @@ export function Home() {
       <TrustSection />
       <CTASection />
     </div>
+    </>
   );
 }
