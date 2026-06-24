@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { Hand, Zap } from 'lucide-react';
 import { OmdcLogo } from '../../../components/ui/OmdcLogo';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
@@ -92,8 +93,8 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       onClick={handleTouch}
       style={{ width: '100%', height: '100%', display: 'flex', flexDirection: portrait ? 'column' : 'row', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
     >
-      {/* 4px brand strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
+      {/* 3px signature brand strip */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
 
       {/* ─── LEFT PANEL: Light branded side (top band in portrait) ─────── */}
       <div style={{
@@ -118,7 +119,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             <div style={{ fontSize: 10, fontWeight: 800, color: '#9CA3AF', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
               SEDANG DILAYANI
             </div>
-            <div style={{
+            <div className="kd" style={{
               fontSize: 64, fontWeight: 900, lineHeight: 1,
               background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
@@ -147,7 +148,10 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
               <span style={{ fontSize: 11, fontWeight: 700, color: '#6EE7B7' }}>4 Dokter Online</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(233,30,140,0.12)', border: '1px solid rgba(233,30,140,0.2)', borderRadius: 20, padding: '5px 14px' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#FF6BB5' }}>⚡ Kiosk Aktif</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700, color: '#FF6BB5' }}>
+                <Zap size={10} strokeWidth={2.5} />
+                Kiosk Aktif
+              </span>
             </div>
           </div>
         </motion.div>
@@ -201,7 +205,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{ textAlign: 'center' }}
         >
-          <div style={{
+          <div className="kd" style={{
             fontSize: 42, fontWeight: 900, color: '#0D1421',
             letterSpacing: -1, marginBottom: 10, lineHeight: 1.15,
           }}>
@@ -260,9 +264,9 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
               <motion.span
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ display: 'inline-block', fontSize: 28 }}
+                style={{ display: 'inline-flex' }}
               >
-                👆
+                <Hand size={26} strokeWidth={2.2} />
               </motion.span>
               Sentuh Layar untuk Memulai
             </div>

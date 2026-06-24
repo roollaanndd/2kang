@@ -70,8 +70,6 @@ export type Language = 'id' | 'en';
 export interface KioskState {
   language: Language;
   step: KioskStep;
-  /** Display orientation chosen at startup. Undefined = chooser not yet shown. */
-  orientation?: 'landscape' | 'portrait';
   selectedService?: Service;
   selectedDoctor?: Doctor;
   selectedDate?: string;

@@ -165,6 +165,12 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         overflow: 'hidden',
       }}
     >
+      {/* Signature 3px top strip — full width */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+        zIndex: 20,
+      }} />
       {/* ── BRAND PANEL — left sidebar in landscape, top band in portrait ── */}
       <div style={{
         width: portrait ? '100%' : 320,
@@ -182,12 +188,6 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         position: 'relative',
         overflow: 'hidden',
       }}>
-        {/* Top gradient strip */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 4,
-          background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
-        }} />
-
         {/* Decorative tooth watermark */}
         <svg
           style={{ position: 'absolute', bottom: -20, right: -40, opacity: 0.05, pointerEvents: 'none' }}
@@ -216,7 +216,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           transition={{ duration: 0.5, delay: 0.1 }}
           style={{ marginBottom: portrait ? 0 : 40 }}
         >
-          <div style={{ fontSize: 26, fontWeight: 900, color: DARK, letterSpacing: '-0.5px' }}>
+          <div className="kd" style={{ fontSize: 26, fontWeight: 900, color: DARK, letterSpacing: '-0.5px' }}>
             OMDC{' '}
             <span style={{
               background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
@@ -437,7 +437,7 @@ function MenuCardItem({ card, index, onSelect }: MenuCardItemProps) {
 
         {/* Text */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-          <div style={{ fontSize: 20, fontWeight: 900, color: DARK, lineHeight: 1.2, marginBottom: 6 }}>
+          <div className="kd" style={{ fontSize: 20, fontWeight: 900, color: DARK, lineHeight: 1.2, marginBottom: 6 }}>
             {card.label}
           </div>
           <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5, fontWeight: 400 }}>

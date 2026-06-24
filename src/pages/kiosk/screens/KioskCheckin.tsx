@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, QrCode, Phone, FileText, ChevronRight } from 'lucide-react';
+import { ChevronLeft, QrCode, Phone, FileText, ChevronRight, MousePointer2 } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 
 type CheckinMethod = 'qr' | 'phone' | 'medrecord' | null;
@@ -36,14 +36,14 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
       icon: <Phone size={40} strokeWidth={1.5} />,
       label: t ? 'Mobile Number' : 'No. Handphone',
       desc: t ? 'Enter your registered phone number' : 'Masukkan nomor HP yang terdaftar',
-      color: '#4FC3F7',
+      color: '#06B6D4',
     },
     {
       id: 'medrecord' as CheckinMethod,
       icon: <FileText size={40} strokeWidth={1.5} />,
       label: t ? 'Medical Record No.' : 'No. Rekam Medis',
       desc: t ? 'Enter your medical record number' : 'Masukkan nomor rekam medis Anda',
-      color: '#10B981',
+      color: '#FF6BB5',
     },
   ];
 
@@ -59,16 +59,25 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
         backgroundColor: '#F9FAFB',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header */}
       <div style={{
         padding: '28px 60px 20px',
+        paddingTop: '31px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
+        <div className="kd" style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
           {t ? 'Patient Check-in' : 'Check-in Pasien Lama'}
         </div>
         <div style={{ fontSize: '17px', color: '#6B7280' }}>
@@ -155,7 +164,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                   padding: '32px',
                 }}
               >
-                <div style={{ fontSize: '48px' }}>👈</div>
+                <MousePointer2 size={44} strokeWidth={1.5} style={{ transform: 'scaleX(-1)' }} />
                 <div style={{ fontSize: '17px', fontWeight: '600' }}>
                   {t ? 'Select a check-in method on the left' : 'Pilih metode check-in di sebelah kiri'}
                 </div>
@@ -239,8 +248,8 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                     boxShadow: '0 4px 16px rgba(233,30,140,0.35)',
                   }}
                 >
-                  {isProcessing ? '⏳ ' + (t ? 'Processing...' : 'Memproses...') :
-                   success ? '✓ ' + (t ? 'Success!' : 'Berhasil!') :
+                  {isProcessing ? (t ? 'Processing...' : 'Memproses...') :
+                   success ? (t ? 'Success!' : 'Berhasil!') :
                    t ? 'Simulate Scan' : 'Simulasi Scan'}
                 </motion.button>
               </motion.div>
@@ -255,7 +264,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                 style={{
                   backgroundColor: '#ffffff',
                   borderRadius: '20px',
-                  border: `2px solid ${method === 'phone' ? '#4FC3F7' : '#10B981'}22`,
+                  border: `2px solid ${method === 'phone' ? '#06B6D4' : '#FF6BB5'}22`,
                   padding: '32px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -280,7 +289,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                     fontSize: '24px',
                     fontWeight: '600',
                     letterSpacing: '2px',
-                    border: `2px solid ${method === 'phone' ? '#4FC3F7' : '#10B981'}`,
+                    border: `2px solid ${method === 'phone' ? '#06B6D4' : '#FF6BB5'}`,
                     borderRadius: '14px',
                     outline: 'none',
                     color: '#1A1A2E',
@@ -335,8 +344,8 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                   }}
                 >
-                  {isProcessing ? '⏳ ' + (t ? 'Processing...' : 'Memproses...') :
-                   success ? '✓ ' + (t ? 'Checked in!' : 'Check-in Berhasil!') :
+                  {isProcessing ? (t ? 'Processing...' : 'Memproses...') :
+                   success ? (t ? 'Checked in!' : 'Check-in Berhasil!') :
                    t ? 'Start Check-in' : 'Mulai Check-in'}
                   {!isProcessing && !success && <ChevronRight size={18} />}
                 </motion.button>

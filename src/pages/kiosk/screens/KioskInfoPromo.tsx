@@ -1,34 +1,38 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Tag, Clock, Info, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Tag, Clock, Info, X, MapPin, Phone, Mail, Check } from 'lucide-react';
 import { PROMOTIONS } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { Promotion } from '../../../types';
 
 const CLINIC_INFO = [
   {
-    icon: '🕐',
+    Icon: Clock,
+    tint: '#E91E8C',
     label: 'Jam Operasional',
     labelEn: 'Operating Hours',
     value: 'Senin – Sabtu: 08.00 – 20.00 WIB',
     valueEn: 'Monday – Saturday: 08:00 – 20:00 WIB',
   },
   {
-    icon: '📍',
+    Icon: MapPin,
+    tint: '#06B6D4',
     label: 'Alamat',
     labelEn: 'Address',
     value: 'Jl. Selisebel No. 123, Jakarta Selatan',
     valueEn: 'Jl. Selisebel No. 123, South Jakarta',
   },
   {
-    icon: '📞',
+    Icon: Phone,
+    tint: '#10B981',
     label: 'Telepon',
     labelEn: 'Phone',
     value: '+62 21 1234 5678',
     valueEn: '+62 21 1234 5678',
   },
   {
-    icon: '✉️',
+    Icon: Mail,
+    tint: '#F59E0B',
     label: 'Email',
     labelEn: 'Email',
     value: 'info@omdcdental.com',
@@ -57,16 +61,25 @@ export function KioskInfoPromo({ state, goBack }: KioskScreenProps) {
         backgroundColor: '#F9FAFB',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header */}
       <div style={{
         padding: '28px 60px 0',
+        paddingTop: '31px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '20px' }}>
+        <div className="kd" style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '20px' }}>
           {t ? 'Information & Promotions' : 'Informasi & Promo'}
         </div>
 
@@ -362,7 +375,13 @@ export function KioskInfoPromo({ state, goBack }: KioskScreenProps) {
                       border: '1px solid #F3F4F6',
                     }}
                   >
-                    <div style={{ fontSize: '32px', marginBottom: '12px' }}>{item.icon}</div>
+                    <div style={{
+                      width: 52, height: 52, borderRadius: 14, marginBottom: '12px',
+                      backgroundColor: item.tint + '15', color: item.tint,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <item.Icon size={26} strokeWidth={2} />
+                    </div>
                     <div style={{ fontSize: '14px', fontWeight: '700', color: '#9CA3AF', marginBottom: '6px' }}>
                       {t ? item.labelEn : item.label}
                     </div>
@@ -565,13 +584,15 @@ export function KioskInfoPromo({ state, goBack }: KioskScreenProps) {
                   </span>
                 </div>
                 <div style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
                   padding: '14px 20px', backgroundColor: '#F0FDF4',
                   borderRadius: '12px', border: '1px solid #BBF7D0',
                   fontSize: '15px', color: '#16A34A',
                 }}>
+                  <Check size={18} strokeWidth={2.5} style={{ flexShrink: 0 }} />
                   {t
-                    ? '✓ Show this promo to our receptionist when you arrive.'
-                    : '✓ Tunjukkan promo ini kepada resepsionis saat Anda tiba.'}
+                    ? 'Show this promo to our receptionist when you arrive.'
+                    : 'Tunjukkan promo ini kepada resepsionis saat Anda tiba.'}
                 </div>
               </div>
             </motion.div>

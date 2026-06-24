@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import { kioskSound } from '../../../lib/kioskSound';
 import { useIsPortrait } from '../../../context/KioskOrientationContext';
@@ -79,16 +79,39 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
         backgroundColor: '#F9FAFB',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header */}
       <div style={{
         padding: portrait ? '28px 32px 20px' : '28px 60px 20px',
+        paddingTop: portrait ? '31px' : '31px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
+        {/* Step progress dots */}
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 10 }}>
+          {[1,2,3,4].map(n => (
+            <div key={n} style={{
+              height: 5, borderRadius: 3,
+              width: n <= 3 ? 36 : 20,
+              backgroundColor: n <= 3 ? '#E91E8C' : '#E5E7EB',
+              transition: 'all 0.3s',
+            }} />
+          ))}
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#E91E8C', letterSpacing: '0.10em', textTransform: 'uppercase', marginLeft: 6 }}>
+            {t ? 'Step 3 of 4' : 'Langkah 3 dari 4'}
+          </span>
+        </div>
+        <div className="kd" style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
           {t ? 'Select Date' : 'Pilih Tanggal'}
         </div>
         <div style={{ fontSize: '17px', color: '#6B7280' }}>
@@ -262,9 +285,10 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
               fontSize: '17px',
               fontWeight: '600',
               color: '#E91E8C',
+              display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            ✓ {t ? 'Selected:' : 'Dipilih:'} {state.selectedDate}
+            <Check size={18} strokeWidth={2.5} /> {t ? 'Selected:' : 'Dipilih:'} {state.selectedDate}
           </motion.div>
         )}
       </div>

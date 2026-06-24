@@ -84,6 +84,7 @@ export function KioskLanguage({ setState, goTo, goBack }: KioskScreenProps) {
           style={{ textAlign: 'center', lineHeight: 1 }}
         >
           <div
+            className="kd"
             style={{
               fontSize: '52px',
               fontWeight: 900,

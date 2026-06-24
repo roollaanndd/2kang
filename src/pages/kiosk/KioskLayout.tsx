@@ -1,6 +1,7 @@
 import { createElement, useCallback, useEffect, useRef, useState, type ComponentType, type Dispatch, type SetStateAction } from 'react';
 import { APP_VERSION } from '../../version';
 import { AnimatePresence, motion } from 'motion/react';
+import { Hand } from 'lucide-react';
 import type { KioskState, KioskStep } from '../../types';
 import { KioskHeader } from '../../components/kiosk/KioskHeader';
 import { KioskWelcome } from './screens/KioskWelcome';
@@ -21,7 +22,6 @@ import { useCMS } from '../../context/CMSContext';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { kioskSound } from '../../lib/kioskSound';
 import { KioskOrientationProvider, type KioskOrientation } from '../../context/KioskOrientationContext';
-import { KioskOrientationSelect } from './screens/KioskOrientationSelect';
 
 /* Accessibility-mode persistence */
 const A11Y_STORAGE_KEY = 'omdc:kiosk:a11y';
@@ -143,7 +143,7 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
       </motion.div>
 
       {/* Clock */}
-      <div style={{ fontSize: 96, fontWeight: 900, color: '#0D1421', letterSpacing: '-3px', lineHeight: 1, marginBottom: 10, fontVariantNumeric: 'tabular-nums', position: 'relative', zIndex: 10 }}>
+      <div className="kd" style={{ fontSize: 96, fontWeight: 900, color: '#0D1421', letterSpacing: '-3px', lineHeight: 1, marginBottom: 10, fontVariantNumeric: 'tabular-nums', position: 'relative', zIndex: 10 }}>
         {timeStr}
       </div>
       <div style={{ fontSize: 22, color: '#9CA3AF', marginBottom: 48, fontWeight: 500, position: 'relative', zIndex: 10 }}>
@@ -160,9 +160,10 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
           fontSize: 24, fontWeight: 800, color: 'white',
           boxShadow: `0 16px 50px ${primaryColor}40`,
           position: 'relative', zIndex: 10,
+          display: 'flex', alignItems: 'center', gap: 14,
         }}
       >
-        ✋ Sentuh Layar untuk Memulai
+        <Hand size={26} strokeWidth={2.2} /> Sentuh Layar untuk Memulai
       </motion.div>
 
       {/* Version */}
@@ -183,9 +184,11 @@ export default function KioskLayout() {
   const timeoutSec = cms.kioskSettings?.idleTimeoutSeconds ?? 30;
   const primary = cms.appearance?.primaryColor ?? '#E91E8C';
 
-  const orientation: KioskOrientation = state.orientation ?? 'landscape';
+  /* Auto-detect orientation from the real viewport — no manual selection needed. */
+  const [orientation, setOrientation] = useState<KioskOrientation>(() =>
+    window.innerWidth < window.innerHeight ? 'portrait' : 'landscape'
+  );
   const design = orientation === 'portrait' ? PORTRAIT : LANDSCAPE;
-  const orientationChosen = state.orientation != null;
 
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -203,33 +206,28 @@ export default function KioskLayout() {
     };
   }, [resetTimer]);
 
+  /* Single effect: re-evaluate orientation AND scale on every resize / rotate. */
   useEffect(() => {
     const update = () => {
-      const sx = window.innerWidth / design.w;
-      const sy = window.innerHeight / design.h;
-      setScale(Math.min(sx, sy));
+      const newOri: KioskOrientation = window.innerWidth < window.innerHeight ? 'portrait' : 'landscape';
+      const d = newOri === 'portrait' ? PORTRAIT : LANDSCAPE;
+      setOrientation(newOri);
+      setScale(Math.min(window.innerWidth / d.w, window.innerHeight / d.h));
     };
     update();
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [design.w, design.h]);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
 
   const handleWake = useCallback(() => {
     setIdle(false);
-    /* Fresh session on wake, but keep the operator's chosen orientation. */
-    setState(prev => ({ ...INITIAL_STATE, orientation: prev.orientation }));
+    setState(INITIAL_STATE);
     resetTimer();
   }, [resetTimer]);
-
-  const chooseOrientation = useCallback((o: KioskOrientation) => {
-    setState(prev => ({ ...prev, orientation: o }));
-    resetTimer();
-  }, [resetTimer]);
-
-  const resetOrientation = useCallback(() => {
-    kioskSound('tap');
-    setState(prev => ({ ...prev, orientation: undefined }));
-  }, []);
 
   const toggleA11y = useCallback(() => {
     kioskSound('tap');
@@ -268,12 +266,24 @@ export default function KioskLayout() {
         background: 'linear-gradient(135deg, #F4F6FB 0%, #FDF2F8 50%, #ECFEFF 100%)',
       }}
     >
-      {/* Orientation chooser — shown at startup / fresh load, unscaled & full-viewport */}
-      <AnimatePresence>
-        {!orientationChosen && (
-          <KioskOrientationSelect key="orientation-gate" onSelect={chooseOrientation} />
-        )}
-      </AnimatePresence>
+      {/* Stitch design-system tokens (OMDC Light Organic 2026) — scoped to the kiosk.
+          Headlines use the Plus Jakarta Sans display face (loaded in index.html),
+          body keeps Inter. Mirrors the website/mobile Stitch integration. */}
+      <style>{`
+        .kiosk-mode .kd {
+          font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+          letter-spacing: -0.02em;
+        }
+        .kiosk-mode .kd-grad {
+          font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+          letter-spacing: -0.02em;
+          background: linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+      `}</style>
 
       {/* Accessibility-mode focus affordance — scoped to the canvas, purely presentational */}
       {a11y && (
@@ -380,42 +390,6 @@ export default function KioskLayout() {
                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
             Aksesibilitas
-          </button>
-        )}
-
-        {/* Orientation re-select — only on welcome (a fresh start), bottom-left next to a11y */}
-        {!idle && state.step === 'welcome' && (
-          <button
-            type="button"
-            onClick={resetOrientation}
-            aria-label="Ubah Orientasi Layar"
-            title="Ubah Orientasi Layar"
-            style={{
-              position: 'absolute',
-              bottom: 14,
-              left: 188,
-              zIndex: 120,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '10px 16px',
-              borderRadius: 999,
-              border: '1.5px solid rgba(6,182,212,0.30)',
-              background: '#FFFFFF',
-              color: '#0E7490',
-              fontSize: 14,
-              fontWeight: 800,
-              cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(6,182,212,0.15)',
-              userSelect: 'none',
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="3" y="7" width="13" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
-              <path d="M18 4l3 3-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M21 7h-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            {orientation === 'portrait' ? 'Portrait' : 'Landscape'}
           </button>
         )}
 

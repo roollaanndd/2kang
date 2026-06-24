@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { ChevronLeft, User, Stethoscope, Calendar, Clock, MapPin, Wrench } from 'lucide-react';
+import { ChevronLeft, User, Stethoscope, Calendar, Clock, MapPin, Wrench, Lightbulb, ClipboardList, Check } from 'lucide-react';
 import { CLINIC_NAME } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
@@ -52,11 +52,18 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -60 }}
       transition={{ duration: 0.35 }}
-      style={{ width: '100%', height: '100%', backgroundColor: '#F9FAFB', display: 'flex', flexDirection: 'column' }}
+      style={{ width: '100%', height: '100%', backgroundColor: '#F9FAFB', display: 'flex', flexDirection: 'column', position: 'relative' }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header — compact */}
-      <div style={{ padding: '18px 56px 14px', backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6', flexShrink: 0 }}>
-        <div style={{ fontSize: 26, fontWeight: 800, color: '#1A1A2E', marginBottom: 2 }}>
+      <div style={{ padding: '18px 56px 14px', paddingTop: '21px', backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6', flexShrink: 0 }}>
+        <div className="kd" style={{ fontSize: 26, fontWeight: 800, color: '#1A1A2E', marginBottom: 2 }}>
           {t ? 'Confirm Details' : 'Konfirmasi Data'}
         </div>
         <div style={{ fontSize: 14, color: '#6B7280' }}>
@@ -89,13 +96,13 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
         {/* Right: Info boxes (stacks below summary in portrait) */}
         <div style={{ width: portrait ? '100%' : 260, flexShrink: 0, display: 'flex', flexDirection: portrait ? 'row' : 'column', flexWrap: portrait ? 'wrap' : 'nowrap', gap: 12 }}>
           <div style={{ backgroundColor: '#EFF6FF', borderRadius: 14, padding: '16px 18px', border: '1px solid #BFDBFE' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#1D4ED8', marginBottom: 6 }}>💡 {t ? 'Reminder' : 'Pengingat'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: '#1D4ED8', marginBottom: 6 }}><Lightbulb size={15} strokeWidth={2.5} /> {t ? 'Reminder' : 'Pengingat'}</div>
             <div style={{ fontSize: 13, color: '#3B82F6', lineHeight: 1.55 }}>
               {t ? 'Please arrive 10 minutes early.' : 'Harap datang 10 menit sebelum jadwal.'}
             </div>
           </div>
           <div style={{ backgroundColor: '#F0FDF4', borderRadius: 14, padding: '16px 18px', border: '1px solid #BBF7D0' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#15803D', marginBottom: 6 }}>📋 {t ? 'What to bring' : 'Yang perlu dibawa'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: '#15803D', marginBottom: 6 }}><ClipboardList size={15} strokeWidth={2.5} /> {t ? 'What to bring' : 'Yang perlu dibawa'}</div>
             <ul style={{ fontSize: 13, color: '#16A34A', lineHeight: 1.8, paddingLeft: 16, margin: 0 }}>
               <li>KTP / {t ? 'ID Card' : 'Kartu Identitas'}</li>
               <li>{t ? 'Medical record (if any)' : 'Kartu rekam medis (bila ada)'}</li>
@@ -103,7 +110,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
             </ul>
           </div>
           <div style={{ backgroundColor: '#FFF5F9', borderRadius: 14, padding: '16px 18px', border: '1px solid rgba(233,30,140,0.15)' }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#E91E8C', marginBottom: 4 }}>⏰ {t ? 'Booking expires in' : 'Konfirmasi dalam'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: '#E91E8C', marginBottom: 4 }}><Clock size={15} strokeWidth={2.5} /> {t ? 'Booking expires in' : 'Konfirmasi dalam'}</div>
             <div style={{ fontSize: 22, fontWeight: 900, color: '#0D1421' }}>10 menit</div>
           </div>
         </div>
@@ -134,7 +141,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
             fontSize: 18, fontWeight: 800, cursor: 'pointer', boxShadow: '0 4px 20px rgba(233,30,140,0.4)',
           }}
         >
-          ✓ {t ? 'Confirm →' : 'Konfirmasi →'}
+          <Check size={20} strokeWidth={2.5} /> {t ? 'Confirm' : 'Konfirmasi'}
         </motion.button>
       </div>
     </motion.div>
