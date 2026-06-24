@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
+import { DentalServiceIcon } from '../../../components/mobile/DentalServiceIcon';
 import { SERVICES } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
 import type { Service } from '../../../types';
@@ -125,20 +126,19 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
               borderRadius: '4px 0 0 4px',
             }} />
 
-            {/* Icon circle */}
+            {/* Icon bezel — white-stroke dental glyph on a coloured gradient */}
             <div style={{
               width: 80,
               height: 80,
-              borderRadius: '50%',
-              backgroundColor: service.color + '18',
-              border: `2px solid ${service.color}30`,
+              borderRadius: 22,
+              background: `linear-gradient(135deg, ${service.color}, ${service.color}cc)`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 40,
               flexShrink: 0,
+              boxShadow: `0 8px 20px ${service.color}40`,
             }}>
-              {service.icon}
+              <DentalServiceIcon id={service.id} size={42} />
             </div>
 
             <div>

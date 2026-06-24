@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Camera, User, Phone, Calendar, Users } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Camera, User, Phone, Calendar, Users, Lightbulb, Check } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 
 type RegStep = 'start' | 'form' | 'processing' | 'done';
@@ -170,8 +170,10 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                 fontSize: '15px',
                 color: '#92400E',
                 maxWidth: '480px',
+                display: 'flex', alignItems: 'center', gap: 10,
               }}>
-                💡 {t ? 'If you don\'t have an ID, you can fill in the form manually.' : 'Jika tidak memiliki KTP, Anda dapat mengisi formulir secara manual.'}
+                <Lightbulb size={18} strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                {t ? 'If you don\'t have an ID, you can fill in the form manually.' : 'Jika tidak memiliki KTP, Anda dapat mengisi formulir secara manual.'}
               </div>
             </motion.div>
           )}
@@ -287,8 +289,8 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                   </label>
                   <div style={{ display: 'flex', gap: '12px' }}>
                     {[
-                      { val: 'L', label: t ? 'Male' : 'Laki-laki', emoji: '♂️' },
-                      { val: 'P', label: t ? 'Female' : 'Perempuan', emoji: '♀️' },
+                      { val: 'L', label: t ? 'Male' : 'Laki-laki' },
+                      { val: 'P', label: t ? 'Female' : 'Perempuan' },
                     ].map(opt => (
                       <button
                         key={opt.val}
@@ -310,7 +312,6 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                           transition: 'all 0.15s',
                         }}
                       >
-                        <span>{opt.emoji}</span>
                         {opt.label}
                       </button>
                     ))}
@@ -444,13 +445,13 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                   width: '100px', height: '100px',
                   borderRadius: '50%',
                   backgroundColor: '#D1FAE5',
+                  color: '#059669',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '52px',
                 }}
               >
-                ✓
+                <Check size={52} strokeWidth={3} />
               </motion.div>
               <div style={{ fontSize: '28px', fontWeight: '800', color: '#1A1A2E' }}>
                 {t ? 'Registration Successful!' : 'Registrasi Berhasil!'}

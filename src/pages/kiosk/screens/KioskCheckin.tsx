@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, QrCode, Phone, FileText, ChevronRight } from 'lucide-react';
+import { ChevronLeft, QrCode, Phone, FileText, ChevronRight, MousePointer2 } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 
 type CheckinMethod = 'qr' | 'phone' | 'medrecord' | null;
@@ -164,7 +164,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                   padding: '32px',
                 }}
               >
-                <div style={{ fontSize: '48px' }}>👈</div>
+                <MousePointer2 size={44} strokeWidth={1.5} style={{ transform: 'scaleX(-1)' }} />
                 <div style={{ fontSize: '17px', fontWeight: '600' }}>
                   {t ? 'Select a check-in method on the left' : 'Pilih metode check-in di sebelah kiri'}
                 </div>
@@ -248,8 +248,8 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                     boxShadow: '0 4px 16px rgba(233,30,140,0.35)',
                   }}
                 >
-                  {isProcessing ? '⏳ ' + (t ? 'Processing...' : 'Memproses...') :
-                   success ? '✓ ' + (t ? 'Success!' : 'Berhasil!') :
+                  {isProcessing ? (t ? 'Processing...' : 'Memproses...') :
+                   success ? (t ? 'Success!' : 'Berhasil!') :
                    t ? 'Simulate Scan' : 'Simulasi Scan'}
                 </motion.button>
               </motion.div>
@@ -344,8 +344,8 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                   }}
                 >
-                  {isProcessing ? '⏳ ' + (t ? 'Processing...' : 'Memproses...') :
-                   success ? '✓ ' + (t ? 'Checked in!' : 'Check-in Berhasil!') :
+                  {isProcessing ? (t ? 'Processing...' : 'Memproses...') :
+                   success ? (t ? 'Checked in!' : 'Check-in Berhasil!') :
                    t ? 'Start Check-in' : 'Mulai Check-in'}
                   {!isProcessing && !success && <ChevronRight size={18} />}
                 </motion.button>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { Hand } from 'lucide-react';
 import { OmdcLogo } from '../../../components/ui/OmdcLogo';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
@@ -260,9 +261,9 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
               <motion.span
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ display: 'inline-block', fontSize: 28 }}
+                style={{ display: 'inline-flex' }}
               >
-                👆
+                <Hand size={26} strokeWidth={2.2} />
               </motion.span>
               Sentuh Layar untuk Memulai
             </div>

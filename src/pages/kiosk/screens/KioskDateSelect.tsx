@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import { kioskSound } from '../../../lib/kioskSound';
 import { useIsPortrait } from '../../../context/KioskOrientationContext';
@@ -285,9 +285,10 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
               fontSize: '17px',
               fontWeight: '600',
               color: '#E91E8C',
+              display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            ✓ {t ? 'Selected:' : 'Dipilih:'} {state.selectedDate}
+            <Check size={18} strokeWidth={2.5} /> {t ? 'Selected:' : 'Dipilih:'} {state.selectedDate}
           </motion.div>
         )}
       </div>

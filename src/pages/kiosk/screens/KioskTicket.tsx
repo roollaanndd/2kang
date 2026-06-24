@@ -135,7 +135,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
           transition={{ delay: 0.25 }}
         >
           <div className="kd" style={{ fontSize: '28px', fontWeight: '800', color: '#1A1A2E', marginBottom: '2px' }}>
-            {t ? 'Ticket Printed Successfully! 🎉' : 'Tiket Berhasil Dicetak! 🎉'}
+            {t ? 'Ticket Printed Successfully!' : 'Tiket Berhasil Dicetak!'}
           </div>
           <div style={{ fontSize: '16px', color: '#6B7280' }}>
             {t ? 'Please take your ticket and wait to be called' : 'Silakan ambil tiket dan menunggu Anda dipanggil'}

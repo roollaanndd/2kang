@@ -1,6 +1,7 @@
 import { createElement, useCallback, useEffect, useRef, useState, type ComponentType, type Dispatch, type SetStateAction } from 'react';
 import { APP_VERSION } from '../../version';
 import { AnimatePresence, motion } from 'motion/react';
+import { Hand } from 'lucide-react';
 import type { KioskState, KioskStep } from '../../types';
 import { KioskHeader } from '../../components/kiosk/KioskHeader';
 import { KioskWelcome } from './screens/KioskWelcome';
@@ -159,9 +160,10 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
           fontSize: 24, fontWeight: 800, color: 'white',
           boxShadow: `0 16px 50px ${primaryColor}40`,
           position: 'relative', zIndex: 10,
+          display: 'flex', alignItems: 'center', gap: 14,
         }}
       >
-        ✋ Sentuh Layar untuk Memulai
+        <Hand size={26} strokeWidth={2.2} /> Sentuh Layar untuk Memulai
       </motion.div>
 
       {/* Version */}
