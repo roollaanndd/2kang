@@ -89,9 +89,32 @@
 > Local Stitch reference committed under `design/stitch/html/kiosk-*.html` (CDN blocked in build env).
 > Screen set mirrors the live flow: `welcome → language → main-menu → service → doctor → date → time → confirmation → payment → ticket`, plus `queue-display`, `checkin`, `new-patient`, `info-promo`.
 
-### Main Menu (landscape)
-- **OMDC Dental - eKiosk Menu Utama** (1280×800)
-  - local ref: `design/stitch/html/kiosk-main-menu.html`
-### Welcome (landscape)
+### Welcome (landscape) — generated via Stitch MCP 2026-06-24
 - **OMDC Dental - eKiosk Welcome** (1280×800)
+  - screen ID: `18006538ef6544cda8468d2b15f2117d`
+  - project: `5306545239994063629`
+  - preview: https://lh3.googleusercontent.com/aida/AP1WRLukMLkGS0Qj6V6-1-beiUEABY84lGV2M9g5KO12JahD7yfMgtPl4F7F6wFzBCKuiKGP3QN8o2g5cWnpp9XRNtmN6BRNaB03iaRGF8u-CwD4DN9xRkwu-s8JGrJK8eOfkRQVI97Rw4IP2AugSkevfvBDCWAySV_kssLfP0sqTRkaE_gpgv8v5SNbJ4I4kzu7dst8XwZ-3nXTTqQ3oX132bj9jNYLZetwpwPNz_Xhh_HVPzazDhAjVqF4TDc
+  - code: https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzY5NTNlOTQ4ZjA3YTQ2NzA5MDcxMjZjNmY4ZThhODc5EgsSBxDGmt2zvx8YAZIBIwoKcHJvamVjdF9pZBIVQhM1MzA2NTQ1MjM5OTk0MDYzNjI5&filename=&opi=96797242
   - local ref: `design/stitch/html/kiosk-welcome.html`
+
+### Main Menu (landscape) — generated via Stitch MCP 2026-06-24
+- **OMDC Dental - eKiosk Menu Utama** (1280×800)
+  - screen ID: `1dcf74e4079943fe92d86b291d8d4be2`
+  - project: `5306545239994063629`
+  - preview: https://lh3.googleusercontent.com/aida/AP1WRLvaOJcUmjf0Ch9a_9G1MlZ0m5XQwQp_n8173vYJTowFyn9lKZHLYKdpxoqm_7HVUZkGYoh5BIYo-Znp-LkktEKHxM_RZJbmeOF8HeLB1vsU-_cbkcVnAqZEuyJGeYtgLP6v0dCy35m-_EVzATngAiYoM4_d8I_EAhecN6izy1284S8f3gBxpLLiLBeUVfu8zgNUIYXeexAuG8Z7KCs1SxgOefMajyyux7JOQ8k4CVK5OFkEy0twZAWpUQ
+  - code: https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzRkNDVjZjgyNjg5ZTRiMDA4YmMwYTZkMjZhNjBiMzFmEgsSBxDGmt2zvx8YAZIBIwoKcHJvamVjdF9pZBIVQhM1MzA2NTQ1MjM5OTk0MDYzNjI5&filename=&opi=96797242
+  - local ref: `design/stitch/html/kiosk-main-menu.html`
+
+### Service Select — Step 1 of 4 (landscape) — generated via Stitch MCP 2026-06-24
+- **OMDC Dental - eKiosk Pilih Layanan** (1280×800)
+  - screen ID: `036d110c1caa4b1da534316e3db613fa`
+  - project: `5306545239994063629`
+  - preview: https://lh3.googleusercontent.com/aida/AP1WRLuXg2rKybX8BLysYRXlyCbp-beTkiU3_tWnYt05cMApUe5hXmYblugaHMqQcp15sNeRB79uLVv6DtMIRJo0CojgCDHRbFpUg41GZ-YQZj1XGkQNsehKwMntEjgi_4CRth_tMXFBDrwb9ksw9SWtPBGmi_XM6yjwbIQIcgcyjR0b4PrdghMQXqoDwkpX99EJ4Edy2FakbQWINkedI2Sbzie3QB3taoIDLWK062P_VCPDNlm7vxqsc-pTnKk
+  - code: https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sX2NlNTQ0Nzc0MWRkMjQ4MjFhYTRjNjhjMDhjNGRiODM4EgsSBxDGmt2zvx8YAZIBIwoKcHJvamVjdF9pZBIVQhM1MzA2NTQ1MjM5OTk0MDYzNjI5&filename=&opi=96797242
+
+### Queue Ticket / Success (landscape) — generated via Stitch MCP 2026-06-24
+- **OMDC Dental - eKiosk Tiket Antrian** (1280×800)
+  - screen ID: `f24e8e4ff5cd4a2b872f713d1208e4d3`
+  - project: `5306545239994063629`
+  - preview: https://lh3.googleusercontent.com/aida/AP1WRLuJFYwFoy09qg1qjXDC1_Tnp_0eKuH42JcyA4KSQJOjCUVX123QHEWEego3QH0-zIpjcTV6Fq6iDo1G6gx977J2OBPcG8MdP-1UG4L41ojYdq_yOT0xAtZvtriDeGpToXTVYgQDQZyykTrD84mK4vnBKMMicb-qN1XROadZqmjSGzzAADGkXSEhLWhXDDZ-Q7ViHoJ8T1K3oqTQCXxJPPfIZ2fLRSJyamhWBOuOrzB6dsZQZCWrCErTZw
+  - code: https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzhlZDRiMmQ4MDJjZjQwZTU5ZDNlZDkyYzcyODhiYmRkEgsSBxDGmt2zvx8YAZIBIwoKcHJvamVjdF9pZBIVQhM1MzA2NTQ1MjM5OTk0MDYzNjI5&filename=&opi=96797242

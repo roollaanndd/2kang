@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Hand } from 'lucide-react';
+import { Hand, Zap } from 'lucide-react';
 import { OmdcLogo } from '../../../components/ui/OmdcLogo';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
@@ -93,8 +93,8 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       onClick={handleTouch}
       style={{ width: '100%', height: '100%', display: 'flex', flexDirection: portrait ? 'column' : 'row', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
     >
-      {/* 4px brand strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
+      {/* 3px signature brand strip */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
 
       {/* ─── LEFT PANEL: Light branded side (top band in portrait) ─────── */}
       <div style={{
@@ -148,7 +148,10 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
               <span style={{ fontSize: 11, fontWeight: 700, color: '#6EE7B7' }}>4 Dokter Online</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(233,30,140,0.12)', border: '1px solid rgba(233,30,140,0.2)', borderRadius: 20, padding: '5px 14px' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#FF6BB5' }}>⚡ Kiosk Aktif</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700, color: '#FF6BB5' }}>
+                <Zap size={10} strokeWidth={2.5} />
+                Kiosk Aktif
+              </span>
             </div>
           </div>
         </motion.div>

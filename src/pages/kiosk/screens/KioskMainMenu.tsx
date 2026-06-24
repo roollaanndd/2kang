@@ -165,6 +165,12 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         overflow: 'hidden',
       }}
     >
+      {/* Signature 3px top strip — full width */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+        zIndex: 20,
+      }} />
       {/* ── BRAND PANEL — left sidebar in landscape, top band in portrait ── */}
       <div style={{
         width: portrait ? '100%' : 320,
@@ -182,12 +188,6 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
         position: 'relative',
         overflow: 'hidden',
       }}>
-        {/* Top gradient strip */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 4,
-          background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
-        }} />
-
         {/* Decorative tooth watermark */}
         <svg
           style={{ position: 'absolute', bottom: -20, right: -40, opacity: 0.05, pointerEvents: 'none' }}
