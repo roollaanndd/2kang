@@ -97,7 +97,7 @@ export function PageHero({
       position: 'relative',
       background: '#FFF5F9',
       overflow: 'hidden',
-      paddingTop: 80,
+      paddingTop: 40,
     }}>
       <HeroBg />
 
@@ -105,10 +105,10 @@ export function PageHero({
         <div className="page-hero-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
-          gap: 'clamp(20px, 4vw, 48px)',
+          gap: 'clamp(16px, 4vw, 48px)',
           alignItems: 'center',
-          paddingTop: 24,
-          paddingBottom: 56,
+          paddingTop: 16,
+          paddingBottom: 48,
         }}>
 
           {/* ── LEFT: Text ── */}
@@ -168,18 +168,18 @@ export function PageHero({
             {/* Description */}
             <p style={{
               fontSize: 'clamp(15px, 1.8vw, 17px)',
-              color: '#6B7280', lineHeight: 1.72, maxWidth: 480,
-              marginBottom: 32,
+              color: '#6B7280', lineHeight: 1.72, maxWidth: 'min(480px, 100%)',
+              marginBottom: 28,
             }}>
               {description}
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
                 {ctaPrimaryTo.startsWith('#') ? (
                   <a href={ctaPrimaryTo} style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
                     padding: '14px 28px', borderRadius: 16,
                     background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
                     color: 'white', fontWeight: 700, fontSize: 15,
@@ -191,7 +191,7 @@ export function PageHero({
                   </a>
                 ) : (
                   <Link to={ctaPrimaryTo} style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 10,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
                     padding: '14px 28px', borderRadius: 16,
                     background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
                     color: 'white', fontWeight: 700, fontSize: 15,
@@ -204,10 +204,10 @@ export function PageHero({
                 )}
               </motion.div>
               {ctaSecondaryLabel && ctaSecondaryTo && (
-                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }}>
+                <motion.div whileHover={{ scale: 1.02, y: -1 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
                   {ctaSecondaryTo.startsWith('http') ? (
                     <a href={ctaSecondaryTo} target="_blank" rel="noopener noreferrer" style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 8,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                       padding: '14px 24px', borderRadius: 16,
                       background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(12px)',
                       color: DARK, border: '1.5px solid rgba(233,30,140,0.18)',
@@ -219,7 +219,7 @@ export function PageHero({
                     </a>
                   ) : (
                     <Link to={ctaSecondaryTo} style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 8,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                       padding: '14px 24px', borderRadius: 16,
                       background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(12px)',
                       color: DARK, border: '1.5px solid rgba(233,30,140,0.18)',
@@ -250,7 +250,7 @@ export function PageHero({
                     src={photoSrc}
                     alt={photoAlt}
                     referrerPolicy="no-referrer"
-                    style={{ width: '100%', height: 'clamp(260px, 40vw, 420px)', objectFit: 'cover', display: 'block' }}
+                    style={{ width: '100%', height: 'clamp(220px, 45vw, 420px)', objectFit: 'cover', display: 'block' }}
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,20,33,0.22), transparent 60%)' }} />
                 </div>
@@ -262,7 +262,7 @@ export function PageHero({
                   animate={{ y: [0, -7, 0] }}
                   transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                   style={{
-                    position: 'absolute', bottom: 8, left: -16, zIndex: 10,
+                    position: 'absolute', bottom: 8, left: 8, zIndex: 10,
                     background: 'white', borderRadius: 20, padding: '12px 16px',
                     boxShadow: '0 16px 48px rgba(0,0,0,0.14)',
                     border: '1px solid rgba(233,30,140,0.10)',
