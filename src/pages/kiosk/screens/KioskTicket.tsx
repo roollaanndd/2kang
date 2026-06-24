@@ -134,7 +134,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <div style={{ fontSize: '28px', fontWeight: '800', color: '#1A1A2E', marginBottom: '2px' }}>
+          <div className="kd" style={{ fontSize: '28px', fontWeight: '800', color: '#1A1A2E', marginBottom: '2px' }}>
             {t ? 'Ticket Printed Successfully! 🎉' : 'Tiket Berhasil Dicetak! 🎉'}
           </div>
           <div style={{ fontSize: '16px', color: '#6B7280' }}>
@@ -180,10 +180,10 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '2px' }}>
-            <span style={{ fontSize: '56px', fontWeight: '900', color: '#E91E8C', lineHeight: '1', letterSpacing: '-2px' }}>
+            <span className="kd" style={{ fontSize: '56px', fontWeight: '900', color: '#E91E8C', lineHeight: '1', letterSpacing: '-2px' }}>
               {queueLetter}
             </span>
-            <span style={{ fontSize: '88px', fontWeight: '900', color: '#E91E8C', lineHeight: '1', letterSpacing: '-4px' }}>
+            <span className="kd" style={{ fontSize: '88px', fontWeight: '900', color: '#E91E8C', lineHeight: '1', letterSpacing: '-4px' }}>
               {queueNum}
             </span>
           </div>

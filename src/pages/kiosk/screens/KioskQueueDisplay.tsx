@@ -207,7 +207,7 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
                   justifyContent: 'center',
                   gap: '4px',
                 }}>
-                  <span style={{
+                  <span className="kd" style={{
                     fontSize: '80px',
                     fontWeight: '900',
                     color: '#FF6BB5',
@@ -216,7 +216,7 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
                   }}>
                     {queueLetter}
                   </span>
-                  <span style={{
+                  <span className="kd" style={{
                     fontSize: '140px',
                     fontWeight: '900',
                     lineHeight: '1',

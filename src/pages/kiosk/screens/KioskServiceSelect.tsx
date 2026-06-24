@@ -63,7 +63,7 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
             {t ? 'Step 1 of 4' : 'Langkah 1 dari 4'}
           </span>
         </div>
-        <div style={{ fontSize: 36, fontWeight: 900, color: DARK, marginBottom: 4, lineHeight: 1.1 }}>
+        <div className="kd" style={{ fontSize: 36, fontWeight: 900, color: DARK, marginBottom: 4, lineHeight: 1.1 }}>
           {t ? 'Select Service' : 'Pilih Layanan'}
         </div>
         <div style={{ fontSize: 16, color: '#6B7280' }}>

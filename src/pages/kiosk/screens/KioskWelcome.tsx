@@ -118,7 +118,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             <div style={{ fontSize: 10, fontWeight: 800, color: '#9CA3AF', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
               SEDANG DILAYANI
             </div>
-            <div style={{
+            <div className="kd" style={{
               fontSize: 64, fontWeight: 900, lineHeight: 1,
               background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
@@ -201,7 +201,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           transition={{ delay: 0.5, duration: 0.5 }}
           style={{ textAlign: 'center' }}
         >
-          <div style={{
+          <div className="kd" style={{
             fontSize: 42, fontWeight: 900, color: '#0D1421',
             letterSpacing: -1, marginBottom: 10, lineHeight: 1.15,
           }}>

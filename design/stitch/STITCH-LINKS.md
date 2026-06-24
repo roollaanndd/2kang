@@ -81,3 +81,17 @@
 - **OMDC Dental - Notifikasi** (780×1960)
   - preview: https://lh3.googleusercontent.com/aida/AP1WRLuwfzwCWK5x4nTisXc1TnYpUR4K5PnGBp8G1X_pyu3X4cckxtxz11tAASVn9d6-W6StkhHt-3ncENtBby_BvXnwsZvYuHCrUgW9vFcl6d_GWW7rdeUIK-jiKz2b8AUbjvwAD-En9RecV9NUB8xUGrV0MxpYe6yWEmZOdjRRAgCkReBT1xO59tDCq3tAXzfocI-aoD5Ac1Pk8cPYTI-hYr5LCUT8Aoy-Bn-pYYMivJHHiE56Ed5JzY0M59c
   - code: https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sX2U3ZDJhMzcwN2MzODQ0OTliZDNhYTQwOWRlNzlkNTU1EgsSBxDGmt2zvx8YAZIBIwoKcHJvamVjdF9pZBIVQhM1MzA2NTQ1MjM5OTk0MDYzNjI5&filename=&opi=96797242
+
+---
+## eKiosk (device: KIOSK — landscape 1280×800 / portrait 820×1180) — generated 2026-06-24
+> Touchscreen check-in terminal. Same **OMDC Light Organic 2026** design system as web/mobile —
+> Plus Jakarta Sans headlines, Inter body, Material Symbols, 3px brand strip, single pink accent.
+> Local Stitch reference committed under `design/stitch/html/kiosk-*.html` (CDN blocked in build env).
+> Screen set mirrors the live flow: `welcome → language → main-menu → service → doctor → date → time → confirmation → payment → ticket`, plus `queue-display`, `checkin`, `new-patient`, `info-promo`.
+
+### Main Menu (landscape)
+- **OMDC Dental - eKiosk Menu Utama** (1280×800)
+  - local ref: `design/stitch/html/kiosk-main-menu.html`
+### Welcome (landscape)
+- **OMDC Dental - eKiosk Welcome** (1280×800)
+  - local ref: `design/stitch/html/kiosk-welcome.html`

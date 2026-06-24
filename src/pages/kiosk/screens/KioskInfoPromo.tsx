@@ -75,7 +75,7 @@ export function KioskInfoPromo({ state, goBack }: KioskScreenProps) {
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '20px' }}>
+        <div className="kd" style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '20px' }}>
           {t ? 'Information & Promotions' : 'Informasi & Promo'}
         </div>
 

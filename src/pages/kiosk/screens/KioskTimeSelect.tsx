@@ -58,7 +58,7 @@ export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenPr
             {t ? 'Step 4 of 4' : 'Langkah 4 dari 4'}
           </span>
         </div>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
+        <div className="kd" style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
           {t ? 'Select Time' : 'Pilih Waktu'}
         </div>
         <div style={{ fontSize: '17px', color: '#6B7280' }}>

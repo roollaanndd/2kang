@@ -74,7 +74,7 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
+        <div className="kd" style={{ fontSize: '34px', fontWeight: '800', color: '#1A1A2E', marginBottom: '4px' }}>
           {t ? 'New Patient Registration' : 'Registrasi Pasien Baru'}
         </div>
         <div style={{ fontSize: '17px', color: '#6B7280' }}>

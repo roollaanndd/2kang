@@ -63,7 +63,7 @@ export function KioskHeader() {
             Sedang Dilayani
           </div>
         </div>
-        <div style={{
+        <div className="kd" style={{
           background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
           color: 'white', fontWeight: 900, fontSize: 22,
           letterSpacing: 2, borderRadius: 12, padding: '6px 20px',

@@ -63,7 +63,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
 
       {/* Header — compact */}
       <div style={{ padding: '18px 56px 14px', paddingTop: '21px', backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6', flexShrink: 0 }}>
-        <div style={{ fontSize: 26, fontWeight: 800, color: '#1A1A2E', marginBottom: 2 }}>
+        <div className="kd" style={{ fontSize: 26, fontWeight: 800, color: '#1A1A2E', marginBottom: 2 }}>
           {t ? 'Confirm Details' : 'Konfirmasi Data'}
         </div>
         <div style={{ fontSize: 14, color: '#6B7280' }}>

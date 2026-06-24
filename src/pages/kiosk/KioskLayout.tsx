@@ -142,7 +142,7 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
       </motion.div>
 
       {/* Clock */}
-      <div style={{ fontSize: 96, fontWeight: 900, color: '#0D1421', letterSpacing: '-3px', lineHeight: 1, marginBottom: 10, fontVariantNumeric: 'tabular-nums', position: 'relative', zIndex: 10 }}>
+      <div className="kd" style={{ fontSize: 96, fontWeight: 900, color: '#0D1421', letterSpacing: '-3px', lineHeight: 1, marginBottom: 10, fontVariantNumeric: 'tabular-nums', position: 'relative', zIndex: 10 }}>
         {timeStr}
       </div>
       <div style={{ fontSize: 22, color: '#9CA3AF', marginBottom: 48, fontWeight: 500, position: 'relative', zIndex: 10 }}>
@@ -264,6 +264,25 @@ export default function KioskLayout() {
         background: 'linear-gradient(135deg, #F4F6FB 0%, #FDF2F8 50%, #ECFEFF 100%)',
       }}
     >
+      {/* Stitch design-system tokens (OMDC Light Organic 2026) — scoped to the kiosk.
+          Headlines use the Plus Jakarta Sans display face (loaded in index.html),
+          body keeps Inter. Mirrors the website/mobile Stitch integration. */}
+      <style>{`
+        .kiosk-mode .kd {
+          font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+          letter-spacing: -0.02em;
+        }
+        .kiosk-mode .kd-grad {
+          font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+          letter-spacing: -0.02em;
+          background: linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+      `}</style>
+
       {/* Accessibility-mode focus affordance — scoped to the canvas, purely presentational */}
       {a11y && (
         <style>{`

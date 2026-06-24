@@ -216,7 +216,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           transition={{ duration: 0.5, delay: 0.1 }}
           style={{ marginBottom: portrait ? 0 : 40 }}
         >
-          <div style={{ fontSize: 26, fontWeight: 900, color: DARK, letterSpacing: '-0.5px' }}>
+          <div className="kd" style={{ fontSize: 26, fontWeight: 900, color: DARK, letterSpacing: '-0.5px' }}>
             OMDC{' '}
             <span style={{
               background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
@@ -437,7 +437,7 @@ function MenuCardItem({ card, index, onSelect }: MenuCardItemProps) {
 
         {/* Text */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-          <div style={{ fontSize: 20, fontWeight: 900, color: DARK, lineHeight: 1.2, marginBottom: 6 }}>
+          <div className="kd" style={{ fontSize: 20, fontWeight: 900, color: DARK, lineHeight: 1.2, marginBottom: 6 }}>
             {card.label}
           </div>
           <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5, fontWeight: 400 }}>
