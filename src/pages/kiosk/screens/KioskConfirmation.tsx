@@ -52,10 +52,17 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -60 }}
       transition={{ duration: 0.35 }}
-      style={{ width: '100%', height: '100%', backgroundColor: '#F9FAFB', display: 'flex', flexDirection: 'column' }}
+      style={{ width: '100%', height: '100%', backgroundColor: '#F9FAFB', display: 'flex', flexDirection: 'column', position: 'relative' }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header — compact */}
-      <div style={{ padding: '18px 56px 14px', backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6', flexShrink: 0 }}>
+      <div style={{ padding: '18px 56px 14px', paddingTop: '21px', backgroundColor: '#ffffff', borderBottom: '1px solid #F3F4F6', flexShrink: 0 }}>
         <div style={{ fontSize: 26, fontWeight: 800, color: '#1A1A2E', marginBottom: 2 }}>
           {t ? 'Confirm Details' : 'Konfirmasi Data'}
         </div>

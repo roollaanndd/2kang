@@ -36,17 +36,37 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
         backgroundColor: '#F9FAFB',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header */}
       <div style={{
         padding: portrait ? '24px 32px 18px' : '24px 60px 18px',
+        paddingTop: portrait ? '27px' : '27px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
       }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: PINK, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
-          {t ? 'Step 2 of 4' : 'Langkah 2 dari 4'}
+        {/* Step progress dots */}
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 10 }}>
+          {[1,2,3,4].map(n => (
+            <div key={n} style={{
+              height: 5, borderRadius: 3,
+              width: n <= 2 ? 36 : 20,
+              backgroundColor: n <= 2 ? PINK : '#E5E7EB',
+              transition: 'all 0.3s',
+            }} />
+          ))}
+          <span style={{ fontSize: 11, fontWeight: 700, color: PINK, letterSpacing: '0.10em', textTransform: 'uppercase', marginLeft: 6 }}>
+            {t ? 'Step 2 of 4' : 'Langkah 2 dari 4'}
+          </span>
         </div>
         <div style={{ fontSize: 36, fontWeight: 900, color: DARK, marginBottom: 4, lineHeight: 1.1 }}>
           {t ? 'Select Doctor' : 'Pilih Dokter'}

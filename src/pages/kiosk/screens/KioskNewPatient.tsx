@@ -56,11 +56,20 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
         backgroundColor: '#F9FAFB',
         display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
       }}
     >
+      {/* 3px signature top strip */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        zIndex: 10,
+      }} />
+
       {/* Header */}
       <div style={{
         padding: '28px 60px 20px',
+        paddingTop: '31px',
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #F3F4F6',
         flexShrink: 0,
