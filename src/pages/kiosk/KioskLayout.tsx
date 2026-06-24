@@ -21,7 +21,6 @@ import { useCMS } from '../../context/CMSContext';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { kioskSound } from '../../lib/kioskSound';
 import { KioskOrientationProvider, type KioskOrientation } from '../../context/KioskOrientationContext';
-import { KioskOrientationSelect } from './screens/KioskOrientationSelect';
 
 /* Accessibility-mode persistence */
 const A11Y_STORAGE_KEY = 'omdc:kiosk:a11y';
@@ -183,9 +182,11 @@ export default function KioskLayout() {
   const timeoutSec = cms.kioskSettings?.idleTimeoutSeconds ?? 30;
   const primary = cms.appearance?.primaryColor ?? '#E91E8C';
 
-  const orientation: KioskOrientation = state.orientation ?? 'landscape';
+  /* Auto-detect orientation from the real viewport — no manual selection needed. */
+  const [orientation, setOrientation] = useState<KioskOrientation>(() =>
+    window.innerWidth < window.innerHeight ? 'portrait' : 'landscape'
+  );
   const design = orientation === 'portrait' ? PORTRAIT : LANDSCAPE;
-  const orientationChosen = state.orientation != null;
 
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -203,33 +204,28 @@ export default function KioskLayout() {
     };
   }, [resetTimer]);
 
+  /* Single effect: re-evaluate orientation AND scale on every resize / rotate. */
   useEffect(() => {
     const update = () => {
-      const sx = window.innerWidth / design.w;
-      const sy = window.innerHeight / design.h;
-      setScale(Math.min(sx, sy));
+      const newOri: KioskOrientation = window.innerWidth < window.innerHeight ? 'portrait' : 'landscape';
+      const d = newOri === 'portrait' ? PORTRAIT : LANDSCAPE;
+      setOrientation(newOri);
+      setScale(Math.min(window.innerWidth / d.w, window.innerHeight / d.h));
     };
     update();
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [design.w, design.h]);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
 
   const handleWake = useCallback(() => {
     setIdle(false);
-    /* Fresh session on wake, but keep the operator's chosen orientation. */
-    setState(prev => ({ ...INITIAL_STATE, orientation: prev.orientation }));
+    setState(INITIAL_STATE);
     resetTimer();
   }, [resetTimer]);
-
-  const chooseOrientation = useCallback((o: KioskOrientation) => {
-    setState(prev => ({ ...prev, orientation: o }));
-    resetTimer();
-  }, [resetTimer]);
-
-  const resetOrientation = useCallback(() => {
-    kioskSound('tap');
-    setState(prev => ({ ...prev, orientation: undefined }));
-  }, []);
 
   const toggleA11y = useCallback(() => {
     kioskSound('tap');
@@ -268,13 +264,6 @@ export default function KioskLayout() {
         background: 'linear-gradient(135deg, #F4F6FB 0%, #FDF2F8 50%, #ECFEFF 100%)',
       }}
     >
-      {/* Orientation chooser — shown at startup / fresh load, unscaled & full-viewport */}
-      <AnimatePresence>
-        {!orientationChosen && (
-          <KioskOrientationSelect key="orientation-gate" onSelect={chooseOrientation} />
-        )}
-      </AnimatePresence>
-
       {/* Accessibility-mode focus affordance — scoped to the canvas, purely presentational */}
       {a11y && (
         <style>{`
@@ -380,42 +369,6 @@ export default function KioskLayout() {
                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
             Aksesibilitas
-          </button>
-        )}
-
-        {/* Orientation re-select — only on welcome (a fresh start), bottom-left next to a11y */}
-        {!idle && state.step === 'welcome' && (
-          <button
-            type="button"
-            onClick={resetOrientation}
-            aria-label="Ubah Orientasi Layar"
-            title="Ubah Orientasi Layar"
-            style={{
-              position: 'absolute',
-              bottom: 14,
-              left: 188,
-              zIndex: 120,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '10px 16px',
-              borderRadius: 999,
-              border: '1.5px solid rgba(6,182,212,0.30)',
-              background: '#FFFFFF',
-              color: '#0E7490',
-              fontSize: 14,
-              fontWeight: 800,
-              cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(6,182,212,0.15)',
-              userSelect: 'none',
-            }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="3" y="7" width="13" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
-              <path d="M18 4l3 3-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M21 7h-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            {orientation === 'portrait' ? 'Portrait' : 'Landscape'}
           </button>
         )}
 
