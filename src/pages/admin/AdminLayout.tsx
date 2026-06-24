@@ -22,6 +22,7 @@ import AdminWebsite from './AdminWebsite';
 import AdminUsers from './AdminUsers';
 import AdminRoles from './AdminRoles';
 import AdminBranches from './AdminBranches';
+import AdminBroadcast from './AdminBroadcast';
 
 import { AuthProvider, useAuth } from '../../context/AuthContext';
 
@@ -48,6 +49,7 @@ const NAV_ITEMS: NavItem[] = [
   { path: 'services', label: 'Layanan', icon: Scissors, group: 'clinic' },
   { path: 'branches', label: 'Lokasi Cabang', icon: MapPin, group: 'clinic' },
   { path: 'promotions', label: 'Promo', icon: Tag, group: 'content' },
+  { path: 'broadcast', label: 'Broadcast', icon: Bell, group: 'content', permission: 'website.view' },
   { path: 'website', label: 'Website', icon: Globe, group: 'content', permission: 'website.view' },
   { path: 'reports', label: 'Laporan', icon: BarChart3, group: 'reports', permission: 'reports.view' },
   { path: 'users', label: 'Pengguna', icon: UserCog, group: 'admin', permission: 'users.view' },
@@ -66,7 +68,7 @@ const NAV_GROUPS: Record<string, string> = {
 const BREADCRUMB_MAP: Record<string, string> = {
   '': 'Dashboard', queue: 'Antrian', appointments: 'Jadwal & Janji',
   patients: 'Data Pasien', doctors: 'Manajemen Dokter', services: 'Layanan & Harga',
-  promotions: 'Promo & Diskon', website: 'Manajemen Website', reports: 'Laporan & Analitik',
+  promotions: 'Promo & Diskon', broadcast: 'Broadcast Notifikasi', website: 'Manajemen Website', reports: 'Laporan & Analitik',
   users: 'Pengguna', roles: 'Peran & Akses', settings: 'Pengaturan', branches: 'Lokasi Cabang',
 };
 
@@ -366,6 +368,7 @@ function InnerLayout() {
             <Route path="/doctors" element={<AdminDoctors />} />
             <Route path="/services" element={<AdminServices />} />
             <Route path="/promotions" element={<AdminPromotions />} />
+            <Route path="/broadcast" element={<AdminBroadcast />} />
             <Route path="/website" element={<AdminWebsite />} />
             <Route path="/reports" element={<AdminReports />} />
             <Route path="/users" element={<AdminUsers />} />

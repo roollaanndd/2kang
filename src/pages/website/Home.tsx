@@ -12,7 +12,6 @@ import type { CMSTestimonial, CMSBeforeAfter } from '../../data/defaultCMSConten
 import { CountUp } from '../../components/ui/CountUp';
 import { SmoothImage } from '../../components/ui/SmoothImage';
 import { Skeleton } from '../../components/ui/Skeleton';
-import { HeroIllustration } from '../../components/ui/HeroIllustration';
 import { OmdcServiceIcon, IconStar, IconSmile } from '../../components/ui/OmdcIcons';
 import { WaveDivider } from '../../components/ui/WaveDivider';
 
@@ -402,7 +401,42 @@ function HeroSection() {
             </motion.div>
             <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 36, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.72, delay: 0.16, ease: [0.32, 0.72, 0, 1] }}
               style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <HeroIllustration width={520} height={560} />
+              <div style={{ position: 'relative', width: '100%', maxWidth: 520 }}>
+                <div style={{ borderRadius: 32, overflow: 'hidden', background: '#FFF5F9', padding: 16 }}>
+                  <div style={{ borderRadius: 24, overflow: 'hidden', position: 'relative', boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}>
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0EolqzvY1WD2WOp6SMJdKAfmWFjfpNCMwTSa1ndh1x4It-v1j41ymL_OfNorfUA6mjRRuFakD-6K6WIRBoBtyttbuE5Ivgg8YTOseynTdlYroGQmGEdhf03RUWPZfuF76uArIkLfxm9a1Z14vb5Yh0VFlDIfJurcRoLF8l_ZqsCxQOFj8Pr2tmJnqKaiNHgfNcwpiUXhfmhjN6PbBxnqw9GtG9z5lbBi4bUiKS0hpL74lPZ4jnwrIMC_ALmA4HxPenTr68oA9VF8"
+                      alt="Pasien OMDC Dental tersenyum"
+                      style={{ width: '100%', height: 480, objectFit: 'cover', display: 'block' }}
+                    />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,20,33,0.28), transparent)' }} />
+                  </div>
+                </div>
+                {/* Floating doctor card */}
+                <motion.div
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{
+                    position: 'absolute', bottom: 4, left: -20, zIndex: 10,
+                    background: 'white', borderRadius: 20, padding: '12px 16px',
+                    boxShadow: '0 16px 48px rgba(0,0,0,0.16)', border: '1px solid rgba(233,30,140,0.10)',
+                    display: 'flex', alignItems: 'center', gap: 12,
+                  }}
+                >
+                  <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeN7q87J8qR8E0ucfCc4itng87NNA-kRonNC1qgDT_MnRGQ6l3c6veIVTHcfZ5w2zUYXSgFQDLidV3VYBuBduym_RsrpIyGSlgYhDqWJg2t1VZMSy-RDSWxtU7xtnTddBuuK8OpCe9ngSOYpSfJNNHMXVtthJnAtuaGeibKcILqPnHkbySqVut1_Cp_qMzFcQ6wWDspVw-77CS7gfij2UmsibjB9tn0S2OGGLx6fJG-UaRxeDO15FPa8FrSg04EfXXkNLJg5wuZ6o"
+                    alt="drg. Sarah Wijaya"
+                    style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', border: `2px solid ${PINK}` }}
+                  />
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: DARK }}>drg. Sarah Wijaya</div>
+                    <div style={{ fontSize: 11, color: PINK, fontWeight: 600, marginBottom: 4 }}>Spesialis Ortodonti</div>
+                    <div style={{ display: 'flex', gap: 2 }}>
+                      {[...Array(5)].map((_, i) => <Star key={i} size={10} fill="#F59E0B" color="#F59E0B" />)}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         )}
@@ -1121,24 +1155,33 @@ function FAQSection() {
 }
 
 // ─── TRUST SECTION ────────────────────────────────────────────────────────────
+const STATIC_TRUST_ITEMS = [
+  { icon: <Shield size={18} color={PINK} />, label: 'BPJS Kesehatan' },
+  { icon: <CheckCircle size={18} color={PINK} />, label: 'Asuransi Swasta' },
+  { icon: <Star size={18} color={PINK} />, label: 'Sertifikasi KKI' },
+  { icon: <Clock size={18} color={PINK} />, label: 'Teknologi Digital' },
+  { icon: <MapPin size={18} color={PINK} />, label: 'Klinik Bersih' },
+];
+
 function TrustSection() {
   const { cms } = useCMS();
   const t = cms.trust;
-  if (!t.logos?.length) return null;
   const [ref, inView] = useInView();
 
+  const items = t.logos?.length ? t.logos.map(l => ({ label: l.logo || l.name, icon: <Shield size={18} color={PINK} /> })) : STATIC_TRUST_ITEMS;
+
   return (
-    <section ref={ref} style={{ background: '#FFFFFF', padding: '48px 0', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
+    <section ref={ref} style={{ background: '#F8F9FB', padding: '40px 0', borderTop: '1px solid rgba(0,0,0,0.04)', borderBottom: '1px solid rgba(0,0,0,0.04)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-          style={{ textAlign: 'center', fontSize: 12, fontWeight: 700, color: '#C0C4CC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 24 }}>
+          style={{ textAlign: 'center', fontSize: 11, fontWeight: 700, color: '#C0C4CC', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>
           {t.sectionTitle || 'Mitra & Asuransi Terpercaya'}
         </motion.p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
-          {t.logos.map((logo, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.05 }}
-              style={{ padding: '10px 22px', borderRadius: 12, background: '#F8F9FB', border: '1px solid rgba(0,0,0,0.06)', fontWeight: 800, color: '#6B7280', fontSize: 14, letterSpacing: 0.5 }}>
-              {logo.logo || logo.name}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', alignItems: 'center', opacity: 0.7 }}>
+          {items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.05 }}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: 12, background: 'white', border: '1px solid rgba(0,0,0,0.06)', fontWeight: 700, color: DARK, fontSize: 14 }}>
+              {item.icon}{item.label}
             </motion.div>
           ))}
         </div>
