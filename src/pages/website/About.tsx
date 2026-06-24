@@ -174,8 +174,8 @@ export function About() {
               />
               {/* Rating card */}
               <div
-                className="absolute -bottom-5 -left-5 rounded-2xl p-4 shadow-xl"
-                style={{ background: 'white', minWidth: 200, border: '1px solid rgba(233,30,140,0.1)' }}
+                className="absolute bottom-4 left-4 sm:-bottom-5 sm:-left-5 rounded-2xl p-4 shadow-xl"
+                style={{ background: 'white', maxWidth: 'calc(100% - 2rem)', border: '1px solid rgba(233,30,140,0.1)' }}
               >
                 <p className="text-xs text-gray-500 mb-1">Rating Pasien</p>
                 <div className="flex items-center gap-1.5">
