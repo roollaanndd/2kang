@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Star, Calendar, Search } from 'lucide-react';
 import { DOCTORS } from '../../data/mockData';
+import { SeoHead } from '../../components/ui/SeoHead';
 
 const DOCTOR_PHOTOS: Record<string, string> = {
   d1: 'https://lh3.googleusercontent.com/aida/AP1WRLsJm6Hd3zuvQHAHO-2tZZTLKwucUMxPrVYakmwVrfOx5lQgn7H8rPUHO0E9FvxApcbh9i385scrC8chYANySbYJtsMy4Hmspv7NnWHRljsap8pRDF5UQ0HucY3JJW-PIzrYR6UHUTfU1WACFIsZKvj7SBe-Pv9OE-HUvpbBHmIqrKi6DWM87NPGer4TtoxBjkAFTi4X6ifT7hm35ORakGAiqThN9FxGY1br8lXTaEcAzDjpzPMDzLD00g',
@@ -32,6 +33,13 @@ export function Doctors() {
   });
 
   return (
+    <>
+    <SeoHead
+      title="Tim Dokter Spesialis"
+      description="Kenali tim dokter gigi spesialis OMDC Dental — ortodontis, dokter gigi anak, spesialis bedah, dan dokter umum berpengalaman siap melayani Anda di Jakarta Selatan."
+      keywords="dokter gigi Jakarta, dokter gigi spesialis, ortodontis Jakarta, dokter gigi anak, spesialis implan gigi"
+      path="/doctors"
+    />
     <div className="bg-white">
       {/* Hero Section */}
       <section className="relative pt-16 pb-12 overflow-hidden bg-[#FFF5F9]/30">
@@ -235,5 +243,6 @@ export function Doctors() {
         </div>
       </section>
     </div>
+    </>
   );
 }

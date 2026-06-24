@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle, MessageCircle, AlertCirc
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
 import { useCMS } from '../../context/CMSContext';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { SeoHead } from '../../components/ui/SeoHead';
 
 interface FormData {
   name: string;
@@ -86,6 +87,13 @@ export function Contact() {
   ];
 
   return (
+    <>
+    <SeoHead
+      title="Hubungi Kami"
+      description="Hubungi OMDC Dental — klinik gigi terpercaya di Jakarta Selatan. Buka Senin–Sabtu 08.00–20.00. Layanan darurat 24/7 tersedia. Jl. Kemang Raya No. 12."
+      keywords="kontak klinik gigi, alamat OMDC Dental, telepon dokter gigi Jakarta, jam buka klinik gigi"
+      path="/contact"
+    />
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
@@ -456,5 +464,6 @@ export function Contact() {
         </div>
       </section>
     </div>
+    </>
   );
 }

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { DOCTORS, SERVICES, TIME_SLOTS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { SeoHead } from '../../components/ui/SeoHead';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
@@ -152,6 +153,13 @@ export function Booking() {
   }
 
   return (
+    <>
+    <SeoHead
+      title="Booking Jadwal"
+      description="Booking jadwal pemeriksaan dan perawatan gigi di OMDC Dental secara online. Pilih layanan, dokter, dan waktu yang sesuai — cepat, mudah, dan terpercaya."
+      keywords="booking klinik gigi online, jadwal dokter gigi, reservasi klinik gigi Jakarta, appointment dokter gigi"
+      path="/booking"
+    />
     <div style={{ background: '#FAFAFA', minHeight: '100vh' }}>
       {/* Hero */}
       <div className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
@@ -831,5 +839,6 @@ export function Booking() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Calendar, Copy, CheckCircle } from 'lucide-react';
 import { PROMOTIONS } from '../../data/mockData';
+import { SeoHead } from '../../components/ui/SeoHead';
 
 const filterTypes = ['Semua', 'Pembersihan', 'Behel', 'Estetika', 'Anak'];
 
@@ -82,6 +83,13 @@ export function Promotions() {
   };
 
   return (
+    <>
+    <SeoHead
+      title="Promo & Penawaran Spesial"
+      description="Temukan promo dan diskon perawatan gigi terbaik di OMDC Dental — paket scaling, behel, pemutihan gigi, dan perawatan anak dengan harga spesial. Penawaran terbatas!"
+      keywords="promo klinik gigi, diskon scaling, paket behel, promo gigi anak, voucher dental, penawaran gigi Jakarta"
+      path="/promotions"
+    />
     <div className="bg-white">
       {/* Hero Section */}
       <main className="pt-10 pb-20">
@@ -291,5 +299,6 @@ export function Promotions() {
         </section>
       </main>
     </div>
+    </>
   );
 }

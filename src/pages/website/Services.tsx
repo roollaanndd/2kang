@@ -5,6 +5,7 @@ import { Clock, CheckCircle, ChevronDown, ChevronUp, Calendar } from 'lucide-rea
 import { SERVICES } from '../../data/mockData';
 import { DentalServiceIcon, ServiceIconBezel, SERVICE_GRADIENTS, SERVICE_SHADOWS } from '../../components/mobile/DentalServiceIcon';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
+import { SeoHead } from '../../components/ui/SeoHead';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
@@ -114,6 +115,13 @@ export function Services() {
   );
 
   return (
+    <>
+    <SeoHead
+      title="Layanan Dental"
+      description="Layanan perawatan gigi lengkap di OMDC Dental: pemeriksaan, scaling, tambal, cabut, behel ortodonsi, implan, perawatan saluran akar, dan veneer. Dokter spesialis berpengalaman."
+      keywords="layanan gigi, scaling gigi, tambal gigi, cabut gigi, behel ortodonsi, implan gigi, perawatan saluran akar, veneer gigi, Jakarta"
+      path="/services"
+    />
     <div className="bg-[#FFF5F9]">
       {/* Hero Section */}
       <section className="relative pt-16 pb-12 px-6 md:px-12 max-w-7xl mx-auto text-center overflow-hidden">
@@ -314,5 +322,6 @@ export function Services() {
         </div>
       </section>
     </div>
+    </>
   );
 }

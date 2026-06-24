@@ -4,6 +4,7 @@ import { Heart, Shield, Award, Users, Star, CheckCircle, ArrowRight, Calendar } 
 import { CLINIC_NAME, CLINIC_ADDRESS } from '../../data/mockData';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { WaveDivider } from '../../components/ui/WaveDivider';
+import { SeoHead } from '../../components/ui/SeoHead';
 import { CountUp } from '../../components/ui/CountUp';
 
 const milestones = [
@@ -63,6 +64,13 @@ export function About() {
   ];
 
   return (
+    <>
+    <SeoHead
+      title="Tentang Kami"
+      description="OMDC Dental berdiri sejak 2010 dengan misi menghadirkan perawatan gigi premium di Jakarta Selatan. Lebih dari 15.000 pasien telah mempercayakan senyum mereka kepada kami."
+      keywords="klinik gigi Jakarta Selatan, sejarah OMDC Dental, dokter gigi terpercaya, klinik gigi premium Jakarta"
+      path="/about"
+    />
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
@@ -501,5 +509,6 @@ export function About() {
         </div>
       </section>
     </div>
+    </>
   );
 }
