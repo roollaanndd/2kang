@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Clock, CheckCircle, ChevronDown, ChevronUp, Calendar } from 'lucide-react';
 import { SERVICES } from '../../data/mockData';
+import { DentalServiceIcon, ServiceIconBezel, SERVICE_GRADIENTS, SERVICE_SHADOWS } from '../../components/mobile/DentalServiceIcon';
+import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
@@ -114,7 +116,8 @@ export function Services() {
   return (
     <div className="bg-[#FFF5F9]">
       {/* Hero Section */}
-      <section className="pt-16 pb-12 px-6 md:px-12 max-w-7xl mx-auto text-center">
+      <section className="relative pt-16 pb-12 px-6 md:px-12 max-w-7xl mx-auto text-center overflow-hidden">
+        <AnimatedDentalBg size="lg" />
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <div className="inline-block bg-[#ECFEFF] text-[#06B6D4] px-4 py-1.5 rounded-full font-semibold text-sm mb-6 tracking-wide uppercase">
             Perawatan Terbaik
@@ -171,13 +174,15 @@ export function Services() {
                 transition={{ duration: 0.5, delay: i * 0.06 }}
                 className="bg-white rounded-[24px] p-6 shadow-sm border border-pink-50 hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
               >
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
-                  style={{ background: 'linear-gradient(135deg, #FFF5F9, #ECFEFF)' }}
-                >
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E91E8C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2C8 2 5 5 5 9c0 3 1.5 5.5 3 7.5l1 5.5h6l1-5.5C17.5 14.5 19 12 19 9c0-4-3-7-7-7z" />
-                  </svg>
+                <div className="mb-6">
+                  <ServiceIconBezel
+                    gradient={SERVICE_GRADIENTS[i % SERVICE_GRADIENTS.length]}
+                    shadowColor={SERVICE_SHADOWS[i % SERVICE_SHADOWS.length]}
+                    size={56}
+                    radius={16}
+                  >
+                    <DentalServiceIcon id={service.id} size={26} />
+                  </ServiceIconBezel>
                 </div>
                 <h3 className="font-headline font-bold text-xl mb-3 text-[#0D1421]">{service.name}</h3>
                 <p className="text-[#6B7280] text-sm mb-6 flex-grow leading-relaxed">{service.description}</p>

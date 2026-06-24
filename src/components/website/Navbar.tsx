@@ -1,19 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ChevronRight, Bell, Download, Monitor, ChevronDown, Languages } from 'lucide-react';
+import { Menu, X, ChevronRight, Bell, Download, Monitor, ChevronDown, Languages, Search, Sparkles, Wrench, Scissors, AlignJustify, Anchor, GitBranch, Plus } from 'lucide-react';
 import { OmdcLogo } from '../ui/OmdcLogo';
 import { useLanguage } from '../../context/LanguageContext';
 
 const SERVICES_MENU = [
-  { label: 'Pemeriksaan Gigi', icon: '🦷', to: '/services' },
-  { label: 'Scaling & Polishing', icon: '✨', to: '/services' },
-  { label: 'Tambal Gigi', icon: '🔧', to: '/services' },
-  { label: 'Cabut Gigi', icon: '❌', to: '/services' },
-  { label: 'Behel / Ortodonsi', icon: '😁', to: '/services' },
-  { label: 'Implan Gigi', icon: '🔩', to: '/services' },
-  { label: 'Perawatan Saluran Akar', icon: '💊', to: '/services' },
-  { label: 'Veneer Gigi', icon: '➕', to: '/services' },
+  { label: 'Pemeriksaan Gigi', Icon: Search, color: '#E91E8C', to: '/services' },
+  { label: 'Scaling & Polishing', Icon: Sparkles, color: '#4FC3F7', to: '/services' },
+  { label: 'Tambal Gigi', Icon: Wrench, color: '#A78BFA', to: '/services' },
+  { label: 'Cabut Gigi', Icon: Scissors, color: '#10B981', to: '/services' },
+  { label: 'Behel / Ortodonsi', Icon: AlignJustify, color: '#F59E0B', to: '/services' },
+  { label: 'Implan Gigi', Icon: Anchor, color: '#EF4444', to: '/services' },
+  { label: 'Perawatan Saluran Akar', Icon: GitBranch, color: '#EC4899', to: '/services' },
+  { label: 'Veneer Gigi', Icon: Plus, color: '#14B8A6', to: '/services' },
 ];
 
 export function Navbar() {
@@ -169,7 +169,9 @@ export function Navbar() {
                                       (e.currentTarget as HTMLElement).style.background = 'transparent';
                                     }}
                                   >
-                                    <span className="text-lg leading-none">{svc.icon}</span>
+                                    <span style={{ width: 28, height: 28, borderRadius: 8, background: `${svc.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                      <svc.Icon size={14} color={svc.color} />
+                                    </span>
                                     <span className="text-sm font-semibold">{svc.label}</span>
                                   </Link>
                                 ))}
