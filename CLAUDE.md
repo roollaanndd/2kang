@@ -170,6 +170,29 @@ export const APP_BUILD_DATE = '2026-06-21';
 5. **Pink primary** `#E91E8C` only — never substitute with other pinks
 6. **Illustrations** use inline SVG — no external 3D asset dependencies
 
+## AI Agent Plugins (Global — install once per machine)
+
+These skills run inside Claude Code to improve design and code quality. Install them in your local terminal, not in the cloud agent (the remote sandbox has no GitHub auth).
+
+| Plugin | Repo | Install |
+|---|---|---|
+| **Ponytail** | `DietrichGebert/ponytail` | `npx skills add ponytail@ponytail` |
+| **Taste Skill** | `Leonxlnx/taste-skill` | `npx skills add https://github.com/Leonxlnx/taste-skill` |
+
+**Taste Skill** (`design-taste-frontend`) — prevents generic AI-generated UI slop. Guides layout, typography, motion, and spacing decisions. Use it whenever generating new screens or redesigning components.
+
+```bash
+# Install globally (run once in your terminal)
+npx skills add https://github.com/Leonxlnx/taste-skill --yes --global
+
+# Or invoke per-session in Claude Code
+/taste-skill
+```
+
+**Usage in prompts:** After installing, Claude Code picks up the skill automatically. You can also explicitly invoke:
+- `/design-taste-frontend` — full design quality pass
+- `/taste` — shorthand if available
+
 ## Git / Deploy
 
 - Feature branch: `claude/website-mobile-apps-dev-lmgp7x`
