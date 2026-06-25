@@ -1,5 +1,14 @@
 # OMDC Dental - Project Phases
 
+## AI Tooling
+
+| Tool | Purpose | Install |
+|---|---|---|
+| **Ponytail** | Minimal code generation plugin | `npm install -g @dietrichgebert/ponytail` or `/plugin install ponytail@ponytail` in Claude Code |
+| **Remotion** | Video/animation rendering | Already in `package.json` — `npm run remotion` |
+
+---
+
 ## Overview
 Complete dental clinic management system for OMDC Dental ("Senyum Sehat, Percaya Diri Penuh")
 

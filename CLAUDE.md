@@ -1,5 +1,29 @@
 # OMDC Dental App — Codebase Guide
 
+## AI Agent Plugins
+
+### Ponytail (globally installed)
+[Ponytail](https://github.com/DietrichGebert/ponytail) — makes the AI agent write minimal, efficient code ("laziest senior dev in the room").
+
+**Install once per machine:**
+```bash
+npm install -g @dietrichgebert/ponytail
+# or inside Claude Code:
+/plugin install ponytail@ponytail
+```
+
+**Modes:** `lite` / `full` / `ultra` / `off`  
+**Review command:** `/ponytail-review` — audits for over-engineering  
+**Effect:** ~46–54% less generated code, ~20% cheaper, ~27% faster
+
+When writing new components or features in this project, apply Ponytail principles:
+- Skip code that isn't needed
+- Reuse existing components (`AnimatedDentalBg`, `OmdcLogo`, `DentalServiceIcon`, etc.)
+- No abstractions beyond what the task requires
+- Three similar lines is better than a premature abstraction
+
+---
+
 ## Project Overview
 
 **OMDC Dental** is a multi-platform dental clinic management suite built with React 19 + TypeScript + Vite 6 + Tailwind CSS v4. It comprises three distinct frontends sharing a single codebase:
