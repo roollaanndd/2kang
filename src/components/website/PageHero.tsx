@@ -80,7 +80,7 @@ export interface PageHeroProps {
     subtitle: string;
     rating?: boolean;
     stat?: { value: string; label: string };
-    color?: 'pink' | 'aqua';
+    color?: 'pink' | 'gold';
   };
 }
 
@@ -96,11 +96,31 @@ export function PageHero({
   return (
     <section style={{
       position: 'relative',
-      background: '#FFF5F9',
+      background: 'linear-gradient(160deg, #FFF8F4 0%, #FFF0FA 50%, #FFFDF0 100%)',
       overflow: 'hidden',
       paddingTop: 80,
     }}>
       <HeroBg />
+
+      {/* Playful floating sparkles */}
+      <motion.div animate={{ y: [-8, 8, -8], rotate: [0, 15, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ position: 'absolute', top: '14%', right: '8%', zIndex: 2, pointerEvents: 'none' }}>
+        <svg width={28} height={28} viewBox="0 0 24 24" fill={GOLD} style={{ opacity: 0.65 }}>
+          <path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5Z" />
+        </svg>
+      </motion.div>
+      <motion.div animate={{ y: [6, -6, 6], rotate: [0, -12, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+        style={{ position: 'absolute', top: '24%', right: '20%', zIndex: 2, pointerEvents: 'none' }}>
+        <svg width={16} height={16} viewBox="0 0 24 24" fill={PINK} style={{ opacity: 0.5 }}>
+          <path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5Z" />
+        </svg>
+      </motion.div>
+      <motion.div animate={{ y: [-5, 9, -5], rotate: [0, 20, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
+        style={{ position: 'absolute', bottom: '20%', left: '6%', zIndex: 2, pointerEvents: 'none' }}>
+        <svg width={20} height={20} viewBox="0 0 24 24" fill={ROSE} style={{ opacity: 0.55 }}>
+          <path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5Z" />
+        </svg>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: 'relative', zIndex: 2 }}>
         <div className="page-hero-grid" style={{
@@ -245,7 +265,7 @@ export function PageHero({
           >
             <div style={{ position: 'relative', width: '100%', maxWidth: 480 }}>
               {/* Photo frame */}
-              <div style={{ borderRadius: 32, overflow: 'hidden', background: '#FFF5F9', padding: 12, boxShadow: '0 24px 64px rgba(233,30,140,0.12)' }}>
+              <div style={{ borderRadius: 32, overflow: 'hidden', background: '#FFF8F4', padding: 12, boxShadow: '0 24px 64px rgba(233,30,140,0.12)' }}>
                 <div style={{ borderRadius: 22, overflow: 'hidden', position: 'relative' }}>
                   <img
                     src={photoSrc}
@@ -281,7 +301,7 @@ export function PageHero({
                   ) : (
                     <div style={{
                       width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
-                      background: floatingCard.color === 'aqua'
+                      background: floatingCard.color === 'gold'
                         ? `linear-gradient(135deg, ${GOLD}, #F5C842)`
                         : `linear-gradient(135deg, ${PINK}, ${ROSE})`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -291,7 +311,7 @@ export function PageHero({
                   )}
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: 13, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{floatingCard.name}</div>
-                    <div style={{ fontSize: 11, color: floatingCard.color === 'aqua' ? GOLD : PINK, fontWeight: 600, marginBottom: floatingCard.rating ? 4 : 0 }}>{floatingCard.subtitle}</div>
+                    <div style={{ fontSize: 11, color: floatingCard.color === 'gold' ? GOLD : PINK, fontWeight: 600, marginBottom: floatingCard.rating ? 4 : 0 }}>{floatingCard.subtitle}</div>
                     {floatingCard.rating && (
                       <div style={{ display: 'flex', gap: 2 }}>
                         {[...Array(5)].map((_, i) => <Star key={i} size={10} fill="#F59E0B" color="#F59E0B" />)}

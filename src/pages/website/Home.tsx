@@ -430,7 +430,7 @@ function HeroSection() {
             <motion.div initial={{ opacity: 0, x: isMobile ? 0 : 36, y: isMobile ? 20 : 0 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.72, delay: 0.16, ease: [0.32, 0.72, 0, 1] }}
               style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ position: 'relative', width: '100%', maxWidth: 520 }}>
-                <div style={{ borderRadius: 32, overflow: 'hidden', background: '#FFF5F9', padding: 16 }}>
+                <div style={{ borderRadius: 32, overflow: 'hidden', background: '#FFF8F4', padding: 16 }}>
                   <div style={{ borderRadius: 24, overflow: 'hidden', position: 'relative', boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}>
                     <img
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0EolqzvY1WD2WOp6SMJdKAfmWFjfpNCMwTSa1ndh1x4It-v1j41ymL_OfNorfUA6mjRRuFakD-6K6WIRBoBtyttbuE5Ivgg8YTOseynTdlYroGQmGEdhf03RUWPZfuF76uArIkLfxm9a1Z14vb5Yh0VFlDIfJurcRoLF8l_ZqsCxQOFj8Pr2tmJnqKaiNHgfNcwpiUXhfmhjN6PbBxnqw9GtG9z5lbBi4bUiKS0hpL74lPZ4jnwrIMC_ALmA4HxPenTr68oA9VF8"

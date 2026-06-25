@@ -28,28 +28,28 @@ const values = [
     title: 'Kepedulian Pasien',
     desc: 'Kami menempatkan kepuasan dan kenyamanan pasien sebagai prioritas utama dalam setiap tindakan.',
     color: '#E91E8C',
-    bg: '#FFF5F9',
+    bg: '#FFF0FA',
   },
   {
     icon: <Shield size={28} />,
     title: 'Integritas & Keamanan',
     desc: 'Standar kebersihan dan keamanan tertinggi diterapkan di setiap sudut klinik kami.',
-    color: '#4FC3F7',
-    bg: '#F0FAFF',
+    color: '#D4A017',
+    bg: '#FFFDF0',
   },
   {
     icon: <Award size={28} />,
     title: 'Keunggulan',
     desc: 'Selalu berupaya memberikan hasil terbaik dengan menggunakan teknologi dan teknik terkini.',
-    color: '#A78BFA',
-    bg: '#F5F3FF',
+    color: '#FF6BB5',
+    bg: '#FFF5FA',
   },
   {
     icon: <Users size={28} />,
     title: 'Kerja Tim',
     desc: 'Tim yang solid dan berdedikasi bekerja bersama untuk memberikan pengalaman terbaik bagi pasien.',
-    color: '#10B981',
-    bg: '#F0FDF4',
+    color: '#E91E8C',
+    bg: '#FFF8F4',
   },
 ];
 
@@ -84,14 +84,14 @@ export function About() {
         photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuDKJplFRi4nZVbG6qEpXdvTzIklDzxC2rkfqnANtiqieo0SNdjlGabr__i82pi4PvbyrLF4QyhDoIqOmiuS-CfmIrP2XkJ0LEPd26Oii9Pw67bk5aLzKqz1Guz4rmcGHO3ObZvf5KLSNUDOthskRiLj2I0V9MLDMnEki5xVy-irVr-3pEIIEB0GdbTNlgB-DZA9pprSC8lWSJ9MKFhOPkVgHW2K6aT5R0VRbEEPNSM8HL9TsXNVyOq1cUfjn4Ea4mEoKcf7zuPDr5A"
         photoAlt="Tim OMDC Dental"
         floatingCard={{
-          color: 'aqua',
+          color: 'gold',
           name: "Berdiri Sejak 2010",
           subtitle: "15+ Tahun Melayani",
           stat: { value: "15.000+", label: "pasien puas" },
         }}
       />
 
-      <WaveDivider fromColor="#FFF5F9" toColor="white" />
+      <WaveDivider fromColor="#FFF8F4" toColor="white" />
 
       {/* Stats */}
       <section style={{ background: 'white' }}>
@@ -105,7 +105,7 @@ export function About() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 className="text-center p-5 rounded-2xl"
-                style={{ background: '#FFF5F9' }}
+                style={{ background: '#FFF8F4' }}
               >
                 <div className="text-3xl font-black" style={{ color: '#E91E8C', fontFamily: "'Plus Jakarta Sans', sans-serif" }}><CountUp value={stat.value} /></div>
                 <div className="text-xs mt-1 text-gray-500 font-medium">{stat.label}</div>
@@ -215,7 +215,7 @@ export function About() {
                 content: 'Menjadi klinik gigi pilihan utama masyarakat Indonesia dengan memberikan pelayanan dental berkualitas internasional yang mudah diakses oleh semua kalangan.',
                 icon: '🎯',
                 color: '#E91E8C',
-                bg: '#FFF5F9',
+                bg: '#FFF8F4',
               },
               {
                 type: 'Misi',
@@ -226,7 +226,7 @@ export function About() {
                   'Menciptakan lingkungan klinik yang nyaman, bersih, dan menyenangkan bagi pasien',
                 ],
                 icon: '🚀',
-                color: '#4FC3F7',
+                color: '#D4A017',
                 bg: '#F0FAFF',
               },
             ].map((item) => (
@@ -465,7 +465,7 @@ export function About() {
                 <p className="text-xs text-gray-500 mb-2">{cert.body}</p>
                 <span
                   className="text-xs px-2 py-1 rounded-lg font-semibold"
-                  style={{ background: '#FFF5F9', color: '#E91E8C' }}
+                  style={{ background: '#FFF8F4', color: '#E91E8C' }}
                 >
                   Sejak {cert.year}
                 </span>
@@ -484,7 +484,7 @@ export function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="rounded-3xl p-10 relative overflow-hidden"
-            style={{ background: '#FFF5F9', border: '1.5px solid rgba(233,30,140,0.15)' }}
+            style={{ background: '#FFF8F4', border: '1.5px solid rgba(233,30,140,0.15)' }}
           >
             <h2 className="text-2xl sm:text-3xl font-black mb-4 relative z-10" style={{ color: '#111827' }}>
               Bergabunglah dengan Keluarga OMDC Dental

@@ -127,7 +127,7 @@ export function Doctors() {
                     className="bg-white rounded-[24px] shadow-sm hover:shadow-xl transition-all duration-300 border border-pink-50/50 overflow-hidden flex flex-col group hover:-translate-y-1"
                   >
                     {/* Photo */}
-                    <div className="relative pt-[100%] bg-[#FFF5F9] overflow-hidden">
+                    <div className="relative pt-[100%] bg-[#FFF8F4] overflow-hidden">
                       <img
                         src={photoUrl}
                         alt={doctor.name}
@@ -213,7 +213,7 @@ export function Doctors() {
       </section>
 
       {/* Closing CTA */}
-      <section className="py-20 relative overflow-hidden bg-[#FFF5F9]">
+      <section className="py-20 relative overflow-hidden bg-[#FFF8F4]">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
           <div
             className="bg-white rounded-[32px] p-8 md:p-12 shadow-xl border border-pink-50 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left"
