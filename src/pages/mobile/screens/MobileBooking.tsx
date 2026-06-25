@@ -53,6 +53,11 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
         title="Pilih Layanan"
         showBack
         onBack={() => setState({ screen: 'home' })}
+        rightAction={
+          <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(233,30,140,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: '#E91E8C' }}>1/4</span>
+          </div>
+        }
       />
 
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none' }}>

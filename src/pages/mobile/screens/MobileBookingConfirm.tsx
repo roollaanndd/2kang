@@ -49,7 +49,16 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
       transition={{ duration: 0.3 }}
       className="flex flex-col h-full bg-gray-50"
     >
-      <MobileHeader title="Konfirmasi Janji" showBack onBack={back} />
+      <MobileHeader
+        title="Konfirmasi Janji"
+        showBack
+        onBack={back}
+        rightAction={
+          <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(233,30,140,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: '#E91E8C' }}>4/4</span>
+          </div>
+        }
+      />
 
       <div className="flex-1 overflow-y-auto pb-28 px-5 pt-4">
         {/* Summary header card */}

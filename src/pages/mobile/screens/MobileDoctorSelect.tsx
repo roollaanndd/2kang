@@ -42,7 +42,16 @@ export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps)
       transition={{ duration: 0.3 }}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB' }}
     >
-      <MobileHeader title="Pilih Dokter" showBack onBack={back} />
+      <MobileHeader
+        title="Pilih Dokter"
+        showBack
+        onBack={back}
+        rightAction={
+          <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(233,30,140,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: '#E91E8C' }}>2/4</span>
+          </div>
+        }
+      />
 
       {/* Selected service banner */}
       {state.selectedService && (
