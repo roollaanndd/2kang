@@ -347,6 +347,20 @@ function TopBar({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   );
 }
 
+// ─── PERMISSION GUARD ─────────────────────────────────────────────────────────
+function Guarded({ element, permission }: { element: React.ReactElement; permission?: string }) {
+  const { hasPermission } = useAuth();
+  if (permission && !hasPermission(permission)) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 gap-3">
+        <ShieldCheck size={40} className="text-gray-300" />
+        <p className="text-gray-500 font-medium">Anda tidak memiliki akses ke halaman ini.</p>
+      </div>
+    );
+  }
+  return element;
+}
+
 // ─── INNER LAYOUT (needs Auth context) ───────────────────────────────────────
 function InnerLayout() {
   const { isLoggedIn } = useAuth();
@@ -364,17 +378,17 @@ function InnerLayout() {
             <Route path="/" element={<AdminDashboard />} />
             <Route path="/queue" element={<AdminQueue />} />
             <Route path="/appointments" element={<AdminAppointments />} />
-            <Route path="/patients" element={<AdminPatients />} />
+            <Route path="/patients" element={<Guarded element={<AdminPatients />} permission="patients.view" />} />
             <Route path="/doctors" element={<AdminDoctors />} />
             <Route path="/services" element={<AdminServices />} />
             <Route path="/promotions" element={<AdminPromotions />} />
-            <Route path="/broadcast" element={<AdminBroadcast />} />
-            <Route path="/website" element={<AdminWebsite />} />
-            <Route path="/reports" element={<AdminReports />} />
-            <Route path="/users" element={<AdminUsers />} />
-            <Route path="/roles" element={<AdminRoles />} />
+            <Route path="/broadcast" element={<Guarded element={<AdminBroadcast />} permission="website.view" />} />
+            <Route path="/website" element={<Guarded element={<AdminWebsite />} permission="website.view" />} />
+            <Route path="/reports" element={<Guarded element={<AdminReports />} permission="reports.view" />} />
+            <Route path="/users" element={<Guarded element={<AdminUsers />} permission="users.view" />} />
+            <Route path="/roles" element={<Guarded element={<AdminRoles />} permission="roles.view" />} />
             <Route path="/branches" element={<AdminBranches />} />
-            <Route path="/settings" element={<AdminSettings />} />
+            <Route path="/settings" element={<Guarded element={<AdminSettings />} permission="settings.view" />} />
           </Routes>
         </main>
       </div>
