@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Hand, Zap } from 'lucide-react';
-import { OmdcLogo } from '../../../components/ui/OmdcLogo';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
@@ -19,48 +17,99 @@ function LiveClock() {
     return () => clearInterval(id);
   }, []);
   return (
-    <div style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: 72, fontWeight: 900, color: DARK, letterSpacing: -3, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+    <div>
+      <div style={{
+        fontSize: 80, fontWeight: 900, color: 'white', letterSpacing: -4, lineHeight: 1,
+        fontVariantNumeric: 'tabular-nums', textShadow: `0 0 40px rgba(233,30,140,0.4)`,
+        fontFamily: 'Plus Jakarta Sans, Inter, sans-serif',
+      }}>
         {time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
       </div>
-      <div style={{ fontSize: 16, color: '#9CA3AF', fontWeight: 500, marginTop: 8 }}>
+      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', fontWeight: 500, marginTop: 8, letterSpacing: '0.06em' }}>
         {time.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
       </div>
     </div>
   );
 }
 
-function QRCodeSVG() {
+/* Glowing architectural tooth built from layered CSS rings */
+function GlowTooth() {
   return (
-    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4" y="4" width="24" height="24" rx="3" fill="none" stroke="#0D1421" strokeWidth="2.5"/>
-      <rect x="9" y="9" width="14" height="14" rx="1" fill="#E91E8C"/>
-      <rect x="52" y="4" width="24" height="24" rx="3" fill="none" stroke="#0D1421" strokeWidth="2.5"/>
-      <rect x="57" y="9" width="14" height="14" rx="1" fill="#E91E8C"/>
-      <rect x="4" y="52" width="24" height="24" rx="3" fill="none" stroke="#0D1421" strokeWidth="2.5"/>
-      <rect x="9" y="57" width="14" height="14" rx="1" fill="#E91E8C"/>
-      {[
-        [34,4],[38,4],[42,4],[46,4],[34,8],[42,8],[46,8],
-        [34,12],[38,12],[34,16],[42,16],[46,16],[38,20],[42,20],
-        [52,32],[56,32],[60,32],[64,32],[68,32],[72,32],
-        [52,36],[60,36],[68,36],[52,40],[56,40],[64,40],[72,40],
-        [4,32],[8,32],[12,32],[16,32],[20,32],[24,32],[28,32],
-        [4,36],[12,36],[20,36],[28,36],[4,40],[8,40],[16,40],[24,40],[28,40],
-        [34,52],[38,52],[42,52],[46,52],[52,52],[56,52],[60,52],[68,52],[72,52],
-        [34,56],[46,56],[52,56],[60,56],[64,56],[72,56],
-        [34,60],[38,60],[42,60],[60,60],[68,60],
-        [34,64],[42,64],[46,64],[52,64],[56,64],[60,64],[64,64],[68,64],[72,64],
-        [38,68],[46,68],[52,68],[60,68],[64,68],[72,68],
-      ].map(([cx, cy], i) => (
-        <rect key={i} x={cx} y={cy} width="4" height="4" fill="#0D1421" opacity="0.7" />
+    <div style={{ position: 'relative', width: 160, height: 184 }}>
+      {/* outer glow rings */}
+      {[1.4, 1.2, 1.0].map((scale, i) => (
+        <motion.div
+          key={i}
+          animate={{ opacity: [0.08, 0.2, 0.08] }}
+          transition={{ duration: 3 + i * 0.7, repeat: Infinity, delay: i * 0.5, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            transform: `scale(${scale})`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <svg width={160} height={184} viewBox="0 0 100 115" fill="none">
+            <path
+              d="M50 8C35 8 23 20 23 35c0 9 3 16 7 24 4 8 6.5 16 6.5 27 0 3 2 5 4.5 5h18c2.5 0 4.5-2 4.5-5 0-11 2.5-19 6.5-27 4-8 7-15 7-24C77 20 65 8 50 8z"
+              stroke={i === 2 ? PINK : i === 1 ? ROSE : AQUA}
+              strokeWidth={i === 2 ? 2 : 1.5}
+              strokeLinejoin="round"
+            />
+          </svg>
+        </motion.div>
       ))}
-    </svg>
+      {/* core tooth with gradient stroke */}
+      <motion.div
+        animate={{ filter: ['drop-shadow(0 0 8px rgba(233,30,140,0.6))', 'drop-shadow(0 0 24px rgba(233,30,140,0.9))', 'drop-shadow(0 0 8px rgba(233,30,140,0.6))'] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <svg width={100} height={115} viewBox="0 0 100 115" fill="none">
+          <defs>
+            <linearGradient id="toothGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor={PINK} />
+              <stop offset="50%" stopColor={ROSE} />
+              <stop offset="100%" stopColor={AQUA} />
+            </linearGradient>
+          </defs>
+          <path
+            d="M50 8C35 8 23 20 23 35c0 9 3 16 7 24 4 8 6.5 16 6.5 27 0 3 2 5 4.5 5h18c2.5 0 4.5-2 4.5-5 0-11 2.5-19 6.5-27 4-8 7-15 7-24C77 20 65 8 50 8z"
+            stroke="url(#toothGrad)"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+            fill="rgba(233,30,140,0.06)"
+          />
+          {/* inner root split lines */}
+          <line x1="44" y1="64" x2="41" y2="86" stroke="url(#toothGrad)" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.6" />
+          <line x1="56" y1="64" x2="59" y2="86" stroke="url(#toothGrad)" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.6" />
+          <line x1="50" y1="66" x2="50" y2="90" stroke="url(#toothGrad)" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.6" />
+        </svg>
+      </motion.div>
+      {/* floating particles */}
+      {[
+        { x: 20, y: 20, s: 4 }, { x: 130, y: 30, s: 3 }, { x: 10, y: 100, s: 5 },
+        { x: 140, y: 120, s: 3 }, { x: 80, y: 10, s: 4 },
+      ].map((p, i) => (
+        <motion.div
+          key={i}
+          animate={{ y: [-6, 6, -6], opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 4 + i * 0.8, repeat: Infinity, delay: i * 0.6, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute', left: p.x - 80, top: p.y - 40,
+            width: p.s, height: p.s, borderRadius: '50%',
+            background: [PINK, ROSE, AQUA, ROSE, PINK][i],
+            boxShadow: `0 0 ${p.s * 2}px ${[PINK, ROSE, AQUA, ROSE, PINK][i]}`,
+          }}
+        />
+      ))}
+    </div>
   );
 }
 
 const TICKER_ITEMS = [
-  '4 Dokter Spesialis Siap Melayani',
-  'Booking Online · Antrian Digital · Tanpa Antri Lama',
+  '8 Dokter Spesialis Siap Melayani Anda',
+  'Booking Online · Antrian Digital · Tanpa Antre Lama',
   'Buka Senin – Sabtu: 08.00 – 20.00 WIB',
   'Teknologi Digital X-ray & Laser Terkini',
 ];
@@ -69,18 +118,19 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
   const portrait = useIsPortrait();
   const [tickerIdx, setTickerIdx] = useState(0);
   const [tickerVis, setTickerVis] = useState(true);
+  const [lang, setLang] = useState<'id' | 'en'>('id');
 
   useEffect(() => {
     const id = setInterval(() => {
       setTickerVis(false);
-      setTimeout(() => { setTickerIdx(p => (p + 1) % TICKER_ITEMS.length); setTickerVis(true); }, 380);
+      setTimeout(() => { setTickerIdx(p => (p + 1) % TICKER_ITEMS.length); setTickerVis(true); }, 350);
     }, 4000);
     return () => clearInterval(id);
   }, []);
 
   const handleTouch = () => {
     kioskSound('tap');
-    setState(prev => ({ ...prev, step: 'language', language: 'id' }));
+    setState(prev => ({ ...prev, step: 'language', language: lang }));
     goTo('language');
   };
 
@@ -91,202 +141,266 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       onClick={handleTouch}
-      style={{ width: '100%', height: '100%', display: 'flex', flexDirection: portrait ? 'column' : 'row', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
+      style={{
+        width: '100%', height: '100%',
+        display: 'flex', flexDirection: portrait ? 'column' : 'row',
+        cursor: 'pointer', position: 'relative', overflow: 'hidden',
+        background: DARK,
+      }}
     >
       {/* 3px signature brand strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30 }} />
-
-      {/* ─── LEFT PANEL: Light branded side (top band in portrait) ─────── */}
       <div style={{
-        width: portrait ? '100%' : '40%', flexShrink: 0, height: portrait ? '42%' : '100%',
-        background: `linear-gradient(160deg, #FFF5F9 0%, #FFE4F1 50%, #ECFEFF 100%)`,
-        borderRight: portrait ? 'none' : '1px solid rgba(233,30,140,0.10)',
-        borderBottom: portrait ? '1px solid rgba(233,30,140,0.10)' : 'none',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
-        padding: '40px 32px 32px', position: 'relative', overflow: 'hidden',
+        position: 'absolute', top: 0, left: 0, right: 0, height: 3,
+        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30,
+      }} />
+
+      {/* ── LEFT PANEL: Dark navy with glowing tooth ── */}
+      <div style={{
+        width: portrait ? '100%' : '42%', flexShrink: 0,
+        height: portrait ? '40%' : '100%',
+        background: DARK,
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'space-between',
+        padding: portrait ? '32px 24px 24px' : '52px 40px 40px',
+        position: 'relative', overflow: 'hidden',
+        borderRight: portrait ? 'none' : `1px solid rgba(233,30,140,0.12)`,
+        borderBottom: portrait ? `1px solid rgba(233,30,140,0.12)` : 'none',
       }}>
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', border: `1px solid rgba(233,30,140,0.14)`, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: 60, left: -40, width: 160, height: 160, borderRadius: '50%', border: `1px solid rgba(6,182,212,0.16)`, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: '50%', left: -20, right: -20, height: 1, background: 'rgba(233,30,140,0.06)', pointerEvents: 'none' }} />
+        {/* ambient glow spots */}
+        <div style={{ position: 'absolute', top: -80, left: -80, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.18) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-        <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}>
-          <OmdcLogo size="lg" variant="default" />
+        {/* Brand wordmark */}
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          style={{ textAlign: 'center', zIndex: 2 }}
+        >
+          <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 4 }}>
+            OMDC
+          </div>
+          <div style={{
+            fontSize: 28, fontWeight: 900, lineHeight: 1,
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '-0.5px',
+          }}>
+            Dental
+          </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.5 }}
-          style={{ textAlign: 'center', width: '100%' }}>
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#9CA3AF', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
-              SEDANG DILAYANI
-            </div>
-            <div className="kd" style={{
-              fontSize: 64, fontWeight: 900, lineHeight: 1,
-              background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              letterSpacing: -2,
+        {/* Glowing tooth hero */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.35, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, zIndex: 2 }}
+        >
+          <GlowTooth />
+        </motion.div>
+
+        {/* Stat chips */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.55 }}
+          style={{ display: 'flex', flexDirection: portrait ? 'row' : 'column', gap: 10, zIndex: 2, width: '100%' }}
+        >
+          {[
+            { v: '15+', l: 'Tahun Pengalaman' },
+            { v: '10.000+', l: 'Pasien Puas' },
+            { v: '8', l: 'Dokter Spesialis' },
+          ].map((s) => (
+            <div key={s.v} style={{
+              flex: 1,
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              borderRadius: 14, padding: '10px 14px',
+              backdropFilter: 'blur(8px)',
+              display: 'flex', flexDirection: portrait ? 'column' : 'row', alignItems: portrait ? 'flex-start' : 'center',
+              gap: portrait ? 2 : 10,
             }}>
-              {CURRENT_QUEUE}
+              <span style={{
+                fontSize: 20, fontWeight: 900, color: 'white', lineHeight: 1,
+                background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              }}>{s.v}</span>
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>{s.l}</span>
             </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: 0, borderRadius: 16, overflow: 'hidden', background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(233,30,140,0.10)', boxShadow: '0 4px 16px rgba(233,30,140,0.06)', marginBottom: 20 }}>
-            {[
-              { label: 'Menunggu', value: '12' },
-              { label: 'Est. Tunggu', value: '~8 mnt' },
-              { label: 'Dokter', value: '4' },
-            ].map((stat, i) => (
-              <div key={stat.label} style={{ flex: 1, padding: '12px 6px', textAlign: 'center', borderLeft: i > 0 ? '1px solid rgba(233,30,140,0.08)' : 'none' }}>
-                <div style={{ fontSize: 18, fontWeight: 900, color: DARK, lineHeight: 1 }}>{stat.value}</div>
-                <div style={{ fontSize: 9, color: '#9CA3AF', fontWeight: 600, marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{stat.label}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: 20, padding: '5px 14px' }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', display: 'block', boxShadow: '0 0 6px #10B981' }} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#6EE7B7' }}>4 Dokter Online</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(233,30,140,0.12)', border: '1px solid rgba(233,30,140,0.2)', borderRadius: 20, padding: '5px 14px' }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700, color: '#FF6BB5' }}>
-                <Zap size={10} strokeWidth={2.5} />
-                Kiosk Aktif
-              </span>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.5 }}
-          style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(233,30,140,0.12)', borderRadius: 16, padding: '14px 16px', boxShadow: '0 4px 16px rgba(233,30,140,0.06)' }}>
-            <QRCodeSVG />
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ fontSize: 12, fontWeight: 800, color: DARK, marginBottom: 4, lineHeight: 1.3 }}>Download<br />OMDC App</div>
-              <div style={{ fontSize: 10, color: '#6B7280', lineHeight: 1.5 }}>Booking &<br />pantau antrian</div>
-            </div>
-          </div>
+          ))}
         </motion.div>
       </div>
 
-      {/* ─── RIGHT PANEL: White interactive side ────────────────────────── */}
+      {/* ── RIGHT PANEL: White editorial ── */}
       <div style={{
-        flex: 1, height: '100%', background: '#FFFFFF',
+        flex: 1, height: '100%',
+        background: '#FFFFFF',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'space-between',
-        padding: '44px 48px 0',
+        padding: portrait ? '32px 32px 0' : '52px 56px 0',
         position: 'relative', overflow: 'hidden',
       }}>
-        {[
-          { x: 85, y: 8, s: 60, c: PINK, o: 0.04 },
-          { x: 5, y: 72, s: 48, c: AQUA, o: 0.04 },
-          { x: 72, y: 78, s: 32, c: ROSE, o: 0.05 },
-        ].map((el, i) => (
-          <motion.div key={i} style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, opacity: el.o, pointerEvents: 'none' }}
-            animate={{ y: [-8, 8, -8] }} transition={{ duration: 10 + i * 3, repeat: Infinity, ease: 'easeInOut' }}>
-            <svg width={el.s} height={el.s * 1.15} viewBox="0 0 100 115" fill="none">
-              <path d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
-                stroke={el.c} strokeWidth="3.5" strokeLinejoin="round" />
-            </svg>
+        {/* Language toggle + clock row */}
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 5 }}>
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <LiveClock />
           </motion.div>
-        ))}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            onClick={e => { e.stopPropagation(); setLang(l => l === 'id' ? 'en' : 'id'); }}
+            style={{
+              display: 'flex', borderRadius: 999,
+              background: '#F3F4F6', border: '1px solid rgba(0,0,0,0.08)',
+              overflow: 'hidden', padding: 3, gap: 2, cursor: 'pointer',
+            }}
+          >
+            {(['id', 'en'] as const).map(l => (
+              <div key={l} style={{
+                padding: '6px 18px', borderRadius: 999, fontSize: 13, fontWeight: 700,
+                background: lang === l ? `linear-gradient(135deg, ${PINK}, ${ROSE})` : 'transparent',
+                color: lang === l ? 'white' : '#6B7280',
+                transition: 'all 0.2s', textTransform: 'uppercase', letterSpacing: '0.06em',
+              }}>{l}</div>
+            ))}
+          </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, duration: 0.6 }}
-          style={{ position: 'relative', zIndex: 2 }}>
-          <LiveClock />
-        </motion.div>
-
-        <motion.div initial={{ scaleX: 0, opacity: 0 }} animate={{ scaleX: 1, opacity: 1 }} transition={{ delay: 0.4, duration: 0.6 }}
-          style={{ width: 80, height: 2, borderRadius: 2, background: `linear-gradient(90deg, transparent, ${PINK}, transparent)`, position: 'relative', zIndex: 2 }} />
-
-        {/* Tagline */}
+        {/* Main headline */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          style={{ textAlign: 'center' }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}
         >
-          <div className="kd" style={{
-            fontSize: 42, fontWeight: 900, color: '#0D1421',
-            letterSpacing: -1, marginBottom: 10, lineHeight: 1.15,
+          <div style={{ fontSize: 11, fontWeight: 800, color: PINK, letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 16 }}>
+            {lang === 'id' ? '— SELAMAT DATANG —' : '— WELCOME —'}
+          </div>
+          <h1 style={{
+            fontSize: portrait ? 52 : 72, fontWeight: 900, lineHeight: 1.05, margin: 0,
+            color: DARK, letterSpacing: '-2px',
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
           }}>
-            Senyum Sehat,{' '}
-            <span style={{
-              background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>
-              Percaya Diri
-            </span>
-          </div>
-          <div style={{ fontSize: 18, color: '#9CA3AF', fontWeight: 400, letterSpacing: 0.2 }}>
-            Gigi lebih sehat, senyum lebih percaya diri
-          </div>
+            {lang === 'id' ? 'Senyum Sehat,' : 'Healthy Smile,'}
+          </h1>
+          <h1 style={{
+            fontSize: portrait ? 52 : 72, fontWeight: 200, lineHeight: 1.05, margin: 0,
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            letterSpacing: '-1px', fontFamily: 'Plus Jakarta Sans, sans-serif',
+          }}>
+            {lang === 'id' ? 'Percaya Diri' : 'Full Confidence'}
+          </h1>
+          <p style={{ fontSize: 16, color: '#6B7280', marginTop: 16, fontWeight: 400 }}>
+            {lang === 'id' ? 'Gigi lebih sehat, hidup lebih percaya diri' : 'Healthier teeth, more confident life'}
+          </p>
         </motion.div>
 
-        {/* Touch to start CTA */}
+        {/* CTA Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ position: 'relative', marginTop: 12, display: 'inline-block' }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          style={{ position: 'relative', width: '75%', maxWidth: 420 }}
         >
-          {[1, 2].map((n) => (
+          {/* Pulse rings */}
+          {[1, 2].map(n => (
             <motion.div
               key={n}
-              animate={{ scale: [1, 1.15 + n * 0.08, 1], opacity: [0.3, 0, 0.3] }}
-              transition={{ duration: 2, repeat: Infinity, delay: n * 0.55, ease: 'easeInOut' }}
+              animate={{ scale: [1, 1.12 + n * 0.06, 1], opacity: [0.25, 0, 0.25] }}
+              transition={{ duration: 2.4, repeat: Infinity, delay: n * 0.6, ease: 'easeInOut' }}
               style={{
-                position: 'absolute',
-                inset: -(n * 16),
-                borderRadius: 80,
-                background: n === 1 ? 'rgba(233,30,140,0.18)' : undefined,
-                border: n === 2 ? `1.5px solid rgba(233,30,140,0.22)` : undefined,
+                position: 'absolute', inset: -(n * 14), borderRadius: 100,
+                border: `1.5px solid rgba(233,30,140,${n === 1 ? '0.35' : '0.18'})`,
                 pointerEvents: 'none',
               }}
             />
           ))}
           <motion.div
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
-              padding: '28px 72px',
-              background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-              borderRadius: 80,
-              boxShadow: '0 20px 60px rgba(233,30,140,0.38)',
-              minHeight: 88,
+              width: '100%', padding: '26px 0',
+              background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
+              backgroundSize: '200% 200%',
+              borderRadius: 100,
+              boxShadow: '0 20px 60px rgba(233,30,140,0.40), 0 4px 16px rgba(233,30,140,0.20)',
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              gap: 4, cursor: 'pointer',
             }}
           >
-            <div style={{
-              fontSize: 28, fontWeight: 800, color: 'white',
-              textAlign: 'center', letterSpacing: 0.2,
-              display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center',
-            }}>
-              <motion.span
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ display: 'inline-flex' }}
-              >
-                <Hand size={26} strokeWidth={2.2} />
-              </motion.span>
-              Sentuh Layar untuk Memulai
+            <div style={{ fontSize: 22, fontWeight: 800, color: 'white', letterSpacing: 0.2 }}>
+              {lang === 'id' ? 'Sentuh Layar untuk Memulai' : 'Touch Screen to Start'}
             </div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', textAlign: 'center', marginTop: 5, fontWeight: 500 }}>
-              Touch Screen to Start
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', fontWeight: 500 }}>
+              {lang === 'id' ? 'Touch Screen to Start' : 'Sentuh Layar untuk Memulai'}
             </div>
           </motion.div>
         </motion.div>
 
+        {/* Queue status bento card */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.75 }}
+          style={{
+            width: '75%', maxWidth: 420,
+            background: '#F8F9FC', borderRadius: 18,
+            border: '1px solid rgba(0,0,0,0.07)',
+            padding: '16px 24px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}
+        >
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 4 }}>
+              {lang === 'id' ? 'Sedang Dilayani' : 'Now Serving'}
+            </div>
+            <div style={{
+              fontSize: 32, fontWeight: 900, lineHeight: 1, letterSpacing: -1,
+              background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              fontFamily: 'Plus Jakarta Sans, sans-serif',
+            }}>
+              {CURRENT_QUEUE}
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-end' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(16,185,129,0.10)', border: '1px solid rgba(16,185,129,0.20)', borderRadius: 20, padding: '4px 10px' }}>
+              <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', display: 'block' }} />
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#059669' }}>4 {lang === 'id' ? 'Dokter Online' : 'Doctors Active'}</span>
+            </div>
+            <div style={{ fontSize: 12, color: '#6B7280' }}>
+              12 {lang === 'id' ? 'menunggu · ~8 mnt' : 'waiting · ~8 min'}
+            </div>
+          </div>
+        </motion.div>
+
         {/* Bottom info ticker */}
-        <div style={{ width: '100%', background: '#F8F9FB', borderTop: '1px solid rgba(0,0,0,0.06)', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
-          <div style={{ background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white', fontSize: 10, fontWeight: 800, padding: '5px 14px', borderRadius: 20, letterSpacing: 1, whiteSpace: 'nowrap', flexShrink: 0, boxShadow: '0 4px 12px rgba(233,30,140,0.25)' }}>
+        <div style={{
+          width: '100%', background: '#F8F9FC',
+          borderTop: '1px solid rgba(0,0,0,0.06)',
+          padding: '13px 24px', display: 'flex', alignItems: 'center', gap: 14,
+        }}>
+          <div style={{
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: 'white',
+            fontSize: 10, fontWeight: 800, padding: '4px 14px', borderRadius: 20,
+            letterSpacing: 1, whiteSpace: 'nowrap', flexShrink: 0,
+            boxShadow: '0 4px 12px rgba(233,30,140,0.28)',
+          }}>
             INFO
           </div>
           <motion.div
             key={tickerIdx}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: tickerVis ? 1 : 0, x: tickerVis ? 0 : -20 }}
-            transition={{ duration: 0.32 }}
-            style={{ fontSize: 14, color: '#374151', fontWeight: 500, flex: 1 }}
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: tickerVis ? 1 : 0, x: tickerVis ? 0 : -16 }}
+            transition={{ duration: 0.3 }}
+            style={{ fontSize: 13, color: '#374151', fontWeight: 500, flex: 1 }}
           >
             {TICKER_ITEMS[tickerIdx]}
           </motion.div>
