@@ -80,7 +80,7 @@ export interface PageHeroProps {
     subtitle: string;
     rating?: boolean;
     stat?: { value: string; label: string };
-    color?: 'pink' | 'aqua';
+    color?: 'pink' | 'aqua' | 'gold';
   };
 }
 
