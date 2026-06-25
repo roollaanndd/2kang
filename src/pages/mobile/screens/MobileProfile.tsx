@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   User, ClipboardList, Bell, Pill, Star, Gift, HelpCircle, LogOut,
   ChevronRight, Users, Shield, CheckCircle, X, ScrollText,
-  Calendar, ArrowLeft, Edit3, Globe, Language,
+  Calendar, ArrowLeft, Edit3, Globe, Languages,
 } from 'lucide-react';
 import type { MobileState } from '../../../types';
 import { APP_VERSION } from '../../../version';

@@ -103,7 +103,7 @@ export function MobileNotifications({ setState }: MobileNotificationsProps) {
               onClick={() => { haptic('light'); setActiveFilter(filter); }}
               style={{
                 flexShrink: 0, padding: '7px 16px', borderRadius: 999,
-                fontSize: 12, fontWeight: 500, cursor: 'pointer', border: 'none',
+                fontSize: 12, fontWeight: 500, cursor: 'pointer',
                 background: activeFilter === filter ? '#E91E8C' : 'white',
                 color: activeFilter === filter ? 'white' : '#6B7280',
                 boxShadow: activeFilter === filter

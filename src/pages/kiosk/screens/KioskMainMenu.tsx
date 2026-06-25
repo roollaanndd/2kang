@@ -242,13 +242,13 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           <div
             style={{
               height: '100%', borderRadius: 24,
-              background: DARK,
+              background: `linear-gradient(160deg, ${PINK} 0%, ${ROSE} 65%, #ffd8e6 100%)`,
               position: 'relative', overflow: 'hidden',
               display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
               padding: '32px 32px 28px',
               boxShadow: pressed === 'queue'
-                ? `0 2px 8px rgba(233,30,140,0.2)`
-                : '0 8px 32px rgba(13,20,33,0.22), 0 2px 8px rgba(13,20,33,0.14)',
+                ? `0 2px 8px rgba(233,30,140,0.25)`
+                : '0 8px 32px rgba(233,30,140,0.35), 0 2px 8px rgba(233,30,140,0.15)',
               transform: pressed === 'queue' ? 'scale(0.98)' : 'scale(1)',
               transition: 'all 0.15s',
             }}
@@ -257,8 +257,8 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
             onMouseLeave={() => setPressed(null)}
           >
             {/* Ambient glow */}
-            <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', bottom: 60, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.30) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', bottom: 60, left: -30, width: 160, height: 160, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.20) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
             {/* Tooth watermark */}
             <div style={{ position: 'absolute', bottom: 80, right: -20, opacity: 0.06, pointerEvents: 'none' }}>
@@ -275,12 +275,13 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
               }}>
                 <IconTicket />
               </div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 8 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.80)', textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 8 }}>
                 {t ? 'Queue System' : 'Sistem Antrian'}
               </div>
               <h2 style={{
                 fontSize: 28, fontWeight: 900, color: 'white', lineHeight: 1.15, margin: 0,
                 letterSpacing: '-0.5px', fontFamily: 'Plus Jakarta Sans, sans-serif',
+                textShadow: '0 2px 8px rgba(0,0,0,0.12)',
               }}>
                 {t ? 'Get Queue\nNumber' : 'Ambil Nomor\nAntrian'}
               </h2>
@@ -288,16 +289,15 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
 
             {/* Giant queue number */}
             <div style={{ position: 'relative', zIndex: 2 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.80)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
                 {t ? 'Next Number' : 'Nomor Berikutnya'}
               </div>
               <motion.div
-                animate={{ textShadow: [`0 0 20px rgba(233,30,140,0.6)`, `0 0 40px rgba(233,30,140,0.9)`, `0 0 20px rgba(233,30,140,0.6)`] }}
+                animate={{ textShadow: [`0 0 20px rgba(255,255,255,0.5)`, `0 0 40px rgba(255,255,255,0.8)`, `0 0 20px rgba(255,255,255,0.5)`] }}
                 transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
                 style={{
                   fontSize: 80, fontWeight: 900, lineHeight: 1, letterSpacing: -3,
-                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                  color: 'white',
                   fontFamily: 'Plus Jakarta Sans, sans-serif', fontVariantNumeric: 'tabular-nums',
                   marginBottom: 16,
                 }}
@@ -310,16 +310,16 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 10,
                   padding: '14px 28px',
-                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                  background: 'white',
                   borderRadius: 100,
-                  boxShadow: '0 8px 24px rgba(233,30,140,0.40)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                   cursor: 'pointer',
                 }}
               >
-                <span style={{ fontSize: 16, fontWeight: 800, color: 'white' }}>
+                <span style={{ fontSize: 16, fontWeight: 800, color: PINK }}>
                   {t ? 'Ambil Antrian Sekarang' : 'Ambil Antrian Sekarang'}
                 </span>
-                <svg width={16} height={16} fill="none" viewBox="0 0 24 24" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                <svg width={16} height={16} fill="none" viewBox="0 0 24 24" stroke={PINK} strokeWidth="2.5" strokeLinecap="round">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </motion.div>
