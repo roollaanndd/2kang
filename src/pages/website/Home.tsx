@@ -883,30 +883,33 @@ function ServicesSection() {
   const s = cms.services;
   const visible = s.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   const CARD_COLORS = [PINK, GOLD, ROSE, '#F5A0C8', GOLD, PINK, ROSE, '#F5C842'];
 
   return (
-    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0 0' }}>
+    <section ref={ref} style={{ background: '#FFFFFF', padding: isMobile ? '56px 0 0' : '80px 0 0', overflow: 'hidden' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 52, position: 'relative' }}>
-          {/* Decorative section number */}
-          <div style={{
-            fontSize: 120, fontWeight: 900, color: 'rgba(233,30,140,0.04)',
-            position: 'absolute', top: -20, right: 0,
-            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
-          }}>01</div>
+          style={{ textAlign: 'center', marginBottom: isMobile ? 32 : 52, position: 'relative' }}>
+          {/* Decorative section number — hidden on mobile to avoid overflow */}
+          {!isMobile && (
+            <div style={{
+              fontSize: 120, fontWeight: 900, color: 'rgba(233,30,140,0.04)',
+              position: 'absolute', top: -20, right: 0,
+              lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>01</div>
+          )}
           <Eyebrow text="Layanan Kami" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {s.sectionTitle}
           </h2>
-          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 520, margin: '0 auto' }}>{s.sectionSubtitle}</p>
+          <p style={{ fontSize: isMobile ? 15 : 17, color: '#6B7280', maxWidth: 520, margin: '0 auto' }}>{s.sectionSubtitle}</p>
         </motion.div>
 
-        {/* Bento grid */}
+        {/* Bento grid — 2 cols on mobile, 4 cols on desktop */}
         <div style={{ position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 12 : 20 }}>
             {visible.map((item, i) => {
               const cardColor = CARD_COLORS[i % CARD_COLORS.length];
               const isFeatured = i === 0;
@@ -920,12 +923,13 @@ function ServicesSection() {
                     transition={{ duration: 0.5, delay: 0 }}
                     whileHover={{ y: -6 }}
                     style={{
-                      gridColumn: 'span 2', gridRow: 'span 2',
+                      gridColumn: 'span 2',
+                      gridRow: isMobile ? 'auto' : 'span 2',
                       background: 'linear-gradient(150deg, #FFF8F4 0%, #FFE8F4 40%, #FFFDF0 100%)',
                       borderRadius: 24,
-                      padding: '32px',
+                      padding: isMobile ? '20px' : '32px',
                       display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                      minHeight: 280,
+                      minHeight: isMobile ? 160 : 280,
                       border: '1px solid rgba(233,30,140,0.12)',
                       boxShadow: '0 20px 60px rgba(233,30,140,0.12)',
                       transition: 'all 0.3s',
@@ -939,21 +943,21 @@ function ServicesSection() {
                     </div>
                     <div style={{ position: 'relative', zIndex: 1 }}>
                       <div style={{
-                        width: 64, height: 64, borderRadius: 20,
+                        width: isMobile ? 48 : 64, height: isMobile ? 48 : 64, borderRadius: isMobile ? 14 : 20,
                         background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        marginBottom: 20,
+                        marginBottom: isMobile ? 12 : 20,
                         boxShadow: '0 10px 28px rgba(233,30,140,0.32)',
                       }}>
-                        <OmdcServiceIcon id={item.id} size={36} color="#FFFFFF" />
+                        <OmdcServiceIcon id={item.id} size={isMobile ? 26 : 36} color="#FFFFFF" />
                       </div>
-                      <div style={{ fontWeight: 800, fontSize: 22, color: DARK, marginBottom: 10, lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{item.name}</div>
-                      <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.65, marginBottom: 16 }}>{item.description}</div>
+                      <div style={{ fontWeight: 800, fontSize: isMobile ? 15 : 22, color: DARK, marginBottom: isMobile ? 6 : 10, lineHeight: 1.2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{item.name}</div>
+                      {!isMobile && <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.65, marginBottom: 16 }}>{item.description}</div>}
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
-                      <span style={{ fontSize: 16, fontWeight: 900, color: PINK }}>{item.price}</span>
-                      <Link to="/booking" style={{ fontSize: 12, fontWeight: 700, color: 'white', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, padding: '8px 16px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, boxShadow: '0 4px 14px rgba(233,30,140,0.28)' }}>
-                        Booking <ChevronRight size={11} />
+                      <span style={{ fontSize: isMobile ? 13 : 16, fontWeight: 900, color: PINK }}>{item.price}</span>
+                      <Link to="/booking" style={{ fontSize: 11, fontWeight: 700, color: 'white', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, padding: isMobile ? '6px 10px' : '8px 16px', borderRadius: 20, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, boxShadow: '0 4px 14px rgba(233,30,140,0.28)' }}>
+                        Booking <ChevronRight size={10} />
                       </Link>
                     </div>
                   </motion.div>
@@ -968,18 +972,18 @@ function ServicesSection() {
                   transition={{ duration: 0.5, delay: i * 0.06 }}
                   whileHover={{ y: -4, boxShadow: `0 16px 40px ${cardColor}22` }}
                   style={{
-                    background: 'white', borderRadius: 20, padding: 24,
+                    background: 'white', borderRadius: isMobile ? 16 : 20, padding: isMobile ? '14px 12px' : 24,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
                     borderLeft: `3px solid ${cardColor}`,
                     cursor: 'default', transition: 'all 0.3s',
                   }}
                 >
-                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${cardColor}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                    <OmdcServiceIcon id={item.id} size={26} color={cardColor} />
+                  <div style={{ width: isMobile ? 36 : 44, height: isMobile ? 36 : 44, borderRadius: isMobile ? 10 : 12, background: `${cardColor}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: isMobile ? 8 : 12 }}>
+                    <OmdcServiceIcon id={item.id} size={isMobile ? 20 : 26} color={cardColor} />
                   </div>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: DARK, marginBottom: 6, lineHeight: 1.3 }}>{item.name}</div>
-                  <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.55, marginBottom: 12 }}>{item.description}</div>
-                  <div style={{ fontSize: 13, fontWeight: 800, color: cardColor }}>{item.price}</div>
+                  <div style={{ fontWeight: 700, fontSize: isMobile ? 12 : 14, color: DARK, marginBottom: isMobile ? 4 : 6, lineHeight: 1.3 }}>{item.name}</div>
+                  {!isMobile && <div style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.55, marginBottom: 12 }}>{item.description}</div>}
+                  <div style={{ fontSize: isMobile ? 11 : 13, fontWeight: 800, color: cardColor }}>{item.price}</div>
                 </motion.div>
               );
             })}
@@ -1009,18 +1013,21 @@ function DoctorsSection() {
   const d = cms.doctors;
   const visible = d.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   return (
-    <section ref={ref} style={{ background: '#FAFAFA', padding: '80px 0 0', overflow: 'visible' }}>
+    <section ref={ref} style={{ background: '#FAFAFA', padding: isMobile ? '56px 0 0' : '80px 0 0', overflow: 'hidden' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ marginBottom: 56, position: 'relative' }}>
-          {/* Decorative section number */}
-          <div style={{
-            fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
-            position: 'absolute', top: -20, right: 0,
-            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
-          }}>02</div>
+          style={{ marginBottom: isMobile ? 28 : 56, position: 'relative' }}>
+          {/* Decorative section number — desktop only */}
+          {!isMobile && (
+            <div style={{
+              fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
+              position: 'absolute', top: -20, right: 0,
+              lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>02</div>
+          )}
           <Eyebrow text="Tim Dokter Kami" />
           <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {d.sectionTitle}
@@ -1133,6 +1140,7 @@ function TestimonialsSection() {
   const visible = t.items.filter(i => i.isVisible);
   const [idx, setIdx] = useState(0);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
 
   if (!visible.length) return null;
 
@@ -1140,21 +1148,23 @@ function TestimonialsSection() {
   const next = () => setIdx(i => (i + 1) % visible.length);
 
   return (
-    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0 0' }}>
+    <section ref={ref} style={{ background: '#F8F9FB', padding: isMobile ? '56px 0 0' : '80px 0 0', overflow: 'hidden' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 52, position: 'relative' }}>
-          {/* Decorative section number */}
-          <div style={{
-            fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
-            position: 'absolute', top: -20, right: 0,
-            lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
-          }}>03</div>
+          style={{ textAlign: 'center', marginBottom: isMobile ? 32 : 52, position: 'relative' }}>
+          {/* Decorative section number — desktop only */}
+          {!isMobile && (
+            <div style={{
+              fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
+              position: 'absolute', top: -20, right: 0,
+              lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
+            }}>03</div>
+          )}
           <Eyebrow text="Testimoni Pasien" />
-          <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 14, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             {t.sectionTitle}
           </h2>
-          <p style={{ fontSize: 17, color: '#6B7280', maxWidth: 500, margin: '0 auto' }}>{t.sectionSubtitle}</p>
+          <p style={{ fontSize: isMobile ? 15 : 17, color: '#6B7280', maxWidth: 500, margin: '0 auto' }}>{t.sectionSubtitle}</p>
         </motion.div>
 
         <div style={{ position: 'relative', overflow: 'hidden' }}>
@@ -1166,17 +1176,17 @@ function TestimonialsSection() {
             fontFamily: 'Georgia, serif', zIndex: 0,
           }}>"</div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20, position: 'relative', zIndex: 1 }}>
-            {visible.slice(0, 6).map((item: CMSTestimonial, i) => {
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(300px, 1fr))', gap: isMobile ? 12 : 20, position: 'relative', zIndex: 1 }}>
+            {visible.slice(0, isMobile ? 3 : 6).map((item: CMSTestimonial, i) => {
               const isFeatured = i === 0;
               return (
                 <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
                   style={{
                     background: isFeatured ? `linear-gradient(135deg, ${PINK}08, ${GOLD}05)` : 'white',
-                    borderRadius: 20, padding: isFeatured ? 28 : 24,
+                    borderRadius: 20, padding: isFeatured ? (isMobile ? 20 : 28) : (isMobile ? 16 : 24),
                     boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
                     border: isFeatured ? `1.5px solid ${PINK}20` : '1px solid rgba(0,0,0,0.05)',
-                    gridColumn: isFeatured ? 'span 2' : undefined,
+                    gridColumn: isFeatured && !isMobile ? 'span 2' : undefined,
                   }}>
                   <div style={{ display: 'flex', gap: 2, marginBottom: 14 }}>
                     {Array.from({ length: 5 }).map((_, j) => (
@@ -1214,10 +1224,11 @@ function PromotionsSection() {
   const p = cms.promotions;
   const visible = p.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
   if (!visible.length) return null;
 
   return (
-    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0 0' }}>
+    <section ref={ref} style={{ background: '#F8F9FB', padding: isMobile ? '56px 0 0' : '80px 0 0', overflow: 'hidden' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 52 }}>
@@ -1274,29 +1285,30 @@ function ArticlesSection() {
   const a = cms.articles;
   const visible = a.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
+  const isMobile = useIsMobile();
   if (!visible.length) return null;
 
   return (
     <>
       <WaveDivider fromColor="#FFFFFF" toColor="#F8F9FB" />
-      <section ref={ref} style={{ background: '#F8F9FB', padding: '100px 0 80px' }}>
+      <section ref={ref} style={{ background: '#F8F9FB', padding: isMobile ? '56px 0' : '100px 0 80px', overflow: 'hidden' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-            style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 44 }}>
+            style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: isMobile ? 28 : 44 }}>
             <div>
               <Eyebrow text="Artikel Kesehatan" />
-              <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <h2 style={{ fontSize: 'clamp(24px, 3.5vw, 42px)', fontWeight: 900, color: DARK, lineHeight: 1.15, marginBottom: 10, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {a.sectionTitle}
               </h2>
-              <p style={{ fontSize: 17, color: '#6B7280' }}>{a.sectionSubtitle}</p>
+              <p style={{ fontSize: isMobile ? 15 : 17, color: '#6B7280' }}>{a.sectionSubtitle}</p>
             </div>
             <Link to="/articles" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: PINK, textDecoration: 'none', whiteSpace: 'nowrap' }}>
               Semua artikel <ChevronRight size={16} />
             </Link>
           </motion.div>
 
-          {/* Magazine layout grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridTemplateRows: 'auto', gap: 24 }}>
+          {/* Magazine layout — single col on mobile, 3-col with featured span on desktop */}
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? 14 : 24 }}>
             {visible.slice(0, 3).map((item, i) => {
               const isFeatured = i === 0;
               return (
@@ -1306,19 +1318,19 @@ function ArticlesSection() {
                     background: 'white', borderRadius: 20, overflow: 'hidden',
                     boxShadow: '0 4px 16px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.05)',
                     transition: 'all 0.3s',
-                    gridColumn: isFeatured ? 'span 2' : undefined,
+                    gridColumn: isFeatured && !isMobile ? 'span 2' : undefined,
                   }}>
                   {item.thumbnail ? (
-                    <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: isFeatured ? 260 : 180 }} style={{ width: '100%', height: isFeatured ? 260 : 180, objectFit: 'cover' }} />
+                    <SmoothImage src={item.thumbnail} alt={item.title} wrapperStyle={{ height: isFeatured && !isMobile ? 260 : 180 }} style={{ width: '100%', height: isFeatured && !isMobile ? 260 : 180, objectFit: 'cover' }} />
                   ) : (
-                    <div style={{ width: '100%', height: isFeatured ? 260 : 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
+                    <div style={{ width: '100%', height: isFeatured && !isMobile ? 260 : 180, background: `linear-gradient(135deg, rgba(233,30,140,0.1), rgba(6,182,212,0.1))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>📰</div>
                   )}
-                  <div style={{ padding: '18px 20px' }}>
+                  <div style={{ padding: isMobile ? '14px 16px' : '18px 20px' }}>
                     <span style={{ fontSize: 10, fontWeight: 700, color: PINK, background: 'rgba(233,30,140,0.08)', padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
                       {item.category}
                     </span>
-                    <h3 style={{ fontSize: isFeatured ? 20 : 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px', fontFamily: isFeatured ? "'Plus Jakarta Sans', sans-serif" : undefined }}>{item.title}</h3>
-                    <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 14, display: '-webkit-box', WebkitLineClamp: isFeatured ? 3 : 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>
+                    <h3 style={{ fontSize: isFeatured && !isMobile ? 20 : 15, fontWeight: 700, color: DARK, lineHeight: 1.4, margin: '10px 0 8px', fontFamily: isFeatured && !isMobile ? "'Plus Jakarta Sans', sans-serif" : undefined }}>{item.title}</h3>
+                    <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.5, marginBottom: 14, display: '-webkit-box', WebkitLineClamp: isFeatured && !isMobile ? 3 : 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as any}>
                       {item.excerpt}
                     </p>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
