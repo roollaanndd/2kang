@@ -20,7 +20,7 @@ const SERVICE_CATS = ['Semua', 'Scaling', 'Bleaching', 'Behel', 'Tambal', 'Impla
 const EXTENDED_PROMOS = [
   ...PROMOTIONS,
   {
-    id: 'p5', title: 'Paket Keluarga', description: 'Daftar bersama keluarga dan dapatkan diskon spesial untuk setiap anggota baru yang bergabung.', discount: 20, validUntil: '31 Agt 2026', color: 'linear-gradient(135deg, #8B5CF6, #C4B5FD)', bgColor: '#F5F3FF', service: 'Konsultasi',
+    id: 'p5', title: 'Paket Keluarga', description: 'Daftar bersama keluarga dan dapatkan diskon spesial untuk setiap anggota baru yang bergabung.', discount: 20, validUntil: '31 Agt 2026', color: 'linear-gradient(135deg, #FF6BB5, #C4B5FD)', bgColor: '#F5F3FF', service: 'Konsultasi',
   },
   {
     id: 'p6', title: 'Promo Ulang Tahun', description: 'Rayakan hari jadimu bersama OMDC! Dapatkan diskon spesial di bulan ulang tahunmu.', discount: 30, validUntil: '31 Des 2026', color: 'linear-gradient(135deg, #EC4899, #F9A8D4)', bgColor: '#FDF2F8', service: 'Semua Layanan',
@@ -94,7 +94,7 @@ export function MobilePromos({ state, setState }: Props) {
       transition={{ duration: 0.3 }}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       <MobileHeader title="Promo & Diskon" showBack onBack={() => setState({ screen: 'home' })} />
 
@@ -102,7 +102,7 @@ export function MobilePromos({ state, setState }: Props) {
 
         {/* Stats banner */}
         <div style={{ padding: '14px 16px 0' }}>
-          <div style={{ background: 'linear-gradient(135deg, #FFF5F9, #FFF0F8)', borderRadius: 16, padding: '12px 16px', border: '1.5px solid rgba(233,30,140,0.12)', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <div style={{ background: 'linear-gradient(135deg, #FFF8F4, #FFF0F8)', borderRadius: 16, padding: '12px 16px', border: '1.5px solid rgba(233,30,140,0.12)', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <div style={{ width: 36, height: 36, borderRadius: 11, background: PINK, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Tag size={17} color="white" />
             </div>

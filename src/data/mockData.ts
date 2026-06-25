@@ -162,7 +162,7 @@ export const PROMOTIONS: Promotion[] = [
     discount: 30,
     validUntil: '31 Mei 2025',
     color: '#E91E8C',
-    bgColor: '#FFF5F9',
+    bgColor: '#FFF8F4',
     service: 'Scaling & Polishing',
   },
   {

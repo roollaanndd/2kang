@@ -36,7 +36,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
       icon: <Phone size={40} strokeWidth={1.5} />,
       label: t ? 'Mobile Number' : 'No. Handphone',
       desc: t ? 'Enter your registered phone number' : 'Masukkan nomor HP yang terdaftar',
-      color: '#06B6D4',
+      color: '#D4A017',
     },
     {
       id: 'medrecord' as CheckinMethod,
@@ -65,7 +65,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -264,7 +264,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                 style={{
                   backgroundColor: '#ffffff',
                   borderRadius: '20px',
-                  border: `2px solid ${method === 'phone' ? '#06B6D4' : '#FF6BB5'}22`,
+                  border: `2px solid ${method === 'phone' ? '#D4A017' : '#FF6BB5'}22`,
                   padding: '32px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -289,7 +289,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                     fontSize: '24px',
                     fontWeight: '600',
                     letterSpacing: '2px',
-                    border: `2px solid ${method === 'phone' ? '#06B6D4' : '#FF6BB5'}`,
+                    border: `2px solid ${method === 'phone' ? '#D4A017' : '#FF6BB5'}`,
                     borderRadius: '14px',
                     outline: 'none',
                     color: '#1A1A2E',
@@ -315,7 +315,7 @@ export function KioskCheckin({ state, goTo, goBack }: KioskScreenProps) {
                         padding: '16px',
                         borderRadius: '12px',
                         border: '2px solid #E5E7EB',
-                        backgroundColor: key === '⌫' ? '#FFF5F9' : '#ffffff',
+                        backgroundColor: key === '⌫' ? '#FFF8F4' : '#ffffff',
                         color: key === '⌫' ? '#E91E8C' : '#1A1A2E',
                         fontSize: '20px',
                         fontWeight: '700',

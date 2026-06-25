@@ -97,7 +97,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
       style={{
         width: '100%',
         height: '100%',
-        background: 'linear-gradient(160deg, #FFF5F9 0%, #F0FAFF 100%)',
+        background: 'linear-gradient(160deg, #FFF8F4 0%, #F0FAFF 100%)',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -107,7 +107,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
       {/* Signature 3px top gradient strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -127,7 +127,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
           transition={{ delay: 0.1, duration: 0.5, type: 'spring', bounce: 0.5 }}
           style={{ marginBottom: '8px' }}
         >
-          <CheckCircle size={54} color="#10B981" strokeWidth={1.75} />
+          <CheckCircle size={54} color="#D4A017" strokeWidth={1.75} />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -172,7 +172,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
         >
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '7px',
-            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
           }} />
 
           <div style={{ fontSize: '16px', color: '#9CA3AF', fontWeight: '600', marginBottom: '4px', letterSpacing: '4px' }}>
@@ -198,7 +198,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             <div style={{
               display: 'flex', alignItems: 'center', gap: '10px',
               padding: '12px 18px', borderRadius: '14px',
-              backgroundColor: '#FFF5F9', border: '1px solid #FCE7F3',
+              backgroundColor: '#FFF8F4', border: '1px solid #FCE7F3',
             }}>
               <Users size={20} color="#E91E8C" />
               <div style={{ textAlign: 'left' }}>
@@ -215,7 +215,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
               padding: '12px 18px', borderRadius: '14px',
               backgroundColor: '#F0FAFF', border: '1px solid #CFF1FB',
             }}>
-              <Clock size={20} color="#06B6D4" />
+              <Clock size={20} color="#D4A017" />
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: '12px', color: '#9CA3AF', fontWeight: '600' }}>
                   {t ? 'Est. wait' : 'Estimasi tunggu'}
@@ -281,8 +281,8 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             padding: '7px 16px', borderRadius: '100px',
             backgroundColor: '#F0FAFF', border: '1px solid #CFF1FB',
           }}>
-            <Smartphone size={16} color="#06B6D4" />
-            <span style={{ fontSize: '13px', fontWeight: '700', color: '#06B6D4', letterSpacing: '0.5px' }}>
+            <Smartphone size={16} color="#D4A017" />
+            <span style={{ fontSize: '13px', fontWeight: '700', color: '#D4A017', letterSpacing: '0.5px' }}>
               {t ? 'TRACK ON YOUR PHONE' : 'PANTAU DI HP ANDA'}
             </span>
           </div>
@@ -308,7 +308,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
           <div style={{
             display: 'flex', alignItems: 'center', gap: '8px',
             padding: '8px 16px', borderRadius: '100px',
-            backgroundColor: '#FFF5F9', border: '1px solid #FCE7F3',
+            backgroundColor: '#FFF8F4', border: '1px solid #FCE7F3',
           }}>
             <Printer size={16} color="#E91E8C" />
             <span style={{ fontSize: '13px', color: '#E91E8C', fontWeight: '600' }}>

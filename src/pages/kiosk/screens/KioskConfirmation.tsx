@@ -21,7 +21,7 @@ function SummaryRow({ icon, label, value, highlight }: SummaryRowProps) {
     }}>
       <div style={{
         width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-        backgroundColor: '#FFF5F9',
+        backgroundColor: '#FFF8F4',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         color: '#E91E8C',
       }}>
@@ -57,7 +57,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -97,7 +97,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
         <div style={{ width: portrait ? '100%' : 260, flexShrink: 0, display: 'flex', flexDirection: portrait ? 'row' : 'column', flexWrap: portrait ? 'wrap' : 'nowrap', gap: 12 }}>
           <div style={{ backgroundColor: '#EFF6FF', borderRadius: 14, padding: '16px 18px', border: '1px solid #BFDBFE' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: '#1D4ED8', marginBottom: 6 }}><Lightbulb size={15} strokeWidth={2.5} /> {t ? 'Reminder' : 'Pengingat'}</div>
-            <div style={{ fontSize: 13, color: '#3B82F6', lineHeight: 1.55 }}>
+            <div style={{ fontSize: 13, color: '#D4A017', lineHeight: 1.55 }}>
               {t ? 'Please arrive 10 minutes early.' : 'Harap datang 10 menit sebelum jadwal.'}
             </div>
           </div>
@@ -109,7 +109,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
               <li>{t ? 'Insurance card (if any)' : 'Kartu asuransi (bila ada)'}</li>
             </ul>
           </div>
-          <div style={{ backgroundColor: '#FFF5F9', borderRadius: 14, padding: '16px 18px', border: '1px solid rgba(233,30,140,0.15)' }}>
+          <div style={{ backgroundColor: '#FFF8F4', borderRadius: 14, padding: '16px 18px', border: '1px solid rgba(233,30,140,0.15)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: '#E91E8C', marginBottom: 4 }}><Clock size={15} strokeWidth={2.5} /> {t ? 'Booking expires in' : 'Konfirmasi dalam'}</div>
             <div style={{ fontSize: 22, fontWeight: 900, color: '#0D1421' }}>10 menit</div>
           </div>

@@ -14,9 +14,9 @@ interface MobileSelectBranchProps {
 function BranchIllus({ city, idx }: { city: string; idx: number }) {
   const palettes: [string, string][] = [
     ['#E91E8C', '#FF6BB5'],
-    ['#06B6D4', '#22D3EE'],
-    ['#8B5CF6', '#C4B5FD'],
-    ['#F59E0B', '#FCD34D'],
+    ['#D4A017', '#F5C842'],
+    ['#FF6BB5', '#C4B5FD'],
+    ['#D4A017', '#FCD34D'],
   ];
   const [g1, g2] = palettes[idx % palettes.length];
   const letter = city.charAt(0).toUpperCase();
@@ -81,7 +81,7 @@ export function MobileSelectBranch({ state, setState }: MobileSelectBranchProps)
           <div style={{
             display: 'flex', alignItems: 'center', gap: 10,
             padding: '10px 14px', borderRadius: 14,
-            background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.15)',
+            background: '#FFF8F4', border: '1px solid rgba(233,30,140,0.15)',
           }}>
             <div style={{
               width: 30, height: 30, borderRadius: 10, flexShrink: 0,

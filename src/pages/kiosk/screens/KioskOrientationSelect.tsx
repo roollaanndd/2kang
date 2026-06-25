@@ -7,7 +7,7 @@ import type { KioskOrientation } from '../../../context/KioskOrientationContext'
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 interface Props {
@@ -27,7 +27,7 @@ function LandscapeGlyph({ active }: { active: boolean }) {
 }
 
 function PortraitGlyph({ active }: { active: boolean }) {
-  const c = active ? '#FFFFFF' : AQUA;
+  const c = active ? '#FFFFFF' : GOLD;
   return (
     <svg width="92" height="92" viewBox="0 0 92 92" fill="none" aria-hidden="true">
       <rect x="26" y="8" width="40" height="76" rx="6" stroke={c} strokeWidth="3.5" />
@@ -59,7 +59,7 @@ const CARDS: CardConfig[] = [
     orientation: 'portrait',
     title: 'Portrait',
     subtitle: 'Layar tinggi / berdiri',
-    gradient: `linear-gradient(135deg, ${AQUA}, #0284C7)`,
+    gradient: `linear-gradient(135deg, ${GOLD}, #B8860B)`,
     shadow: 'rgba(6,182,212,0.35)',
     glyph: (active) => <PortraitGlyph active={active} />,
   },
@@ -77,7 +77,7 @@ export function KioskOrientationSelect({ onSelect }: Props) {
         position: 'absolute',
         inset: 0,
         zIndex: 9500,
-        background: 'linear-gradient(135deg, #FFF5F9 0%, #FFFFFF 50%, #ECFEFF 100%)',
+        background: 'linear-gradient(135deg, #FFF8F4 0%, #FFFFFF 50%, #ECFEFF 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -87,7 +87,7 @@ export function KioskOrientationSelect({ onSelect }: Props) {
       }}
     >
       {/* Signature top gradient strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 20 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`, zIndex: 20 }} />
 
       <AnimatedDentalBg />
 

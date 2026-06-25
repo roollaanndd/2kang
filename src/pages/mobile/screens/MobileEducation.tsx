@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PINK = '#E91E8C';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#1A1A2E';
 
 type Category = 'Semua' | 'Perawatan' | 'Pencegahan' | 'Tips & Trik' | 'FAQ';
@@ -20,9 +20,9 @@ const CATEGORIES: Category[] = ['Semua', 'Perawatan', 'Pencegahan', 'Tips & Trik
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Perawatan': '#E91E8C',
-  'Pencegahan': '#10B981',
-  'Tips & Trik': '#F59E0B',
-  'FAQ': AQUA,
+  'Pencegahan': '#D4A017',
+  'Tips & Trik': '#D4A017',
+  'FAQ': GOLD,
 };
 
 interface Article {
@@ -101,7 +101,7 @@ function FeaturedIllustration() {
       <rect width="300" height="120" rx="16" fill="url(#featGrad)" />
       <defs>
         <linearGradient id="featGrad" x1="0" y1="0" x2="300" y2="120" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FFF5F9" />
+          <stop stopColor="#FFF8F4" />
           <stop offset="1" stopColor="#EBF8FF" />
         </linearGradient>
       </defs>
@@ -110,12 +110,12 @@ function FeaturedIllustration() {
         fill="rgba(233,30,140,0.12)" stroke="#E91E8C" strokeWidth="1.5" />
       <path d="M111 43 L116 48 L126 38" stroke="#E91E8C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       {/* Sparkles */}
-      <path d="M155 30 l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#F59E0B" opacity="0.7" />
+      <path d="M155 30 l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#D4A017" opacity="0.7" />
       <path d="M80 55 l1.5 3.5 3.5 1.5-3.5 1.5-1.5 3.5-1.5-3.5-3.5-1.5 3.5-1.5z" fill={PINK} opacity="0.5" />
-      <path d="M160 70 l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill={AQUA} opacity="0.6" />
+      <path d="M160 70 l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill={GOLD} opacity="0.6" />
       {/* Toothbrush */}
-      <rect x="170" y="28" width="8" height="50" rx="4" fill="rgba(6,182,212,0.20)" stroke={AQUA} strokeWidth="1.2" />
-      <rect x="166" y="28" width="16" height="18" rx="4" fill={AQUA} opacity="0.4" />
+      <rect x="170" y="28" width="8" height="50" rx="4" fill="rgba(6,182,212,0.20)" stroke={GOLD} strokeWidth="1.2" />
+      <rect x="166" y="28" width="16" height="18" rx="4" fill={GOLD} opacity="0.4" />
       {/* Bubbles */}
       <circle cx="200" cy="45" r="5" fill="rgba(233,30,140,0.10)" stroke="rgba(233,30,140,0.25)" strokeWidth="1" />
       <circle cx="215" cy="32" r="3.5" fill="rgba(6,182,212,0.10)" stroke="rgba(6,182,212,0.25)" strokeWidth="1" />
@@ -159,7 +159,7 @@ export function MobileEducation({ state, setState }: Props) {
       transition={{ duration: 0.3 }}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       <MobileHeader title="Edukasi Dental" showBack onBack={() => setState({ screen: 'home' })} />
 

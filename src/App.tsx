@@ -40,7 +40,7 @@ const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
 
 function LoadingFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ background: '#FFF5F9' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: '#FFF8F4' }}>
       <div className="text-center">
         <div
           className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"

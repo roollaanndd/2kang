@@ -133,7 +133,7 @@ export function MobileSchedule({ state, setState }: MobileScheduleProps) {
                     background: selected
                       ? '#E91E8C'
                       : isToday
-                      ? '#FFF5F9'
+                      ? '#FFF8F4'
                       : 'transparent',
                     color: selected
                       ? 'white'
@@ -159,7 +159,7 @@ export function MobileSchedule({ state, setState }: MobileScheduleProps) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             className="mx-5 mt-4 px-4 py-2.5 rounded-xl"
-            style={{ background: '#FFF5F9' }}
+            style={{ background: '#FFF8F4' }}
           >
             <p className="text-xs font-semibold" style={{ color: '#E91E8C' }}>
               📅 {formatDateLabel(viewYear, viewMonth, selectedDay)}

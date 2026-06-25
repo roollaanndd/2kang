@@ -12,9 +12,9 @@ interface Props {
 
 const AVATAR_COLORS: [string, string][] = [
   ['#E91E8C', '#FF6BB5'],
-  ['#06B6D4', '#22D3EE'],
-  ['#8B5CF6', '#C4B5FD'],
-  ['#F59E0B', '#FCD34D'],
+  ['#D4A017', '#F5C842'],
+  ['#FF6BB5', '#C4B5FD'],
+  ['#D4A017', '#FCD34D'],
 ];
 
 const MOCK_REVIEWS = [
@@ -66,7 +66,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
       {/* 3px brand strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       {/* Scrollable content */}
       <div style={{ flex: 1, overflowY: 'auto', scrollbarWidth: 'none', paddingBottom: 100 }}>
@@ -176,7 +176,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
             style={{
               flex: 1, padding: '10px 0', borderRadius: 14, border: '1.5px solid rgba(6,182,212,0.3)', cursor: 'pointer',
               background: 'rgba(6,182,212,0.06)',
-              color: '#06B6D4', fontSize: 13, fontWeight: 800,
+              color: '#D4A017', fontSize: 13, fontWeight: 800,
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
             }}
           >
@@ -228,7 +228,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                   <div style={{ width: 32, height: 32, borderRadius: 10, background: 'rgba(6,182,212,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <CalendarDays size={16} color="#06B6D4" />
+                    <CalendarDays size={16} color="#D4A017" />
                   </div>
                   <p style={{ fontSize: 14, fontWeight: 900, color: '#1A1A2E' }}>Jadwal Praktek</p>
                 </div>
@@ -236,7 +236,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
                   {doctor.schedule.map(day => (
                     <span key={day} style={{
                       padding: '7px 16px', borderRadius: 20,
-                      background: '#FFF5F9', border: '1.5px solid rgba(233,30,140,0.18)',
+                      background: '#FFF8F4', border: '1.5px solid rgba(233,30,140,0.18)',
                       color: '#E91E8C', fontSize: 12, fontWeight: 700,
                     }}>
                       {day}
@@ -256,7 +256,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                   <div style={{ width: 32, height: 32, borderRadius: 10, background: 'rgba(139,92,246,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <MapPin size={16} color="#8B5CF6" />
+                    <MapPin size={16} color="#FF6BB5" />
                   </div>
                   <p style={{ fontSize: 14, fontWeight: 900, color: '#1A1A2E' }}>Klinik</p>
                 </div>
@@ -279,8 +279,8 @@ export function MobileDoctorDetail({ state, setState }: Props) {
                   <div style={{ display: 'flex', gap: 2, justifyContent: 'center', margin: '5px 0 4px' }}>
                     {[1, 2, 3, 4, 5].map(i => (
                       <Star key={i} size={12}
-                        fill={i <= Math.round(doctor.rating) ? '#F59E0B' : '#E5E7EB'}
-                        color={i <= Math.round(doctor.rating) ? '#F59E0B' : '#E5E7EB'}
+                        fill={i <= Math.round(doctor.rating) ? '#D4A017' : '#E5E7EB'}
+                        color={i <= Math.round(doctor.rating) ? '#D4A017' : '#E5E7EB'}
                       />
                     ))}
                   </div>
@@ -295,7 +295,7 @@ export function MobileDoctorDetail({ state, setState }: Props) {
                         <div style={{ flex: 1, height: 5, borderRadius: 3, background: '#F3F4F6', overflow: 'hidden' }}>
                           <motion.div
                             initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ delay: 0.1 + ni * 0.05, duration: 0.6 }}
-                            style={{ height: '100%', borderRadius: 3, background: '#F59E0B' }}
+                            style={{ height: '100%', borderRadius: 3, background: '#D4A017' }}
                           />
                         </div>
                         <span style={{ fontSize: 10, color: '#9CA3AF', width: 24 }}>{pct}%</span>
@@ -330,8 +330,8 @@ export function MobileDoctorDetail({ state, setState }: Props) {
                     <div style={{ display: 'flex', gap: 2 }}>
                       {[1, 2, 3, 4, 5].map(s => (
                         <Star key={s} size={11}
-                          fill={s <= review.rating ? '#F59E0B' : '#E5E7EB'}
-                          color={s <= review.rating ? '#F59E0B' : '#E5E7EB'}
+                          fill={s <= review.rating ? '#D4A017' : '#E5E7EB'}
+                          color={s <= review.rating ? '#D4A017' : '#E5E7EB'}
                         />
                       ))}
                     </div>

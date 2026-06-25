@@ -21,7 +21,7 @@ function InfoRow({ icon, label, value }: InfoRowProps) {
     <div className="flex items-center gap-3 py-3" style={{ borderBottom: '1px solid #F3F4F6' }}>
       <div
         className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-        style={{ background: '#FFF5F9' }}
+        style={{ background: '#FFF8F4' }}
       >
         <span style={{ color: '#E91E8C' }}>{icon}</span>
       </div>
@@ -88,7 +88,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             <InfoRow icon={<MapPin size={16} />} label="Lokasi" value={branch?.name ?? 'OMDC Dental'} />
             {branch?.address && (
               <div className="flex items-start gap-3 py-2" style={{ borderBottom: '1px solid #F3F4F6' }}>
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFF5F9' }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFF8F4' }}>
                   <MapPin size={14} style={{ color: '#E91E8C' }} />
                 </div>
                 <div className="flex-1">
@@ -99,7 +99,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             )}
             {state.selectedTeeth && state.selectedTeeth.length > 0 && (
               <div className="flex items-start gap-3 py-3">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base" style={{ background: '#FFF5F9' }}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-base" style={{ background: '#FFF8F4' }}>
                   🦷
                 </div>
                 <div className="flex-1">
@@ -132,7 +132,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
           </div>
           <InfoRow icon={<User size={16} />} label="Nama" value={user?.name ?? '-'} />
           <div className="flex items-center gap-3 py-3">
-            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFF5F9' }}>
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#FFF8F4' }}>
               <Phone size={16} style={{ color: '#E91E8C' }} />
             </div>
             <div className="flex-1">

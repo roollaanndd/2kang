@@ -85,7 +85,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -228,7 +228,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
                 color = '#ffffff';
                 border = '2px solid #E91E8C';
               } else if (today_) {
-                bg = '#FFF5F9';
+                bg = '#FFF8F4';
                 color = '#E91E8C';
                 border = '2px solid #E91E8C';
               } else if (past) {
@@ -256,12 +256,12 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
                   }}
                   onMouseEnter={e => {
                     if (past || selected) return;
-                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#FFF5F9';
+                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#FFF8F4';
                     (e.currentTarget as HTMLButtonElement).style.color = '#E91E8C';
                   }}
                   onMouseLeave={e => {
                     if (past || selected) return;
-                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = today_ ? '#FFF5F9' : 'transparent';
+                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = today_ ? '#FFF8F4' : 'transparent';
                     (e.currentTarget as HTMLButtonElement).style.color = today_ ? '#E91E8C' : '#374151';
                   }}
                 >
@@ -279,7 +279,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
             style={{
               marginTop: '20px',
               padding: '14px 28px',
-              backgroundColor: '#FFF5F9',
+              backgroundColor: '#FFF8F4',
               borderRadius: '14px',
               border: '2px solid #FCE7F3',
               fontSize: '17px',

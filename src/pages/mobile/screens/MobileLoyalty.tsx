@@ -15,10 +15,10 @@ interface MobileLoyaltyProps {
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#0D1421';
 const GREY = '#6B7280';
-const GREEN = '#10B981';
+const GREEN = '#D4A017';
 
 const START_POINTS = 2450;
 const NEXT_TIER = 'Platinum';
@@ -117,10 +117,10 @@ export function MobileLoyalty({ state, setState }: MobileLoyaltyProps) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.3 }}
-      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF5F9' }}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF8F4' }}
     >
       {/* 3px gradient strip */}
-      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
 
       {/* Header */}
       <div style={{
@@ -231,7 +231,7 @@ export function MobileLoyalty({ state, setState }: MobileLoyaltyProps) {
               </div>
               <div style={{
                 width: 56, height: 56, borderRadius: '50%', marginBottom: 12,
-                background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                background: 'linear-gradient(135deg, #D4A017, #FBBF24)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0 4px 10px rgba(245,158,11,0.3)',
               }}>
@@ -251,7 +251,7 @@ export function MobileLoyalty({ state, setState }: MobileLoyaltyProps) {
             }}>
               <div style={{
                 width: 48, height: 48, borderRadius: '50%', marginBottom: 12,
-                background: 'linear-gradient(135deg, #06B6D4, #67E8F9)',
+                background: 'linear-gradient(135deg, #D4A017, #67E8F9)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <svg viewBox="0 0 24 24" width={20} height={20} fill="white">

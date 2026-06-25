@@ -4,7 +4,7 @@ import { CURRENT_QUEUE } from '../../data/mockData';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 
 const DAY_NAMES_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 const MONTH_NAMES_ID = [
@@ -48,7 +48,7 @@ export function KioskHeader() {
       {/* 4px gradient strip at top */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 4,
-        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`,
       }} />
 
       <OmdcLogo size="md" variant="default" />

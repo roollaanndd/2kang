@@ -15,17 +15,17 @@ interface MobileHomeProps {
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 const SERVICE_GRADIENTS = [
   'linear-gradient(135deg,#E91E8C,#FF6BB5)',
-  'linear-gradient(135deg,#4FC3F7,#0288D1)',
-  'linear-gradient(135deg,#A78BFA,#7C3AED)',
-  'linear-gradient(135deg,#10B981,#059669)',
-  'linear-gradient(135deg,#F59E0B,#D97706)',
+  'linear-gradient(135deg,#D4A017,#B8860B)',
+  'linear-gradient(135deg,#FF6BB5,#E91E8C)',
+  'linear-gradient(135deg,#D4A017,#B8860B)',
+  'linear-gradient(135deg,#D4A017,#B8860B)',
   'linear-gradient(135deg,#EF4444,#DC2626)',
-  'linear-gradient(135deg,#06B6D4,#0369A1)',
+  'linear-gradient(135deg,#D4A017,#0369A1)',
   'linear-gradient(135deg,#EC4899,#DB2777)',
 ];
 const SERVICE_SHADOW = [
@@ -91,7 +91,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
       style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#F2F4F8', overflow: 'hidden' }}
     >
       {/* 3px brand strip */}
-      <div style={{ height: 3, flexShrink: 0, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})` }} />
+      <div style={{ height: 3, flexShrink: 0, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})` }} />
 
       {/* ── HEADER ── */}
       <div style={{
@@ -227,11 +227,11 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 {[
                   { label: 'Booking', screen: 'booking' as const, grad: `linear-gradient(135deg, ${PINK}, ${ROSE})`, shadow: 'rgba(233,30,140,0.30)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="3" /><path d="M16 2v4M8 2v4M3 10h18" /></svg> },
-                  { label: 'Antrian', screen: 'queue' as const, grad: `linear-gradient(135deg, ${AQUA}, #0284C7)`, shadow: 'rgba(6,182,212,0.30)',
+                  { label: 'Antrian', screen: 'queue' as const, grad: `linear-gradient(135deg, ${GOLD}, #B8860B)`, shadow: 'rgba(6,182,212,0.30)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h6" /></svg> },
-                  { label: 'Riwayat', screen: 'history' as const, grad: 'linear-gradient(135deg, #A78BFA, #7C3AED)', shadow: 'rgba(124,58,237,0.28)',
+                  { label: 'Riwayat', screen: 'history' as const, grad: 'linear-gradient(135deg, #FF6BB5, #E91E8C)', shadow: 'rgba(124,58,237,0.28)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/></svg> },
-                  { label: 'Loyalti', screen: 'loyalty' as const, grad: 'linear-gradient(135deg, #F59E0B, #D97706)', shadow: 'rgba(245,158,11,0.28)',
+                  { label: 'Loyalti', screen: 'loyalty' as const, grad: 'linear-gradient(135deg, #D4A017, #B8860B)', shadow: 'rgba(245,158,11,0.28)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> },
                 ].map((action, i) => (
                   <motion.button
@@ -373,7 +373,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               </div>
               <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none', margin: '0 -2px', padding: '0 2px 4px' }}>
                 {DOCTORS.slice(0, 5).map((doc, i) => {
-                  const gradients = [`linear-gradient(135deg, ${PINK}, ${ROSE})`, `linear-gradient(135deg, ${AQUA}, #0284C7)`, 'linear-gradient(135deg, #A78BFA, #7C3AED)', `linear-gradient(135deg, #10B981, #059669)`, 'linear-gradient(135deg, #F59E0B, #D97706)'];
+                  const gradients = [`linear-gradient(135deg, ${PINK}, ${ROSE})`, `linear-gradient(135deg, ${GOLD}, #B8860B)`, 'linear-gradient(135deg, #FF6BB5, #E91E8C)', `linear-gradient(135deg, #D4A017, #B8860B)`, 'linear-gradient(135deg, #D4A017, #B8860B)'];
                   const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
                   return (
                     <motion.button
@@ -408,10 +408,10 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                         <div style={{ fontSize: 10, color: '#6B7280', marginBottom: 8 }}>{doc.specialty}</div>
                         <div style={{
                           display: 'inline-flex', alignItems: 'center', gap: 3,
-                          fontSize: 11, fontWeight: 700, color: '#F59E0B',
+                          fontSize: 11, fontWeight: 700, color: '#D4A017',
                           background: '#FFFBEB', padding: '3px 8px', borderRadius: 8,
                         }}>
-                          <Star size={11} fill="#F59E0B" color="#F59E0B" />
+                          <Star size={11} fill="#D4A017" color="#D4A017" />
                           {doc.rating}
                         </div>
                       </div>
