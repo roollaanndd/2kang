@@ -4,6 +4,10 @@
 - Design system: `assets/3060190717106490903` (OMDC Light Organic 2026)
 - Generated: 2026-06-22 · model GEMINI_3_1_PRO · device DESKTOP
 
+> **Design constraint (updated 2026-06-25):** NO dark/black backgrounds on any platform.
+> All screens must use warm cream `#FFF8F4`, white, or a vibrant pink→rose→gold gradient.
+> The DARK constant `#0D1421` is reserved for text/icons only — never as a background.
+
 > Open links in your browser (this build environment blocks the Google file CDN).
 > To let me integrate automatically: allow `contribution.usercontent.google.com` + `lh3.googleusercontent.com` in the environment network policy, or download each `code` file and commit it under `design/stitch/`.
 

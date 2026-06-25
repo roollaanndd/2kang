@@ -152,27 +152,27 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             <section>
               <div style={{
                 borderRadius: 20, padding: '18px 20px',
-                background: DARK,
+                background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 65%, #ffd8e6 100%)`,
                 position: 'relative', overflow: 'hidden',
-                boxShadow: '0 8px 24px rgba(13,20,33,0.20)',
+                boxShadow: '0 8px 24px rgba(233,30,140,0.28)',
               }}>
                 {/* ambient glow */}
-                <div style={{ position: 'absolute', top: -30, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -20, left: 30, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -30, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.28) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -20, left: 30, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.22) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 10, fontWeight: 500 }}>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginBottom: 10, fontWeight: 500 }}>
                       Apa yang bisa kami bantu hari ini?
                     </div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
                       Sedang Dilayani
                     </div>
                     <div style={{
                       fontSize: 36, fontWeight: 900, lineHeight: 1, marginBottom: 12,
-                      background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      color: 'white',
                       fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: -1,
+                      textShadow: '0 2px 12px rgba(0,0,0,0.12)',
                     }}>
                       {appointment?.queue ?? 'A-024'}
                     </div>
@@ -199,9 +199,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 {/* Stats row */}
                 <div style={{
                   marginTop: 16, display: 'flex', gap: 0,
-                  background: 'rgba(255,255,255,0.07)',
+                  background: 'rgba(255,255,255,0.22)',
                   borderRadius: 12, overflow: 'hidden',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.30)',
                   position: 'relative', zIndex: 2,
                 }}>
                   {[
@@ -211,10 +211,10 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   ].map((s, i) => (
                     <div key={s.l} style={{
                       flex: 1, padding: '10px 8px', textAlign: 'center',
-                      borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                      borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.25)' : 'none',
                     }}>
                       <div style={{ fontSize: 16, fontWeight: 900, color: 'white', lineHeight: 1 }}>{s.v}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2, fontWeight: 500 }}>{s.l}</div>
+                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)', marginTop: 2, fontWeight: 600 }}>{s.l}</div>
                     </div>
                   ))}
                 </div>
@@ -314,17 +314,17 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 onClick={() => { haptic('light'); setState({ screen: 'booking' }); }}
                 style={{
                   borderRadius: 20, overflow: 'hidden', cursor: 'pointer',
-                  background: `linear-gradient(135deg, ${DARK} 0%, #1a2535 60%, #0D2A3A 100%)`,
+                  background: `linear-gradient(135deg, ${PINK} 0%, #c0196e 50%, ${GOLD} 100%)`,
                   padding: '20px 20px',
                   position: 'relative',
-                  boxShadow: '0 8px 24px rgba(13,20,33,0.18)',
+                  boxShadow: '0 8px 24px rgba(233,30,140,0.28)',
                   minHeight: 110,
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}
               >
                 {/* Glow accents */}
-                <div style={{ position: 'absolute', top: -20, right: 60, width: 100, height: 100, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -20, right: 20, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -20, right: 60, width: 100, height: 100, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -20, right: 20, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.30) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
                 <div style={{ position: 'relative', zIndex: 2 }}>
                   <div style={{

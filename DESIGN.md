@@ -48,14 +48,19 @@ surface-2:  #FFF0F8   /* Section alternates, form inputs */
 surface-3:  #FFE4F3   /* Hover states on pink-tinted elements */
 ```
 
-### Surface Ladder (Dark Theme — Admin & Kiosk night mode)
+### Surface Ladder (Warm Cream — Website, Mobile, eKiosk)
 
 ```
-dark-0:     #0D0D1A   /* Deepest background */
-dark-1:     #1A1A2E   /* Admin sidebar background */
-dark-2:     #16213E   /* Card surfaces in dark theme */
-dark-3:     #0F3460   /* Elevated panels */
+surface-0:  #FFFFFF   /* Cards, modals */
+surface-1:  #FFF8F4   /* Page background — warm cream (no dark, no navy) */
+surface-2:  #FFF0FA   /* Section alternates, form inputs */
+surface-3:  #ffd8e6   /* Hover states, chip backgrounds */
 ```
+
+> ⚠️ **NO DARK BACKGROUNDS** — `#0D1421`, `#000`, `#111`, `#1a...` and any navy/charcoal
+> are FORBIDDEN as backgrounds on any platform (website, mobile app, eKiosk).
+> Use `surface-1` (#FFF8F4) or a vibrant `linear-gradient(160deg, #E91E8C, #FF6BB5, #ffd8e6)`
+> for panels that need visual weight. The DARK constant (#0D1421) is for text/icons only.
 
 ### Semantic Colors
 

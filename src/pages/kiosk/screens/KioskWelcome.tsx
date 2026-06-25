@@ -145,7 +145,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         width: '100%', height: '100%',
         display: 'flex', flexDirection: portrait ? 'column' : 'row',
         cursor: 'pointer', position: 'relative', overflow: 'hidden',
-        background: DARK,
+        background: '#FFF8F4',
       }}
     >
       {/* 3px signature brand strip */}
@@ -154,21 +154,21 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`, zIndex: 30,
       }} />
 
-      {/* ── LEFT PANEL: Dark navy with glowing tooth ── */}
+      {/* ── LEFT PANEL: Vibrant pink gradient ── */}
       <div style={{
         width: portrait ? '100%' : '42%', flexShrink: 0,
         height: portrait ? '40%' : '100%',
-        background: DARK,
+        background: `linear-gradient(160deg, ${PINK} 0%, ${ROSE} 65%, #ffd8e6 100%)`,
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'space-between',
         padding: portrait ? '32px 24px 24px' : '52px 40px 40px',
         position: 'relative', overflow: 'hidden',
-        borderRight: portrait ? 'none' : `1px solid rgba(233,30,140,0.12)`,
-        borderBottom: portrait ? `1px solid rgba(233,30,140,0.12)` : 'none',
+        borderRight: portrait ? 'none' : `1px solid rgba(255,255,255,0.20)`,
+        borderBottom: portrait ? `1px solid rgba(255,255,255,0.20)` : 'none',
       }}>
         {/* ambient glow spots */}
-        <div style={{ position: 'absolute', top: -80, left: -80, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.18) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.14) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: -80, left: -80, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.20) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
         {/* Brand wordmark */}
         <motion.div
@@ -177,7 +177,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           transition={{ delay: 0.2, duration: 0.6 }}
           style={{ textAlign: 'center', zIndex: 2 }}
         >
-          <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 4 }}>
+          <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.75)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 4 }}>
             OMDC
           </div>
           <div style={{
@@ -214,19 +214,19 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           ].map((s) => (
             <div key={s.v} style={{
               flex: 1,
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.10)',
+              background: 'rgba(255,255,255,0.25)',
+              border: '1px solid rgba(255,255,255,0.35)',
               borderRadius: 14, padding: '10px 14px',
               backdropFilter: 'blur(8px)',
               display: 'flex', flexDirection: portrait ? 'column' : 'row', alignItems: portrait ? 'flex-start' : 'center',
               gap: portrait ? 2 : 10,
             }}>
               <span style={{
-                fontSize: 20, fontWeight: 900, color: 'white', lineHeight: 1,
-                background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                fontSize: 20, fontWeight: 900, lineHeight: 1,
+                background: `linear-gradient(135deg, #7b0040, #E91E8C)`,
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>{s.v}</span>
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>{s.l}</span>
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>{s.l}</span>
             </div>
           ))}
         </motion.div>
