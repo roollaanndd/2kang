@@ -23,7 +23,7 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     labelEn: 'Cash',
     description: 'Bayar di kasir klinik',
     descriptionEn: 'Pay at clinic cashier',
-    color: '#10B981',
+    color: '#D4A017',
   },
   {
     id: 'card',
@@ -32,7 +32,7 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     labelEn: 'Debit / Credit Card',
     description: 'Visa, Mastercard, GPN',
     descriptionEn: 'Visa, Mastercard, GPN',
-    color: '#3B82F6',
+    color: '#D4A017',
   },
   {
     id: 'ewallet',
@@ -41,7 +41,7 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     labelEn: 'E-Wallet',
     description: 'GoPay, OVO, DANA, ShopeePay',
     descriptionEn: 'GoPay, OVO, DANA, ShopeePay',
-    color: '#8B5CF6',
+    color: '#FF6BB5',
   },
   {
     id: 'qris',
@@ -87,7 +87,7 @@ export function KioskPayment({ state, setState, goTo, goBack }: KioskScreenProps
       {/* Signature 3px top gradient strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 

@@ -34,7 +34,7 @@ export function MobileForgotPassword({ setState }: MobileForgotPasswordProps) {
     >
       {/* Header */}
       <div style={{ position: 'relative', padding: '52px 20px 20px', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button
             onClick={() => setState({ screen: 'login' })}
@@ -58,7 +58,7 @@ export function MobileForgotPassword({ setState }: MobileForgotPasswordProps) {
           transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
           style={{
             width: 80, height: 80, borderRadius: 24,
-            background: sent ? 'linear-gradient(135deg, #10B981, #059669)' : 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
+            background: sent ? 'linear-gradient(135deg, #D4A017, #B8860B)' : 'linear-gradient(135deg, #E91E8C, #FF6BB5)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 20, boxShadow: sent ? '0 8px 28px rgba(16,185,129,0.30)' : '0 8px 28px rgba(233,30,140,0.30)',
           }}

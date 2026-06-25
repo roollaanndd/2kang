@@ -14,9 +14,9 @@ const SPECIALTIES = ['Semua', 'Periodonsia', 'Ortodonsia', 'Bedah Mulut', 'Konse
 
 const AVATAR_COLORS: [string, string][] = [
   ['#E91E8C', '#FF6BB5'],
-  ['#06B6D4', '#22D3EE'],
-  ['#8B5CF6', '#C4B5FD'],
-  ['#F59E0B', '#FCD34D'],
+  ['#D4A017', '#F5C842'],
+  ['#FF6BB5', '#C4B5FD'],
+  ['#D4A017', '#FCD34D'],
 ];
 
 function initials(name: string): string {
@@ -168,7 +168,7 @@ function DoctorDetailSheet({
                 background: 'rgba(6,182,212,0.1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <CalendarDays size={14} color="#06B6D4" />
+                <CalendarDays size={14} color="#D4A017" />
               </div>
               <p style={{ fontWeight: 800, fontSize: 13, color: '#1A1A2E' }}>Jadwal Praktek</p>
             </div>
@@ -176,7 +176,7 @@ function DoctorDetailSheet({
               {doctor.schedule.map(day => (
                 <span key={day} style={{
                   padding: '7px 16px', borderRadius: 20,
-                  background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.18)',
+                  background: '#FFF8F4', border: '1px solid rgba(233,30,140,0.18)',
                   color: '#E91E8C', fontSize: 12, fontWeight: 700,
                 }}>
                   {day}
@@ -197,8 +197,8 @@ function DoctorDetailSheet({
               <div style={{ display: 'flex', gap: 2, justifyContent: 'center', marginTop: 4 }}>
                 {[1, 2, 3, 4, 5].map(i => (
                   <Star key={i} size={11}
-                    fill={i <= Math.round(doctor.rating) ? '#F59E0B' : '#E5E7EB'}
-                    color={i <= Math.round(doctor.rating) ? '#F59E0B' : '#E5E7EB'}
+                    fill={i <= Math.round(doctor.rating) ? '#D4A017' : '#E5E7EB'}
+                    color={i <= Math.round(doctor.rating) ? '#D4A017' : '#E5E7EB'}
                   />
                 ))}
               </div>
@@ -217,7 +217,7 @@ function DoctorDetailSheet({
                       background: '#E5E7EB', overflow: 'hidden',
                     }}>
                       <div style={{
-                        height: '100%', borderRadius: 2, background: '#F59E0B',
+                        height: '100%', borderRadius: 2, background: '#D4A017',
                         width: `${pct}%`,
                       }} />
                     </div>
@@ -288,7 +288,7 @@ export function MobileDoctors({ state, setState }: MobileDoctorsProps) {
       <div style={{ position: 'relative', background: 'white', padding: '52px 20px 14px' }}>
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         }} />
         <p style={{ fontSize: 22, fontWeight: 900, color: '#111827', marginBottom: 12 }}>
           Tim Dokter
@@ -430,7 +430,7 @@ export function MobileDoctors({ state, setState }: MobileDoctorsProps) {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 7 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                      <Star size={11} fill="#F59E0B" color="#F59E0B" />
+                      <Star size={11} fill="#D4A017" color="#D4A017" />
                       <span style={{ fontSize: 11, fontWeight: 700, color: '#374151' }}>{doctor.rating}</span>
                       <span style={{ fontSize: 10, color: '#9CA3AF' }}>({doctor.reviewCount})</span>
                     </div>

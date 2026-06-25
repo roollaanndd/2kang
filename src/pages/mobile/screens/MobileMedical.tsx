@@ -82,8 +82,8 @@ export function MobileMedical({ state, setState }: MobileMedicalProps) {
       {/* Summary bar */}
       <div className="mx-5 mt-4 bg-white rounded-2xl px-4 py-3 flex items-center divide-x divide-gray-100 mb-4" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
         {[
-          { value: MOCK_HISTORY.filter(a => a.status === 'done').length, label: 'Selesai', color: '#10B981' },
-          { value: MOCK_HISTORY.filter(a => a.status === 'waiting').length, label: 'Menunggu', color: '#F59E0B' },
+          { value: MOCK_HISTORY.filter(a => a.status === 'done').length, label: 'Selesai', color: '#D4A017' },
+          { value: MOCK_HISTORY.filter(a => a.status === 'waiting').length, label: 'Menunggu', color: '#D4A017' },
           { value: MOCK_HISTORY.filter(a => a.status === 'cancelled').length, label: 'Batal', color: '#EF4444' },
         ].map(stat => (
           <div key={stat.label} className="flex-1 text-center px-2">
@@ -180,7 +180,7 @@ export function MobileMedical({ state, setState }: MobileMedicalProps) {
                         {appt.status === 'done' && (
                           <button
                             className="mt-3 w-full py-2.5 rounded-xl text-sm font-bold border-2 transition-all active:scale-95"
-                            style={{ borderColor: '#E91E8C', color: '#E91E8C', background: '#FFF5F9' }}
+                            style={{ borderColor: '#E91E8C', color: '#E91E8C', background: '#FFF8F4' }}
                           >
                             ⭐ Beri Ulasan
                           </button>

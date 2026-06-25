@@ -8,9 +8,9 @@ import { haptic } from '../../lib/haptics';
 const PINK = '#E91E8C';
 
 const TYPE_CONFIG: Record<NotifType, { Icon: ComponentType<{ size?: number; color?: string }>; bg: string; color: string }> = {
-  reminder: { Icon: Calendar, bg: '#FFF5F9', color: '#E91E8C' },
-  queue: { Icon: Ticket, bg: '#EFF6FF', color: '#3B82F6' },
-  promo: { Icon: Tag, bg: '#ECFDF5', color: '#10B981' },
+  reminder: { Icon: Calendar, bg: '#FFF8F4', color: '#E91E8C' },
+  queue: { Icon: Ticket, bg: '#EFF6FF', color: '#D4A017' },
+  promo: { Icon: Tag, bg: '#ECFDF5', color: '#D4A017' },
   system: { Icon: Info, bg: '#F3F4F6', color: '#6B7280' },
 };
 
@@ -82,7 +82,7 @@ export function NotifToast({ onOpen }: NotifToastProps) {
               left: 0,
               right: 0,
               height: 3,
-              background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+              background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
             }}
           />
 

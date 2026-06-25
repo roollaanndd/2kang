@@ -67,7 +67,7 @@ export function MobileRegister({ setState }: MobileRegisterProps) {
         className="flex items-center gap-3 px-4 pt-12 pb-5 relative"
         style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(233,30,140,0.08)' }}
       >
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
         <button
           onClick={() => setState({ screen: 'login' })}
           className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
@@ -164,7 +164,7 @@ export function MobileRegister({ setState }: MobileRegisterProps) {
                 className="flex-1 py-3.5 rounded-xl font-semibold text-sm border-2 transition-all active:scale-95"
                 style={{
                   borderColor: form.gender === g ? '#E91E8C' : '#E5E7EB',
-                  background: form.gender === g ? '#FFF5F9' : 'white',
+                  background: form.gender === g ? '#FFF8F4' : 'white',
                   color: form.gender === g ? '#E91E8C' : '#6B7280',
                 }}
               >

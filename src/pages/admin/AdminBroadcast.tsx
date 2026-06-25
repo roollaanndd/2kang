@@ -26,7 +26,7 @@ const TYPE_META: Record<
   BroadcastType,
   { label: string; icon: any; color: string; bg: string }
 > = {
-  reminder: { label: 'Pengingat', icon: CalendarClock, color: '#06B6D4', bg: '#ECFEFF' },
+  reminder: { label: 'Pengingat', icon: CalendarClock, color: '#D4A017', bg: '#ECFEFF' },
   queue: { label: 'Antrian', icon: ListOrdered, color: PINK, bg: '#FFF0F8' },
   promo: { label: 'Promo', icon: Tag, color: '#F59E0B', bg: '#FFFBEB' },
   system: { label: 'Sistem', icon: Settings2, color: '#10B981', bg: '#F0FDF4' },

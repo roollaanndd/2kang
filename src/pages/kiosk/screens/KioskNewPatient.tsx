@@ -62,7 +62,7 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -111,7 +111,7 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                   width: '200px',
                   height: '130px',
                   borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #4FC3F7, #0288D1)',
+                  background: 'linear-gradient(135deg, #D4A017, #B8860B)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -300,7 +300,7 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                           padding: '14px',
                           borderRadius: '12px',
                           border: `2px solid ${form.jenisKelamin === opt.val ? '#E91E8C' : '#E5E7EB'}`,
-                          backgroundColor: form.jenisKelamin === opt.val ? '#FFF5F9' : '#ffffff',
+                          backgroundColor: form.jenisKelamin === opt.val ? '#FFF8F4' : '#ffffff',
                           color: form.jenisKelamin === opt.val ? '#E91E8C' : '#6B7280',
                           fontSize: '17px',
                           fontWeight: '700',
@@ -445,7 +445,7 @@ export function KioskNewPatient({ state, setState, goTo, goBack }: KioskScreenPr
                   width: '100px', height: '100px',
                   borderRadius: '50%',
                   backgroundColor: '#D1FAE5',
-                  color: '#059669',
+                  color: '#B8860B',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

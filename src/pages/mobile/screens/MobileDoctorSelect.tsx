@@ -12,9 +12,9 @@ interface MobileDoctorSelectProps {
 
 const AVATAR_COLORS: [string, string][] = [
   ['#E91E8C', '#FF6BB5'],
-  ['#06B6D4', '#22D3EE'],
-  ['#8B5CF6', '#C4B5FD'],
-  ['#F59E0B', '#FCD34D'],
+  ['#D4A017', '#F5C842'],
+  ['#FF6BB5', '#C4B5FD'],
+  ['#D4A017', '#FCD34D'],
 ];
 
 function initials(name: string): string {
@@ -50,7 +50,7 @@ export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps)
           <div style={{
             display: 'flex', alignItems: 'center', gap: 10,
             padding: '10px 14px', borderRadius: 14,
-            background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.15)',
+            background: '#FFF8F4', border: '1px solid rgba(233,30,140,0.15)',
           }}>
             <div style={{
               width: 30, height: 30, borderRadius: 10, flexShrink: 0,
@@ -139,7 +139,7 @@ export function MobileDoctorSelect({ state, setState }: MobileDoctorSelectProps)
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 7 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                    <Star size={11} fill="#F59E0B" color="#F59E0B" />
+                    <Star size={11} fill="#D4A017" color="#D4A017" />
                     <span style={{ fontSize: 11, fontWeight: 700, color: '#374151' }}>{doctor.rating}</span>
                     <span style={{ fontSize: 10, color: '#9CA3AF' }}>({doctor.reviewCount})</span>
                   </div>

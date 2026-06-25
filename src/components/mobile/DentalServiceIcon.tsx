@@ -4,18 +4,18 @@ import type { ReactNode } from 'react';
    given service always reads with the same colour identity. */
 export const SERVICE_GRADIENTS = [
   'linear-gradient(135deg,#E91E8C,#FF6BB5)',
-  'linear-gradient(135deg,#4FC3F7,#0288D1)',
-  'linear-gradient(135deg,#A78BFA,#7C3AED)',
-  'linear-gradient(135deg,#10B981,#059669)',
-  'linear-gradient(135deg,#F59E0B,#D97706)',
+  'linear-gradient(135deg,#D4A017,#B8860B)',
+  'linear-gradient(135deg,#FF6BB5,#E91E8C)',
+  'linear-gradient(135deg,#D4A017,#B8860B)',
+  'linear-gradient(135deg,#D4A017,#B8860B)',
   'linear-gradient(135deg,#EF4444,#DC2626)',
   'linear-gradient(135deg,#EC4899,#DB2777)',
   'linear-gradient(135deg,#14B8A6,#0D9488)',
 ];
 
 export const SERVICE_SHADOWS = [
-  '#E91E8C', '#0288D1', '#7C3AED', '#059669',
-  '#D97706', '#DC2626', '#DB2777', '#0D9488',
+  '#E91E8C', '#B8860B', '#E91E8C', '#B8860B',
+  '#B8860B', '#DC2626', '#DB2777', '#0D9488',
 ];
 
 /** Custom dental glyph per service id (s1..s8). White strokes — sits on a

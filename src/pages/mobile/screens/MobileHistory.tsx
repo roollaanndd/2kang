@@ -76,9 +76,9 @@ const MOCK_HISTORY: HistoryItem[] = [
 ];
 
 const STATUS_CONFIG: Record<HistoryStatus, { label: string; color: string; bg: string; Icon: typeof CheckCircle2 }> = {
-  done: { label: 'Selesai', color: '#10B981', bg: '#ECFDF5', Icon: CheckCircle2 },
+  done: { label: 'Selesai', color: '#D4A017', bg: '#ECFDF5', Icon: CheckCircle2 },
   cancelled: { label: 'Dibatalkan', color: '#EF4444', bg: '#FEF2F2', Icon: XCircle },
-  waiting: { label: 'Menunggu', color: '#F59E0B', bg: '#FFFBEB', Icon: Clock },
+  waiting: { label: 'Menunggu', color: '#D4A017', bg: '#FFFBEB', Icon: Clock },
 };
 
 const TABS: { key: FilterTab; label: string }[] = [
@@ -113,7 +113,7 @@ export function MobileHistory({ state, setState }: MobileHistoryProps) {
       {/* Stats strip */}
       <div
         className="mx-5 mt-4 rounded-2xl px-4 py-3 grid grid-cols-3 divide-x divide-pink-100"
-        style={{ background: '#FFF5F9', border: '1px solid #FECDD3' }}
+        style={{ background: '#FFF8F4', border: '1px solid #FECDD3' }}
       >
         {[
           { value: MOCK_HISTORY.filter(h => h.status === 'done').length, label: 'Selesai' },
@@ -240,7 +240,7 @@ export function MobileHistory({ state, setState }: MobileHistoryProps) {
                                   <div key={detail.label} className="flex items-start gap-2">
                                     <div
                                       className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                                      style={{ background: '#FFF5F9' }}
+                                      style={{ background: '#FFF8F4' }}
                                     >
                                       <detail.Icon size={13} style={{ color: PINK }} />
                                     </div>

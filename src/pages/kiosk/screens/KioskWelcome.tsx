@@ -7,7 +7,7 @@ import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 function LiveClock() {
@@ -52,7 +52,7 @@ function GlowTooth() {
           <svg width={160} height={184} viewBox="0 0 100 115" fill="none">
             <path
               d="M50 8C35 8 23 20 23 35c0 9 3 16 7 24 4 8 6.5 16 6.5 27 0 3 2 5 4.5 5h18c2.5 0 4.5-2 4.5-5 0-11 2.5-19 6.5-27 4-8 7-15 7-24C77 20 65 8 50 8z"
-              stroke={i === 2 ? PINK : i === 1 ? ROSE : AQUA}
+              stroke={i === 2 ? PINK : i === 1 ? ROSE : GOLD}
               strokeWidth={i === 2 ? 2 : 1.5}
               strokeLinejoin="round"
             />
@@ -70,7 +70,7 @@ function GlowTooth() {
             <linearGradient id="toothGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={PINK} />
               <stop offset="50%" stopColor={ROSE} />
-              <stop offset="100%" stopColor={AQUA} />
+              <stop offset="100%" stopColor={GOLD} />
             </linearGradient>
           </defs>
           <path
@@ -98,8 +98,8 @@ function GlowTooth() {
           style={{
             position: 'absolute', left: p.x - 80, top: p.y - 40,
             width: p.s, height: p.s, borderRadius: '50%',
-            background: [PINK, ROSE, AQUA, ROSE, PINK][i],
-            boxShadow: `0 0 ${p.s * 2}px ${[PINK, ROSE, AQUA, ROSE, PINK][i]}`,
+            background: [PINK, ROSE, GOLD, ROSE, PINK][i],
+            boxShadow: `0 0 ${p.s * 2}px ${[PINK, ROSE, GOLD, ROSE, PINK][i]}`,
           }}
         />
       ))}
@@ -151,7 +151,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
       {/* 3px signature brand strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 30,
+        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`, zIndex: 30,
       }} />
 
       {/* ── LEFT PANEL: Dark navy with glowing tooth ── */}
@@ -182,7 +182,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           </div>
           <div style={{
             fontSize: 28, fontWeight: 900, lineHeight: 1,
-            background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${GOLD})`,
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '-0.5px',
           }}>
@@ -291,7 +291,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           </h1>
           <h1 style={{
             fontSize: portrait ? 52 : 72, fontWeight: 200, lineHeight: 1.05, margin: 0,
-            background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${AQUA})`,
+            background: `linear-gradient(135deg, ${PINK}, ${ROSE}, ${GOLD})`,
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             letterSpacing: '-1px', fontFamily: 'Plus Jakarta Sans, sans-serif',
           }}>
@@ -327,7 +327,7 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               width: '100%', padding: '26px 0',
-              background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
+              background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${GOLD} 100%)`,
               backgroundSize: '200% 200%',
               borderRadius: 100,
               boxShadow: '0 20px 60px rgba(233,30,140,0.40), 0 4px 16px rgba(233,30,140,0.20)',
@@ -372,8 +372,8 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-end' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(16,185,129,0.10)', border: '1px solid rgba(16,185,129,0.20)', borderRadius: 20, padding: '4px 10px' }}>
-              <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', display: 'block' }} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#059669' }}>4 {lang === 'id' ? 'Dokter Online' : 'Doctors Active'}</span>
+              <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4A017', display: 'block' }} />
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#B8860B' }}>4 {lang === 'id' ? 'Dokter Online' : 'Doctors Active'}</span>
             </div>
             <div style={{ fontSize: 12, color: '#6B7280' }}>
               12 {lang === 'id' ? 'menunggu · ~8 mnt' : 'waiting · ~8 min'}

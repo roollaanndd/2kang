@@ -7,7 +7,7 @@ import { kioskSound } from '../../../lib/kioskSound';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 /* ── CSS Tooth decoration (white lines on dark) ── */
@@ -154,7 +154,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
       {/* 3px gradient brand strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, zIndex: 20,
+        background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`, zIndex: 20,
       }} />
 
       {/* ── TOP HEADER BAR ── */}
@@ -218,7 +218,7 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
               A-042
             </div>
           </div>
-          <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', display: 'block', boxShadow: '0 0 6px #10B981', flexShrink: 0 }} />
+          <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: 8, height: 8, borderRadius: '50%', background: '#D4A017', display: 'block', boxShadow: '0 0 6px #D4A017', flexShrink: 0 }} />
         </div>
       </motion.div>
 
@@ -334,10 +334,10 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           pressed={pressed}
           onPress={handleSelect}
           setPressed={setPressed}
-          gradient={`linear-gradient(135deg, ${AQUA}, #0284C7)`}
+          gradient={`linear-gradient(135deg, ${GOLD}, #B8860B)`}
           shadowColor="rgba(6,182,212,0.3)"
           cardBg="white"
-          accent={AQUA}
+          accent={GOLD}
           lang={t}
         />
 
@@ -363,10 +363,10 @@ export function KioskMainMenu({ state, setState, goTo, goBack }: KioskScreenProp
           pressed={pressed}
           onPress={handleSelect}
           setPressed={setPressed}
-          gradient="linear-gradient(135deg, #F59E0B, #D97706)"
+          gradient="linear-gradient(135deg, #D4A017, #B8860B)"
           shadowColor="rgba(245,158,11,0.3)"
           cardBg="white"
-          accent="#F59E0B"
+          accent="#D4A017"
           lang={t}
         />
 
@@ -474,7 +474,7 @@ function BentoCard({ card, index, pressed, onPress, setPressed, gradient, shadow
         <div style={{
           position: 'absolute', bottom: 20, right: 20,
           width: 32, height: 32, borderRadius: '50%',
-          background: dark ? 'rgba(255,255,255,0.15)' : `rgba(${accent === '#F59E0B' ? '245,158,11' : accent === AQUA ? '6,182,212' : '233,30,140'},0.10)`,
+          background: dark ? 'rgba(255,255,255,0.15)' : `rgba(${accent === '#D4A017' ? '245,158,11' : accent === GOLD ? '6,182,212' : '233,30,140'},0.10)`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <svg width={14} height={14} fill="none" viewBox="0 0 24 24" stroke={dark ? 'white' : accent} strokeWidth="2.5" strokeLinecap="round">

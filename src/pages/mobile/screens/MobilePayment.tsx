@@ -94,7 +94,7 @@ export function MobilePayment({ state, setState }: MobilePaymentProps) {
                 onClick={() => { haptic('selection'); setSelected(id); }}
                 className="flex items-center gap-4 p-4 rounded-2xl text-left transition-all active:scale-[0.98]"
                 style={{
-                  background: active ? '#FFF5F9' : 'white',
+                  background: active ? '#FFF8F4' : 'white',
                   border: `2px solid ${active ? '#E91E8C' : '#F3F4F6'}`,
                   boxShadow: active ? '0 4px 16px rgba(233,30,140,0.12)' : '0 2px 8px rgba(0,0,0,0.04)',
                 }}

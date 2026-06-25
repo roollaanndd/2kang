@@ -15,8 +15,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const variantStyles = {
   primary: 'bg-gradient-to-r from-[#E91E8C] to-[#FF6BB5] text-white shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 hover:-translate-y-0.5',
   secondary: 'bg-[#4FC3F7] text-white shadow-md shadow-blue-200 hover:shadow-lg hover:shadow-blue-300 hover:-translate-y-0.5',
-  outline: 'border-2 border-[#E91E8C] text-[#E91E8C] bg-white hover:bg-[#FFF5F9]',
-  ghost: 'text-[#E91E8C] hover:bg-[#FFF5F9]',
+  outline: 'border-2 border-[#E91E8C] text-[#E91E8C] bg-white hover:bg-[#FFF8F4]',
+  ghost: 'text-[#E91E8C] hover:bg-[#FFF8F4]',
   white: 'bg-white text-[#E91E8C] shadow-md hover:shadow-lg hover:-translate-y-0.5',
   danger: 'bg-red-500 text-white hover:bg-red-600',
 };

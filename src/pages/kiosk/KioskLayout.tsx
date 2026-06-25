@@ -128,7 +128,7 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
       }}
     >
       {/* Signature top gradient strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${primaryColor}, #FF6BB5, #06B6D4)`, zIndex: 20 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${primaryColor}, #FF6BB5, #D4A017)`, zIndex: 20 }} />
 
       {/* Animated premium dental-geometry background — light, no blur */}
       <AnimatedDentalBg />
@@ -277,7 +277,7 @@ export default function KioskLayout() {
         .kiosk-mode .kd-grad {
           font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
           letter-spacing: -0.02em;
-          background: linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4);
+          background: linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -288,8 +288,8 @@ export default function KioskLayout() {
       {/* Accessibility-mode focus affordance — scoped to the canvas, purely presentational */}
       {a11y && (
         <style>{`
-          .kiosk-a11y :focus { outline: 4px solid #06B6D4 !important; outline-offset: 2px !important; }
-          .kiosk-a11y :focus-visible { outline: 4px solid #06B6D4 !important; outline-offset: 2px !important; }
+          .kiosk-a11y :focus { outline: 4px solid #D4A017 !important; outline-offset: 2px !important; }
+          .kiosk-a11y :focus-visible { outline: 4px solid #D4A017 !important; outline-offset: 2px !important; }
           .kiosk-a11y button, .kiosk-a11y [role="button"] { outline-offset: 2px; }
           .kiosk-a11y button:focus, .kiosk-a11y [role="button"]:focus { box-shadow: 0 0 0 4px rgba(6,182,212,0.45) !important; }
         `}</style>
@@ -339,7 +339,7 @@ export default function KioskLayout() {
             gap: 8,
             padding: '7px 16px',
             borderRadius: 999,
-            background: 'linear-gradient(135deg, #06B6D4, #0EA5C4)',
+            background: 'linear-gradient(135deg, #D4A017, #0EA5C4)',
             color: '#FFFFFF',
             fontSize: 12,
             fontWeight: 800,
@@ -374,7 +374,7 @@ export default function KioskLayout() {
               gap: 8,
               padding: '10px 16px',
               borderRadius: 999,
-              border: a11y ? '2px solid #06B6D4' : '1.5px solid rgba(233,30,140,0.25)',
+              border: a11y ? '2px solid #D4A017' : '1.5px solid rgba(233,30,140,0.25)',
               background: a11y ? '#ECFEFF' : '#FFFFFF',
               color: a11y ? '#0E7490' : '#E91E8C',
               fontSize: 14,
