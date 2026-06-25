@@ -42,7 +42,7 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         zIndex: 10,
       }} />
 
@@ -110,7 +110,8 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
               display: 'flex',
               alignItems: 'center',
               gap: 24,
-              padding: '22px 28px',
+              padding: '26px 32px',
+              minHeight: 120,
               boxShadow: doctor.available ? '0 4px 18px rgba(0,0,0,0.07)' : 'none',
               opacity: doctor.available ? 1 : 0.55,
               transition: 'all 0.2s',
@@ -174,26 +175,26 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
                 {doctor.name}
               </div>
               <div style={{
-                fontSize: 15,
+                fontSize: 17,
                 color: '#6B7280',
-                marginBottom: 10,
+                marginBottom: 12,
                 fontWeight: 500,
               }}>
                 {t ? doctor.specialtyEn : doctor.specialty}
               </div>
               <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <Star size={14} color="#D4A017" fill="#D4A017" />
-                  <span style={{ fontSize: 14, fontWeight: 800, color: DARK }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Star size={16} color="#D4A017" fill="#D4A017" />
+                  <span style={{ fontSize: 16, fontWeight: 800, color: DARK }}>
                     {doctor.rating}
                   </span>
-                  <span style={{ fontSize: 13, color: '#9CA3AF' }}>
+                  <span style={{ fontSize: 15, color: '#9CA3AF' }}>
                     ({doctor.reviewCount})
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <Clock size={14} color="#9CA3AF" />
-                  <span style={{ fontSize: 13, color: '#6B7280' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Clock size={16} color="#9CA3AF" />
+                  <span style={{ fontSize: 15, color: '#6B7280' }}>
                     {doctor.experience} {t ? 'yrs exp.' : 'thn pengalaman'}
                   </span>
                 </div>
@@ -231,13 +232,14 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            padding: '14px 28px',
-            borderRadius: '14px',
+            padding: '0 32px',
+            height: 64,
+            borderRadius: '16px',
             border: '2px solid #E5E7EB',
             backgroundColor: '#ffffff',
             color: '#6B7280',
-            fontSize: '17px',
-            fontWeight: '600',
+            fontSize: '19px',
+            fontWeight: '700',
             cursor: 'pointer',
             transition: 'all 0.15s',
           }}
@@ -250,7 +252,7 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
             (e.currentTarget as HTMLButtonElement).style.color = '#6B7280';
           }}
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={22} />
           {t ? 'Back' : 'Kembali'}
         </button>
       </div>

@@ -200,21 +200,21 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
           style={{ textAlign: 'center', marginBottom: 36 }}
         >
           <h1 style={{
-            fontSize: 38, fontWeight: 900, color: DARK, lineHeight: 1.1,
-            margin: 0, marginBottom: 8,
+            fontSize: 40, fontWeight: 900, color: DARK, lineHeight: 1.1,
+            margin: 0, marginBottom: 10,
             fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '-0.5px',
           }}>
             {t ? 'Choose Menu' : 'Pilih Menu'}
           </h1>
-          <p style={{ fontSize: 16, color: '#6B7280', margin: 0 }}>
+          <p style={{ fontSize: 18, color: '#6B7280', margin: 0 }}>
             {t ? 'What would you like to do today?' : 'Apa yang ingin Anda lakukan hari ini?'}
           </p>
         </motion.div>
 
-        {/* 2×2 card grid */}
+        {/* Card grid — 2 wide top + 2 wide bottom, larger targets */}
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 20, width: '100%', maxWidth: 840,
+          gap: 18, width: '100%', maxWidth: 880,
         }}>
           {CARDS.map((card, i) => (
             <motion.button
@@ -226,13 +226,13 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
               onMouseEnter={() => setHovered(card.id)}
               onMouseLeave={() => setHovered(null)}
               style={{
-                background: 'white', borderRadius: 24,
-                padding: '28px 24px',
+                background: 'white', borderRadius: 26,
+                padding: '32px 28px',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-                gap: 16,
+                gap: 18, minHeight: 200,
                 border: `1.5px solid ${hovered === card.id ? card.gradFrom + '44' : 'rgba(0,0,0,0.06)'}`,
                 boxShadow: hovered === card.id
-                  ? `0 10px 36px ${card.shadowColor}, 0 4px 12px rgba(0,0,0,0.04)`
+                  ? `0 12px 40px ${card.shadowColor}, 0 4px 12px rgba(0,0,0,0.04)`
                   : '0 4px 18px rgba(0,0,0,0.05)',
                 cursor: 'pointer',
                 transition: 'all 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
@@ -240,10 +240,10 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
               }}
             >
               <div style={{
-                width: 88, height: 88, borderRadius: 24,
+                width: 96, height: 96, borderRadius: 26,
                 background: `linear-gradient(135deg, ${card.gradFrom}, ${card.gradTo})`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: `0 8px 24px ${card.shadowColor}`,
+                boxShadow: `0 8px 28px ${card.shadowColor}`,
                 transition: 'transform 0.25s',
                 transform: hovered === card.id ? 'scale(1.06)' : 'scale(1)',
               }}>
@@ -251,13 +251,13 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
               </div>
               <div>
                 <div style={{
-                  fontSize: 20, fontWeight: 800, color: DARK,
-                  marginBottom: 6, lineHeight: 1.2,
+                  fontSize: 22, fontWeight: 800, color: DARK,
+                  marginBottom: 8, lineHeight: 1.2,
                   fontFamily: 'Plus Jakarta Sans, sans-serif',
                 }}>
                   {t ? card.labelEn : card.label}
                 </div>
-                <div style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5 }}>
+                <div style={{ fontSize: 16, color: '#6B7280', lineHeight: 1.5 }}>
                   {t ? card.subtitleEn : card.subtitle}
                 </div>
               </div>
@@ -295,8 +295,8 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
           {t ? 'Need Help?' : 'Butuh Bantuan?'}
         </button>
 
-        <div style={{ fontSize: 11, color: '#C0C4CC', fontWeight: 500, letterSpacing: '0.05em' }}>
-          OMDC Digital v2.5
+        <div style={{ fontSize: 12, color: '#C0C4CC', fontWeight: 500, letterSpacing: '0.05em' }}>
+          OMDC Digital v2.7
         </div>
       </div>
     </motion.div>

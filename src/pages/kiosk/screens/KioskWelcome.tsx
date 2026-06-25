@@ -1,6 +1,6 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { CURRENT_QUEUE, SERVICES } from '../../../data/mockData';
+import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
 import { useIsPortrait } from '../../../context/KioskOrientationContext';
@@ -10,23 +10,6 @@ const ROSE = '#FF6BB5';
 const AQUA = '#06B6D4';
 const DARK = '#0D1421';
 
-const SERVICE_ICONS: Record<string, string> = {
-  s1: 'M9 3C7 3 5.5 4.5 5.5 6.5c0 1.5.6 2.7 1.2 4 .7 1.4 1.1 2.9 1.1 5 0 .8.4 1.5 1 1.5h6.4c.6 0 1-.7 1-1.5 0-2.1.4-3.6 1.1-5 .6-1.3 1.2-2.5 1.2-4C18.5 4.5 17 3 15 3c-.8 0-1.6.3-2.1.9-.3.2-.5.4-.9.4s-.6-.2-.9-.4C10.6 3.3 9.8 3 9 3z',
-  s2: 'M12 4c0 0-4 4.5-4 7.5a4 4 0 0 0 8 0C16 8.5 12 4 12 4z',
-  s3: 'M9 3C7 3 5.5 4.5 5.5 6.5c0 1.5.6 2.7 1.2 4 .7 1.4 1.1 2.9 1.1 5 0 .8.4 1.5 1 1.5h6.4c.6 0 1-.7 1-1.5 0-2.1.4-3.6 1.1-5 .6-1.3 1.2-2.5 1.2-4C18.5 4.5 17 3 15 3c-.8 0-1.6.3-2.1.9-.3.2-.5.4-.9.4s-.6-.2-.9-.4C10.6 3.3 9.8 3 9 3z M9.5 7.5h5v4h-5z',
-  s4: 'M12 7V2M9.5 4.5L12 2l2.5 2.5 M9 8C7 8 5.5 9.3 5.5 11c0 1.2.5 2.3 1.1 3.5.7 1.3 1.1 2.6 1.1 4.3 0 .5.4.7 1 .7h6.6c.6 0 1-.2 1-.7 0-1.7.4-3 1.1-4.3.6-1.2 1.1-2.3 1.1-3.5C18.5 9.3 17 8 15 8c-.8 0-1.6.3-2.1.9-.3.2-.5.3-.9.3s-.6-.1-.9-.3C10.6 8.3 9.8 8 9 8z',
-  s5: 'M4 14 Q4 8 7 8 Q10 8 10 12 Q10 8 12 8 Q14 8 14 12 Q14 8 17 8 Q20 8 20 14 Q12 17 4 14z',
-  s6: 'M9.5 4h5l.5 2h-6l.5-2z M12 6v12',
-};
-
-function ServiceMiniIcon({ id, size = 18 }: { id: string; size?: number }) {
-  const path = SERVICE_ICONS[id] ?? SERVICE_ICONS.s1;
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d={path} />
-    </svg>
-  );
-}
 
 function LiveClock() {
   const [time, setTime] = useState(new Date());
@@ -66,26 +49,16 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
     goTo('language');
   };
 
-  const handleQueue = (e: MouseEvent) => {
+  const handleQueue = (e: React.MouseEvent) => {
     e.stopPropagation();
     kioskSound('select');
     goTo('queue-display');
-  };
-
-  const handleServiceClick = (e: MouseEvent, svcId: string) => {
-    e.stopPropagation();
-    kioskSound('select');
-    const svc = SERVICES.find(s => s.id === svcId);
-    if (svc) setState(prev => ({ ...prev, selectedService: svc }));
-    goTo('service-select');
   };
 
   const LABEL = {
     id: { welcome: '— SELAMAT DATANG —', title: 'Selamat\nDatang!', sub: 'Klinik Gigi Keluarga Terpercaya', checkin: 'MULAI CHECK-IN', cekAntrian: 'Cek Antrian', hint: 'Ketuk layar untuk memulai', nowServing: 'Antrian Saat Ini' },
     en: { welcome: '— WELCOME —', title: 'Welcome!', sub: 'Your Trusted Family Dental Clinic', checkin: 'START CHECK-IN', cekAntrian: 'Check Queue', hint: 'Tap screen to start', nowServing: 'Now Serving' },
   }[lang];
-
-  const kiosk6Services = SERVICES.slice(0, 6);
 
   return (
     <motion.div
@@ -156,19 +129,19 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         </div>
 
         {/* Stat chips */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, position: 'relative', zIndex: 2 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, position: 'relative', zIndex: 2 }}>
           {STATS.map(s => (
             <div key={s.v} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
+              display: 'flex', alignItems: 'center', gap: 12,
               background: 'rgba(255,255,255,0.18)',
               border: '1px solid rgba(255,255,255,0.30)',
-              borderRadius: 14, padding: '10px 14px',
+              borderRadius: 16, padding: '13px 16px',
               backdropFilter: 'blur(8px)',
             }}>
-              <span style={{ fontSize: 18 }}>{s.icon}</span>
+              <span style={{ fontSize: 22 }}>{s.icon}</span>
               <div>
-                <div style={{ fontSize: 16, fontWeight: 900, color: 'white', lineHeight: 1 }}>{s.v}</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.80)', fontWeight: 500 }}>{s.l}</div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: 'white', lineHeight: 1 }}>{s.v}</div>
+                <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.80)', fontWeight: 500, marginTop: 2 }}>{s.l}</div>
               </div>
             </div>
           ))}
@@ -257,19 +230,19 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
               whileTap={{ scale: 0.97 }}
               onClick={handleCheckin}
               style={{
-                width: '100%', height: 72,
+                width: '100%', height: 88,
                 background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 100%)`,
-                border: 'none', borderRadius: 20, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
+                border: 'none', borderRadius: 22, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14,
                 boxShadow: '0 10px 32px rgba(233,30,140,0.40), 0 2px 8px rgba(233,30,140,0.20)',
                 position: 'relative', zIndex: 1,
               }}
             >
-              <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 22s-8-3-8-10V5l8-3 8 3v7c0 7-8 10-8 10z" />
                 <path d="M9 12l2 2 4-4" />
               </svg>
-              <span style={{ fontSize: 22, fontWeight: 800, color: 'white', letterSpacing: 0.5, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <span style={{ fontSize: 26, fontWeight: 800, color: 'white', letterSpacing: 0.5, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 {LABEL.checkin}
               </span>
             </motion.button>
@@ -279,52 +252,63 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             whileTap={{ scale: 0.97 }}
             onClick={handleQueue}
             style={{
-              width: '100%', height: 56,
+              width: '100%', height: 68,
               background: 'white', border: `2px solid rgba(233,30,140,0.20)`,
-              borderRadius: 18, cursor: 'pointer',
+              borderRadius: 20, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
               boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             }}
           >
-            <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke={PINK} strokeWidth="2" strokeLinecap="round">
+            <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={PINK} strokeWidth="2" strokeLinecap="round">
               <path d="M4 6h16M4 10h16M4 14h10M4 18h6" />
             </svg>
-            <span style={{ fontSize: 16, fontWeight: 700, color: PINK, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+            <span style={{ fontSize: 19, fontWeight: 700, color: PINK, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               {LABEL.cekAntrian}
             </span>
           </motion.button>
         </div>
 
-        {/* Service quick-access grid (3×2) */}
+        {/* Feature highlights — 3 large actionable tiles */}
         <div style={{ position: 'relative', zIndex: 2, flex: 1 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, height: '100%' }}>
-            {kiosk6Services.map((svc, i) => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, height: '100%' }}>
+            {[
+              { icon: '🦷', label: lang === 'id' ? 'Daftar Antrian Baru' : 'New Queue', sub: lang === 'id' ? 'Mulai check-in sekarang' : 'Start check-in now', action: handleCheckin, accent: PINK },
+              { icon: '📋', label: lang === 'id' ? 'Cek Status Antrian' : 'Check Queue Status', sub: lang === 'id' ? 'Lihat posisi antrean Anda' : 'View your queue position', action: handleQueue, accent: AQUA },
+              { icon: '⭐', label: lang === 'id' ? '8 Layanan Unggulan' : '8 Premium Services', sub: lang === 'id' ? 'Dokter spesialis berpengalaman' : 'Experienced specialist doctors', action: handleCheckin, accent: ROSE },
+            ].map((item, i) => (
               <motion.button
-                key={svc.id}
-                whileTap={{ scale: 0.94 }}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.05 }}
-                onClick={e => handleServiceClick(e, svc.id)}
+                key={i}
+                whileTap={{ scale: 0.97 }}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + i * 0.07 }}
+                onClick={item.action}
                 style={{
-                  background: 'white', border: `1px solid rgba(233,30,140,0.10)`,
-                  borderRadius: 18, cursor: 'pointer', padding: '14px 10px',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  gap: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                  minHeight: 80,
+                  flex: 1,
+                  background: 'white', border: `1.5px solid rgba(0,0,0,0.06)`,
+                  borderRadius: 18, cursor: 'pointer', padding: '0 20px',
+                  display: 'flex', flexDirection: 'row', alignItems: 'center',
+                  gap: 14, boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+                  textAlign: 'left',
                 }}
               >
                 <div style={{
-                  width: 40, height: 40, borderRadius: 12,
-                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                  width: 52, height: 52, borderRadius: 14, flexShrink: 0,
+                  background: `linear-gradient(135deg, ${item.accent}, ${item.accent}bb)`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 4px 12px rgba(233,30,140,0.28)',
+                  fontSize: 24,
                 }}>
-                  <ServiceMiniIcon id={svc.id} size={20} />
+                  {item.icon}
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: DARK, textAlign: 'center', lineHeight: 1.2 }}>
-                  {svc.name}
-                </span>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: DARK, lineHeight: 1.2 }}>
+                    {item.label}
+                  </div>
+                  <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>
+                    {item.sub}
+                  </div>
+                </div>
+                <div style={{ marginLeft: 'auto', color: item.accent, fontSize: 20 }}>›</div>
               </motion.button>
             ))}
           </div>
