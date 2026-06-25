@@ -1,6 +1,8 @@
 /* eslint-disable */
 import type { ClinicBranch } from '../types';
 
+export const CMS_SCHEMA_VERSION = 4;
+
 export interface CMSStat { value: string; label: string; }
 export interface CMSService { id: string; name: string; description: string; emoji: string; price: string; isVisible: boolean; }
 export interface CMSDoctor { id: string; name: string; specialty: string; experience: string; photo: string | null; rating: number; patients: number; isVisible: boolean; }
@@ -11,6 +13,7 @@ export interface CMSFaq { id: string; question: string; answer: string; isVisibl
 export interface CMSBeforeAfter { id: string; title: string; treatment: string; before: string | null; after: string | null; isVisible: boolean; }
 
 export interface CMSContent {
+  _schemaVersion?: number;
   hero: {
     headline: string;
     headlineAccent: string;
@@ -102,6 +105,7 @@ export interface CMSContent {
 }
 
 export const DEFAULT_CMS_CONTENT: CMSContent = {
+  _schemaVersion: CMS_SCHEMA_VERSION,
   logoUrl: null,
   hero: {
     headline: 'Senyum Sehat,',
@@ -301,23 +305,40 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
   },
 };
 
+export function mergeCMSWithDefaults(remote: Partial<CMSContent>): CMSContent {
+  return {
+    ...DEFAULT_CMS_CONTENT,
+    ...remote,
+    _schemaVersion: CMS_SCHEMA_VERSION,
+    hero: { ...DEFAULT_CMS_CONTENT.hero, ...(remote.hero ?? {}) },
+    services: { ...DEFAULT_CMS_CONTENT.services, ...(remote.services ?? {}) },
+    doctors: { ...DEFAULT_CMS_CONTENT.doctors, ...(remote.doctors ?? {}) },
+    clinic: { ...DEFAULT_CMS_CONTENT.clinic, ...(remote.clinic ?? {}) },
+    promotions: { ...DEFAULT_CMS_CONTENT.promotions, ...(remote.promotions ?? {}) },
+    articles: { ...DEFAULT_CMS_CONTENT.articles, ...(remote.articles ?? {}) },
+    about: { ...DEFAULT_CMS_CONTENT.about, ...(remote.about ?? {}) },
+    contact: { ...DEFAULT_CMS_CONTENT.contact, ...(remote.contact ?? {}) },
+    appearance: { ...DEFAULT_CMS_CONTENT.appearance, ...(remote.appearance ?? {}) },
+    trust: { ...DEFAULT_CMS_CONTENT.trust, ...(remote.trust ?? {}) },
+    testimonials: { ...DEFAULT_CMS_CONTENT.testimonials, ...(remote.testimonials ?? {}) },
+    faq: { ...DEFAULT_CMS_CONTENT.faq, ...(remote.faq ?? {}) },
+    gallery: { ...DEFAULT_CMS_CONTENT.gallery, ...(remote.gallery ?? {}) },
+    kioskSettings: { ...DEFAULT_CMS_CONTENT.kioskSettings, ...(remote.kioskSettings ?? {}) },
+    branches: { ...DEFAULT_CMS_CONTENT.branches, ...(remote.branches ?? {}) },
+  };
+}
+
 export function loadCMSContent(): CMSContent {
   try {
     const stored = localStorage.getItem('omdc_cms_content');
     if (stored) {
       const parsed = JSON.parse(stored);
-      return {
-        ...DEFAULT_CMS_CONTENT,
-        ...parsed,
-        hero: { ...DEFAULT_CMS_CONTENT.hero, ...(parsed.hero ?? {}) },
-        appearance: { ...DEFAULT_CMS_CONTENT.appearance, ...(parsed.appearance ?? {}) },
-        contact: { ...DEFAULT_CMS_CONTENT.contact, ...(parsed.contact ?? {}) },
-        testimonials: { ...DEFAULT_CMS_CONTENT.testimonials, ...(parsed.testimonials ?? {}) },
-        faq: { ...DEFAULT_CMS_CONTENT.faq, ...(parsed.faq ?? {}) },
-        gallery: { ...DEFAULT_CMS_CONTENT.gallery, ...(parsed.gallery ?? {}) },
-        kioskSettings: { ...DEFAULT_CMS_CONTENT.kioskSettings, ...(parsed.kioskSettings ?? {}) },
-        branches: { ...DEFAULT_CMS_CONTENT.branches, ...(parsed.branches ?? {}) },
-      };
+      // If schema version is outdated, wipe local cache and use defaults
+      if ((parsed._schemaVersion ?? 0) < CMS_SCHEMA_VERSION) {
+        localStorage.removeItem('omdc_cms_content');
+        return DEFAULT_CMS_CONTENT;
+      }
+      return mergeCMSWithDefaults(parsed);
     }
   } catch {}
   return DEFAULT_CMS_CONTENT;
