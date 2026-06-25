@@ -8,13 +8,10 @@ import {
 import { DOCTORS, SERVICES, TIME_SLOTS } from '../../data/mockData';
 import { SeoHead } from '../../components/ui/SeoHead';
 import { PageHero } from '../../components/website/PageHero';
+import { DentalServiceIcon, SERVICE_GRADIENTS, SERVICE_SHADOWS } from '../../components/mobile/DentalServiceIcon';
 
 const formatPrice = (p: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p);
-
-const serviceIcons: Record<string, string> = {
-  s1: '🦷', s2: '✨', s3: '🔧', s4: '❌', s5: '😁', s6: '🔩', s7: '💊', s8: '➕',
-};
 
 function DoctorAvatar({ name, size = 56 }: { name: string; size?: number }) {
   const letter = name.replace('drg. ', '')[0];
@@ -183,7 +180,7 @@ export function Booking() {
       <div id="booking-form" />
 
       {/* Progress Bar */}
-      <div className="bg-white shadow-sm sticky top-16 z-20">
+      <div className="bg-white shadow-sm sticky top-[67px] z-20">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between relative">
             {/* Progress line */}
@@ -237,7 +234,7 @@ export function Booking() {
               <h2 className="text-2xl font-black mb-2" style={{ color: '#1A1A2E' }}>Pilih Layanan</h2>
               <p className="text-gray-500 mb-6">Pilih jenis layanan yang Anda butuhkan</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {SERVICES.map((service) => (
+                {SERVICES.map((service, si) => (
                   <button
                     key={service.id}
                     onClick={() => setBooking({ ...booking, serviceId: service.id })}
@@ -250,10 +247,13 @@ export function Booking() {
                   >
                     <div className="flex items-start gap-4">
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                        style={{ background: service.color + '18' }}
+                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{
+                          background: SERVICE_GRADIENTS[si % SERVICE_GRADIENTS.length],
+                          boxShadow: `0 4px 12px ${SERVICE_SHADOWS[si % SERVICE_SHADOWS.length]}55`,
+                        }}
                       >
-                        {serviceIcons[service.id]}
+                        <DentalServiceIcon id={service.id} size={22} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
@@ -587,10 +587,12 @@ export function Booking() {
                     {selectedService && (
                       <div className="flex items-center gap-4">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                          style={{ background: selectedService.color + '18' }}
+                          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{
+                            background: SERVICE_GRADIENTS[(parseInt(selectedService.id.replace('s','')) - 1) % SERVICE_GRADIENTS.length],
+                          }}
                         >
-                          {serviceIcons[selectedService.id]}
+                          <DentalServiceIcon id={selectedService.id} size={22} />
                         </div>
                         <div>
                           <p className="font-bold" style={{ color: '#1A1A2E' }}>{selectedService.name}</p>

@@ -4,6 +4,7 @@ import { Instagram, Facebook, Youtube, Heart, ArrowRight, Calendar } from 'lucid
 import { OmdcLogo } from '../ui/OmdcLogo';
 import { IconLocation, IconPhone, IconMail, IconClock, IconKiosk, IconMobileApp } from '../ui/OmdcIcons';
 import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../data/mockData';
+import { APP_VERSION, APP_BUILD_DATE } from '../../version';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -252,6 +253,9 @@ export function Footer() {
             style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
             <p style={{ fontSize: 12, color: '#9CA3AF' }}>
               © {new Date().getFullYear()} OMDC Dental. Hak cipta dilindungi.
+              {' '}
+              <span style={{ color: PINK, fontWeight: 700 }}>v{APP_VERSION}</span>
+              <span style={{ color: '#C0C4CC' }}> · {APP_BUILD_DATE}</span>
             </p>
             <p style={{ fontSize: 12, color: '#9CA3AF', display: 'flex', alignItems: 'center', gap: 5 }}>
               Dibuat dengan <Heart size={12} color={PINK} fill={PINK} /> untuk senyum Indonesia

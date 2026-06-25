@@ -10,7 +10,7 @@ import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const GOLD = '#D4A017';
+const AQUA = '#06B6D4';
 
 // ── Page-transition loading bar ──────────────────────────────────────────────
 function PageTransitionBar() {
@@ -37,7 +37,7 @@ function PageTransitionBar() {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           style={{
             position: 'fixed', top: 0, left: 0, right: 0, height: 3,
-            background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`,
+            background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
             zIndex: 9990, pointerEvents: 'none',
           }}
         />
@@ -135,10 +135,10 @@ function ReadingProgressBar() {
   }, []);
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 60, pointerEvents: 'none' }} aria-hidden>
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 9996, pointerEvents: 'none' }} aria-hidden>
       <div style={{
         height: '100%', width: `${progress}%`,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         transition: 'width 0.1s linear', willChange: 'width',
       }} />
     </div>
@@ -175,7 +175,7 @@ export function WebsiteLayout() {
       <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA', position: 'relative', zIndex: 1 }}>
         <ReadingProgressBar />
         <Navbar />
-        <main className="flex-1 pt-16 lg:pt-18">
+        <main className="flex-1 pt-[67px] lg:pt-[75px]">
           <div key={location.pathname}>
             <Outlet />
           </div>

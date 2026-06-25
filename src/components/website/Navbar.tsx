@@ -72,25 +72,28 @@ export function Navbar() {
 
   return (
     <>
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      {/* Permanent 3px brand strip */}
+      <div
         style={{
-          background: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
-          boxShadow: scrolled ? '0 2px 24px rgba(233,30,140,0.08)' : 'none',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(233,30,140,0.06)' : 'none',
+          position: 'fixed', top: 0, left: 0, right: 0, height: 3,
+          background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+          zIndex: 9995, pointerEvents: 'none',
+        }}
+        aria-hidden
+      />
+
+      <nav
+        className="fixed left-0 right-0 transition-all duration-300"
+        style={{
+          top: 3,
+          zIndex: 9990,
+          background: 'rgba(255,255,255,0.96)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          boxShadow: scrolled ? '0 2px 24px rgba(233,30,140,0.10)' : '0 1px 0 rgba(233,30,140,0.06)',
+          borderBottom: '1px solid rgba(233,30,140,0.06)',
         }}
       >
-        {/* Scroll progress bar */}
-        <div
-          className="absolute top-0 left-0 h-0.5 transition-all duration-100"
-          style={{
-            width: `${scrollProgress}%`,
-            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
-            opacity: scrolled ? 1 : 0,
-          }}
-        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-18">

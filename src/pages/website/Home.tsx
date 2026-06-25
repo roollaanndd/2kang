@@ -227,6 +227,7 @@ function HeroSection() {
 
   const services = cms.services.items.filter(s => s.isVisible).slice(0, 5);
   const stats = h.stats ?? [];
+  const featuredDoctor = cms.doctors.items.find(d => d.isVisible) ?? null;
 
   return (
     <section style={{
@@ -304,14 +305,15 @@ function HeroSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" style={{ position: 'relative', zIndex: 2 }}>
 
         {hasImages ? (
-          /* Full-bleed mode: single column, text over the image */
+          /* Full-bleed: 2-column — left text + right floating doctor card */
+          <div style={{ display: isMobile ? 'block' : 'flex', alignItems: 'center', gap: 40 }}>
           <motion.div
             initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.72, ease: [0.32, 0.72, 0, 1] }}
             style={{
-              maxWidth: isMobile ? '100%' : '56%',
+              flex: '1 1 0',
               paddingTop: isMobile ? 16 : 48,
-              paddingBottom: isMobile ? 80 : 80,
+              paddingBottom: isMobile ? 80 : 60,
               textAlign: isMobile ? 'center' : 'left',
             }}
           >
@@ -380,7 +382,164 @@ function HeroSection() {
                 </motion.div>
               ))}
             </div>
+
+            {/* ── MOBILE: doctor card (below hero content) ── */}
+            {isMobile && featuredDoctor && (
+              <motion.div
+                initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                style={{
+                  marginTop: 22, textAlign: 'left',
+                  background: 'rgba(255,255,255,0.96)',
+                  backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+                  borderRadius: 22, overflow: 'hidden',
+                  boxShadow: '0 16px 48px rgba(233,30,140,0.16)',
+                  border: '1px solid rgba(255,255,255,0.7)',
+                }}
+              >
+                <div style={{ display: 'flex', gap: 12, padding: 12 }}>
+                  <div style={{ position: 'relative', width: 92, height: 110, borderRadius: 16, overflow: 'hidden', flexShrink: 0 }}>
+                    {featuredDoctor.photo ? (
+                      <img src={featuredDoctor.photo} alt={featuredDoctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                    ) : (
+                      <div style={{ width: '100%', height: '100%', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: 36, fontWeight: 900, color: 'white' }}>{featuredDoctor.name[0]}</span>
+                      </div>
+                    )}
+                    <div style={{ position: 'absolute', bottom: 6, left: 6, right: 6, background: 'rgba(16,185,129,0.94)', borderRadius: 8, padding: '3px 6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 9, fontWeight: 700, color: 'white' }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#6EE7B7' }} />
+                      Tersedia
+                    </div>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <p style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: PINK, margin: 0 }}>Dokter Pilihan</p>
+                    <p style={{ fontSize: 15, fontWeight: 800, color: DARK, margin: '3px 0 0', lineHeight: 1.25 }}>{featuredDoctor.name}</p>
+                    <p style={{ fontSize: 12, color: '#6B7280', margin: '2px 0 0', fontWeight: 500 }}>{featuredDoctor.specialty}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 7 }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 12, fontWeight: 800, color: DARK }}>
+                        <Star size={12} fill={GOLD} color={GOLD} />{featuredDoctor.rating}
+                      </span>
+                      <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600 }}>{featuredDoctor.patients}+ pasien</span>
+                      <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600 }}>{featuredDoctor.experience}</span>
+                    </div>
+                  </div>
+                </div>
+                <Link to="/booking" style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  margin: '0 12px 12px', padding: '12px 16px', borderRadius: 14,
+                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                  color: 'white', fontWeight: 700, fontSize: 13, textDecoration: 'none',
+                  boxShadow: '0 6px 18px rgba(233,30,140,0.36)',
+                }}>
+                  <Calendar size={14} />
+                  Booking dengan Dokter Ini
+                </Link>
+              </motion.div>
+            )}
           </motion.div>
+
+          {/* ── RIGHT: Floating doctor card (desktop only) ── */}
+          {!isMobile && featuredDoctor && (
+            <motion.div
+              initial={{ opacity: 0, x: 48, y: 8 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.32, 0.72, 0, 1] }}
+              style={{ flex: '0 0 300px', paddingTop: 48, paddingBottom: 60 }}
+            >
+              <div style={{
+                background: 'rgba(255,255,255,0.92)',
+                backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+                borderRadius: 24, overflow: 'hidden',
+                boxShadow: '0 24px 64px rgba(233,30,140,0.18), 0 4px 16px rgba(0,0,0,0.08)',
+                border: '1px solid rgba(255,255,255,0.7)',
+              }}>
+                {/* Doctor photo */}
+                <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
+                  {featuredDoctor.photo ? (
+                    <img src={featuredDoctor.photo} alt={featuredDoctor.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontSize: 64, fontWeight: 900, color: 'white' }}>{featuredDoctor.name[0]}</span>
+                    </div>
+                  )}
+                  {/* Available badge */}
+                  <div style={{
+                    position: 'absolute', top: 12, right: 12,
+                    background: 'rgba(16,185,129,0.92)', backdropFilter: 'blur(8px)',
+                    borderRadius: 100, padding: '4px 12px',
+                    display: 'flex', alignItems: 'center', gap: 5,
+                    fontSize: 11, fontWeight: 700, color: 'white',
+                  }}>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#6EE7B7', flexShrink: 0 }} />
+                    Tersedia Hari Ini
+                  </div>
+                </div>
+
+                {/* Doctor info */}
+                <div style={{ padding: '16px 18px 18px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div>
+                      <p style={{ fontSize: 15, fontWeight: 800, color: DARK, margin: 0, lineHeight: 1.3 }}>{featuredDoctor.name}</p>
+                      <p style={{ fontSize: 12, color: '#6B7280', margin: '3px 0 0', fontWeight: 500 }}>{featuredDoctor.specialty}</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#FFF8F4', borderRadius: 10, padding: '4px 8px', flexShrink: 0 }}>
+                      <Star size={12} fill={GOLD} color={GOLD} />
+                      <span style={{ fontSize: 12, fontWeight: 800, color: DARK }}>{featuredDoctor.rating}</span>
+                    </div>
+                  </div>
+
+                  {/* Mini stats */}
+                  <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+                    {[
+                      { label: 'Pasien', value: `${featuredDoctor.patients}+` },
+                      { label: 'Pengalaman', value: featuredDoctor.experience },
+                    ].map((s, i) => (
+                      <div key={i} style={{ flex: 1, background: '#F9FAFB', borderRadius: 10, padding: '8px 10px', textAlign: 'center' }}>
+                        <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: DARK }}>{s.value}</p>
+                        <p style={{ margin: '2px 0 0', fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>{s.label}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link to="/booking" style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    padding: '11px 16px', borderRadius: 14,
+                    background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                    color: 'white', fontWeight: 700, fontSize: 13,
+                    textDecoration: 'none', boxShadow: '0 6px 20px rgba(233,30,140,0.4)',
+                    width: '100%', boxSizing: 'border-box',
+                  }}>
+                    <Calendar size={14} />
+                    Booking dengan Dokter Ini
+                  </Link>
+                </div>
+              </div>
+
+              {/* Next appointment floating chip */}
+              <motion.div
+                animate={{ y: [-4, 4, -4] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  marginTop: 14,
+                  background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(12px)',
+                  borderRadius: 16, padding: '12px 16px',
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  boxShadow: '0 8px 24px rgba(233,30,140,0.12)',
+                  border: '1px solid rgba(233,30,140,0.12)',
+                }}
+              >
+                <div style={{ width: 36, height: 36, borderRadius: 12, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Calendar size={16} color="white" />
+                </div>
+                <div>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DARK }}>Slot Tersedia Besok</p>
+                  <p style={{ margin: '2px 0 0', fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>08:00 — 10:00 · 14:00 — 16:00</p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+          </div>
         ) : (
           /* No-image mode: classic 2-column with SVG illustration */
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '54% 46%', gap: isMobile ? 36 : 24, alignItems: 'center', paddingTop: isMobile ? 12 : 44, paddingBottom: isMobile ? 52 : 68 }}>
@@ -513,6 +672,55 @@ function HeroSection() {
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 64, background: hasImages ? 'linear-gradient(transparent, rgba(255,255,255,0.98))' : '#FFFFFF', clipPath: 'ellipse(55% 100% at 50% 100%)', zIndex: 3 }} />
       )}
     </section>
+  );
+}
+
+// ─── HERO TRUST BAR ───────────────────────────────────────────────────────────
+const TRUST_BADGES = [
+  { label: 'BPJS Kesehatan', icon: <Shield size={16} color={PINK} /> },
+  { label: 'Asuransi Swasta', icon: <CheckCircle size={16} color={PINK} /> },
+  { label: 'Sertifikasi KKI', icon: <Star size={16} color={GOLD} /> },
+  { label: 'Teknologi Digital', icon: <CheckCircle size={16} color='#06B6D4' /> },
+  { label: 'Klinik Bersih', icon: <Shield size={16} color='#10B981' /> },
+];
+
+function HeroTrustBar() {
+  return (
+    <div style={{
+      background: 'linear-gradient(90deg, #FFF8F4 0%, #FFFFFF 50%, #FFF8F4 100%)',
+      borderTop: '1px solid rgba(233,30,140,0.06)',
+      borderBottom: '1px solid rgba(233,30,140,0.08)',
+      padding: '20px 0',
+    }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+          <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#C0C4CC', flexShrink: 0 }}>
+            Dipercaya &amp; Tersertifikasi
+          </span>
+          <div style={{ width: 1, height: 20, background: 'rgba(0,0,0,0.08)', flexShrink: 0 }} className="hidden sm:block" />
+          {TRUST_BADGES.map((badge, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.4 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 7,
+                padding: '7px 14px', borderRadius: 100,
+                background: 'white',
+                border: '1px solid rgba(233,30,140,0.10)',
+                boxShadow: '0 2px 8px rgba(233,30,140,0.06)',
+                fontSize: 13, fontWeight: 700, color: DARK,
+              }}
+            >
+              {badge.icon}
+              {badge.label}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -1404,6 +1612,7 @@ export function Home() {
     })}} />
     <div style={{ background: '#FFFFFF' }}>
       <HeroSection />
+      <HeroTrustBar />
       <WhyChooseUsSection />
       <ServicesSection />
       <HowItWorksSection />
