@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
-import { type CMSContent, loadCMSContent, saveCMSContent, DEFAULT_CMS_CONTENT } from '../data/defaultCMSContent';
+import { type CMSContent, loadCMSContent, saveCMSContent, mergeCMSWithDefaults, DEFAULT_CMS_CONTENT, CMS_SCHEMA_VERSION } from '../data/defaultCMSContent';
 import { supabase } from '../lib/supabase';
 
 const CMS_ROW_ID = 'default';
@@ -57,12 +57,21 @@ export function CMSProvider({ children }: { children: ReactNode }) {
   const [cms, setCMS] = useState<CMSContent>(loadCMSContent);
   const [synced, setSynced] = useState(false);
 
-  // Load from Supabase on mount (overrides localStorage cache)
+  // Load from Supabase on mount — merge with defaults so new fields always exist
   useEffect(() => {
     loadFromSupabase().then(remote => {
       if (remote) {
-        setCMS(remote);
-        saveCMSContent(remote); // update local cache
+        // If remote data is from an old schema, reset to code defaults and re-save
+        if ((remote._schemaVersion ?? 0) < CMS_SCHEMA_VERSION) {
+          const fresh = DEFAULT_CMS_CONTENT;
+          setCMS(fresh);
+          saveCMSContent(fresh);
+          saveToSupabase(fresh);
+        } else {
+          const merged = mergeCMSWithDefaults(remote);
+          setCMS(merged);
+          saveCMSContent(merged);
+        }
       }
       setSynced(true);
     });
@@ -78,8 +87,9 @@ export function CMSProvider({ children }: { children: ReactNode }) {
         payload => {
           const updated = (payload.new as any)?.content as CMSContent | undefined;
           if (updated) {
-            setCMS(updated);
-            saveCMSContent(updated);
+            const merged = mergeCMSWithDefaults(updated);
+            setCMS(merged);
+            saveCMSContent(merged);
           }
         }
       )
