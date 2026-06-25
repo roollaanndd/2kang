@@ -15,17 +15,17 @@ interface MobileHomeProps {
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const GOLD = '#D4A017';
+const AQUA = '#06B6D4';
 const DARK = '#0D1421';
 
 const SERVICE_GRADIENTS = [
   'linear-gradient(135deg,#E91E8C,#FF6BB5)',
-  'linear-gradient(135deg,#D4A017,#B8860B)',
-  'linear-gradient(135deg,#FF6BB5,#E91E8C)',
-  'linear-gradient(135deg,#D4A017,#B8860B)',
-  'linear-gradient(135deg,#D4A017,#B8860B)',
+  'linear-gradient(135deg,#4FC3F7,#0288D1)',
+  'linear-gradient(135deg,#A78BFA,#7C3AED)',
+  'linear-gradient(135deg,#10B981,#059669)',
+  'linear-gradient(135deg,#F59E0B,#D97706)',
   'linear-gradient(135deg,#EF4444,#DC2626)',
-  'linear-gradient(135deg,#D4A017,#0369A1)',
+  'linear-gradient(135deg,#06B6D4,#0369A1)',
   'linear-gradient(135deg,#EC4899,#DB2777)',
 ];
 const SERVICE_SHADOW = [
@@ -35,7 +35,7 @@ const SERVICE_SHADOW = [
 
 function ServiceIcon({ id }: { id: string }) {
   const size = 22;
-  const paths: Record<string, JSX.Element> = {
+  const paths: Record<string, React.ReactElement> = {
     s1: <><path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" /><path d="M9.5 9.5l2 2 3-3.5" /></>,
     s2: <><path d="M12 4c0 0-4 4.5-4 7.5a4 4 0 0 0 8 0C16 8.5 12 4 12 4z" /></>,
     s3: <><path d="M8.5 3C6.6 3 5 4.7 5 6.8c0 1.7.6 3.1 1.3 4.6.7 1.5 1.2 3 1.2 5.1 0 .8.5 1.5 1.2 1.5h6.6c.7 0 1.2-.7 1.2-1.5 0-2.1.5-3.6 1.2-5.1C18.4 9.9 19 8.5 19 6.8 19 4.7 17.4 3 15.5 3c-.9 0-1.8.4-2.4 1-.3.3-.7.5-1.1.5-.4 0-.8-.2-1.1-.5C10.3 3.4 9.4 3 8.5 3z" /><rect x="9.5" y="7.5" width="5" height="4" rx="1" /></>,
@@ -91,7 +91,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
       style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#F2F4F8', overflow: 'hidden' }}
     >
       {/* 3px brand strip */}
-      <div style={{ height: 3, flexShrink: 0, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})` }} />
+      <div style={{ height: 3, flexShrink: 0, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})` }} />
 
       {/* ── HEADER ── */}
       <div style={{
@@ -152,26 +152,25 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
             <section>
               <div style={{
                 borderRadius: 20, padding: '18px 20px',
-                background: DARK,
+                background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 65%, #ffd8e6 100%)`,
                 position: 'relative', overflow: 'hidden',
-                boxShadow: '0 8px 24px rgba(13,20,33,0.20)',
+                boxShadow: '0 8px 24px rgba(233,30,140,0.28)',
               }}>
                 {/* ambient glow */}
-                <div style={{ position: 'absolute', top: -30, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -20, left: 30, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -30, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.30) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -20, left: 30, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.22) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 10, fontWeight: 500 }}>
+                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginBottom: 10, fontWeight: 500 }}>
                       Apa yang bisa kami bantu hari ini?
                     </div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
                       Sedang Dilayani
                     </div>
                     <div style={{
                       fontSize: 36, fontWeight: 900, lineHeight: 1, marginBottom: 12,
-                      background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.15)',
                       fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: -1,
                     }}>
                       {appointment?.queue ?? 'A-024'}
@@ -199,9 +198,9 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 {/* Stats row */}
                 <div style={{
                   marginTop: 16, display: 'flex', gap: 0,
-                  background: 'rgba(255,255,255,0.07)',
+                  background: 'rgba(255,255,255,0.22)',
                   borderRadius: 12, overflow: 'hidden',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.30)',
                   position: 'relative', zIndex: 2,
                 }}>
                   {[
@@ -211,10 +210,10 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                   ].map((s, i) => (
                     <div key={s.l} style={{
                       flex: 1, padding: '10px 8px', textAlign: 'center',
-                      borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                      borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.25)' : 'none',
                     }}>
                       <div style={{ fontSize: 16, fontWeight: 900, color: 'white', lineHeight: 1 }}>{s.v}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2, fontWeight: 500 }}>{s.l}</div>
+                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)', marginTop: 2, fontWeight: 600 }}>{s.l}</div>
                     </div>
                   ))}
                 </div>
@@ -227,11 +226,11 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 {[
                   { label: 'Booking', screen: 'booking' as const, grad: `linear-gradient(135deg, ${PINK}, ${ROSE})`, shadow: 'rgba(233,30,140,0.30)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><rect x="3" y="4" width="18" height="18" rx="3" /><path d="M16 2v4M8 2v4M3 10h18" /></svg> },
-                  { label: 'Antrian', screen: 'queue' as const, grad: `linear-gradient(135deg, ${GOLD}, #B8860B)`, shadow: 'rgba(6,182,212,0.30)',
+                  { label: 'Antrian', screen: 'queue' as const, grad: `linear-gradient(135deg, ${AQUA}, #0284C7)`, shadow: 'rgba(6,182,212,0.30)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M4 6h16M4 10h16M4 14h10M4 18h6" /></svg> },
-                  { label: 'Riwayat', screen: 'history' as const, grad: 'linear-gradient(135deg, #FF6BB5, #E91E8C)', shadow: 'rgba(124,58,237,0.28)',
+                  { label: 'Riwayat', screen: 'history' as const, grad: 'linear-gradient(135deg, #A78BFA, #7C3AED)', shadow: 'rgba(124,58,237,0.28)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/></svg> },
-                  { label: 'Loyalti', screen: 'loyalty' as const, grad: 'linear-gradient(135deg, #D4A017, #B8860B)', shadow: 'rgba(245,158,11,0.28)',
+                  { label: 'Loyalti', screen: 'loyalty' as const, grad: 'linear-gradient(135deg, #F59E0B, #D97706)', shadow: 'rgba(245,158,11,0.28)',
                     icon: <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> },
                 ].map((action, i) => (
                   <motion.button
@@ -314,41 +313,41 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                 onClick={() => { haptic('light'); setState({ screen: 'booking' }); }}
                 style={{
                   borderRadius: 20, overflow: 'hidden', cursor: 'pointer',
-                  background: `linear-gradient(135deg, ${DARK} 0%, #1a2535 60%, #0D2A3A 100%)`,
+                  background: `linear-gradient(135deg, ${PINK} 0%, #c0196e 50%, #D4A017 100%)`,
                   padding: '20px 20px',
                   position: 'relative',
-                  boxShadow: '0 8px 24px rgba(13,20,33,0.18)',
+                  boxShadow: '0 8px 24px rgba(233,30,140,0.28)',
                   minHeight: 110,
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}
               >
                 {/* Glow accents */}
-                <div style={{ position: 'absolute', top: -20, right: 60, width: 100, height: 100, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -20, right: 20, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(6,182,212,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -20, right: 60, width: 100, height: 100, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: -20, right: 20, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.30) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
                 <div style={{ position: 'relative', zIndex: 2 }}>
                   <div style={{
                     display: 'inline-flex', fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
-                    letterSpacing: '0.14em', color: PINK, background: 'rgba(233,30,140,0.15)',
-                    border: '1px solid rgba(233,30,140,0.25)', padding: '3px 10px', borderRadius: 100, marginBottom: 10,
+                    letterSpacing: '0.14em', color: 'white', background: 'rgba(255,255,255,0.20)',
+                    border: '1px solid rgba(255,255,255,0.35)', padding: '3px 10px', borderRadius: 100, marginBottom: 10,
                   }}>
                     Promo Bulan Ini
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 900, color: 'white', lineHeight: 1.2, marginBottom: 8, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: 'white', lineHeight: 1.2, marginBottom: 8, fontFamily: 'Plus Jakarta Sans, sans-serif', textShadow: '0 1px 4px rgba(0,0,0,0.15)' }}>
                     Diskon 30%<br />
-                    <span style={{ background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                    <span style={{ color: '#ffd8e6' }}>
                       Scaling & Bleaching
                     </span>
                   </div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginBottom: 12 }}>Berlaku s/d 30 Juni 2026</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', marginBottom: 12 }}>Berlaku s/d 30 Juni 2026</div>
                   <div style={{
                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                    background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                    background: 'white',
                     padding: '8px 18px', borderRadius: 100,
-                    boxShadow: '0 4px 14px rgba(233,30,140,0.35)',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
                   }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>Klaim Sekarang</span>
-                    <ArrowRight size={13} color="white" />
+                    <span style={{ fontSize: 12, fontWeight: 700, color: PINK }}>Klaim Sekarang</span>
+                    <ArrowRight size={13} color={PINK} />
                   </div>
                 </div>
 
@@ -373,7 +372,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               </div>
               <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none', margin: '0 -2px', padding: '0 2px 4px' }}>
                 {DOCTORS.slice(0, 5).map((doc, i) => {
-                  const gradients = [`linear-gradient(135deg, ${PINK}, ${ROSE})`, `linear-gradient(135deg, ${GOLD}, #B8860B)`, 'linear-gradient(135deg, #FF6BB5, #E91E8C)', `linear-gradient(135deg, #D4A017, #B8860B)`, 'linear-gradient(135deg, #D4A017, #B8860B)'];
+                  const gradients = [`linear-gradient(135deg, ${PINK}, ${ROSE})`, `linear-gradient(135deg, ${AQUA}, #0284C7)`, 'linear-gradient(135deg, #A78BFA, #7C3AED)', `linear-gradient(135deg, #10B981, #059669)`, 'linear-gradient(135deg, #F59E0B, #D97706)'];
                   const initials = doc.name.replace('drg. ', '').slice(0, 2).toUpperCase();
                   return (
                     <motion.button
@@ -408,10 +407,10 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                         <div style={{ fontSize: 10, color: '#6B7280', marginBottom: 8 }}>{doc.specialty}</div>
                         <div style={{
                           display: 'inline-flex', alignItems: 'center', gap: 3,
-                          fontSize: 11, fontWeight: 700, color: '#D4A017',
+                          fontSize: 11, fontWeight: 700, color: '#F59E0B',
                           background: '#FFFBEB', padding: '3px 8px', borderRadius: 8,
                         }}>
-                          <Star size={11} fill="#D4A017" color="#D4A017" />
+                          <Star size={11} fill="#F59E0B" color="#F59E0B" />
                           {doc.rating}
                         </div>
                       </div>

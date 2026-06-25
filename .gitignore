@@ -9,3 +9,5 @@ coverage/
 .netlify/
 .mcp.json
 .claude/
+!.claude/skills/
+!.claude/skills/*.md

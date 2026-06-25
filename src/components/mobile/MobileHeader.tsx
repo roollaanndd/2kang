@@ -17,8 +17,12 @@ export function MobileHeader({
   transparent = false,
 }: MobileHeaderProps) {
   return (
+    <div className="flex-shrink-0">
+      {!transparent && (
+        <div style={{ height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+      )}
     <div
-      className="flex items-center justify-between px-4 h-14 flex-shrink-0"
+      className="flex items-center justify-between px-4 h-14"
       style={{
         background: transparent ? 'transparent' : 'white',
         boxShadow: transparent ? 'none' : '0 1px 8px rgba(0,0,0,0.06)',
@@ -46,6 +50,7 @@ export function MobileHeader({
       <div className="w-10 flex items-center justify-end">
         {rightAction}
       </div>
+    </div>
     </div>
   );
 }
