@@ -93,7 +93,7 @@ export function MobileCreatePin({ state, setState }: MobileCreatePinProps) {
     >
       {/* Header */}
       <div style={{ position: 'relative', padding: '52px 20px 20px', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {!success && (
             <button
@@ -120,7 +120,7 @@ export function MobileCreatePin({ state, setState }: MobileCreatePinProps) {
               animate={{ scale: 1, opacity: 1 }}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, paddingTop: 40 }}
             >
-              <div style={{ width: 88, height: 88, borderRadius: '50%', background: 'linear-gradient(135deg, #10B981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 12px 40px rgba(16,185,129,0.35)' }}>
+              <div style={{ width: 88, height: 88, borderRadius: '50%', background: 'linear-gradient(135deg, #D4A017, #B8860B)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 12px 40px rgba(16,185,129,0.35)' }}>
                 <svg viewBox="0 0 24 24" width={44} height={44} fill="none" stroke="white" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 6L9 17l-5-5" />
                 </svg>

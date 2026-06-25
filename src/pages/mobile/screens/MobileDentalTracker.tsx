@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PINK = '#E91E8C';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#1A1A2E';
 
 const WEEK_DAYS = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
@@ -40,7 +40,7 @@ function HealthRing({ score }: { score: number }) {
   const r = 52;
   const circ = 2 * Math.PI * r;
   const grade = score >= 90 ? 'Sempurna' : score >= 80 ? 'Sangat Baik' : 'Baik';
-  const gradeColor = score >= 90 ? '#10B981' : score >= 80 ? AQUA : '#F59E0B';
+  const gradeColor = score >= 90 ? '#D4A017' : score >= 80 ? GOLD : '#D4A017';
 
   return (
     <div style={{ position: 'relative', width: 130, height: 130, flexShrink: 0 }}>
@@ -48,7 +48,7 @@ function HealthRing({ score }: { score: number }) {
         <defs>
           <linearGradient id="ringGradDT" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={PINK} />
-            <stop offset="100%" stopColor={AQUA} />
+            <stop offset="100%" stopColor={GOLD} />
           </linearGradient>
         </defs>
         <circle cx={65} cy={65} r={r} fill="none" stroke="#F3F4F6" strokeWidth={12} />
@@ -106,7 +106,7 @@ export function MobileDentalTracker({ state, setState }: Props) {
       transition={{ duration: 0.3 }}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       <MobileHeader title="Dental Tracker" showBack onBack={() => setState({ screen: 'home' })} />
 
@@ -124,8 +124,8 @@ export function MobileDentalTracker({ state, setState }: Props) {
             <HealthRing score={85} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <MiniBar label="Menyikat Gigi" value={90} color={PINK} />
-              <MiniBar label="Flossing" value={70} color={AQUA} />
-              <MiniBar label="Kunjungan Klinik" value={85} color="#10B981" />
+              <MiniBar label="Flossing" value={70} color={GOLD} />
+              <MiniBar label="Kunjungan Klinik" value={85} color="#D4A017" />
             </div>
           </div>
           <div style={{ marginTop: 12, padding: '8px 12px', borderRadius: 12, background: 'rgba(233,30,140,0.06)', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -151,7 +151,7 @@ export function MobileDentalTracker({ state, setState }: Props) {
                 <p style={{ fontSize: 10, color: '#9CA3AF', margin: 0 }}>Berturut-turut</p>
               </div>
             </div>
-            <span style={{ fontSize: 10, fontWeight: 800, padding: '4px 10px', borderRadius: 20, background: 'rgba(16,185,129,0.10)', color: '#10B981' }}>
+            <span style={{ fontSize: 10, fontWeight: 800, padding: '4px 10px', borderRadius: 20, background: 'rgba(16,185,129,0.10)', color: '#D4A017' }}>
               Minggu Ini
             </span>
           </div>
@@ -178,7 +178,7 @@ export function MobileDentalTracker({ state, setState }: Props) {
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 11, color: '#10B981', fontWeight: 700, marginTop: 12, textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#D4A017', fontWeight: 700, marginTop: 12, textAlign: 'center' }}>
             🎉 Streak sempurna minggu ini! Pertahankan terus!
           </p>
         </motion.div>
@@ -257,8 +257,8 @@ export function MobileDentalTracker({ state, setState }: Props) {
                   <p style={{ margin: '3px 0 0', fontSize: 10, color: '#B0B7C3' }}>{ach.sub}</p>
                 </div>
                 {ach.earned && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 9, fontWeight: 700, color: '#10B981' }}>
-                    <CheckCircle size={9} color="#10B981" /> Diraih
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 9, fontWeight: 700, color: '#D4A017' }}>
+                    <CheckCircle size={9} color="#D4A017" /> Diraih
                   </div>
                 )}
               </motion.div>

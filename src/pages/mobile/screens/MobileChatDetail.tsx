@@ -12,14 +12,14 @@ interface Props {
 }
 
 const PINK = '#E91E8C';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#1A1A2E';
 
 const AVATAR_COLORS: [string, string][] = [
   ['#E91E8C', '#FF6BB5'],
-  ['#06B6D4', '#22D3EE'],
-  ['#8B5CF6', '#C4B5FD'],
-  ['#F59E0B', '#FCD34D'],
+  ['#D4A017', '#F5C842'],
+  ['#FF6BB5', '#C4B5FD'],
+  ['#D4A017', '#FCD34D'],
 ];
 
 function initials(name: string) {
@@ -89,7 +89,7 @@ export function MobileChatDetail({ state, setState }: Props) {
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
       {/* 3px strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       {/* Custom header */}
       <div style={{ background: 'white', boxShadow: '0 1px 8px rgba(0,0,0,0.06)', padding: '12px 16px 10px', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
@@ -110,12 +110,12 @@ export function MobileChatDetail({ state, setState }: Props) {
           }}>
             {initials(doctor.name)}
           </div>
-          <span style={{ position: 'absolute', bottom: 1, right: -1, width: 11, height: 11, borderRadius: '50%', background: '#10B981', border: '2px solid white' }} />
+          <span style={{ position: 'absolute', bottom: 1, right: -1, width: 11, height: 11, borderRadius: '50%', background: '#D4A017', border: '2px solid white' }} />
         </div>
 
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontSize: 14, fontWeight: 900, color: INK, margin: 0, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doctor.name}</p>
-          <p style={{ fontSize: 10, color: '#10B981', margin: 0, fontWeight: 700 }}>● Online</p>
+          <p style={{ fontSize: 10, color: '#D4A017', margin: 0, fontWeight: 700 }}>● Online</p>
         </div>
 
         <div style={{ display: 'flex', gap: 8 }}>
@@ -123,7 +123,7 @@ export function MobileChatDetail({ state, setState }: Props) {
             onClick={() => haptic('light')}
             style={{ width: 36, height: 36, borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(6,182,212,0.09)', border: 'none', cursor: 'pointer' }}
           >
-            <Phone size={16} color={AQUA} />
+            <Phone size={16} color={GOLD} />
           </button>
           <button
             onClick={() => haptic('light')}

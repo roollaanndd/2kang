@@ -17,7 +17,7 @@ interface MobileProfileProps {
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 const MENU_GROUPS = [
@@ -130,7 +130,7 @@ function TnCModal({ accepted, onAccept, onClose }: { accepted: boolean; onAccept
               padding: '14px', borderRadius: 16,
               background: 'rgba(16,185,129,0.08)', border: '1.5px solid rgba(16,185,129,0.25)',
             }}>
-              <CheckCircle size={18} color="#10B981" />
+              <CheckCircle size={18} color="#D4A017" />
               <span style={{ fontSize: 14, fontWeight: 700, color: '#065F46' }}>Anda telah menyetujui ketentuan ini</span>
             </div>
           ) : (
@@ -190,10 +190,10 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.22 }}
-        style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF5F9' }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF8F4' }}
       >
         {/* 3px gradient strip */}
-        <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
 
         {/* Header */}
         <div style={{
@@ -265,7 +265,7 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
             {/* ── Quick Stats ── */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
               {[
-                { value: '12', label: 'Kunjungan', color: AQUA, icon: <Calendar size={24} color={AQUA} /> },
+                { value: '12', label: 'Kunjungan', color: GOLD, icon: <Calendar size={24} color={GOLD} /> },
                 { value: '2.450', label: 'Poin', color: ROSE, icon: (
                   <svg viewBox="0 0 24 24" width={24} height={24} fill="none" stroke={ROSE} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
@@ -304,7 +304,7 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
                   {group.items.map((item, ii) => {
                     const Icon = item.icon;
                     const iconBg = group.title === 'Pengaturan' ? `rgba(6,182,212,0.10)` : 'rgba(233,30,140,0.08)';
-                    const iconColor = group.title === 'Pengaturan' ? AQUA : PINK;
+                    const iconColor = group.title === 'Pengaturan' ? GOLD : PINK;
                     return (
                       <motion.button
                         key={item.id}

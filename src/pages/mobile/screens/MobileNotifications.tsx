@@ -14,7 +14,7 @@ interface MobileNotificationsProps {
 
 const TYPE_CONFIG: Record<NotifType, { Icon: ComponentType<{ size?: number; color?: string }>; bg: string; color: string }> = {
   reminder: { Icon: Calendar, bg: '#FDF2F8', color: '#E91E8C' },
-  queue: { Icon: Ticket, bg: '#ECFEFF', color: '#06B6D4' },
+  queue: { Icon: Ticket, bg: '#ECFEFF', color: '#D4A017' },
   promo: { Icon: Tag, bg: '#ECFEFF', color: '#FF6BB5' },
   system: { Icon: Bell, bg: '#F3F4F6', color: '#6B7280' },
 };
@@ -67,10 +67,10 @@ export function MobileNotifications({ setState }: MobileNotificationsProps) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.3 }}
-      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF5F9' }}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF8F4' }}
     >
       {/* 3px gradient strip */}
-      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
 
       {/* Header */}
       <div style={{
@@ -149,7 +149,7 @@ export function MobileNotifications({ setState }: MobileNotificationsProps) {
                   <p style={{ fontSize: 13, fontWeight: 700, color: '#0D1421' }}>Aktifkan Notifikasi</p>
                   <p style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>Dapatkan pengingat janji temu real-time.</p>
                 </div>
-                <span style={{ fontSize: 11, fontWeight: 700, padding: '5px 12px', borderRadius: 999, background: '#FFF5F9', color: '#E91E8C', flexShrink: 0 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, padding: '5px 12px', borderRadius: 999, background: '#FFF8F4', color: '#E91E8C', flexShrink: 0 }}>
                   Izinkan
                 </span>
               </button>

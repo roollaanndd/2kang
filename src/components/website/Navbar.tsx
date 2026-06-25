@@ -104,7 +104,7 @@ export function Navbar() {
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.to;
                 const linkColor = isActive ? '#E91E8C' : '#374151';
-                const hoverBg = '#FFF5F9';
+                const hoverBg = '#FFF8F4';
                 if (link.hasMenu) {
                   return (
                     <div
@@ -163,7 +163,7 @@ export function Navbar() {
                                     className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 group/item"
                                     style={{ color: '#374151' }}
                                     onMouseEnter={(e) => {
-                                      (e.currentTarget as HTMLElement).style.background = '#FFF5F9';
+                                      (e.currentTarget as HTMLElement).style.background = '#FFF8F4';
                                     }}
                                     onMouseLeave={(e) => {
                                       (e.currentTarget as HTMLElement).style.background = 'transparent';
@@ -178,7 +178,7 @@ export function Navbar() {
                               </div>
                               <div
                                 className="mt-3 mx-1 p-3 rounded-xl flex items-center justify-between"
-                                style={{ background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.15)' }}
+                                style={{ background: '#FFF8F4', border: '1px solid rgba(233,30,140,0.15)' }}
                               >
                                 <div>
                                   <p className="text-xs font-bold" style={{ color: '#1A1A2E' }}>Butuh rekomendasi?</p>
@@ -344,7 +344,7 @@ export function Navbar() {
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-2 rounded-xl"
-                style={{ background: '#FFF5F9', color: '#E91E8C' }}
+                style={{ background: '#FFF8F4', color: '#E91E8C' }}
               >
                 <X size={20} />
               </button>
@@ -361,7 +361,7 @@ export function Navbar() {
                     className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
                     style={{
                       color: isActive ? '#E91E8C' : '#374151',
-                      background: isActive ? '#FFF5F9' : 'transparent',
+                      background: isActive ? '#FFF8F4' : 'transparent',
                     }}
                   >
                     {link.label}
@@ -399,7 +399,7 @@ export function Navbar() {
               <button
                 onClick={() => setLang(lang === 'id' ? 'en' : 'id')}
                 className="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-xl text-sm font-bold border transition-all"
-                style={{ borderColor: '#E91E8C40', color: '#E91E8C', background: '#FFF5F9' }}
+                style={{ borderColor: '#E91E8C40', color: '#E91E8C', background: '#FFF8F4' }}
               >
                 <Languages size={16} />
                 {lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}

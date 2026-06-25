@@ -58,7 +58,7 @@ function ScreenTransitionBar({ screen }: { screen: string }) {
           transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
           style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
             zIndex: 9999, pointerEvents: 'none',
           }}
         />

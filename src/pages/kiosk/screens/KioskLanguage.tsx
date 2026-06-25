@@ -29,7 +29,7 @@ export function KioskLanguage({ setState, goTo, goBack }: KioskScreenProps) {
         style={{
           height: '3px',
           flexShrink: 0,
-          background: 'linear-gradient(90deg, #E91E8C 0%, #FF6BB5 50%, #06B6D4 100%)',
+          background: 'linear-gradient(90deg, #E91E8C 0%, #FF6BB5 50%, #D4A017 100%)',
         }}
       />
 
@@ -135,7 +135,7 @@ export function KioskLanguage({ setState, goTo, goBack }: KioskScreenProps) {
             label="English"
             subtitle="Continue in English"
             flagText="🇬🇧"
-            flagGradient="linear-gradient(135deg, #06B6D4, #0284C7)"
+            flagGradient="linear-gradient(135deg, #D4A017, #B8860B)"
             innerTint="rgba(6,182,212,0.04)"
             hoverBorder="rgba(6,182,212,0.30)"
             hoverShadow="0 20px 60px rgba(6,182,212,0.15)"

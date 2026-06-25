@@ -33,7 +33,7 @@ export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenPr
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -155,7 +155,7 @@ export function KioskTimeSelect({ state, setState, goTo, goBack }: KioskScreenPr
                 }}
                 onMouseEnter={e => {
                   if (!slot.available || isSelected) return;
-                  (e.currentTarget as HTMLButtonElement).style.background = '#FFF5F9';
+                  (e.currentTarget as HTMLButtonElement).style.background = '#FFF8F4';
                   (e.currentTarget as HTMLButtonElement).style.color = '#E91E8C';
                   (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 20px rgba(233,30,140,0.2)';
                 }}

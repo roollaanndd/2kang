@@ -16,7 +16,7 @@ const CLINIC_INFO = [
   },
   {
     Icon: MapPin,
-    tint: '#06B6D4',
+    tint: '#D4A017',
     label: 'Alamat',
     labelEn: 'Address',
     value: 'Jl. Selisebel No. 123, Jakarta Selatan',
@@ -24,7 +24,7 @@ const CLINIC_INFO = [
   },
   {
     Icon: Phone,
-    tint: '#10B981',
+    tint: '#D4A017',
     label: 'Telepon',
     labelEn: 'Phone',
     value: '+62 21 1234 5678',
@@ -32,7 +32,7 @@ const CLINIC_INFO = [
   },
   {
     Icon: Mail,
-    tint: '#F59E0B',
+    tint: '#D4A017',
     label: 'Email',
     labelEn: 'Email',
     value: 'info@omdcdental.com',
@@ -67,7 +67,7 @@ export function KioskInfoPromo({ state, goBack }: KioskScreenProps) {
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -575,7 +575,7 @@ export function KioskInfoPromo({ state, goBack }: KioskScreenProps) {
                 </div>
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: '10px',
-                  padding: '14px 20px', backgroundColor: '#FFF5F9',
+                  padding: '14px 20px', backgroundColor: '#FFF8F4',
                   borderRadius: '12px', border: '1px solid #FCE7F3',
                 }}>
                   <Clock size={18} color="#E91E8C" />

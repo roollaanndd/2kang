@@ -28,7 +28,7 @@ interface FamilyMember {
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#111827';
 const GREY = '#6B7280';
 const GREY_LT = '#9CA3AF';
@@ -38,11 +38,11 @@ const RELATIONS: Relation[] = ['Suami', 'Istri', 'Anak', 'Orang Tua'];
 // Per-member gradient pairs for the monogram avatars (light, brand-aligned).
 const GRADIENTS: [string, string][] = [
   [PINK, ROSE],
-  [AQUA, '#22D3EE'],
-  ['#8B5CF6', '#C4B5FD'],
-  ['#F59E0B', '#FCD34D'],
-  ['#10B981', '#6EE7B7'],
-  ['#3B82F6', '#93C5FD'],
+  [GOLD, '#F5C842'],
+  ['#FF6BB5', '#C4B5FD'],
+  ['#D4A017', '#FCD34D'],
+  ['#D4A017', '#6EE7B7'],
+  ['#D4A017', '#93C5FD'],
 ];
 
 function gradientFor(id: string): [string, string] {
@@ -389,7 +389,7 @@ export function MobileFamily({ setState }: MobileFamilyProps) {
                 <SheetAction
                   icon={<Pencil size={18} />}
                   label="Edit Detail"
-                  color={AQUA}
+                  color={GOLD}
                   onClick={() => openEdit(actionTarget)}
                 />
                 <SheetAction
@@ -504,7 +504,7 @@ export function MobileFamily({ setState }: MobileFamilyProps) {
                           onClick={() => { haptic('selection'); setForm(f => ({ ...f, gender: g })); }}
                           className="py-3 rounded-xl text-sm font-bold border transition-colors"
                           style={sel
-                            ? { background: AQUA, color: 'white', borderColor: AQUA }
+                            ? { background: GOLD, color: 'white', borderColor: GOLD }
                             : { background: 'white', color: GREY, borderColor: '#E5E7EB' }}
                         >
                           {g === 'M' ? 'Laki-laki' : 'Perempuan'}

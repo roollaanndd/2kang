@@ -41,12 +41,12 @@ export function MobileLogin({ setState }: MobileLoginProps) {
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFFFFF', overflow: 'hidden' }}
     >
       {/* 3px gradient strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       {/* Logo area */}
       <div style={{ paddingTop: 56, paddingBottom: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
         <div style={{
-          width: 56, height: 56, background: '#FFF5F9', borderRadius: 16,
+          width: 56, height: 56, background: '#FFF8F4', borderRadius: 16,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           marginBottom: 12, boxShadow: '0 2px 8px rgba(233,30,140,0.08)',
           border: '1px solid rgba(233,30,140,0.08)',

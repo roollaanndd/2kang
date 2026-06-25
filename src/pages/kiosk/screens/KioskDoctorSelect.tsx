@@ -8,7 +8,7 @@ import { useIsPortrait } from '../../../context/KioskOrientationContext';
 
 const PINK = '#E91E8C';
 const DARK = '#0D1421';
-const AVATAR_COLORS = ['#E91E8C', '#4FC3F7', '#F59E0B', '#10B981'];
+const AVATAR_COLORS = ['#E91E8C', '#D4A017', '#D4A017', '#D4A017'];
 
 export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
@@ -42,7 +42,7 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         zIndex: 10,
       }} />
 
@@ -183,7 +183,7 @@ export function KioskDoctorSelect({ state, setState, goTo, goBack }: KioskScreen
               </div>
               <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <Star size={14} color="#F59E0B" fill="#F59E0B" />
+                  <Star size={14} color="#D4A017" fill="#D4A017" />
                   <span style={{ fontSize: 14, fontWeight: 800, color: DARK }}>
                     {doctor.rating}
                   </span>

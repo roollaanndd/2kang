@@ -190,7 +190,7 @@ export function MobileBooking({ state, setState }: MobileBookingProps) {
                   padding: '14px 14px 14px 16px',
                   borderRadius: 20,
                   textAlign: 'left',
-                  background: isSelected ? '#FFF5F9' : 'white',
+                  background: isSelected ? '#FFF8F4' : 'white',
                   border: `2px solid ${isSelected ? '#E91E8C' : 'rgba(0,0,0,0.06)'}`,
                   boxShadow: isSelected
                     ? '0 8px 24px rgba(233,30,140,0.20)'

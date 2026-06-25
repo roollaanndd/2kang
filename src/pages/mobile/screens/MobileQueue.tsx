@@ -78,10 +78,10 @@ export function MobileQueue({ state, setState }: MobileQueueProps) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.3 }}
-      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF5F9' }}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF8F4' }}
     >
       {/* 3px gradient strip */}
-      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+      <div style={{ height: 3, flexShrink: 0, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
 
       {/* Header */}
       <div style={{

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const PINK = '#E91E8C';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#1A1A2E';
 
 interface InsuranceCoverage { label: string; covered: boolean }
@@ -35,8 +35,8 @@ const CLAIMS: Claim[] = [
 ];
 
 const STATUS_CONFIG = {
-  approved: { label: 'Disetujui', bg: 'rgba(16,185,129,0.10)', color: '#10B981', Icon: CheckCircle },
-  pending: { label: 'Diproses', bg: 'rgba(245,158,11,0.10)', color: '#F59E0B', Icon: Clock },
+  approved: { label: 'Disetujui', bg: 'rgba(16,185,129,0.10)', color: '#D4A017', Icon: CheckCircle },
+  pending: { label: 'Diproses', bg: 'rgba(245,158,11,0.10)', color: '#D4A017', Icon: Clock },
   rejected: { label: 'Ditolak', bg: 'rgba(239,68,68,0.10)', color: '#EF4444', Icon: XCircle },
 };
 
@@ -44,7 +44,7 @@ function InsuranceCard({ name }: { name: string }) {
   return (
     <div style={{
       borderRadius: 22, padding: '22px 24px',
-      background: 'linear-gradient(135deg, #0B7DBF 0%, #06B6D4 50%, #0891B2 100%)',
+      background: 'linear-gradient(135deg, #0B7DBF 0%, #D4A017 50%, #0891B2 100%)',
       boxShadow: '0 12px 32px rgba(6,182,212,0.35)',
       position: 'relative', overflow: 'hidden', color: 'white',
     }}>
@@ -106,7 +106,7 @@ function EmptyInsurance({ onAdd }: { onAdd: () => void }) {
           fill="rgba(233,30,140,0.10)" stroke="#E91E8C" strokeWidth={1.5} strokeLinejoin="round" />
         <path d="M48 54 L53 59 L63 49" stroke="#E91E8C" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
         <circle cx={80} cy={30} r={12} fill="white" stroke="#F3F4F6" strokeWidth={2} />
-        <path d="M80 25 L80 31 M80 33 L80 35" stroke="#F59E0B" strokeWidth={2} strokeLinecap="round" />
+        <path d="M80 25 L80 31 M80 33 L80 35" stroke="#D4A017" strokeWidth={2} strokeLinecap="round" />
       </svg>
       <p style={{ fontSize: 17, fontWeight: 900, color: INK, margin: '0 0 8px' }}>Belum Ada Asuransi</p>
       <p style={{ fontSize: 13, color: '#9CA3AF', lineHeight: 1.6, margin: '0 0 28px' }}>
@@ -141,7 +141,7 @@ export function MobileInsurance({ state, setState }: Props) {
       transition={{ duration: 0.3 }}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       <MobileHeader
         title="Asuransi Gigi"
@@ -180,13 +180,13 @@ export function MobileInsurance({ state, setState }: Props) {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                 <span style={{ fontSize: 12, fontWeight: 800, color: INK }}>Penggunaan Plafon</span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: AQUA }}>Rp 1.400.000 digunakan</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: GOLD }}>Rp 1.400.000 digunakan</span>
               </div>
               <div style={{ height: 8, borderRadius: 10, background: '#F3F4F6', overflow: 'hidden' }}>
                 <motion.div
                   initial={{ width: 0 }} animate={{ width: '28%' }}
                   transition={{ delay: 0.3, duration: 0.8, ease: 'easeOut' }}
-                  style={{ height: '100%', borderRadius: 10, background: `linear-gradient(90deg, ${AQUA}, #0891B2)` }}
+                  style={{ height: '100%', borderRadius: 10, background: `linear-gradient(90deg, ${GOLD}, #0891B2)` }}
                 />
               </div>
               <p style={{ margin: '8px 0 0', fontSize: 11, color: '#9CA3AF' }}>Sisa plafon: <b style={{ color: INK }}>Rp 3.600.000</b> dari Rp 5.000.000</p>
@@ -202,7 +202,7 @@ export function MobileInsurance({ state, setState }: Props) {
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', borderBottom: i < COVERAGE.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
                   <div style={{ width: 22, height: 22, borderRadius: 6, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: c.covered ? 'rgba(16,185,129,0.10)' : 'rgba(239,68,68,0.08)' }}>
                     {c.covered
-                      ? <CheckCircle size={13} color="#10B981" />
+                      ? <CheckCircle size={13} color="#D4A017" />
                       : <XCircle size={13} color="#EF4444" />
                     }
                   </div>

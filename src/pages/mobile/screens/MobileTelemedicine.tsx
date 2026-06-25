@@ -12,14 +12,14 @@ interface Props {
 }
 
 const PINK = '#E91E8C';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const INK = '#1A1A2E';
 
 const AVATAR_COLORS: [string, string][] = [
   ['#E91E8C', '#FF6BB5'],
-  ['#06B6D4', '#22D3EE'],
-  ['#8B5CF6', '#C4B5FD'],
-  ['#F59E0B', '#FCD34D'],
+  ['#D4A017', '#F5C842'],
+  ['#FF6BB5', '#C4B5FD'],
+  ['#D4A017', '#FCD34D'],
 ];
 
 function initials(name: string) {
@@ -54,7 +54,7 @@ export function MobileTelemedicine({ state, setState }: Props) {
       transition={{ duration: 0.3 }}
       style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#F8F9FB', position: 'relative' }}
     >
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
 
       <MobileHeader title="Konsultasi Online" showBack onBack={() => setState({ screen: 'home' })} />
 
@@ -65,7 +65,7 @@ export function MobileTelemedicine({ state, setState }: Props) {
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
           style={{ margin: '0 16px 18px', borderRadius: 16, padding: '12px 16px', background: 'rgba(16,185,129,0.07)', border: '1.5px solid rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', gap: 10 }}
         >
-          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 0 3px rgba(16,185,129,0.20)', flexShrink: 0 }} />
+          <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#D4A017', boxShadow: '0 0 0 3px rgba(16,185,129,0.20)', flexShrink: 0 }} />
           <span style={{ fontSize: 12, fontWeight: 700, color: '#065F46' }}>
             {onlineCount} dokter online sekarang — siap melayani konsultasi
           </span>
@@ -103,7 +103,7 @@ export function MobileTelemedicine({ state, setState }: Props) {
                     <span style={{
                       position: 'absolute', bottom: 2, right: -2,
                       width: 13, height: 13, borderRadius: '50%',
-                      background: '#10B981', border: '2.5px solid white',
+                      background: '#D4A017', border: '2.5px solid white',
                     }} />
                   )}
                 </div>
@@ -114,9 +114,9 @@ export function MobileTelemedicine({ state, setState }: Props) {
                 <p style={{ fontSize: 10, color: '#9CA3AF', margin: '0 0 8px' }}>{doctor.specialty}</p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 10 }}>
-                  <Star size={10} fill="#F59E0B" color="#F59E0B" />
+                  <Star size={10} fill="#D4A017" color="#D4A017" />
                   <span style={{ fontSize: 10, fontWeight: 700, color: '#374151' }}>{doctor.rating}</span>
-                  <span style={{ fontSize: 9, color: isOnline ? '#10B981' : '#9CA3AF', fontWeight: 700, marginLeft: 4 }}>
+                  <span style={{ fontSize: 9, color: isOnline ? '#D4A017' : '#9CA3AF', fontWeight: 700, marginLeft: 4 }}>
                     {isOnline ? '● Online' : '● Offline'}
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export function MobileTelemedicine({ state, setState }: Props) {
                     style={{
                       width: 32, padding: '7px 0', borderRadius: 10, border: '1.5px solid rgba(6,182,212,0.30)', cursor: isOnline ? 'pointer' : 'not-allowed',
                       background: isOnline ? 'rgba(6,182,212,0.08)' : '#F9FAFB',
-                      color: isOnline ? AQUA : '#D1D5DB',
+                      color: isOnline ? GOLD : '#D1D5DB',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
                   >
@@ -191,7 +191,7 @@ export function MobileTelemedicine({ state, setState }: Props) {
                       {initials(doctor.name)}
                     </div>
                     {ONLINE_DOCTOR_IDXS.includes(chat.doctorIdx) && (
-                      <span style={{ position: 'absolute', bottom: 1, right: -1, width: 11, height: 11, borderRadius: '50%', background: '#10B981', border: '2px solid white' }} />
+                      <span style={{ position: 'absolute', bottom: 1, right: -1, width: 11, height: 11, borderRadius: '50%', background: '#D4A017', border: '2px solid white' }} />
                     )}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -218,14 +218,14 @@ export function MobileTelemedicine({ state, setState }: Props) {
           onClick={() => { haptic('light'); setState({ screen: 'video-call', activeChatDoctorId: DOCTORS[0].id }); }}
           style={{ margin: '18px 16px 0', borderRadius: 20, padding: '16px 18px', background: 'linear-gradient(135deg, #EBF8FF, #F0F9FF)', border: '1.5px solid rgba(6,182,212,0.18)', display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer' }}
         >
-          <div style={{ width: 46, height: 46, borderRadius: 14, background: AQUA, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 14px rgba(6,182,212,0.35)' }}>
+          <div style={{ width: 46, height: 46, borderRadius: 14, background: GOLD, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 14px rgba(6,182,212,0.35)' }}>
             <Video size={22} color="white" />
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ fontSize: 13, fontWeight: 900, color: '#0C4A6E', margin: '0 0 3px' }}>Konsultasi Video Call</p>
             <p style={{ fontSize: 11, color: '#0E7490', margin: 0 }}>Tanya dokter gigi langsung via video — lebih cepat & akurat</p>
           </div>
-          <ChevronRight size={16} color={AQUA} />
+          <ChevronRight size={16} color={GOLD} />
         </motion.div>
       </div>
     </motion.div>

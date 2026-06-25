@@ -9,7 +9,7 @@ h1, h2, h3, .syne, .display-font { font-family: 'Plus Jakarta Sans', 'Inter', sa
   --color-pink-primary: #E91E8C;
   --color-pink-light: #FF6BB5;
   --color-pink-pale: #FFF0F7;
-  --color-pink-50: #FFF5F9;
+  --color-pink-50: #FFF8F4;
   --color-pink-100: #FCE7F3;
   --color-pink-200: #FBCFE8;
   --color-pink-300: #F9A8D4;
@@ -65,11 +65,11 @@ body {
 }
 
 .gradient-pink-soft {
-  background: linear-gradient(135deg, #FFF5F9 0%, #FCE7F3 100%);
+  background: linear-gradient(135deg, #FFF8F4 0%, #FCE7F3 100%);
 }
 
 .gradient-hero {
-  background: linear-gradient(135deg, #E91E8C 0%, #FF6BB5 40%, #FFD6EC 80%, #FFF5F9 100%);
+  background: linear-gradient(135deg, #E91E8C 0%, #FF6BB5 40%, #FFD6EC 80%, #FFF8F4 100%);
 }
 
 /* Kiosk specific styles */
@@ -213,7 +213,7 @@ body {
   .pwa-only { display: block; }
   .no-pwa { display: none; }
   body {
-    background: #FFF5F9;
+    background: #FFF8F4;
   }
 }
 

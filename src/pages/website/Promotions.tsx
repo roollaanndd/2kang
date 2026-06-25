@@ -54,7 +54,7 @@ const extendedPromos = [
     description: 'Diskon khusus untuk pelajar dan mahasiswa. Tunjukkan kartu pelajar/mahasiswa aktif.',
     discount: 25,
     validUntil: '31 Des 2025',
-    color: '#10B981',
+    color: '#D4A017',
     bgColor: '#F0FDF4',
     service: 'Semua Layanan',
   },
@@ -123,7 +123,7 @@ export function Promotions() {
                 style={
                   activeFilter === f
                     ? { background: '#E91E8C', color: 'white', boxShadow: '0 4px 12px rgba(233,30,140,0.25)' }
-                    : { background: '#FFF5F9', color: '#0D1421', border: '1px solid #fce7f3' }
+                    : { background: '#FFF8F4', color: '#0D1421', border: '1px solid #fce7f3' }
                 }
               >
                 {f}
@@ -173,7 +173,7 @@ export function Promotions() {
                   ) : (
                     <div
                       className="h-48 rounded-[18px] mb-6 relative overflow-hidden"
-                      style={{ background: promo.bgColor || '#FFF5F9' }}
+                      style={{ background: promo.bgColor || '#FFF8F4' }}
                     />
                   )}
 
@@ -239,7 +239,7 @@ export function Promotions() {
         </section>
 
         {/* How to use */}
-        <section className="py-16 bg-[#FFF5F9] mb-24 relative overflow-hidden">
+        <section className="py-16 bg-[#FFF8F4] mb-24 relative overflow-hidden">
           <div className="px-6 md:px-12 max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold font-headline text-[#0D1421] mb-4">Cara Menggunakan Promo</h2>
@@ -252,7 +252,7 @@ export function Promotions() {
                 { n: '3', title: 'Nikmati Perawatan', desc: 'Dapatkan pelayanan prima dari tim dokter gigi profesional kami dengan harga lebih hemat.', icon: '😊' },
               ].map((step) => (
                 <div key={step.n} className="relative flex flex-col items-center text-center">
-                  <div className="w-24 h-24 rounded-full bg-white shadow-sm flex items-center justify-center mb-6 border-4 border-[#FFF5F9] relative hover:scale-105 transition-transform">
+                  <div className="w-24 h-24 rounded-full bg-white shadow-sm flex items-center justify-center mb-6 border-4 border-[#FFF8F4] relative hover:scale-105 transition-transform">
                     <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full text-white font-bold flex items-center justify-center text-sm shadow-md" style={{ background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' }}>
                       {step.n}
                     </span>
@@ -268,7 +268,7 @@ export function Promotions() {
 
         {/* Newsletter CTA */}
         <section className="px-6 md:px-12 max-w-5xl mx-auto mb-16">
-          <div className="rounded-[32px] p-8 md:p-12 border border-pink-100 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8" style={{ background: 'linear-gradient(135deg, #fdf2f8, #FFF5F9)' }}>
+          <div className="rounded-[32px] p-8 md:p-12 border border-pink-100 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8" style={{ background: 'linear-gradient(135deg, #fdf2f8, #FFF8F4)' }}>
             <div className="md:w-1/2 text-center md:text-left">
               <h2 className="text-3xl font-bold font-headline text-[#0D1421] mb-3">Dapatkan Info Promo Terbaru</h2>
               <p className="text-[#6B7280] font-body">Jangan lewatkan penawaran spesial dan tips kesehatan gigi eksklusif langsung ke inbox Anda.</p>

@@ -148,7 +148,7 @@ export function MobileVideoCall({ state, setState }: Props) {
                 display: 'flex', alignItems: 'center', gap: 8,
               }}
             >
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', display: 'block' }} />
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#D4A017', display: 'block' }} />
               <span style={{ color: '#6EE7B7', fontSize: 13, fontWeight: 800 }}>
                 {formatTime(elapsed)}
               </span>
@@ -261,8 +261,8 @@ export function MobileVideoCall({ state, setState }: Props) {
               flexDirection: 'column', gap: 4,
             }}
           >
-            <Volume2 size={22} color={speakerOn ? '#06B6D4' : 'white'} />
-            <span style={{ fontSize: 9, color: speakerOn ? '#06B6D4' : 'rgba(255,255,255,0.6)', fontWeight: 700 }}>
+            <Volume2 size={22} color={speakerOn ? '#D4A017' : 'white'} />
+            <span style={{ fontSize: 9, color: speakerOn ? '#D4A017' : 'rgba(255,255,255,0.6)', fontWeight: 700 }}>
               Speaker
             </span>
           </motion.button>

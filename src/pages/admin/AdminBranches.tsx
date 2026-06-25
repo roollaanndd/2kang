@@ -33,7 +33,7 @@ function BranchCard({ branch, idx, onEdit, onDelete, onToggle }: {
 }) {
   const palettes: [string, string][] = [
     ['#E91E8C', '#FF6BB5'],
-    ['#06B6D4', '#22D3EE'],
+    ['#D4A017', '#22D3EE'],
     ['#8B5CF6', '#C4B5FD'],
     ['#F59E0B', '#FCD34D'],
   ];
@@ -201,7 +201,7 @@ function ImageUpload({ value, onChange }: { value: string | null; onChange: (v: 
           onClick={() => ref.current?.click()}
           className="w-full flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed transition-colors"
           style={{ height: 120, borderColor: '#E5E7EB', background: '#FAFAFA' }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = PINK; e.currentTarget.style.background = '#FFF5F9'; }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = PINK; e.currentTarget.style.background = '#FFF8F4'; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = '#E5E7EB'; e.currentTarget.style.background = '#FAFAFA'; }}
         >
           <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: '#FCE7F3' }}>

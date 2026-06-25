@@ -76,7 +76,7 @@ export function MobileOTP({ state, setState }: MobileOTPProps) {
     >
       {/* Header */}
       <div style={{ position: 'relative', padding: '52px 20px 20px', background: 'white', borderBottom: '1px solid rgba(233,30,140,0.08)' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)' }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button
             onClick={() => setState({ screen: 'register' })}

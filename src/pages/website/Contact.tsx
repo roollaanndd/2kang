@@ -51,31 +51,31 @@ export function Contact() {
       title: 'Alamat Klinik',
       lines: [CLINIC_ADDRESS, 'Jakarta Selatan, DKI Jakarta 12345'],
       color: '#E91E8C',
-      bg: '#FFF5F9',
+      bg: '#FFF8F4',
       action: { label: 'Lihat di Google Maps', href: '#' },
     },
     {
       icon: <Phone size={22} />,
       title: 'Telepon',
       lines: [CLINIC_PHONE, 'WhatsApp: +62 812 9999 8888'],
-      color: '#10B981',
-      bg: '#F0FDF4',
+      color: '#D4A017',
+      bg: '#FFFDF0',
       action: { label: 'Hubungi Sekarang', href: `tel:${CLINIC_PHONE}` },
     },
     {
       icon: <Mail size={22} />,
       title: 'Email',
       lines: [CLINIC_EMAIL, 'Balasan dalam 1×24 jam'],
-      color: '#4FC3F7',
-      bg: '#F0FAFF',
+      color: '#FF6BB5',
+      bg: '#FFF5FA',
       action: { label: 'Kirim Email', href: `mailto:${CLINIC_EMAIL}` },
     },
     {
       icon: <Clock size={22} />,
       title: 'Jam Operasional',
       lines: [CLINIC_HOURS, 'Minggu: Tutup'],
-      color: '#A78BFA',
-      bg: '#F5F3FF',
+      color: '#E91E8C',
+      bg: '#FFF0FA',
       action: { label: 'Buat Janji', href: '/booking' },
     },
   ];
@@ -107,7 +107,7 @@ export function Contact() {
         photoSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ-NzQRffqsufz-ZgcvYhGVDiH-B6B_iXSNUWBqfnilWtH0xwQkP4laV6AxGdOCgRM4dq0gpK27LgLXgNEVwo-hvMnLRivkEQ1nou1enM_RGx534xwPQFehnK4cea72Vx_bQnuQPGisKgegdccgWTZBElEpTx634xB3Jdx5sW83ut2wHbggwlWadsOvhMlQklRZIWRjNoPTmVuRxR1LJbcbUImf9AswUFloFlJuTfuAgd-7f9wdSg7Qx0wp-srDvO3L0LOAZdi0X8"
         photoAlt="Klinik OMDC Dental Jakarta"
         floatingCard={{
-          color: 'aqua',
+          color: 'gold',
           name: "Buka Setiap Hari",
           subtitle: "08:00 – 20:00 WIB",
           stat: { value: "24/7", label: "layanan darurat" },
@@ -335,7 +335,7 @@ export function Contact() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="rounded-2xl p-5"
-                style={{ background: 'linear-gradient(135deg, #FFF5F9, white)', border: '1px solid rgba(233,30,140,0.2)' }}
+                style={{ background: 'linear-gradient(135deg, #FFF8F4, white)', border: '1px solid rgba(233,30,140,0.2)' }}
               >
                 <div className="flex items-start gap-3">
                   <div
@@ -440,7 +440,7 @@ export function Contact() {
                 key={schedule.day}
                 className="flex items-center justify-between px-5 py-3 rounded-xl"
                 style={{
-                  background: schedule.open ? '#FFF5F9' : '#F9FAFB',
+                  background: schedule.open ? '#FFF8F4' : '#F9FAFB',
                   border: `1px solid ${schedule.open ? 'rgba(233,30,140,0.15)' : '#E5E7EB'}`,
                 }}
               >
@@ -457,7 +457,7 @@ export function Contact() {
 
           <div
             className="mt-6 p-4 rounded-2xl max-w-2xl mx-auto text-center"
-            style={{ background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.15)' }}
+            style={{ background: '#FFF8F4', border: '1px solid rgba(233,30,140,0.15)' }}
           >
             <p className="text-sm text-gray-600">
               <span className="font-bold" style={{ color: '#E91E8C' }}>Darurat di luar jam operasional?</span>{' '}

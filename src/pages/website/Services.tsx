@@ -122,7 +122,7 @@ export function Services() {
       keywords="layanan gigi, scaling gigi, tambal gigi, cabut gigi, behel ortodonsi, implan gigi, perawatan saluran akar, veneer gigi, Jakarta"
       path="/services"
     />
-    <div className="bg-[#FFF5F9]">
+    <div className="bg-[#FFF8F4]">
       <PageHero
         badge="Perawatan Terbaik"
         title="Layanan Dental"
@@ -260,7 +260,7 @@ export function Services() {
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors duration-200"
-                  style={{ background: openFaq === i ? '#FFF5F9' : 'white' }}
+                  style={{ background: openFaq === i ? '#FFF8F4' : 'white' }}
                 >
                   <span className="font-semibold text-sm pr-4 text-[#0D1421]">{faq.q}</span>
                   <div
@@ -273,7 +273,7 @@ export function Services() {
                   </div>
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-5 pt-1 bg-[#FFF5F9]">
+                  <div className="px-6 pb-5 pt-1 bg-[#FFF8F4]">
                     <p className="text-sm text-[#6B7280] leading-relaxed">{faq.a}</p>
                   </div>
                 )}
