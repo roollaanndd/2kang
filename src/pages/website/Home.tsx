@@ -382,6 +382,60 @@ function HeroSection() {
                 </motion.div>
               ))}
             </div>
+
+            {/* ── MOBILE: doctor card (below hero content) ── */}
+            {isMobile && featuredDoctor && (
+              <motion.div
+                initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                style={{
+                  marginTop: 22, textAlign: 'left',
+                  background: 'rgba(255,255,255,0.96)',
+                  backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+                  borderRadius: 22, overflow: 'hidden',
+                  boxShadow: '0 16px 48px rgba(233,30,140,0.16)',
+                  border: '1px solid rgba(255,255,255,0.7)',
+                }}
+              >
+                <div style={{ display: 'flex', gap: 12, padding: 12 }}>
+                  <div style={{ position: 'relative', width: 92, height: 110, borderRadius: 16, overflow: 'hidden', flexShrink: 0 }}>
+                    {featuredDoctor.photo ? (
+                      <img src={featuredDoctor.photo} alt={featuredDoctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                    ) : (
+                      <div style={{ width: '100%', height: '100%', background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: 36, fontWeight: 900, color: 'white' }}>{featuredDoctor.name[0]}</span>
+                      </div>
+                    )}
+                    <div style={{ position: 'absolute', bottom: 6, left: 6, right: 6, background: 'rgba(16,185,129,0.94)', borderRadius: 8, padding: '3px 6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 9, fontWeight: 700, color: 'white' }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#6EE7B7' }} />
+                      Tersedia
+                    </div>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <p style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', color: PINK, margin: 0 }}>Dokter Pilihan</p>
+                    <p style={{ fontSize: 15, fontWeight: 800, color: DARK, margin: '3px 0 0', lineHeight: 1.25 }}>{featuredDoctor.name}</p>
+                    <p style={{ fontSize: 12, color: '#6B7280', margin: '2px 0 0', fontWeight: 500 }}>{featuredDoctor.specialty}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 7 }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 12, fontWeight: 800, color: DARK }}>
+                        <Star size={12} fill={GOLD} color={GOLD} />{featuredDoctor.rating}
+                      </span>
+                      <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600 }}>{featuredDoctor.patients}+ pasien</span>
+                      <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600 }}>{featuredDoctor.experience}</span>
+                    </div>
+                  </div>
+                </div>
+                <Link to="/booking" style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  margin: '0 12px 12px', padding: '12px 16px', borderRadius: 14,
+                  background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                  color: 'white', fontWeight: 700, fontSize: 13, textDecoration: 'none',
+                  boxShadow: '0 6px 18px rgba(233,30,140,0.36)',
+                }}>
+                  <Calendar size={14} />
+                  Booking dengan Dokter Ini
+                </Link>
+              </motion.div>
+            )}
           </motion.div>
 
           {/* ── RIGHT: Floating doctor card (desktop only) ── */}
