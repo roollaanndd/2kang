@@ -516,6 +516,47 @@ function HeroSection() {
   );
 }
 
+// ─── HERO TRUST BAR ───────────────────────────────────────────────────────────
+const TRUST_BADGES = [
+  { label: 'BPJS Kesehatan', icon: <Shield size={16} color={PINK} /> },
+  { label: 'Asuransi Swasta', icon: <CheckCircle size={16} color={PINK} /> },
+  { label: 'Sertifikasi KKI', icon: <Star size={16} color={GOLD} /> },
+  { label: 'Teknologi Digital', icon: <CheckCircle size={16} color='#06B6D4' /> },
+  { label: 'Klinik Bersih', icon: <Shield size={16} color='#10B981' /> },
+];
+
+function HeroTrustBar() {
+  return (
+    <div style={{
+      background: 'white',
+      borderBottom: '1px solid rgba(233,30,140,0.08)',
+      padding: '14px 0',
+    }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C0C4CC', flexShrink: 0 }}>
+            Dipercaya oleh
+          </span>
+          {TRUST_BADGES.map((badge, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              className="flex items-center gap-2"
+              style={{ fontSize: 13, fontWeight: 700, color: DARK }}
+            >
+              {badge.icon}
+              {badge.label}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── WHY CHOOSE US SECTION ────────────────────────────────────────────────────
 function WhyChooseUsSection() {
   const [ref, inView] = useInView();
@@ -1404,6 +1445,7 @@ export function Home() {
     })}} />
     <div style={{ background: '#FFFFFF' }}>
       <HeroSection />
+      <HeroTrustBar />
       <WhyChooseUsSection />
       <ServicesSection />
       <HowItWorksSection />
