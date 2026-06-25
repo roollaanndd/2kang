@@ -20,9 +20,9 @@ function DoctorAvatar({ name, size = 56 }: { name: string; size?: number }) {
   const letter = name.replace('drg. ', '')[0];
   const colors = [
     'linear-gradient(135deg, #E91E8C, #FF6BB5)',
-    'linear-gradient(135deg, #4FC3F7, #0288D1)',
-    'linear-gradient(135deg, #A78BFA, #7C3AED)',
-    'linear-gradient(135deg, #10B981, #059669)',
+    'linear-gradient(135deg, #D4A017, #B8860B)',
+    'linear-gradient(135deg, #FF6BB5, #E91E8C)',
+    'linear-gradient(135deg, #D4A017, #B8860B)',
   ];
   const idx = name.charCodeAt(5) % colors.length;
   return (
@@ -115,7 +115,7 @@ export function Booking() {
 
           <div
             className="rounded-2xl p-5 mb-8 text-left space-y-3"
-            style={{ background: '#FFF5F9', border: '1px solid rgba(233,30,140,0.15)' }}
+            style={{ background: '#FFF8F4', border: '1px solid rgba(233,30,140,0.15)' }}
           >
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Layanan</span>
@@ -244,7 +244,7 @@ export function Booking() {
                     className="p-5 rounded-2xl border-2 text-left transition-all duration-200 hover:-translate-y-1"
                     style={{
                       borderColor: booking.serviceId === service.id ? '#E91E8C' : '#E5E7EB',
-                      background: booking.serviceId === service.id ? '#FFF5F9' : 'white',
+                      background: booking.serviceId === service.id ? '#FFF8F4' : 'white',
                       boxShadow: booking.serviceId === service.id ? '0 4px 20px rgba(233,30,140,0.15)' : 'none',
                     }}
                   >
@@ -305,7 +305,7 @@ export function Booking() {
                     className="p-5 rounded-2xl border-2 text-left transition-all duration-200 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                     style={{
                       borderColor: booking.doctorId === doctor.id ? '#E91E8C' : '#E5E7EB',
-                      background: booking.doctorId === doctor.id ? '#FFF5F9' : 'white',
+                      background: booking.doctorId === doctor.id ? '#FFF8F4' : 'white',
                       boxShadow: booking.doctorId === doctor.id ? '0 4px 20px rgba(233,30,140,0.15)' : 'none',
                     }}
                   >
@@ -339,7 +339,7 @@ export function Booking() {
                             <span
                               key={day}
                               className="text-xs px-2 py-0.5 rounded-lg font-medium"
-                              style={{ background: '#FFF5F9', color: '#E91E8C' }}
+                              style={{ background: '#FFF8F4', color: '#E91E8C' }}
                             >
                               {day.slice(0, 3)}
                             </span>
@@ -392,7 +392,7 @@ export function Booking() {
                           <span
                             key={day}
                             className="text-xs px-2.5 py-1 rounded-lg font-semibold"
-                            style={{ background: '#FFF5F9', color: '#E91E8C', border: '1px solid rgba(233,30,140,0.2)' }}
+                            style={{ background: '#FFF8F4', color: '#E91E8C', border: '1px solid rgba(233,30,140,0.2)' }}
                           >
                             {day}
                           </span>
@@ -470,7 +470,7 @@ export function Booking() {
                         className="p-4 rounded-xl border-2 text-left transition-all duration-200"
                         style={{
                           borderColor: booking.isNewPatient === val ? '#E91E8C' : '#E5E7EB',
-                          background: booking.isNewPatient === val ? '#FFF5F9' : 'white',
+                          background: booking.isNewPatient === val ? '#FFF8F4' : 'white',
                         }}
                       >
                         <div className="flex items-start justify-between">
@@ -643,7 +643,7 @@ export function Booking() {
                       <div className="flex items-center gap-2">
                         <User size={14} style={{ color: '#E91E8C' }} />
                         <span className="text-sm font-semibold" style={{ color: '#1A1A2E' }}>{booking.name}</span>
-                        <span className="text-xs px-2 py-0.5 rounded-lg font-medium" style={{ background: '#FFF5F9', color: '#E91E8C' }}>
+                        <span className="text-xs px-2 py-0.5 rounded-lg font-medium" style={{ background: '#FFF8F4', color: '#E91E8C' }}>
                           {booking.isNewPatient ? 'Pasien Baru' : 'Pasien Lama'}
                         </span>
                       </div>
@@ -834,8 +834,8 @@ export function Booking() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
             {[
-              { icon: <CheckCircle size={20} style={{ color: '#10B981' }} />, title: 'Konfirmasi Cepat', desc: 'Respon dalam 1×24 jam' },
-              { icon: <Calendar size={20} style={{ color: '#4FC3F7' }} />, title: 'Penjadwalan Fleksibel', desc: 'Buka Senin - Sabtu' },
+              { icon: <CheckCircle size={20} style={{ color: '#D4A017' }} />, title: 'Konfirmasi Cepat', desc: 'Respon dalam 1×24 jam' },
+              { icon: <Calendar size={20} style={{ color: '#D4A017' }} />, title: 'Penjadwalan Fleksibel', desc: 'Buka Senin - Sabtu' },
               { icon: <ArrowRight size={20} style={{ color: '#E91E8C' }} />, title: 'Gratis Konsultasi', desc: 'Untuk pasien baru' },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 justify-center sm:justify-start">
