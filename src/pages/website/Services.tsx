@@ -198,7 +198,7 @@ export function Services() {
                       <ul className="text-sm text-[#6B7280] space-y-1">
                         {detail.benefits.map((b) => (
                           <li key={b} className="flex items-start gap-2">
-                            <CheckCircle size={16} className="text-[#06B6D4] flex-shrink-0 mt-0.5" />
+                            <CheckCircle size={16} className="text-[#D4A017] flex-shrink-0 mt-0.5" />
                             {b}
                           </li>
                         ))}

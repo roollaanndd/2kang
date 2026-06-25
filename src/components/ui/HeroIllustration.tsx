@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 
 /* Floating sparkle orbit */
 function Sparkle({ x, y, size, delay }: { x: number; y: number; size: number; delay: number }) {
@@ -71,7 +71,7 @@ function Person({
 }
 
 /* Child silhouette — smaller and cuter */
-function Child({ cx, cy, skinTone = '#FDBCB4', shirtColor = AQUA, hairColor = '#2D1B00', female = false }: {
+function Child({ cx, cy, skinTone = '#FDBCB4', shirtColor = GOLD, hairColor = '#2D1B00', female = false }: {
   cx: number; cy: number; skinTone?: string; shirtColor?: string; hairColor?: string; female?: boolean;
 }) {
   return (
@@ -144,7 +144,7 @@ function PatientsBadge({ x, y }: { x: number; y: number }) {
     >
       <rect x={x - 50} y={y - 24} width="100" height="48" rx="14" fill="white" opacity="0.96" filter="url(#shadow)" />
       {[0, 1, 2].map(i => (
-        <circle key={i} cx={x - 22 + i * 14} cy={y - 2} r="9" fill={[PINK, AQUA, ROSE][i]} opacity="0.9" />
+        <circle key={i} cx={x - 22 + i * 14} cy={y - 2} r="9" fill={[PINK, GOLD, ROSE][i]} opacity="0.9" />
       ))}
       <text x={x + 24} y={y + 4} fontSize="12" fontWeight="800" fill="#111827">+20K</text>
       <text x={x - 44} y={y + 18} fontSize="8" fill="#9CA3AF" fontWeight="600">Pasien Puas</text>
@@ -168,7 +168,7 @@ export function HeroIllustration({ width = 520, height = 560 }: { width?: number
         </filter>
         <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor={PINK} stopOpacity="0.06" />
-          <stop offset="100%" stopColor={AQUA} stopOpacity="0.04" />
+          <stop offset="100%" stopColor={GOLD} stopOpacity="0.04" />
         </linearGradient>
         <linearGradient id="groundGrad" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor={PINK} stopOpacity="0.06" />
@@ -176,7 +176,7 @@ export function HeroIllustration({ width = 520, height = 560 }: { width?: number
         </linearGradient>
         <linearGradient id="circleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor={PINK} stopOpacity="0.08" />
-          <stop offset="100%" stopColor={AQUA} stopOpacity="0.05" />
+          <stop offset="100%" stopColor={GOLD} stopOpacity="0.05" />
         </linearGradient>
       </defs>
 
@@ -223,7 +223,7 @@ export function HeroIllustration({ width = 520, height = 560 }: { width?: number
         {/* Child (girl) */}
         <Child
           cx={width * 0.5} cy={groundY - 20}
-          skinTone="#FDBCB4" shirtColor={AQUA} hairColor="#2D1B00" female
+          skinTone="#FDBCB4" shirtColor={GOLD} hairColor="#2D1B00" female
         />
       </motion.g>
 

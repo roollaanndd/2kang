@@ -87,7 +87,7 @@ export function Navbar() {
           className="absolute top-0 left-0 h-0.5 transition-all duration-100"
           style={{
             width: `${scrollProgress}%`,
-            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
             opacity: scrolled ? 1 : 0,
           }}
         />
@@ -235,7 +235,7 @@ export function Navbar() {
                 onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = '#F9FAFB'}
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
               >
-                <Monitor size={15} style={{ color: '#06B6D4' }} />
+                <Monitor size={15} style={{ color: '#D4A017' }} />
                 Coba Kiosk
               </Link>
 

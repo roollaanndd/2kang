@@ -10,7 +10,7 @@ import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 
 // ── Page-transition loading bar ──────────────────────────────────────────────
 function PageTransitionBar() {
@@ -37,7 +37,7 @@ function PageTransitionBar() {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           style={{
             position: 'fixed', top: 0, left: 0, right: 0, height: 3,
-            background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+            background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`,
             zIndex: 9990, pointerEvents: 'none',
           }}
         />
@@ -138,7 +138,7 @@ function ReadingProgressBar() {
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: 3, zIndex: 60, pointerEvents: 'none' }} aria-hidden>
       <div style={{
         height: '100%', width: `${progress}%`,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
         transition: 'width 0.1s linear', willChange: 'width',
       }} />
     </div>

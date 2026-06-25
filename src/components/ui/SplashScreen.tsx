@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 const SHOWN_KEY = 'omdc_splash_shown';
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 export function SplashScreen() {
@@ -44,15 +44,15 @@ export function SplashScreen() {
             transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
             style={{
               position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-              background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`,
+              background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`,
             }}
           />
 
           {/* Floating background teeth */}
           {([
             { x: 8, y: 12, s: 80, d: 0, c: PINK },
-            { x: 76, y: 6, s: 64, d: 0.5, c: AQUA },
-            { x: 4, y: 65, s: 48, d: 1.2, c: AQUA },
+            { x: 76, y: 6, s: 64, d: 0.5, c: GOLD },
+            { x: 4, y: 65, s: 48, d: 1.2, c: GOLD },
             { x: 82, y: 62, s: 56, d: 0.8, c: PINK },
           ] as const).map((sh, i) => (
             <motion.div key={i}
@@ -129,7 +129,7 @@ export function SplashScreen() {
             transition={{ delay: 0.75 }}
             style={{ display: 'flex', gap: 8 }}
           >
-            {([PINK, ROSE, AQUA] as const).map((c, i) => (
+            {([PINK, ROSE, GOLD] as const).map((c, i) => (
               <motion.div
                 key={i}
                 animate={{ scale: [1, 1.55, 1], opacity: [0.25, 1, 0.25] }}
@@ -142,7 +142,7 @@ export function SplashScreen() {
           {/* Bottom strip */}
           <div style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, height: 3,
-            background: `linear-gradient(90deg, ${AQUA}, ${ROSE}, ${PINK})`,
+            background: `linear-gradient(90deg, ${GOLD}, ${ROSE}, ${PINK})`,
           }} />
         </motion.div>
       )}
