@@ -1,5 +1,14 @@
 # OMDC Dental - Project Phases
 
+## AI Tooling
+
+| Tool | Purpose | Install |
+|---|---|---|
+| **Ponytail** | Minimal code generation plugin | `npm install -g @dietrichgebert/ponytail` or `/plugin install ponytail@ponytail` in Claude Code |
+| **Remotion** | Video/animation rendering | Already in `package.json` — `npm run remotion` |
+
+---
+
 ## Overview
 Complete dental clinic management system for OMDC Dental ("Senyum Sehat, Percaya Diri Penuh")
 
@@ -20,12 +29,14 @@ Complete dental clinic management system for OMDC Dental ("Senyum Sehat, Percaya
 - [x] React Router v6 setup
 - [x] PWA manifest + vite-plugin-pwa config
 
-**Brand**:
+**Brand** (current — Moms & Kids Edition):
 - Primary Pink: #E91E8C
-- Pink Light: #FF6BB5
-- Blue Accent: #4FC3F7
-- Background: #FFF5F9
-- Font: Inter
+- Pink Light / Rose: #FF6BB5
+- Gold Accent: #D4A017 (replaces old Blue Accent #4FC3F7)
+- Background: #FFF8F4 (warm cream — NO dark/navy backgrounds anywhere)
+- Font: Plus Jakarta Sans
+
+> **Rule**: No dark/black backgrounds on any platform. DARK (#0D1421) is text-only.
 
 ---
 

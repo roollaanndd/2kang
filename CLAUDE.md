@@ -1,5 +1,29 @@
 # OMDC Dental App — Codebase Guide
 
+## AI Agent Plugins
+
+### Ponytail (globally installed)
+[Ponytail](https://github.com/DietrichGebert/ponytail) — makes the AI agent write minimal, efficient code ("laziest senior dev in the room").
+
+**Install once per machine:**
+```bash
+npm install -g @dietrichgebert/ponytail
+# or inside Claude Code:
+/plugin install ponytail@ponytail
+```
+
+**Modes:** `lite` / `full` / `ultra` / `off`  
+**Review command:** `/ponytail-review` — audits for over-engineering  
+**Effect:** ~46–54% less generated code, ~20% cheaper, ~27% faster
+
+When writing new components or features in this project, apply Ponytail principles:
+- Skip code that isn't needed
+- Reuse existing components (`AnimatedDentalBg`, `OmdcLogo`, `DentalServiceIcon`, etc.)
+- No abstractions beyond what the task requires
+- Three similar lines is better than a premature abstraction
+
+---
+
 ## Project Overview
 
 **OMDC Dental** is a multi-platform dental clinic management suite built with React 19 + TypeScript + Vite 6 + Tailwind CSS v4. It comprises three distinct frontends sharing a single codebase:
@@ -26,14 +50,16 @@
 ```
 PINK  #E91E8C   — primary CTA, accents
 ROSE  #FF6BB5   — gradient pair with PINK
-AQUA  #06B6D4   — secondary accent
-DARK  #0D1421   — primary text
+GOLD  #D4A017   — warm accent (replaces AQUA)
+DARK  #0D1421   — primary TEXT color only (NEVER use as background)
+CREAM #FFF8F4   — warm page background default
 ```
 
 ### Signature Elements (apply to EVERY screen)
-- **3px top strip**: `linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)` — positioned `absolute top-0 left-0 right-0 height:3px`
+- **3px top strip**: `linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)` — positioned `absolute top-0 left-0 right-0 height:3px`
 - **No blob/radial-gradient backgrounds** anywhere — use `AnimatedDentalBg` instead
 - **No dark or vivid full-screen pink** backgrounds — light/white theme throughout
+- **NO BLACK OR DARK BACKGROUNDS ANYWHERE** — `#0D1421` (DARK) is for text/icons only; never use as `background`. Allowed alternatives: warm cream `#FFF8F4`, white `#FFFFFF`, light pink `#FFF0FA`, or a vibrant PINK→ROSE→GOLD gradient for hero/card panels.
 - Buttons: `border-radius: 14–18px`, gradient pink primary, white secondary with pink border
 
 ### Shared Components
@@ -165,10 +191,11 @@ export const APP_BUILD_DATE = '2026-06-21';
 
 1. **No radial-gradient blobs** anywhere in backgrounds
 2. **No dark/vivid full-screen pink gradients** — light theme only
-3. **Every screen** has the 3px `linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)` strip at top
+3. **Every screen** has the 3px `linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)` strip at top
 4. **Named exports** for all screens and components (no `export default` on screens)
 5. **Pink primary** `#E91E8C` only — never substitute with other pinks
 6. **Illustrations** use inline SVG — no external 3D asset dependencies
+7. **NO BLACK OR DARK BACKGROUNDS** — applies to ALL platforms (website, mobile app, eKiosk). `#0D1421` (DARK) is reserved for text and icons only. Card/panel backgrounds that need contrast must use `linear-gradient(160deg, #E91E8C, #FF6BB5, #ffd8e6)` (vibrant pink) — never `#0D1421`, `#000`, `#111`, `#1a...`, or any navy/charcoal as a background. Page backgrounds must be warm cream `#FFF8F4`, white, or light pink `#FFF0FA`.
 
 ## Git / Deploy
 

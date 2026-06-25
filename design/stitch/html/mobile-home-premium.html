@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>OMDC Dental - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#E91E8C",
+                        primaryLight: "#FF6BB5",
+                        secondary: "#06B6D4",
+                        dark: "#0D1421",
+                        muted: "#6B7280",
+                        bgLight: "#FFF5F9",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        "2xl": "1.75rem",
+                        full: "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        display: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        label: ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            background-color: #FAFAFA;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</head>
+<body class="font-body text-dark antialiased bg-gray-50 flex flex-col min-h-screen">
+<!-- 1. BRAND STRIP -->
+<div class="fixed top-0 left-0 w-full h-[3px] bg-gradient-to-r from-[#E91E8C] via-[#FF6BB5] to-[#06B6D4] z-[60]"></div>
+<!-- 2. TOP HEADER -->
+<header class="fixed top-[3px] w-full z-50 flex justify-between items-center px-4 h-16 bg-gradient-to-r from-[#E91E8C] to-[#FF6BB5] shadow-sm">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-white p-1 shadow-sm flex items-center justify-center overflow-hidden">
+<img alt="OMDC Logo" class="w-full h-full object-contain" data-alt="A clean, minimalist pink heart shaped logo with a cross inside, representing a dental or medical clinic, isolated on a white background, highly detailed vector graphic style." src="https://lh3.googleusercontent.com/aida/AP1WRLukMLkGS0Qj6V6-1-beiUEABY84lGV2M9g5KO12JahD7yfMgtPl4F7F6wFzBCKuiKGP3QN8o2g5cWnpp9XRNtmN6BRNaB03iaRGF8u-CwD4DN9xRkwu-s8JGrJK8eOfkRQVI97Rw4IP2AugSkevfvBDCWAySV_kssLfP0sqTRkaE_gpgv8v5SNbJ4I4kzu7dst8XwZ-3nXTTqQ3oX132bj9jNYLZetwpwPNz_Xhh_HVPzazDhAjVqF4TDc"/>
+</div>
+<span class="font-headline font-bold text-white text-lg tracking-tight">Dental</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="relative p-2 text-white hover:bg-white/20 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-[#06B6D4] rounded-full border-2 border-[#FF6BB5]"></span>
+</button>
+<div class="w-8 h-8 rounded-full border-2 border-white/50 overflow-hidden bg-white/20">
+<img class="w-full h-full object-cover" data-alt="A high quality, professional headshot of a smiling young woman with dark hair, warm natural lighting, white background, suitable for a user avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeBN7yddAuuDdJ9qt13_JwNqJcN8tAvyrAE7aIrMYACl_Xwrz6-D66oqh8OzlMsIPVjxTRVyIAibPixd_W3H2RG6zaDzvKokmIRmPL81MZ2xXqJzAg18gOIyFRDEAhRwxAw-sd3a7oKoIARapEDVyP9SqBhIwaJ8Bqw-hJGMe3xI-5t-eiqvNzBzzIuz_xIT4OqczilwFqIlHSHUHQeBWqsB1-xF81oy7SlSltRdHFeJ5FaBRHxEZoD1xyfetT9_dO014LICFP_d4"/>
+</div>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT -->
+<main class="flex-1 mt-[67px] mb-20 px-4 pt-6 pb-6 overflow-y-auto hide-scrollbar flex flex-col gap-8 max-w-[430px] mx-auto w-full">
+<!-- 3. HERO GREETING CARD -->
+<section class="bg-[#0D1421] rounded-[20px] p-6 relative overflow-hidden shadow-lg h-[160px] flex items-center justify-between">
+<div class="absolute -right-4 -top-10 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
+<div class="relative z-10 max-w-[60%]">
+<h1 class="font-headline font-bold text-white text-[24px] leading-tight mb-1">Halo, Sarah!</h1>
+<p class="font-body text-white/70 text-[14px] leading-snug">Apa yang bisa kami bantu hari ini?</p>
+</div>
+<div class="relative z-10 w-24 h-24 flex items-center justify-center opacity-90">
+<!-- Clean CSS tooth illustration -->
+<span class="material-symbols-outlined text-[80px] text-white/90 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" style="font-variation-settings: 'FILL' 1;">dentistry</span>
+</div>
+</section>
+<!-- 4. QUICK ACTION ROW -->
+<section class="flex justify-between items-center gap-2">
+<!-- Action 1 -->
+<button class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-50 group-active:bg-pink-50">
+<span class="material-symbols-outlined text-[#E91E8C] text-[28px]" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+</div>
+<span class="font-label text-[12px] font-medium text-dark">Booking</span>
+</button>
+<!-- Action 2 -->
+<button class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-50 group-active:bg-cyan-50">
+<span class="material-symbols-outlined text-[#06B6D4] text-[28px]" style="font-variation-settings: 'FILL' 1;">reorder</span>
+</div>
+<span class="font-label text-[12px] font-medium text-dark">Antrian</span>
+</button>
+<!-- Action 3 -->
+<button class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-50 group-active:bg-amber-50">
+<span class="material-symbols-outlined text-amber-500 text-[28px]" style="font-variation-settings: 'FILL' 1;">history</span>
+</div>
+<span class="font-label text-[12px] font-medium text-dark">Riwayat</span>
+</button>
+<!-- Action 4 -->
+<button class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-50 group-active:bg-purple-50">
+<span class="material-symbols-outlined text-purple-500 text-[28px]" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<span class="font-label text-[12px] font-medium text-dark">Profil</span>
+</button>
+</section>
+<!-- 5. SECTION LABEL & 6. SERVICE GRID -->
+<section class="flex flex-col gap-4">
+<div class="flex justify-between items-end px-1">
+<h2 class="font-headline font-bold text-dark text-[18px]">Layanan Kami</h2>
+<a class="font-label text-[13px] font-medium text-[#06B6D4] hover:underline" href="#">Lihat Semua</a>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Service Card 1 -->
+<div class="bg-white rounded-[16px] p-4 shadow-sm border border-pink-50/50 flex flex-col items-start gap-3 active:bg-gray-50 transition-colors">
+<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E91E8C] to-[#FF6BB5] flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">stethoscope</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-dark text-[14px]">Pemeriksaan</h3>
+</div>
+</div>
+<!-- Service Card 2 -->
+<div class="bg-white rounded-[16px] p-4 shadow-sm border border-pink-50/50 flex flex-col items-start gap-3 active:bg-gray-50 transition-colors">
+<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#06B6D4] to-cyan-300 flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-dark text-[14px]">Tambal Gigi</h3>
+</div>
+</div>
+<!-- Service Card 3 -->
+<div class="bg-white rounded-[16px] p-4 shadow-sm border border-pink-50/50 flex flex-col items-start gap-3 active:bg-gray-50 transition-colors">
+<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-300 flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">cleaning_services</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-dark text-[14px]">Scaling</h3>
+</div>
+</div>
+<!-- Service Card 4 -->
+<div class="bg-white rounded-[16px] p-4 shadow-sm border border-pink-50/50 flex flex-col items-start gap-3 active:bg-gray-50 transition-colors">
+<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-400 flex items-center justify-center shadow-inner">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-dark text-[14px]">Bleaching</h3>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. PROMO BANNER -->
+<section class="bg-gradient-to-r from-[#E91E8C] to-[#FF6BB5] rounded-[20px] p-5 shadow-md h-[120px] flex items-center justify-between relative overflow-hidden">
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+<div class="flex flex-col gap-1 z-10 max-w-[65%]">
+<h2 class="font-headline font-bold text-white text-[18px]">Promo Bulan Ini</h2>
+<p class="font-body text-white/90 text-[13px]">Diskon 30% Scaling</p>
+</div>
+<button class="z-10 bg-white text-[#E91E8C] font-headline font-bold text-[13px] px-5 py-2.5 rounded-full shadow-sm hover:scale-105 transition-transform active:bg-pink-50">
+                Lihat
+            </button>
+</section>
+<!-- 8 & 9. DOCTOR SECTION -->
+<section class="flex flex-col gap-4 -mx-4 px-4 overflow-hidden">
+<div class="flex justify-between items-end px-1">
+<div class="flex items-center gap-2">
+<h2 class="font-headline font-bold text-dark text-[18px]">Dokter Kami</h2>
+<span class="bg-[#E91E8C]/10 text-[#E91E8C] text-[10px] font-bold px-2 py-0.5 rounded-full">12+</span>
+</div>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-4 pb-4 -mx-4 px-4 snap-x">
+<!-- Doctor Card 1 -->
+<div class="min-w-[150px] bg-white rounded-[18px] p-4 shadow-sm border border-pink-50 flex flex-col items-center text-center snap-start">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-gradient-to-br from-[#E91E8C] to-[#06B6D4] mb-3">
+<img alt="Dr. Sarah Wijaya" class="w-full h-full object-cover rounded-full border-2 border-white" data-alt="A professional studio portrait of an Asian female dentist wearing a white coat, smiling warmly, with light gray background, highly detailed photography." src="https://lh3.googleusercontent.com/aida/AP1WRLtuD-nCesOW1ln-xvjI14C7YMllTDyLMnI-1URx4lvQE9dHbuKZ63ySkne8BZPVphisUxS80T3H0CaVUgd6i6fEkbTXird-TZsZuqUP8bL95_Yf15T2Z7Yl-alCtXY4w4eJZ9AmmcZgVOb1eSz9lfCc-a9N9UxZQ5v-o7Pwqhnglkofv50uJKGxYXoFW6U86haYXpPs2-uMAB_GOoal8J-yFGaSeuiEbY9TqcDPcEdxJ9z0ckRV6MKaSg"/>
+</div>
+<h3 class="font-headline font-bold text-dark text-[14px] leading-tight mb-1 line-clamp-1">drg. Sarah Wijaya</h3>
+<p class="font-body text-muted text-[11px] mb-2">Sp. Konservasi Gigi</p>
+<div class="flex items-center gap-1 text-amber-400">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label text-dark text-[12px] font-bold">4.9</span>
+</div>
+</div>
+<!-- Doctor Card 2 -->
+<div class="min-w-[150px] bg-white rounded-[18px] p-4 shadow-sm border border-pink-50 flex flex-col items-center text-center snap-start">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-gray-200 mb-3">
+<img class="w-full h-full object-cover rounded-full border-2 border-white" data-alt="A professional studio portrait of a male dentist wearing scrubs and a white coat, smiling confidently, bright clean lighting, medical office background, highly detailed photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_LCpggUyVn8YuX9zcA1uKHnxbd7kSmgX_Mbvhqt4AtmmOGdb6vTKtoApPwxm_B1ZQ2BUIG_YLq7EFmvyY1WJXl8ocaVdFltrHzt5-SmvrS2Hu7B2OP14bnD0DED9PUpEMvvlK8wXpSASeuZRcA1dxSFE9njue-jw4NycrWlY_xMu1uclGlXg_AFKf6fZhjejj_hQQNGkxIb5cXUtEPVYbaMd5MKujJsmbdEU3FQSSfeHbybmJ-8-s9DA8vUMJvAMsqsGzH2pM1_0"/>
+</div>
+<h3 class="font-headline font-bold text-dark text-[14px] leading-tight mb-1 line-clamp-1">drg. Budi Santoso</h3>
+<p class="font-body text-muted text-[11px] mb-2">Dokter Gigi Umum</p>
+<div class="flex items-center gap-1 text-amber-400">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label text-dark text-[12px] font-bold">4.8</span>
+</div>
+</div>
+<!-- Doctor Card 3 -->
+<div class="min-w-[150px] bg-white rounded-[18px] p-4 shadow-sm border border-pink-50 flex flex-col items-center text-center snap-start pr-4">
+<div class="w-[72px] h-[72px] rounded-full p-[2px] bg-gray-200 mb-3">
+<img class="w-full h-full object-cover rounded-full border-2 border-white" data-alt="A professional studio portrait of a female orthodontist wearing a white coat, smiling warmly, clean well lit background, highly detailed photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs7FF-28h2aVXOa802i93FXRyHoYB5TVUXLg4BAuYWOERNe1OriZgTVQtoSor4oouPNRyTHzzrSe64XtAkFHuCuX_AxPtb2SXVqnwMnwdrAPJoKafxv3gCrVymiAwirPRE-vsge976Um53guMtC3S-iGJMPayN9Ix_cltwg4iagi54ytljrKW9p_EL3Lb5BqQDHDA1kYAUfL_GRTMcmZJORjKtzO10EABy5aYq1DmRJn1xt2lN1-M1-ej05T2Cw0vCGk4ftiY1mzo"/>
+</div>
+<h3 class="font-headline font-bold text-dark text-[14px] leading-tight mb-1 line-clamp-1">drg. Anita Putri</h3>
+<p class="font-body text-muted text-[11px] mb-2">Sp. Ortodonsia</p>
+<div class="flex items-center gap-1 text-amber-400">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label text-dark text-[12px] font-bold">5.0</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- 10. BOTTOM NAV BAR (From JSON) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-white pb-safe rounded-t-xl border-t border-pink-50 shadow-[0_-4px_12px_rgba(233,30,140,0.05)] shadow-lg max-w-[430px] left-1/2 -translate-x-1/2">
+<!-- Home (Active) -->
+<a class="flex flex-col items-center justify-center text-[#E91E8C] font-bold Active: scale-110 transition-transform duration-300 hover:text-[#E91E8C] transition-colors w-[60px]" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label text-[10px] font-medium leading-none">Home</span>
+</a>
+<!-- Booking -->
+<a class="flex flex-col items-center justify-center text-[#6B7280] hover:text-[#E91E8C] transition-colors w-[60px]" href="#">
+<span class="material-symbols-outlined mb-1">calendar_month</span>
+<span class="font-label text-[10px] font-medium leading-none">Booking</span>
+</a>
+<!-- Antrian -->
+<a class="flex flex-col items-center justify-center text-[#6B7280] hover:text-[#E91E8C] transition-colors w-[60px]" href="#">
+<span class="material-symbols-outlined mb-1">reorder</span>
+<span class="font-label text-[10px] font-medium leading-none">Antrian</span>
+</a>
+<!-- Promo -->
+<a class="flex flex-col items-center justify-center text-[#6B7280] hover:text-[#E91E8C] transition-colors w-[60px]" href="#">
+<span class="material-symbols-outlined mb-1">local_offer</span>
+<span class="font-label text-[10px] font-medium leading-none">Promo</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-[#6B7280] hover:text-[#E91E8C] transition-colors w-[60px]" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label text-[10px] font-medium leading-none">Profile</span>
+</a>
+</nav>
+</body></html>

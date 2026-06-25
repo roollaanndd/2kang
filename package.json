@@ -8,10 +8,19 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "remotion": "remotion studio src/remotion/index.tsx",
+    "remotion:render": "remotion render src/remotion/index.tsx",
+    "remotion:render:promo": "remotion render src/remotion/index.tsx OmdcPromo out/promo-square.mp4",
+    "remotion:render:promo-wide": "remotion render src/remotion/index.tsx OmdcPromoWide out/promo-wide.mp4",
+    "remotion:render:promo-story": "remotion render src/remotion/index.tsx OmdcPromoStory out/promo-story.mp4",
+    "remotion:render:queue": "remotion render src/remotion/index.tsx OmdcQueue out/queue-display.mp4",
+    "remotion:render:onboarding": "remotion render src/remotion/index.tsx OmdcOnboarding out/onboarding.mp4"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@remotion/cli": "^4.0.482",
+    "@remotion/player": "^4.0.482",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
@@ -23,6 +32,7 @@
     "react-dom": "^19.0.1",
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.18.0",
+    "remotion": "^4.0.482",
     "vite": "^6.2.3"
   },
   "devDependencies": {

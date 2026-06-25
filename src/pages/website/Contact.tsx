@@ -309,13 +309,14 @@ export function Contact() {
                 className="rounded-2xl overflow-hidden"
                 style={{ border: '1px solid #E5E7EB', height: 280 }}
               >
-                {mapEmbed ? (
+                {mapEmbed && /^https:\/\/(www\.)?google\.com\/maps\//.test(mapEmbed) ? (
                   <iframe
                     src={mapEmbed}
                     className="w-full h-full border-0"
                     title="Lokasi Klinik"
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
+                    sandbox="allow-scripts allow-same-origin"
                   />
                 ) : (
                   <div className="w-full h-full relative overflow-hidden rounded-2xl">

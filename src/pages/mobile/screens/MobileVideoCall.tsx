@@ -51,13 +51,13 @@ export function MobileVideoCall({ state, setState }: Props) {
   return (
     <div style={{
       position: 'relative', width: '100%', height: '100%',
-      background: '#0D1421', overflow: 'hidden',
+      background: `linear-gradient(160deg, #c0196e 0%, #E91E8C 50%, #FF6BB5 100%)`, overflow: 'hidden',
       display: 'flex', flexDirection: 'column',
     }}>
       {/* Doctor "video" background — gradient avatar stand-in */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: 'linear-gradient(160deg, #1a1f35 0%, #0D1421 60%, #0d2035 100%)',
+        background: 'linear-gradient(160deg, #c0196e 0%, #E91E8C 60%, #FF6BB5 100%)',
       }} />
 
       {/* Animated pulse rings behind avatar */}
