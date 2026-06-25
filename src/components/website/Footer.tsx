@@ -7,7 +7,8 @@ import { CLINIC_ADDRESS, CLINIC_PHONE, CLINIC_EMAIL, CLINIC_HOURS } from '../../
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
+
 const DARK = '#0D1421';
 
 const NAV_LINKS = [
@@ -32,7 +33,7 @@ export function Footer() {
     <footer style={{ background: '#FFFFFF' }}>
       {/* ── PRE-FOOTER CTA BAND ─────────────────────────────────────── */}
       <div style={{
-        background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
+        background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${GOLD} 100%)`,
         padding: '44px 0',
         position: 'relative',
         overflow: 'hidden',
@@ -87,7 +88,7 @@ export function Footer() {
       {/* ── MAIN FOOTER ─────────────────────────────────────────────── */}
       <div style={{ background: '#F8F9FB', borderTop: '1px solid rgba(0,0,0,0.04)' }}>
         {/* Signature gradient strip */}
-        <div style={{ height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})` }} />
+        <div style={{ height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})` }} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40, alignItems: 'start' }}>

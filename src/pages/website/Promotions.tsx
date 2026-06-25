@@ -23,7 +23,7 @@ const PROMO_CODES: Record<string, string> = {
 const BADGE_LABELS: Record<string, { label: string; bg: string }> = {
   p1: { label: 'Diskon 50%', bg: '#ef4444' },
   p2: { label: 'Spesial', bg: 'linear-gradient(135deg, #E91E8C, #FF6BB5)' },
-  p3: { label: 'Keluarga', bg: '#06B6D4' },
+  p3: { label: 'Keluarga', bg: '#D4A017' },
 };
 
 const extendedPromos = [

@@ -20,7 +20,7 @@ export function OmdcLogo({ size = 'md', variant = 'default', showText = true }: 
 
   const s = sizes[size];
   const textColor = variant === 'white' ? 'text-white' : variant === 'dark' ? 'text-gray-900' : 'text-[#E91E8C]';
-  const subColor = variant === 'white' ? 'text-white/80' : 'text-[#06B6D4]';
+  const subColor = variant === 'white' ? 'text-white/80' : 'text-[#D4A017]';
 
   if (logoUrl) {
     const h = s.icon * 1.5;

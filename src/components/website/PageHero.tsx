@@ -4,19 +4,20 @@ import { ChevronRight, Star } from 'lucide-react';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
+
 const DARK = '#0D1421';
 
 // Identical geometric shapes to Home's AnimatedHeroBg (light mode only)
 function HeroBg() {
   const shapes = [
     { x: 90, y: -4,  s: 80,  d: 0,   t: 15, c: PINK, o: 0.04,  sh: 'tooth'   },
-    { x: 2,  y: 8,   s: 88, d: 1.6, t: 13, c: AQUA, o: 0.035, sh: 'ring'    },
+    { x: 2,  y: 8,   s: 88, d: 1.6, t: 13, c: GOLD, o: 0.035, sh: 'ring'    },
     { x: 78, y: 55,  s: 24,  d: 0.9, t: 9,  c: PINK, o: 0.05,  sh: 'plus'    },
     { x: 4,  y: 62,  s: 58,  d: 2.3, t: 17, c: PINK, o: 0.035, sh: 'tooth'   },
-    { x: 88, y: 72,  s: 18,  d: 1.2, t: 8,  c: AQUA, o: 0.06,  sh: 'sparkle' },
+    { x: 88, y: 72,  s: 18,  d: 1.2, t: 8,  c: GOLD, o: 0.06,  sh: 'sparkle' },
     { x: 50, y: 88,  s: 62,  d: 0.5, t: 12, c: PINK, o: 0.028, sh: 'ring'    },
-    { x: 94, y: 30,  s: 20,  d: 1.9, t: 10, c: AQUA, o: 0.055, sh: 'plus'    },
+    { x: 94, y: 30,  s: 20,  d: 1.9, t: 10, c: GOLD, o: 0.055, sh: 'plus'    },
     { x: 8,  y: 30,  s: 16,  d: 0.3, t: 7,  c: PINK, o: 0.07,  sh: 'sparkle' },
   ];
 
@@ -159,7 +160,7 @@ export function PageHero({
               fontWeight: 900, lineHeight: 1.05, letterSpacing: '-1.5px',
               margin: 0, marginBottom: 20,
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
+              background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${GOLD} 100%)`,
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>
               {titleAccent}
@@ -281,7 +282,7 @@ export function PageHero({
                     <div style={{
                       width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
                       background: floatingCard.color === 'aqua'
-                        ? `linear-gradient(135deg, ${AQUA}, #38BDF8)`
+                        ? `linear-gradient(135deg, ${GOLD}, #F5C842)`
                         : `linear-gradient(135deg, ${PINK}, ${ROSE})`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
@@ -290,7 +291,7 @@ export function PageHero({
                   )}
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: 13, color: DARK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{floatingCard.name}</div>
-                    <div style={{ fontSize: 11, color: floatingCard.color === 'aqua' ? AQUA : PINK, fontWeight: 600, marginBottom: floatingCard.rating ? 4 : 0 }}>{floatingCard.subtitle}</div>
+                    <div style={{ fontSize: 11, color: floatingCard.color === 'aqua' ? GOLD : PINK, fontWeight: 600, marginBottom: floatingCard.rating ? 4 : 0 }}>{floatingCard.subtitle}</div>
                     {floatingCard.rating && (
                       <div style={{ display: 'flex', gap: 2 }}>
                         {[...Array(5)].map((_, i) => <Star key={i} size={10} fill="#F59E0B" color="#F59E0B" />)}

@@ -18,7 +18,7 @@ import { SeoHead } from '../../components/ui/SeoHead';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
-const AQUA = '#06B6D4';
+const GOLD = '#D4A017';
 const DARK = '#0D1421';
 
 // ─── SCROLL-REVEAL HOOK ───────────────────────────────────────────────────────
@@ -90,7 +90,7 @@ function Eyebrow({ text, dark }: { text: string; dark?: boolean }) {
 function GradText({ children, style = {} }: { children: ReactNode; style?: CSSProperties }) {
   return (
     <span style={{
-      background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 50%, ${AQUA} 100%)`,
+      background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 60%, ${GOLD} 100%)`,
       WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
       ...style,
     }}>
@@ -99,22 +99,31 @@ function GradText({ children, style = {} }: { children: ReactNode; style?: CSSPr
   );
 }
 
-// ── ANIMATED PREMIUM HERO BACKGROUND — dental geometry, no blobs ─────────────
+// ── Playful sparkle decoration (4-pointed star) ────────────────────────────────
+function Sparkle({ size = 20, color = PINK, style = {} }: { size?: number; color?: string; style?: CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={style}>
+      <path d="M12 2L13.5 9.5L21 11L13.5 12.5L12 20L10.5 12.5L3 11L10.5 9.5Z" />
+    </svg>
+  );
+}
+
+// ── ANIMATED PLAYFUL HERO BACKGROUND — dental geometry + sparkles ────────────
 function AnimatedHeroBg({ dark = false }: { dark?: boolean }) {
   const w = 'rgba(255,255,255,0.9)';
   const shapes = [
-    { x: 90, y: -4,  s: 92,  d: 0,   t: 15, c: dark ? w : PINK, o: dark ? 0.04 : 0.05,  sh: 'tooth'   },
-    { x: 2,  y: 8,   s: 100, d: 1.6, t: 13, c: dark ? w : AQUA, o: dark ? 0.03 : 0.038, sh: 'ring'    },
-    { x: 78, y: 55,  s: 28,  d: 0.9, t: 9,  c: dark ? w : PINK, o: dark ? 0.04 : 0.06,  sh: 'plus'    },
-    { x: 4,  y: 62,  s: 68,  d: 2.3, t: 17, c: dark ? w : PINK, o: dark ? 0.03 : 0.04,  sh: 'tooth'   },
-    { x: 88, y: 72,  s: 22,  d: 1.2, t: 8,  c: dark ? w : AQUA, o: dark ? 0.05 : 0.07,  sh: 'sparkle' },
-    { x: 50, y: 88,  s: 72,  d: 0.5, t: 12, c: dark ? w : PINK, o: dark ? 0.025: 0.03,  sh: 'ring'    },
-    { x: 94, y: 30,  s: 22,  d: 1.9, t: 10, c: dark ? w : AQUA, o: dark ? 0.045: 0.06,  sh: 'plus'    },
-    { x: 8,  y: 30,  s: 18,  d: 0.3, t: 7,  c: dark ? w : PINK, o: dark ? 0.055: 0.08,  sh: 'sparkle' },
-    { x: 40, y: 3,   s: 52,  d: 3.2, t: 19, c: dark ? w : AQUA, o: dark ? 0.022: 0.028, sh: 'tooth'   },
-    { x: 60, y: 10,  s: 80,  d: 2.6, t: 16, c: dark ? w : AQUA, o: dark ? 0.022: 0.03,  sh: 'ring'    },
-    { x: 20, y: 78,  s: 16,  d: 1.5, t: 8,  c: dark ? w : PINK, o: dark ? 0.04 : 0.055, sh: 'sparkle' },
-    { x: 66, y: 40,  s: 24,  d: 2.9, t: 13, c: dark ? w : PINK, o: dark ? 0.032: 0.042, sh: 'plus'    },
+    { x: 90, y: -4,  s: 92,  d: 0,   t: 15, c: dark ? w : PINK, o: dark ? 0.04 : 0.06,  sh: 'tooth'   },
+    { x: 2,  y: 8,   s: 100, d: 1.6, t: 13, c: dark ? w : GOLD, o: dark ? 0.03 : 0.06,  sh: 'ring'    },
+    { x: 78, y: 55,  s: 28,  d: 0.9, t: 9,  c: dark ? w : GOLD, o: dark ? 0.04 : 0.10,  sh: 'sparkle' },
+    { x: 4,  y: 62,  s: 68,  d: 2.3, t: 17, c: dark ? w : PINK, o: dark ? 0.03 : 0.05,  sh: 'tooth'   },
+    { x: 88, y: 72,  s: 22,  d: 1.2, t: 8,  c: dark ? w : GOLD, o: dark ? 0.05 : 0.12,  sh: 'sparkle' },
+    { x: 50, y: 88,  s: 72,  d: 0.5, t: 12, c: dark ? w : ROSE, o: dark ? 0.025: 0.05,  sh: 'ring'    },
+    { x: 94, y: 30,  s: 22,  d: 1.9, t: 10, c: dark ? w : ROSE, o: dark ? 0.045: 0.09,  sh: 'sparkle' },
+    { x: 8,  y: 30,  s: 18,  d: 0.3, t: 7,  c: dark ? w : PINK, o: dark ? 0.055: 0.12,  sh: 'sparkle' },
+    { x: 40, y: 3,   s: 52,  d: 3.2, t: 19, c: dark ? w : ROSE, o: dark ? 0.022: 0.04,  sh: 'tooth'   },
+    { x: 60, y: 10,  s: 80,  d: 2.6, t: 16, c: dark ? w : GOLD, o: dark ? 0.022: 0.05,  sh: 'ring'    },
+    { x: 20, y: 78,  s: 16,  d: 1.5, t: 8,  c: dark ? w : GOLD, o: dark ? 0.04 : 0.14,  sh: 'sparkle' },
+    { x: 66, y: 40,  s: 24,  d: 2.9, t: 13, c: dark ? w : PINK, o: dark ? 0.032: 0.06,  sh: 'plus'    },
   ];
 
   return (
@@ -222,7 +231,7 @@ function HeroSection() {
   return (
     <section style={{
       position: 'relative',
-      background: hasImages ? '#FFF5F9' : '#FFFFFF',
+      background: hasImages ? '#FFF8F4' : 'linear-gradient(160deg, #FFF8F4 0%, #FFF0FA 50%, #FFFDF0 100%)',
       paddingTop: isMobile ? 92 : 80,
       overflow: 'hidden',
       minHeight: isMobile ? 'auto' : '100dvh',
@@ -244,20 +253,20 @@ function HeroSection() {
         />
       ))}
 
-      {/* ── BLENDED OVERLAYS (light) ── */}
+      {/* ── BLENDED OVERLAYS (light warm) ── */}
       {hasImages && (
         <>
-          {/* Light frosted gradient — opaque on left for dark text, clearing to reveal photo on right */}
+          {/* Warm frosted gradient — opaque on left for dark text, clearing to reveal photo on right */}
           <div style={{
             position: 'absolute', inset: 0, zIndex: 1,
             background: isMobile
-              ? 'linear-gradient(180deg, rgba(255,245,249,0.92) 0%, rgba(255,255,255,0.70) 45%, rgba(255,245,249,0.94) 100%)'
-              : 'linear-gradient(108deg, rgba(255,255,255,0.96) 0%, rgba(255,245,249,0.90) 30%, rgba(255,255,255,0.45) 62%, rgba(255,255,255,0.08) 100%)',
+              ? 'linear-gradient(180deg, rgba(255,248,244,0.94) 0%, rgba(255,255,255,0.72) 45%, rgba(255,248,244,0.95) 100%)'
+              : 'linear-gradient(108deg, rgba(255,255,255,0.97) 0%, rgba(255,248,244,0.92) 30%, rgba(255,255,255,0.45) 62%, rgba(255,255,255,0.08) 100%)',
           }} />
-          {/* Brand tint — pink left, aqua right */}
+          {/* Brand tint — pink left, warm gold right */}
           <div style={{
             position: 'absolute', inset: 0, zIndex: 1,
-            background: `linear-gradient(135deg, rgba(233,30,140,0.08) 0%, transparent 48%, rgba(6,182,212,0.06) 100%)`,
+            background: `linear-gradient(135deg, rgba(233,30,140,0.07) 0%, transparent 48%, rgba(212,160,23,0.05) 100%)`,
           }} />
         </>
       )}
@@ -265,11 +274,29 @@ function HeroSection() {
       {/* ── GEOMETRIC SHAPES (always light theme) ── */}
       <AnimatedHeroBg dark={false} />
 
-      {/* Diagonal accents — only without background images */}
+      {/* Playful floating sparkles — always visible */}
+      <motion.div animate={{ y: [-8, 8, -8], rotate: [0, 15, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ position: 'absolute', top: '12%', right: '8%', zIndex: 2, pointerEvents: 'none' }}>
+        <Sparkle size={32} color={GOLD} style={{ opacity: 0.7 }} />
+      </motion.div>
+      <motion.div animate={{ y: [6, -6, 6], rotate: [0, -12, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+        style={{ position: 'absolute', top: '22%', right: '18%', zIndex: 2, pointerEvents: 'none' }}>
+        <Sparkle size={18} color={PINK} style={{ opacity: 0.5 }} />
+      </motion.div>
+      <motion.div animate={{ y: [-5, 9, -5], rotate: [0, 20, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
+        style={{ position: 'absolute', bottom: '22%', right: '5%', zIndex: 2, pointerEvents: 'none' }}>
+        <Sparkle size={24} color={ROSE} style={{ opacity: 0.6 }} />
+      </motion.div>
+      <motion.div animate={{ y: [4, -8, 4], rotate: [0, -18, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        style={{ position: 'absolute', top: '60%', right: '14%', zIndex: 2, pointerEvents: 'none' }}>
+        <Sparkle size={14} color={GOLD} style={{ opacity: 0.8 }} />
+      </motion.div>
+
+      {/* Diagonal warm accents — only without background images */}
       {!hasImages && (
         <>
-          <div style={{ position: 'absolute', top: '20%', right: '-4%', width: '52%', height: 3, background: `linear-gradient(90deg, transparent, ${PINK}22, ${AQUA}28, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', top: '27%', right: '-1%', width: '38%', height: 2, background: `linear-gradient(90deg, transparent, ${AQUA}14, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: '20%', right: '-4%', width: '52%', height: 3, background: `linear-gradient(90deg, transparent, ${ROSE}30, ${GOLD}30, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: '27%', right: '-1%', width: '38%', height: 2, background: `linear-gradient(90deg, transparent, ${GOLD}18, transparent)`, transform: 'rotate(-6deg)', pointerEvents: 'none' }} />
         </>
       )}
 
@@ -304,7 +331,7 @@ function HeroSection() {
                   initial={{ opacity: 0, scale: 0.82, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ delay: 0.24 + i * 0.07 }}
                   style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(233,30,140,0.16)', backdropFilter: 'blur(8px)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 2px 10px rgba(233,30,140,0.06)' }}>
-                  <OmdcServiceIcon id={sv.id} size={15} color={i % 2 === 0 ? PINK : AQUA} />{sv.name}
+                  <OmdcServiceIcon id={sv.id} size={15} color={i % 2 === 0 ? PINK : GOLD} />{sv.name}
                 </motion.div>
               ))}
             </div>
@@ -370,7 +397,7 @@ function HeroSection() {
                 {services.map((sv, i) => (
                   <motion.div key={sv.id} initial={{ opacity: 0, scale: 0.82, y: 8 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: 0.24 + i * 0.07 }}
                     style={{ padding: '6px 13px', borderRadius: 100, background: 'rgba(233,30,140,0.06)', border: '1px solid rgba(233,30,140,0.14)', fontSize: 12.5, color: '#374151', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <OmdcServiceIcon id={sv.id} size={15} color={i % 2 === 0 ? PINK : AQUA} />{sv.name}
+                    <OmdcServiceIcon id={sv.id} size={15} color={i % 2 === 0 ? PINK : GOLD} />{sv.name}
                   </motion.div>
                 ))}
               </div>
@@ -460,9 +487,9 @@ function HeroSection() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 20 }} animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ delay: 0.8, type: 'spring', stiffness: 260, damping: 22 }}
-            style={{ position: 'absolute', bottom: '22%', right: '6%', zIndex: 10, background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(16px)', borderRadius: 16, padding: '12px 16px', boxShadow: '0 12px 40px rgba(0,0,0,0.22)', border: '1px solid rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: 10 }}
+            style={{ position: 'absolute', bottom: '22%', right: '6%', zIndex: 10, background: 'rgba(255,255,255,0.96)', backdropFilter: 'blur(16px)', borderRadius: 16, padding: '12px 16px', boxShadow: '0 12px 40px rgba(212,160,23,0.18)', border: '1px solid rgba(212,160,23,0.15)', display: 'flex', alignItems: 'center', gap: 10 }}
           >
-            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${AQUA}, #38BDF8)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><IconSmile size={19} color="#FFFFFF" /></div>
+            <div style={{ width: 38, height: 38, borderRadius: 11, background: `linear-gradient(135deg, ${GOLD}, #F5C842)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><IconSmile size={19} color="#FFFFFF" /></div>
             <div>
               <div style={{ fontSize: 19, fontWeight: 900, color: DARK, lineHeight: 1 }}><CountUp value="20K+" /></div>
               <div style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 500 }}>Pasien Puas</div>
@@ -483,7 +510,7 @@ function HeroSection() {
 
       {/* Bottom fade into next section */}
       {!isMobile && (
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 64, background: hasImages ? 'linear-gradient(transparent, rgba(248,249,251,0.95))' : '#F8F9FB', clipPath: 'ellipse(55% 100% at 50% 100%)', zIndex: 3 }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 64, background: hasImages ? 'linear-gradient(transparent, rgba(255,255,255,0.98))' : '#FFFFFF', clipPath: 'ellipse(55% 100% at 50% 100%)', zIndex: 3 }} />
       )}
     </section>
   );
@@ -496,29 +523,31 @@ function WhyChooseUsSection() {
 
   const FEATURES = [
     {
-      icon: '🏆', grad: [PINK, ROSE], label: 'Dokter Spesialis Bersertifikat',
+      icon: '🏆', grad: [PINK, ROSE] as const, label: 'Dokter Spesialis Bersertifikat',
       desc: 'Semua dokter kami berlisensi KKI dengan pengalaman klinis 10+ tahun di bidang kedokteran gigi spesialis.',
       stat: '15+', statLabel: 'Dokter Spesialis',
     },
     {
-      icon: '🔬', grad: [AQUA, '#22D3EE'], label: 'Teknologi Digital Terkini',
+      icon: '✨', grad: [GOLD, '#F5C842'] as const, label: 'Teknologi Digital Terkini',
       desc: 'Digital X-ray, intraoral scanner, laser treatment & CAD/CAM untuk hasil presisi dan minim rasa sakit.',
       stat: '20+', statLabel: 'Alat Canggih',
     },
     {
-      icon: '😊', grad: ['#10B981', '#34D399'], label: '10,000+ Pasien Puas',
+      icon: '😊', grad: [ROSE, PINK] as const, label: '10,000+ Pasien Puas',
       desc: 'Ribuan keluarga telah mempercayakan kesehatan gigi mereka kepada kami selama 15+ tahun berturut-turut.',
       stat: '4.9', statLabel: 'Rating Rata-rata',
     },
     {
-      icon: '🛡️', grad: ['#8B5CF6', '#A78BFA'], label: 'Garansi Kepuasan Penuh',
+      icon: '💛', grad: ['#F5C842', GOLD] as const, label: 'Garansi Kepuasan Penuh',
       desc: 'Kami berkomitmen pada hasil terbaik. Jika belum puas, kami tangani kembali tanpa biaya tambahan.',
       stat: '100%', statLabel: 'Kepuasan Terjamin',
     },
   ] as const;
 
   return (
-    <section ref={ref} style={{ background: '#FFFFFF', padding: isMobile ? '56px 0' : '88px 0' }}>
+    <section ref={ref} style={{ background: '#FFFFFF', padding: isMobile ? '56px 0' : '88px 0', position: 'relative', overflow: 'hidden' }}>
+      {/* Warm cream tint stripe */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,240,250,0.5) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -563,14 +592,14 @@ function HowItWorksSection() {
 
   const STEPS = [
     { num: '01', icon: '📱', label: 'Pilih & Booking', color: PINK, colorEnd: ROSE, desc: 'Pilih layanan, dokter, tanggal, dan waktu yang sesuai via website, aplikasi mobile, kiosk, atau telepon.' },
-    { num: '02', icon: '📅', label: 'Konfirmasi & Pengingat', color: AQUA, colorEnd: '#22D3EE', desc: 'Dapatkan konfirmasi booking instan lewat SMS/WhatsApp + notifikasi pengingat sehari sebelum kunjungan.' },
-    { num: '03', icon: '🦷', label: 'Kunjungi & Tersenyum', color: '#10B981', colorEnd: '#34D399', desc: 'Datang ke klinik, ditangani dokter spesialis kami dengan penuh perhatian, dan pulang dengan senyum lebih sehat.' },
+    { num: '02', icon: '📅', label: 'Konfirmasi & Pengingat', color: GOLD, colorEnd: '#F5C842', desc: 'Dapatkan konfirmasi booking instan lewat SMS/WhatsApp + notifikasi pengingat sehari sebelum kunjungan.' },
+    { num: '03', icon: '🦷', label: 'Kunjungi & Tersenyum', color: ROSE, colorEnd: PINK, desc: 'Datang ke klinik, ditangani dokter spesialis kami dengan penuh perhatian, dan pulang dengan senyum lebih sehat.' },
   ] as const;
 
   return (
-    <section ref={ref} style={{ background: '#F8F9FB', padding: isMobile ? '56px 0' : '88px 0', position: 'relative', overflow: 'hidden' }}>
-      {/* Subtle geometric background lines */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})`, opacity: 0.15 }} />
+    <section ref={ref} style={{ background: 'linear-gradient(160deg, #FFF8F4 0%, #FFFDF5 100%)', padding: isMobile ? '56px 0' : '88px 0', position: 'relative', overflow: 'hidden' }}>
+      {/* Warm sparkle top strip */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${GOLD})`, opacity: 0.25 }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
@@ -589,7 +618,7 @@ function HowItWorksSection() {
           {!isMobile && (
             <div style={{
               position: 'absolute', top: 58, left: '16.7%', right: '16.7%', height: 2,
-              background: `linear-gradient(90deg, ${PINK}44, ${AQUA}44, #10B98144)`,
+              background: `linear-gradient(90deg, ${PINK}44, ${GOLD}44, ${ROSE}44)`,
               zIndex: 0,
             }} />
           )}
@@ -647,16 +676,16 @@ function ServicesSection() {
   const visible = s.items.filter(i => i.isVisible);
   const [ref, inView] = useInView();
 
-  const CARD_COLORS = [PINK, AQUA, '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', ROSE, '#06B6D4'];
+  const CARD_COLORS = [PINK, GOLD, ROSE, '#F5A0C8', GOLD, PINK, ROSE, '#F5C842'];
 
   return (
-    <section ref={ref} style={{ background: '#F8F9FB', padding: '80px 0 0' }}>
+    <section ref={ref} style={{ background: '#FFFFFF', padding: '80px 0 0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 52, position: 'relative' }}>
           {/* Decorative section number */}
           <div style={{
-            fontSize: 120, fontWeight: 900, color: 'rgba(0,0,0,0.03)',
+            fontSize: 120, fontWeight: 900, color: 'rgba(233,30,140,0.04)',
             position: 'absolute', top: -20, right: 0,
             lineHeight: 1, pointerEvents: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}>01</div>
@@ -684,7 +713,7 @@ function ServicesSection() {
                     whileHover={{ y: -6 }}
                     style={{
                       gridColumn: 'span 2', gridRow: 'span 2',
-                      background: 'linear-gradient(150deg, #FFF5F9 0%, #FFE4F1 55%, #FFFFFF 100%)',
+                      background: 'linear-gradient(150deg, #FFF8F4 0%, #FFE8F4 40%, #FFFDF0 100%)',
                       borderRadius: 24,
                       padding: '32px',
                       display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -812,7 +841,7 @@ function DoctorsSection() {
                 }}
               >
                 {/* Pink gradient top section */}
-                <div style={{ height: 80, background: `linear-gradient(135deg, ${PINK}14, ${AQUA}0A)`, borderRadius: '24px 24px 0 0', position: 'relative' }}>
+                <div style={{ height: 80, background: `linear-gradient(135deg, ${PINK}14, ${GOLD}0A)`, borderRadius: '24px 24px 0 0', position: 'relative' }}>
                   {/* Overflow avatar */}
                   <div style={{
                     position: 'absolute', bottom: -28, left: 20,
@@ -935,7 +964,7 @@ function TestimonialsSection() {
               return (
                 <motion.div key={item.id} initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.08 }}
                   style={{
-                    background: isFeatured ? `linear-gradient(135deg, ${PINK}08, ${AQUA}05)` : 'white',
+                    background: isFeatured ? `linear-gradient(135deg, ${PINK}08, ${GOLD}05)` : 'white',
                     borderRadius: 20, padding: isFeatured ? 28 : 24,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
                     border: isFeatured ? `1.5px solid ${PINK}20` : '1px solid rgba(0,0,0,0.05)',
@@ -1198,60 +1227,84 @@ function CTASection() {
   const [ref, inView] = useInView();
 
   return (
-    <section ref={ref} style={{ position: 'relative', padding: '80px 0', overflow: 'hidden' }}>
-      {/* Light gradient background */}
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, rgba(233,30,140,0.06) 0%, rgba(6,182,212,0.04) 100%)` }} />
-      {/* Diagonal top accent */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: 4,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
-      }} />
+    <section ref={ref} style={{ position: 'relative', padding: '80px 0', overflow: 'hidden', background: `linear-gradient(135deg, ${PINK} 0%, #F0387F 40%, ${ROSE} 100%)` }}>
+      {/* Playful background decorations */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <motion.div animate={{ y: [-10, 10, -10], rotate: [0, 18, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ position: 'absolute', top: '10%', left: '5%' }}>
+          <Sparkle size={40} color="rgba(255,255,255,0.25)" />
+        </motion.div>
+        <motion.div animate={{ y: [8, -8, 8], rotate: [0, -15, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          style={{ position: 'absolute', top: '15%', right: '8%' }}>
+          <Sparkle size={28} color="rgba(255,255,255,0.2)" />
+        </motion.div>
+        <motion.div animate={{ y: [-6, 9, -6], rotate: [0, 22, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+          style={{ position: 'absolute', bottom: '15%', left: '12%' }}>
+          <Sparkle size={20} color={GOLD} style={{ opacity: 0.6 }} />
+        </motion.div>
+        <motion.div animate={{ y: [5, -10, 5] }} transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ position: 'absolute', bottom: '20%', right: '6%' }}>
+          <Sparkle size={32} color={GOLD} style={{ opacity: 0.5 }} />
+        </motion.div>
+        {/* Large decorative tooth outline */}
+        <div style={{ position: 'absolute', top: '-5%', right: '-2%', opacity: 0.06 }}>
+          <svg width={280} height={320} viewBox="0 0 100 115" fill="none">
+            <path d="M50 5C33 5 19 18 19 34c0 10 3.5 18 8 27 4.5 9 7 17 7 28 0 3 2.5 5.5 5.5 5.5h21c3 0 5.5-2.5 5.5-5.5 0-11 2.5-19 7-28 4.5-9 8-17 8-27C81 18 67 5 50 5z"
+              stroke="white" strokeWidth="2.5" strokeLinejoin="round" />
+          </svg>
+        </div>
+      </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" style={{ position: 'relative', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
-          <Eyebrow text="Mulai Perjalanan Sehat Anda" />
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 900, color: DARK, lineHeight: 1.1, marginBottom: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-            Siap untuk Senyum<br />
-            <GradText>yang Lebih Sehat?</GradText>
+          {/* Gold badge */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '7px 18px', borderRadius: 100, background: 'rgba(255,255,255,0.18)', border: '1px solid rgba(255,255,255,0.3)', marginBottom: 20 }}>
+            <Sparkle size={12} color={GOLD} />
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'white' }}>Gratis Konsultasi Pertama</span>
+          </div>
+
+          <h2 style={{ fontSize: 'clamp(32px, 4vw, 54px)', fontWeight: 900, color: 'white', lineHeight: 1.08, marginBottom: 20, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Siap untuk Senyum<br />yang Lebih Sehat? 🦷
           </h2>
-          <p style={{ fontSize: 18, color: '#6B7280', lineHeight: 1.7, maxWidth: 520, margin: '0 auto 36px' }}>
+          <p style={{ fontSize: 18, color: 'rgba(255,255,255,0.88)', lineHeight: 1.7, maxWidth: 520, margin: '0 auto 36px' }}>
             Bergabunglah dengan ribuan keluarga yang telah mempercayakan kesehatan gigi mereka kepada kami.
           </p>
 
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
-            <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 32 }}>
+            <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }}>
               <Link to="/booking" style={{
-                display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 32px',
-                background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
-                color: 'white', borderRadius: 16, fontWeight: 700, fontSize: 16,
-                textDecoration: 'none', boxShadow: '0 12px 36px rgba(233,30,140,0.35)',
+                display: 'inline-flex', alignItems: 'center', gap: 10, padding: '17px 36px',
+                background: 'white',
+                color: PINK, borderRadius: 18, fontWeight: 800, fontSize: 16,
+                textDecoration: 'none', boxShadow: '0 12px 36px rgba(0,0,0,0.15)',
               }}>
                 Booking Sekarang <Calendar size={18} />
               </Link>
             </motion.div>
             {c.whatsapp && (
-              <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }}>
                 <a href={`https://wa.me/${c.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px',
-                  background: 'white', color: DARK, borderRadius: 16, fontWeight: 700, fontSize: 16,
-                  textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', border: '1.5px solid rgba(0,0,0,0.08)',
+                  display: 'inline-flex', alignItems: 'center', gap: 10, padding: '17px 28px',
+                  background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)',
+                  color: 'white', borderRadius: 18, fontWeight: 700, fontSize: 16,
+                  textDecoration: 'none', border: '1.5px solid rgba(255,255,255,0.35)',
                 }}>
-                  <MessageCircle size={18} color="#25D366" /> WhatsApp
+                  <MessageCircle size={18} /> WhatsApp
                 </a>
               </motion.div>
             )}
           </div>
 
           {/* Contact info pills */}
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', opacity: 0.85 }}>
             {c.phone && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6B7280' }}>
-                <Phone size={14} color={PINK} /> {c.phone}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'white' }}>
+                <Phone size={14} color="white" /> {c.phone}
               </div>
             )}
             {c.address && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: '#6B7280' }}>
-                <MapPin size={14} color={AQUA} /> {c.address}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'white' }}>
+                <MapPin size={14} color="white" /> {c.address}
               </div>
             )}
           </div>
@@ -1266,7 +1319,7 @@ function AppPromoSection() {
   const [ref, inView] = useInView();
   const isMobile = useIsMobile();
   return (
-    <section ref={ref} style={{ background: 'linear-gradient(135deg, #FFF0F7 0%, #F0FFFE 100%)', padding: isMobile ? '56px 0' : '72px 0', position: 'relative', overflow: 'hidden' }}>
+    <section ref={ref} style={{ background: 'linear-gradient(135deg, #FFF8F4 0%, #FFF5FA 50%, #FFFDF0 100%)', padding: isMobile ? '56px 0' : '72px 0', position: 'relative', overflow: 'hidden' }}>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 60, alignItems: 'center' }}>
@@ -1293,7 +1346,7 @@ function AppPromoSection() {
             style={{ display: 'flex', justifyContent: 'center', order: isMobile ? 1 : 2 }}>
             {/* Outer shell — double-bezel */}
             <div style={{ padding: 10, borderRadius: 46, background: 'white', boxShadow: '0 24px 72px rgba(233,30,140,0.14), 0 4px 20px rgba(0,0,0,0.06)', border: '1px solid rgba(233,30,140,0.1)' }}>
-              <div style={{ width: 200, height: 400, borderRadius: 38, background: 'linear-gradient(160deg, #FFF0F7 0%, #FFFFFF 50%, #F0FFFE 100%)', border: '1.5px solid rgba(233,30,140,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
+              <div style={{ width: 200, height: 400, borderRadius: 38, background: 'linear-gradient(160deg, #FFF8F4 0%, #FFFFFF 50%, #FFFDF0 100%)', border: '1.5px solid rgba(233,30,140,0.08)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
                 <div style={{ width: 56, height: 56, borderRadius: 16, background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, boxShadow: '0 8px 24px rgba(233,30,140,0.3)' }}>🦷</div>
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ color: DARK, fontWeight: 900, fontSize: 16 }}>OMDC Dental</div>
@@ -1322,11 +1375,33 @@ export function Home() {
   return (
     <>
     <SeoHead
-      title="Senyum Sehat, Percaya Diri Penuh"
-      description="OMDC Dental — klinik gigi modern di Jakarta Selatan dengan dokter spesialis berpengalaman, teknologi terkini, dan layanan BPJS. Booking online sekarang!"
-      keywords="klinik gigi Jakarta, dokter gigi terbaik, OMDC Dental, klinik gigi BPJS, perawatan gigi modern"
+      title="OMDC Dental — Klinik Gigi Keluarga Terpercaya di Jakarta"
+      description="OMDC Dental: klinik gigi modern untuk keluarga di Jakarta Selatan. Dokter spesialis berpengalaman, teknologi terkini, ramah anak, menerima BPJS & asuransi. Booking online mudah & cepat!"
+      keywords="klinik gigi Jakarta, klinik gigi anak, dokter gigi keluarga, OMDC Dental, klinik gigi BPJS Jakarta, dokter gigi terbaik Jakarta Selatan, perawatan gigi modern, behel gigi Jakarta, veneer gigi, implan gigi"
       path="/"
     />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Dentist",
+      "name": "OMDC Dental",
+      "description": "Klinik gigi modern untuk keluarga di Jakarta Selatan. Dokter spesialis berpengalaman, teknologi terkini, ramah anak.",
+      "url": "https://roollaanndd.github.io/2kang/",
+      "telephone": "+62-21-XXXX-XXXX",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jakarta Selatan",
+        "addressRegion": "DKI Jakarta",
+        "addressCountry": "ID"
+      },
+      "openingHoursSpecification": [
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "20:00" },
+        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday"], "opens": "09:00", "closes": "17:00" }
+      ],
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "500" },
+      "medicalSpecialty": ["Orthodontics","Pediatric Dentistry","Cosmetic Dentistry","Oral Surgery"],
+      "priceRange": "Rp 150.000 – Rp 15.000.000",
+      "sameAs": ["https://www.instagram.com/omdcdental", "https://www.facebook.com/omdcdental"]
+    })}} />
     <div style={{ background: '#FFFFFF' }}>
       <HeroSection />
       <WhyChooseUsSection />
