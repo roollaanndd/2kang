@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OMDC Dental - Senyum Sehat, Percaya Diri!</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .signature-strip {
+            background: linear-gradient(90deg, #E91E8C 0%, #FF6BB5 50%, #D4A017 100%);
+        }
+        /* Custom scrollbar for horizontal scroll */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fdf9f3",
+                        "tertiary-fixed": "#ffdfa0",
+                        "surface-tint": "#b8006c",
+                        "primary-fixed-dim": "#ffb0cc",
+                        "outline": "#8d6f79",
+                        "inverse-on-surface": "#f4f0ea",
+                        "surface-container-highest": "#e6e2dc",
+                        "primary-container": "#df0e84",
+                        "on-primary-container": "#fffbff",
+                        "secondary-fixed": "#ffd8e6",
+                        "on-primary-fixed": "#3e0021",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#6c0043",
+                        "on-surface": "#1c1c18",
+                        "secondary-container": "#fc69b3",
+                        "surface-bright": "#fdf9f3",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffd9e4",
+                        "on-secondary-fixed": "#3d0024",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#f6be39",
+                        "secondary-fixed-dim": "#ffafd0",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-background": "#1c1c18",
+                        "surface-variant": "#e6e2dc",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dddad4",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#8d0051",
+                        "tertiary": "#765700",
+                        "on-secondary-fixed-variant": "#8c0058",
+                        "surface-container-low": "#f7f3ed",
+                        "surface-container-high": "#ebe8e2",
+                        "primary": "#b30069",
+                        "surface-container": "#f1ede7",
+                        "tertiary-container": "#956e00",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-surface": "#31302d",
+                        "secondary": "#ab2671",
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "outline-variant": "#e1bdc8",
+                        "on-surface-variant": "#594048",
+                        "surface": "#fdf9f3",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#ffb0cc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "margin-mobile": "16px",
+                        "xl": "80px",
+                        "sm": "12px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-bold": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-background selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-7xl mx-auto bg-surface/80 backdrop-blur-xl docked full-width border-t-[3px] border-t-transparent bg-clip-border before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-[3px] before:bg-gradient-to-r before:from-[#E91E8C] before:via-[#FF6BB5] before:to-[#D4A017] shadow-sm shadow-md shadow-primary/5">
+<a class="font-display-lg text-display-lg-mobile md:text-display-lg font-extrabold text-primary" href="#">OMDC Dental</a>
+<div class="hidden md:flex items-center gap-md">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-lg text-body-lg" href="#">Beranda</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 hover:scale-105 transition-transform duration-200 font-body-lg text-body-lg" href="#">Layanan</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 hover:scale-105 transition-transform duration-200 font-body-lg text-body-lg" href="#">Tim Dokter</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 hover:scale-105 transition-transform duration-200 font-body-lg text-body-lg" href="#">Promo</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 hover:scale-105 transition-transform duration-200 font-body-lg text-body-lg" href="#">Kontak</a>
+</div>
+<button class="hidden md:flex bg-[#E91E8C] text-white rounded-full px-6 py-3 font-label-bold text-label-bold hover:scale-95 transition-all duration-200 shadow-lg shadow-primary/20">
+            Booking
+        </button>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">menu</span>
+</button>
+</nav>
+<!-- Hero Section -->
+<header class="relative w-full min-h-[80vh] flex items-center pt-md pb-xl overflow-hidden">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhrYbMUjh2XsbYXLSULYghOtB5o0H-gADs7DEa6HH9Lu7RGXqhHDmkMPSnVDkMGsfXnZOn4jmYHNottfRkws6qsyUIEq5seATkGjOn78lMV3FQI36ELO-l1xcJJjbfzguCIDzWZZNHxx1W9PQ9_4hDfjRs5Ekui4_zmlqQ0PgdTXjvkkTWrEzFro6ui02I_gUFWL-6SK4x4b8-uc02yLc4pm5roBxNNnOAAaQk-UlAzujGSFE1p2mYMLUeMz1bwUOEC_2pwyXa-xU')"></div>
+<!-- Gradient Overlay for Readability if needed, though image is light -->
+<div class="absolute inset-0 bg-gradient-to-r from-background/80 to-transparent"></div>
+<div class="relative max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop w-full grid grid-cols-1 md:grid-cols-2 gap-xl items-center z-10">
+<div class="flex flex-col gap-md items-start">
+<div class="inline-flex items-center gap-2 bg-surface-container-highest/50 backdrop-blur-md rounded-full px-4 py-2 border border-white/50">
+<span class="material-symbols-outlined text-[#D4A017] text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-bold text-label-bold text-on-surface">Klinik Gigi Keluarga Terpercaya</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg font-extrabold text-[#E91E8C] leading-tight">
+                    Senyum Sehat,<br/>Percaya Diri!
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                    Perawatan gigi profesional, ramah anak, dan nyaman untuk seluruh keluarga. Mulai perjalanan senyum indahmu hari ini bersama OMDC Dental.
+                </p>
+<div class="flex flex-col sm:flex-row gap-sm mt-sm">
+<button class="bg-[#E91E8C] text-white rounded-full px-8 py-4 font-label-bold text-label-bold hover:scale-95 transition-all duration-200 shadow-xl shadow-primary/30 flex items-center justify-center gap-2">
+                        Booking Sekarang
+                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<button class="bg-[#FFFBF5] text-[#E91E8C] border-2 border-[#FF6BB5] rounded-full px-8 py-4 font-label-bold text-label-bold hover:bg-surface-container-low transition-colors duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+                        Tonton Video
+                    </button>
+</div>
+</div>
+<!-- Floating Badges -->
+<div class="relative h-full min-h-[400px] hidden md:block">
+<div class="absolute top-1/4 right-0 bg-white rounded-2xl p-4 shadow-[0_20px_40px_-15px_rgba(233,30,140,0.15)] flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-[#E91E8C]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">15+ Tahun</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Pengalaman</div>
+</div>
+</div>
+<div class="absolute bottom-1/4 left-10 bg-white rounded-2xl p-4 shadow-[0_20px_40px_-15px_rgba(233,30,140,0.15)] flex items-center gap-4 animate-bounce" style="animation-duration: 4s; animation-delay: 1s;">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface">10.000+</div>
+<div class="font-body-md text-body-md text-on-surface-variant">Pasien Puas</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Why Choose Us (Bento Grid) -->
+<section class="py-xl max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-lg">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-xs">Mengapa Memilih Kami?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Kenyamanan dan kesehatan gigi Anda adalah prioritas utama kami.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md">
+<!-- Card 1 -->
+<div class="bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.08)] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 md:col-span-2">
+<div class="signature-strip absolute top-0 left-0 w-full h-[3px]"></div>
+<div class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center text-[#E91E8C] mb-md group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Dokter Spesialis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Tim dokter gigi berpengalaman dan bersertifikat yang siap memberikan perawatan terbaik untuk berbagai masalah gigi.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.08)] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 md:col-span-2">
+<div class="signature-strip absolute top-0 left-0 w-full h-[3px]"></div>
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary mb-md group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">biotech</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Teknologi Modern</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Dilengkapi dengan peralatan medis terbaru dan berstandar internasional untuk hasil perawatan yang akurat dan aman.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.08)] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 md:col-span-2">
+<div class="signature-strip absolute top-0 left-0 w-full h-[3px]"></div>
+<div class="w-16 h-16 rounded-full bg-primary-fixed-dim flex items-center justify-center text-[#E91E8C] mb-md group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">sentiment_very_satisfied</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">10K+ Pasien Puas</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Telah dipercaya oleh lebih dari 10.000 pasien keluarga yang telah merasakan kenyamanan perawatan di klinik kami.</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.08)] relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 md:col-span-2">
+<div class="signature-strip absolute top-0 left-0 w-full h-[3px]"></div>
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed-dim/30 flex items-center justify-center text-[#D4A017] mb-md group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Garansi Kepuasan</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Kami menjamin kepuasan pada setiap perawatan dengan pelayanan yang transparan dan komunikatif.</p>
+</div>
+</div>
+</section>
+<!-- Services Section -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end mb-lg gap-md">
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-xs">Layanan Perawatan Gigi</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Solusi komprehensif untuk senyum sehat keluarga Anda.</p>
+</div>
+<button class="text-[#E91E8C] font-label-bold text-label-bold flex items-center gap-1 hover:underline">
+                    Lihat Semua Layanan
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<!-- Service 1 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">auto_awesome</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Pemutihan Gigi</h4>
+</div>
+<!-- Service 2 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">mood</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Kawat Gigi</h4>
+</div>
+<!-- Service 3 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">diamond</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Veneer</h4>
+</div>
+<!-- Service 4 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">healing</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Implan</h4>
+</div>
+<!-- Service 5 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">dentistry</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Cabut Gigi</h4>
+</div>
+<!-- Service 6 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">magic_button</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Tambal Gigi</h4>
+</div>
+<!-- Service 7 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">cleaning_services</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Scaling</h4>
+</div>
+<!-- Service 8 -->
+<div class="bg-white rounded-DEFAULT p-md flex flex-col items-center text-center shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] hover:shadow-[0_15px_40px_-10px_rgba(233,30,140,0.15)] transition-all duration-300 group">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#D4A017] mb-md">
+<div class="w-full h-full bg-white rounded-full flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[40px] text-[#E91E8C] group-hover:scale-110 transition-transform duration-300">child_care</span>
+</div>
+</div>
+<h4 class="font-label-bold text-label-bold text-on-surface">Gigi Anak</h4>
+</div>
+</div>
+</div>
+</section>
+<!-- Meet Our Doctors -->
+<section class="py-xl max-w-7xl mx-auto pl-margin-mobile md:pl-margin-desktop overflow-hidden">
+<div class="pr-margin-mobile md:pr-margin-desktop mb-lg flex justify-between items-end">
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-xs">Tim Dokter Kami</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Profesional, ramah, dan berdedikasi untuk senyum Anda.</p>
+</div>
+<div class="hidden md:flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-[#E91E8C] hover:text-white transition-colors"><span class="material-symbols-outlined">arrow_back</span></button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-[#E91E8C] hover:text-white transition-colors"><span class="material-symbols-outlined">arrow_forward</span></button>
+</div>
+</div>
+<div class="flex gap-md overflow-x-auto pb-8 hide-scrollbar snap-x pr-margin-mobile md:pr-margin-desktop">
+<!-- Doctor Card 1 -->
+<div class="min-w-[280px] bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] snap-start flex flex-col items-center text-center border border-surface-container">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#FF6BB5] mb-md relative">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a friendly female Indonesian dentist wearing a clean white lab coat and smiling confidently against a soft neutral studio background." src="https://lh3.googleusercontent.com/aida/AP1WRLtuD-nCesOW1ln-xvjI14C7YMllTDyLMnI-1URx4lvQE9dHbuKZ63ySkne8BZPVphisUxS80T3H0CaVUgd6i6fEkbTXird-TZsZuqUP8bL95_Yf15T2Z7Yl-alCtXY4w4eJZ9AmmcZgVOb1eSz9lfCc-a9N9UxZQ5v-o7Pwqhnglkofv50uJKGxYXoFW6U86haYXpPs2-uMAB_GOoal8J-yFGaSeuiEbY9TqcDPcEdxJ9z0ckRV6MKaSg"/>
+<div class="absolute -bottom-2 right-2 bg-tertiary-fixed text-tertiary p-1.5 rounded-full shadow-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<h3 class="font-label-bold text-label-bold text-on-surface text-lg">drg. Sarah Wijaya</h3>
+<span class="inline-block bg-[#FFFBF5] text-[#D4A017] border border-[#ffdfa0] rounded-full px-3 py-1 font-label-sm text-label-sm mt-2 mb-sm">Spesialis Ortodonsia</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm line-clamp-3">Berpengalaman lebih dari 8 tahun dalam menangani kawat gigi anak dan dewasa dengan pendekatan yang ramah.</p>
+</div>
+<!-- Placeholder Doctor 2 -->
+<div class="min-w-[280px] bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] snap-start flex flex-col items-center text-center border border-surface-container">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#FF6BB5] mb-md relative">
+<img class="w-full h-full object-cover rounded-full bg-surface-container" data-alt="A professional headshot of a friendly male Indonesian dentist wearing a white coat and glasses, smiling warmly against a bright clinic background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtsBoufKzsSvkk-S5y0KR4bCWe2yaWQlklXTwbBjmmtc7qYV5tJntzH4JIdMf3L7hGwZKfEldunzF8a-YBZf6PVm7tYUT7KkKCcF1ZjITKx2MQzGbmfzlWiBaNCuptrsypFdlb3gY8Lwl3pvEe_61hC3IT8QtkaC6I8EON17lcXsL3pT1pP2-5amCqDvhw9qFx3ym_Chvg8IXe40gXyMD3dpxGEkG740oa2rMZc4poWoFRnPI-XgZ6Swg1PVDa-WGM3NJ1qQ-DL9U"/>
+<div class="absolute -bottom-2 right-2 bg-tertiary-fixed text-tertiary p-1.5 rounded-full shadow-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<h3 class="font-label-bold text-label-bold text-on-surface text-lg">drg. Budi Santoso</h3>
+<span class="inline-block bg-[#FFFBF5] text-[#D4A017] border border-[#ffdfa0] rounded-full px-3 py-1 font-label-sm text-label-sm mt-2 mb-sm">Dokter Gigi Umum</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm line-clamp-3">Fokus pada perawatan restorasi dan estetika gigi dengan hasil yang natural dan memuaskan.</p>
+</div>
+<!-- Placeholder Doctor 3 -->
+<div class="min-w-[280px] bg-white rounded-DEFAULT p-md shadow-[0_10px_30px_-10px_rgba(233,30,140,0.05)] snap-start flex flex-col items-center text-center border border-surface-container">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-br from-[#E91E8C] to-[#FF6BB5] mb-md relative">
+<img class="w-full h-full object-cover rounded-full bg-surface-container" data-alt="A professional portrait of a cheerful female pediatric dentist interacting warmly with the camera in a colorful, child-friendly dental room setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhdVwptFfNU8dAd4U-AJ7MFp-XaQrFfc_ym6YJ1kSvGspqSmQ6VAVpN8k_n7G-TISzVJltCC9gLrKbbKKVb8aJqt9C4ymsUqrOs12xRoqmpjdLryCvgT0A5L5FY7XiqGY5_F80CGUsBuXsQduDFnT3H30S5A-Sbi-A66ONafrXYCPuZiE3AWZped4UcfVQuFLny4EUCwVs5vNvoLxOaFLwCU8jFQgoexYJu5exycz1kydfrAEoxfpQuIeeXjVsiDm2s9o8YNVcpQY"/>
+<div class="absolute -bottom-2 right-2 bg-tertiary-fixed text-tertiary p-1.5 rounded-full shadow-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<h3 class="font-label-bold text-label-bold text-on-surface text-lg">drg. Amanda Putri</h3>
+<span class="inline-block bg-[#FFFBF5] text-[#D4A017] border border-[#ffdfa0] rounded-full px-3 py-1 font-label-sm text-label-sm mt-2 mb-sm">Kedokteran Gigi Anak</span>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm line-clamp-3">Sangat disukai anak-anak, membuat pengalaman ke dokter gigi menjadi menyenangkan dan tidak menakutkan.</p>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-xl bg-[#FFFBF5] relative overflow-hidden">
+<!-- Decor -->
+<div class="absolute top-10 left-10 text-[#FF6BB5] opacity-20 transform -rotate-12">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-center">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface mb-lg">Apa Kata Mereka?</h2>
+<div class="bg-white rounded-lg p-lg shadow-[0_20px_50px_-20px_rgba(233,30,140,0.1)] relative mt-8">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-[#E91E8C] rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+</div>
+<div class="flex justify-center gap-1 mb-md mt-4 text-[#D4A017]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant italic mb-md">
+                     "Anak saya awalnya sangat takut ke dokter gigi, tapi berkat kesabaran drg. Amanda dan suasana klinik OMDC yang sangat playful, dia malah minta balik lagi! Pelayanannya luar biasa, tempatnya super bersih."
+                 </p>
+<div>
+<h4 class="font-label-bold text-label-bold text-on-surface text-lg">Bunda Rina &amp; Dika</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Pasien Rutin</p>
+</div>
+</div>
+<div class="flex justify-center gap-2 mt-md">
+<div class="w-3 h-3 rounded-full bg-[#E91E8C]"></div>
+<div class="w-3 h-3 rounded-full bg-surface-container-highest cursor-pointer"></div>
+<div class="w-3 h-3 rounded-full bg-surface-container-highest cursor-pointer"></div>
+</div>
+</div>
+</section>
+<!-- Booking CTA Banner -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+<div class="w-full rounded-xl p-lg flex flex-col md:flex-row items-center justify-between text-center md:text-left shadow-2xl relative overflow-hidden" style="background: linear-gradient(135deg, #E91E8C 0%, #fc69b3 100%);">
+<!-- Sparkles -->
+<div class="absolute top-4 left-4 text-[#FFD8E6] opacity-50 animate-pulse"><span class="material-symbols-outlined text-[32px]">auto_awesome</span></div>
+<div class="absolute bottom-8 right-12 text-[#FFD8E6] opacity-50 animate-pulse delay-75"><span class="material-symbols-outlined text-[48px]">auto_awesome</span></div>
+<div class="absolute top-1/2 right-1/4 text-[#D4A017] opacity-60 animate-pulse delay-150"><span class="material-symbols-outlined text-[24px]">stars</span></div>
+<div class="relative z-10 mb-md md:mb-0 max-w-2xl">
+<h2 class="font-display-lg-mobile md:text-display-lg font-extrabold text-white mb-sm">
+                    Booking Sekarang — Gratis Konsultasi Pertama!
+                </h2>
+<p class="font-body-lg text-body-lg text-white/90">
+                    Jangan tunda kesehatan gigi Anda. Jadwalkan kunjungan Anda hari ini dan dapatkan penawaran spesial untuk keluarga.
+                </p>
+</div>
+<button class="relative z-10 bg-white text-[#E91E8C] rounded-full px-8 py-4 font-label-bold text-label-bold text-lg hover:scale-95 hover:bg-[#FFFBF5] transition-all duration-200 shadow-xl flex items-center gap-2 whitespace-nowrap">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+                Jadwalkan Konsultasi
+            </button>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-low grid grid-cols-1 md:grid-cols-4 gap-xl px-margin-mobile md:px-margin-desktop py-xl max-w-7xl mx-auto full-width rounded-t-lg">
+<div class="col-span-1 md:col-span-1 flex flex-col items-start gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">OMDC Dental</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Nurturing Healthy Smiles for Moms &amp; Kids. Klinik gigi ramah keluarga dengan pelayanan premium.
+            </p>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-bold text-label-bold text-on-surface mb-2">Tentang OMDC</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Tentang Kami</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Karir</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Kebijakan Privasi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Syarat &amp; Ketentuan</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-bold text-label-bold text-on-surface mb-2">Layanan Populer</h4>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Pembersihan Gigi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Behel Anak</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Cabut Gigi</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors hover:translate-x-1 transition-transform duration-200" href="#">Scaling</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-bold text-label-bold text-on-surface mb-2">Hubungi Kami</h4>
+<div class="flex gap-4 mt-2">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-secondary-fixed hover:text-[#E91E8C] transition-all opacity-80 hover:opacity-100" href="#">
+<span class="font-label-bold text-label-bold">IG</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-secondary-fixed hover:text-[#E91E8C] transition-all opacity-80 hover:opacity-100" href="#">
+<span class="font-label-bold text-label-bold">WA</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-secondary-fixed hover:text-[#E91E8C] transition-all opacity-80 hover:opacity-100" href="#">
+<span class="font-label-bold text-label-bold">YT</span>
+</a>
+</div>
+</div>
+<div class="col-span-1 md:col-span-4 mt-lg pt-lg border-t border-surface-container-highest text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 OMDC Dental Clinic. Nurturing Healthy Smiles for Moms &amp; Kids.</p>
+</div>
+</footer>
+</body></html>
