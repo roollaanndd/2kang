@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Printer, Home, Clock, Users, Smartphone } from 'lucide-react';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
-import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { OmdcQR } from '../../../components/ui/OmdcQR';
 import { registerTransaction } from '../../../lib/omdcTransactions';
 
 const AUTO_RETURN_SECONDS = 10;
@@ -273,7 +273,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             border: '2px solid #F3F4F6',
             boxShadow: 'inset 0 0 0 6px #ffffff, 0 6px 22px rgba(0,0,0,0.06)',
           }}>
-            <OmdcBarcode code={omdcCode} height={92} moduleWidth={1.8} background="#ffffff" />
+            <OmdcQR code={omdcCode} size={160} showText={false} bgColor="#ffffff" />
           </div>
 
           {/* Human-friendly booking code */}

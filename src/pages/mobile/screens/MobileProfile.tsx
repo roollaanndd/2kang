@@ -9,7 +9,7 @@ import {
 import type { MobileState } from '../../../types';
 import { APP_VERSION } from '../../../version';
 import { haptic } from '../../../lib/haptics';
-import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { OmdcQR } from '../../../components/ui/OmdcQR';
 import { memberCode } from '../../../lib/omdcCode';
 
 interface MobileProfileProps {
@@ -272,7 +272,7 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
                 <span style={{ fontSize: 11, fontWeight: 700, color: '#0E7490', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Kode OMDC — Scan di eKiosk
                 </span>
-                <OmdcBarcode code={memberCode(user?.id ?? 'guest')} height={56} moduleWidth={1.5} />
+                <OmdcQR code={memberCode(user?.id ?? 'guest')} size={180} />
               </div>
             </div>
 

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ScanLine, CheckCircle2, XCircle, Delete } from 'lucide-react';
+import { ChevronLeft, Camera, Keyboard, CheckCircle2, XCircle, Delete } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import { kioskSound } from '../../../lib/kioskSound';
 import { lookupOmdcCode, seedDemoTransaction, checkInTransaction, type OmdcTransaction } from '../../../lib/omdcTransactions';
-import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { OmdcQR } from '../../../components/ui/OmdcQR';
+import { QrScannerCamera } from '../../../components/ui/QrScannerCamera';
 import { useCMS } from '../../../context/CMSContext';
 
 const PINK = '#E91E8C';
@@ -13,6 +14,7 @@ const AQUA = '#06B6D4';
 const DARK = '#0D1421';
 
 type Phase = 'entry' | 'searching' | 'found' | 'notfound';
+type ScanMode = 'camera' | 'manual';
 
 const KEYS = [
   '1','2','3','4','5','6','7','8','9','0',
@@ -26,13 +28,18 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
   const { cms } = useCMS();
   const queuePrefix = cms.kioskSettings?.queuePrefix ?? 'A';
   const kioskPayment = cms.kioskSettings?.kioskPayment ?? true;
+  const qrCheckin = cms.kioskSettings?.qrCheckin ?? true;
+
   const [value, setValue] = useState('');
   const [phase, setPhase] = useState<Phase>('entry');
   const [result, setResult] = useState<OmdcTransaction | null>(null);
   const [demo, setDemo] = useState<OmdcTransaction | null>(null);
+  const [scanMode, setScanMode] = useState<ScanMode>(qrCheckin ? 'camera' : 'manual');
 
-  // Ensure there is always at least one recallable transaction for the demo.
   useEffect(() => { setDemo(seedDemoTransaction()); }, []);
+
+  // Stop camera when a result overlay is showing
+  const cameraActive = scanMode === 'camera' && phase === 'entry';
 
   const submit = (code: string) => {
     kioskSound('tap');
@@ -50,6 +57,11 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
     }, 1100);
   };
 
+  const handleQrScan = (raw: string) => {
+    if (phase !== 'entry') return;
+    submit(raw);
+  };
+
   const handleKey = (k: string) => {
     kioskSound('tap');
     if (k === '⌫') { setValue(v => v.slice(0, -1)); return; }
@@ -58,7 +70,6 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
 
   const continueWithTransaction = (txn: OmdcTransaction) => {
     kioskSound('select');
-    // Check the booking in — assigns a queue number from the shared counter.
     const checked = checkInTransaction(txn.key, queuePrefix) ?? txn;
     const needsPayment = !checked.paid && kioskPayment && !!checked.amount;
     setState(prev => ({
@@ -94,68 +105,109 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
           {t ? 'Check-in with Booking Code' : 'Check-in dengan Kode Booking'}
         </div>
         <div style={{ fontSize: 19, color: '#6B7280' }}>
-          {t ? 'Scan your barcode or enter your booking code from the app' : 'Scan barcode atau masukkan kode booking dari aplikasi'}
+          {t ? 'Scan your QR code or enter your booking code from the app' : 'Scan QR code atau masukkan kode booking dari aplikasi'}
         </div>
       </div>
 
       <div style={{ flex: 1, display: 'flex', gap: 36, padding: '32px 64px', minHeight: 0 }}>
-        {/* LEFT — scan zone */}
-        <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div style={{
-            flex: 1, borderRadius: 28, background: '#fff', border: '2px solid #FCE7F3',
-            boxShadow: '0 8px 30px rgba(233,30,140,0.10)', display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center', gap: 22, padding: 32, position: 'relative', overflow: 'hidden',
-          }}>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 10, padding: '10px 20px', borderRadius: 100,
-              background: 'rgba(233,30,140,0.08)', border: '1px solid rgba(233,30,140,0.18)',
-            }}>
-              <ScanLine size={20} color={PINK} />
-              <span style={{ fontSize: 16, fontWeight: 800, color: PINK, letterSpacing: '0.06em' }}>
-                {t ? 'SCANNER READY' : 'SCANNER SIAP'}
-              </span>
-            </div>
-
-            {/* Scan frame */}
-            <div style={{ position: 'relative', width: 230, height: 230 }}>
-              <div style={{ position: 'absolute', inset: 0, border: '3px solid #FBCFE8', borderRadius: 20 }} />
-              {[
-                { top: -2, left: -2, br: '20px 0 0 0', rot: 0 },
-                { top: -2, right: -2, br: '0 20px 0 0', rot: 0 },
-                { bottom: -2, left: -2, br: '0 0 0 20px', rot: 0 },
-                { bottom: -2, right: -2, br: '0 0 20px 0', rot: 0 },
-              ].map((c, i) => (
-                <div key={i} style={{ position: 'absolute', width: 44, height: 44, border: `5px solid ${PINK}`, borderRadius: c.br, ...c,
-                  borderRight: i % 2 === 0 ? 'none' : undefined, borderLeft: i % 2 === 1 ? 'none' : undefined,
-                  borderBottom: i < 2 ? 'none' : undefined, borderTop: i >= 2 ? 'none' : undefined }} />
-              ))}
-              <motion.div
-                animate={{ top: ['12%', '88%', '12%'] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ position: 'absolute', left: 14, right: 14, height: 3, background: PINK, borderRadius: 3, boxShadow: `0 0 12px ${PINK}` }}
-              />
-              <div style={{ position: 'absolute', inset: 40, opacity: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {demo && <OmdcBarcode code={demo.code} height={70} moduleWidth={1.4} showText={false} background="transparent" />}
-              </div>
-            </div>
-
-            <div style={{ fontSize: 17, color: '#6B7280', textAlign: 'center', lineHeight: 1.5, maxWidth: 280 }}>
-              {t ? 'Hold the barcode in the app steady in front of the scanner' : 'Arahkan barcode di aplikasi ke scanner'}
-            </div>
-
-            {/* Simulate scan with the demo code */}
-            {demo && (
+        {/* LEFT — QR scan zone */}
+        <div style={{ flex: '0 0 42%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Mode tabs */}
+          <div style={{ display: 'flex', gap: 8, background: '#F3F4F6', borderRadius: 14, padding: 4 }}>
+            {qrCheckin && (
               <button
-                onClick={() => submit(demo.code)}
+                onClick={() => { kioskSound('tap'); setScanMode('camera'); }}
                 style={{
-                  padding: '14px 28px', borderRadius: 14, border: '2px dashed rgba(233,30,140,0.35)',
-                  background: '#FFF5F9', color: PINK, fontSize: 16, fontWeight: 800, cursor: 'pointer',
+                  flex: 1, height: 44, borderRadius: 11, border: 'none', cursor: 'pointer',
+                  background: scanMode === 'camera' ? '#fff' : 'transparent',
+                  color: scanMode === 'camera' ? PINK : '#6B7280',
+                  fontWeight: 800, fontSize: 15,
+                  boxShadow: scanMode === 'camera' ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 }}
               >
-                {t ? 'Simulate scan (demo)' : 'Simulasi scan (demo)'}
+                <Camera size={18} />
+                {t ? 'Scan QR' : 'Scan QR'}
               </button>
             )}
+            <button
+              onClick={() => { kioskSound('tap'); setScanMode('manual'); }}
+              style={{
+                flex: 1, height: 44, borderRadius: 11, border: 'none', cursor: 'pointer',
+                background: scanMode === 'manual' ? '#fff' : 'transparent',
+                color: scanMode === 'manual' ? DARK : '#6B7280',
+                fontWeight: 800, fontSize: 15,
+                boxShadow: scanMode === 'manual' ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              }}
+            >
+              <Keyboard size={18} />
+              {t ? 'Type Code' : 'Ketik Kode'}
+            </button>
           </div>
+
+          {/* Camera panel */}
+          {scanMode === 'camera' && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ flex: 1 }}>
+                <QrScannerCamera active={cameraActive} onScan={handleQrScan} />
+              </div>
+              <div style={{ fontSize: 16, color: '#6B7280', textAlign: 'center', lineHeight: 1.5 }}>
+                {t
+                  ? 'Point your phone QR code at the camera to check in instantly'
+                  : 'Arahkan QR code di aplikasi ke kamera untuk check-in otomatis'}
+              </div>
+              {demo && (
+                <button
+                  onClick={() => submit(demo.code)}
+                  style={{
+                    padding: '14px 28px', borderRadius: 14, border: '2px dashed rgba(233,30,140,0.35)',
+                    background: '#FFF5F9', color: PINK, fontSize: 16, fontWeight: 800, cursor: 'pointer',
+                  }}
+                >
+                  {t ? 'Simulate scan (demo)' : 'Simulasi scan (demo)'}
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Manual / demo QR panel */}
+          {scanMode === 'manual' && (
+            <div style={{
+              flex: 1, borderRadius: 28, background: '#fff', border: '2px solid #FCE7F3',
+              boxShadow: '0 8px 30px rgba(233,30,140,0.10)', display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center', gap: 20, padding: 28,
+            }}>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 10, padding: '8px 18px', borderRadius: 100,
+                background: 'rgba(233,30,140,0.08)', border: '1px solid rgba(233,30,140,0.18)',
+              }}>
+                <span style={{ fontSize: 15, fontWeight: 800, color: PINK, letterSpacing: '0.06em' }}>
+                  {t ? 'SAMPLE QR (DEMO)' : 'CONTOH QR (DEMO)'}
+                </span>
+              </div>
+
+              {demo && (
+                <OmdcQR code={demo.code} size={160} showText={false} bgColor="transparent" />
+              )}
+
+              <div style={{ fontSize: 14, color: '#9CA3AF', textAlign: 'center', lineHeight: 1.4 }}>
+                {t ? 'This is a sample QR code shown for demonstration.' : 'Ini contoh QR code untuk demonstrasi.'}
+              </div>
+
+              {demo && (
+                <button
+                  onClick={() => submit(demo.code)}
+                  style={{
+                    padding: '14px 28px', borderRadius: 14, border: '2px dashed rgba(233,30,140,0.35)',
+                    background: '#FFF5F9', color: PINK, fontSize: 16, fontWeight: 800, cursor: 'pointer',
+                  }}
+                >
+                  {t ? 'Simulate scan (demo)' : 'Simulasi scan (demo)'}
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* RIGHT — manual entry */}
@@ -267,7 +319,6 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
                     {result.time && <div><strong>{t ? 'Time' : 'Waktu'}:</strong> {result.time} WIB</div>}
                     <div><strong>{t ? 'Booking code' : 'Kode booking'}:</strong> {result.bookingCode}</div>
                   </div>
-                  {/* Payment status chip */}
                   <div style={{
                     display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 20,
                     padding: '8px 18px', borderRadius: 100, fontSize: 15, fontWeight: 800,

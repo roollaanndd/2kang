@@ -4,7 +4,7 @@ import { Calendar, Clock, User, MapPin, Stethoscope, Phone, ScanLine } from 'luc
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
-import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { OmdcQR } from '../../../components/ui/OmdcQR';
 import { bookingCode as genBookingCode, bookingBarcodeValue } from '../../../lib/omdcCode';
 import { registerTransaction } from '../../../lib/omdcTransactions';
 
@@ -227,7 +227,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             </span>
           </div>
           <div className="flex justify-center">
-            <OmdcBarcode code={bookingBarcodeValue(bkCode)} height={64} moduleWidth={1.7} showText={false} />
+            <OmdcQR code={bookingBarcodeValue(bkCode)} size={140} showText={false} bgColor="transparent" />
           </div>
           <p className="text-[11px] mt-3 text-center leading-snug" style={{ color: '#6B7280' }}>
             Tunjukkan barcode atau ketik kode booking di eKiosk untuk check-in, ambil nomor antrian &amp; bayar tanpa antre.

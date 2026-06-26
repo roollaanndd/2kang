@@ -1365,6 +1365,14 @@ function KioskSettingsTab() {
 
           <div className="flex items-center justify-between py-2 border-t border-gray-100">
             <div>
+              <div className="text-sm font-medium text-gray-800">QR Code Scanner Check-in</div>
+              <div className="text-xs text-gray-500 mt-0.5">Aktifkan kamera kiosk untuk scan QR code dari aplikasi pasien.</div>
+            </div>
+            <Toggle checked={k.qrCheckin ?? true} onChange={v => updateKioskSettings({ qrCheckin: v })} />
+          </div>
+
+          <div className="flex items-center justify-between py-2 border-t border-gray-100">
+            <div>
               <div className="text-sm font-medium text-gray-800">Pembayaran di Kiosk</div>
               <div className="text-xs text-gray-500 mt-0.5">Izinkan pasien melunasi pembayaran melalui kiosk.</div>
             </div>

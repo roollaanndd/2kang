@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { ClinicBranch } from '../types';
 
-export const CMS_SCHEMA_VERSION = 5;
+export const CMS_SCHEMA_VERSION = 6;
 
 export interface CMSStat { value: string; label: string; }
 export interface CMSService { id: string; name: string; description: string; emoji: string; price: string; isVisible: boolean; }
@@ -97,10 +97,12 @@ export interface CMSContent {
     idleTimeoutSeconds: number;
     /** Prefix for kiosk queue numbers, e.g. "A" → A018. */
     queuePrefix: string;
-    /** Allow patients to check in at the kiosk with their booking code / barcode. */
+    /** Allow patients to check in at the kiosk with their booking code / QR code. */
     bookingCodeCheckin: boolean;
     /** Allow settling payment at the kiosk. */
     kioskPayment: boolean;
+    /** Enable camera-based QR code scanning at the check-in screen. */
+    qrCheckin: boolean;
   };
   /** Custom company logo — base64 data URL. When set, replaces the default tooth SVG everywhere. */
   logoUrl: string | null;
@@ -263,6 +265,7 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
     queuePrefix: 'A',
     bookingCodeCheckin: true,
     kioskPayment: true,
+    qrCheckin: true,
   },
   branches: {
     items: [
