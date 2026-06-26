@@ -296,7 +296,7 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
         </button>
 
         <div style={{ fontSize: 12, color: '#C0C4CC', fontWeight: 500, letterSpacing: '0.05em' }}>
-          OMDC Digital v2.7
+          OMDC Digital v2.8
         </div>
       </div>
     </motion.div>

@@ -55,9 +55,16 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
     goTo('queue-display');
   };
 
+  const handleOmdc = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    kioskSound('select');
+    setState(prev => ({ ...prev, language: lang }));
+    goTo('omdc-recall');
+  };
+
   const LABEL = {
-    id: { welcome: '— SELAMAT DATANG —', title: 'Selamat\nDatang!', sub: 'Klinik Gigi Keluarga Terpercaya', checkin: 'MULAI CHECK-IN', cekAntrian: 'Cek Antrian', hint: 'Ketuk layar untuk memulai', nowServing: 'Antrian Saat Ini' },
-    en: { welcome: '— WELCOME —', title: 'Welcome!', sub: 'Your Trusted Family Dental Clinic', checkin: 'START CHECK-IN', cekAntrian: 'Check Queue', hint: 'Tap screen to start', nowServing: 'Now Serving' },
+    id: { welcome: '— SELAMAT DATANG —', title: 'Selamat\nDatang!', sub: 'Klinik Gigi Keluarga Terpercaya', checkin: 'MULAI CHECK-IN', scanOmdc: 'SCAN KODE OMDC', cekAntrian: 'Cek Antrian', hint: 'Ketuk layar untuk memulai', nowServing: 'Antrian Saat Ini' },
+    en: { welcome: '— WELCOME —', title: 'Welcome!', sub: 'Your Trusted Family Dental Clinic', checkin: 'START CHECK-IN', scanOmdc: 'SCAN OMDC CODE', cekAntrian: 'Check Queue', hint: 'Tap screen to start', nowServing: 'Now Serving' },
   }[lang];
 
   return (
@@ -250,20 +257,21 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
 
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={handleQueue}
+            onClick={handleOmdc}
             style={{
-              width: '100%', height: 68,
-              background: 'white', border: `2px solid rgba(233,30,140,0.20)`,
+              width: '100%', height: 76,
+              background: 'white', border: `2.5px solid ${AQUA}`,
               borderRadius: 20, cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
+              boxShadow: '0 4px 14px rgba(6,182,212,0.18)',
             }}
           >
-            <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke={PINK} strokeWidth="2" strokeLinecap="round">
-              <path d="M4 6h16M4 10h16M4 14h10M4 18h6" />
+            <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke={AQUA} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8v8M10 8v8M13 8v8M17 8v8" />
             </svg>
-            <span style={{ fontSize: 19, fontWeight: 700, color: PINK, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              {LABEL.cekAntrian}
+            <span style={{ fontSize: 21, fontWeight: 800, color: AQUA, fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: 0.4 }}>
+              {LABEL.scanOmdc}
             </span>
           </motion.button>
         </div>
@@ -272,9 +280,8 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
         <div style={{ position: 'relative', zIndex: 2, flex: 1 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, height: '100%' }}>
             {[
-              { icon: '🦷', label: lang === 'id' ? 'Daftar Antrian Baru' : 'New Queue', sub: lang === 'id' ? 'Mulai check-in sekarang' : 'Start check-in now', action: handleCheckin, accent: PINK },
               { icon: '📋', label: lang === 'id' ? 'Cek Status Antrian' : 'Check Queue Status', sub: lang === 'id' ? 'Lihat posisi antrean Anda' : 'View your queue position', action: handleQueue, accent: AQUA },
-              { icon: '⭐', label: lang === 'id' ? '8 Layanan Unggulan' : '8 Premium Services', sub: lang === 'id' ? 'Dokter spesialis berpengalaman' : 'Experienced specialist doctors', action: handleCheckin, accent: ROSE },
+              { icon: '🦷', label: lang === 'id' ? '8 Layanan Unggulan' : '8 Premium Services', sub: lang === 'id' ? 'Dokter spesialis berpengalaman' : 'Experienced specialist doctors', action: handleCheckin, accent: ROSE },
             ].map((item, i) => (
               <motion.button
                 key={i}

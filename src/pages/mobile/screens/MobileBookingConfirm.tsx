@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { Calendar, Clock, User, MapPin, Stethoscope, Phone } from 'lucide-react';
+import { Calendar, Clock, User, MapPin, Stethoscope, Phone, ScanLine } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
+import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { memberCode } from '../../../lib/omdcCode';
+import { registerTransaction } from '../../../lib/omdcTransactions';
 
 interface MobileBookingConfirmProps {
   state: MobileState;
@@ -40,6 +43,28 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
   const service = state.selectedService;
   const branch = state.selectedBranch;
   const user = state.user;
+
+  // The patient's permanent OMDC code — shown as a scannable barcode so it can
+  // be presented at the eKiosk to recall this account and its bookings.
+  const omdcMemberCode = memberCode(user?.id ?? 'guest');
+
+  const confirmBooking = () => {
+    haptic('medium');
+    // Register this booking so a kiosk scan of the patient's OMDC code recalls it.
+    registerTransaction({
+      patientName: user?.name ?? 'Pasien OMDC',
+      userId: user?.id ?? 'guest',
+      medicalRecordNo: user?.medicalRecordNo,
+      phone: user?.phone,
+      serviceId: service?.id,
+      serviceName: service?.name,
+      doctorName: doctor?.name,
+      date: state.selectedDate,
+      time: state.selectedTime,
+      source: 'app',
+    });
+    setState({ screen: 'booking-payment' });
+  };
 
   return (
     <motion.div
@@ -176,6 +201,28 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
             </p>
           </motion.div>
         )}
+
+        {/* OMDC code card — present at the kiosk to skip the queue */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white rounded-2xl px-4 py-4 mt-4"
+          style={{ boxShadow: '0 2px 12px rgba(6,182,212,0.12)', border: '1px solid #CFF1FB' }}
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <ScanLine size={16} style={{ color: '#06B6D4' }} />
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#0E7490' }}>
+              Kode OMDC Anda
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <OmdcBarcode code={omdcMemberCode} height={70} moduleWidth={1.7} />
+          </div>
+          <p className="text-[11px] mt-3 text-center leading-snug" style={{ color: '#6B7280' }}>
+            Tunjukkan barcode ini di eKiosk untuk memanggil data &amp; janji temu Anda tanpa antre.
+          </p>
+        </motion.div>
       </div>
 
       {/* Bottom CTA */}
@@ -184,7 +231,7 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
         style={{ boxShadow: '0 -4px 20px rgba(0,0,0,0.06)' }}
       >
         <button
-          onClick={() => { haptic('medium'); setState({ screen: 'booking-payment' }); }}
+          onClick={confirmBooking}
           className="w-full py-4 rounded-2xl font-bold text-base text-white transition-all active:scale-95"
           style={{
             background: 'linear-gradient(135deg, #E91E8C, #FF6BB5)',

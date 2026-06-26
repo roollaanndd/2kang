@@ -78,6 +78,10 @@ export interface KioskState {
   queueNumber?: string;
   paymentMethod?: PaymentMethod;
   queueType?: 'new' | 'checkin' | 'register';
+  /** OMDC code recalled at the kiosk (member or transaction). */
+  omdcCode?: string;
+  /** True when the current journey was started by recalling an OMDC code. */
+  recalledFromOmdc?: boolean;
 }
 
 export type KioskStep =
@@ -94,7 +98,8 @@ export type KioskStep =
   | 'queue-display'
   | 'checkin'
   | 'new-patient'
-  | 'info-promo';
+  | 'info-promo'
+  | 'omdc-recall';
 
 export interface MobileUser {
   id: string;
