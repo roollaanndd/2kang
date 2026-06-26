@@ -88,10 +88,10 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.22 }}
-      style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#F2F4F8', overflow: 'hidden' }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#FFF5F9', overflow: 'hidden', fontFamily: "'Nunito Sans', 'Plus Jakarta Sans', sans-serif" }}
     >
-      {/* 3px brand strip */}
-      <div style={{ height: 3, flexShrink: 0, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})` }} />
+      {/* 4px brand strip */}
+      <div style={{ height: 4, flexShrink: 0, background: `linear-gradient(90deg, ${PINK}, ${ROSE}, ${AQUA})` }} />
 
       {/* ── HEADER ── */}
       <div style={{
@@ -148,72 +148,73 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
         ) : (
           <div style={{ padding: '14px 14px 90px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-            {/* ── GREETING / QUEUE HERO CARD ── */}
+            {/* ── GREETING / QUEUE HERO CARD — claymorphism ── */}
             <section>
               <div style={{
-                borderRadius: 20, padding: '18px 20px',
-                background: `linear-gradient(135deg, ${PINK} 0%, ${ROSE} 65%, #ffd8e6 100%)`,
-                position: 'relative', overflow: 'hidden',
-                boxShadow: '0 8px 24px rgba(233,30,140,0.28)',
+                borderRadius: 24, padding: '18px 20px',
+                background: 'white',
+                border: '3px solid rgba(233,30,140,0.14)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 0 rgba(233,30,140,0.12), 0 8px 24px rgba(233,30,140,0.12), 0 20px 40px rgba(0,0,0,0.05)',
               }}>
-                {/* ambient glow */}
-                <div style={{ position: 'absolute', top: -30, right: -30, width: 120, height: 120, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.30) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -20, left: 30, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.22) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', marginBottom: 10, fontWeight: 500 }}>
+                    <div style={{ fontSize: 12, color: '#9CA3AF', marginBottom: 10, fontWeight: 600 }}>
                       Apa yang bisa kami bantu hari ini?
                     </div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: 4 }}>
                       Sedang Dilayani
                     </div>
                     <div style={{
-                      fontSize: 36, fontWeight: 900, lineHeight: 1, marginBottom: 12,
-                      color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.15)',
-                      fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: -1,
+                      fontSize: 38, fontWeight: 900, lineHeight: 1, marginBottom: 14,
+                      color: PINK, fontFamily: "'Nunito Sans', sans-serif", letterSpacing: -1,
                     }}>
                       {appointment?.queue ?? 'A-024'}
                     </div>
                     <motion.button
-                      whileTap={{ scale: 0.93 }}
+                      whileTap={{ y: 2 }}
                       onClick={() => { haptic('light'); setState({ screen: 'queue' }); }}
                       style={{
                         display: 'inline-flex', alignItems: 'center', gap: 6,
-                        padding: '8px 16px', borderRadius: 100,
-                        background: `linear-gradient(135deg, ${PINK}, ${ROSE})`,
+                        padding: '10px 20px', borderRadius: 9999,
+                        background: 'linear-gradient(145deg, #FF4DAD, #E91E8C)',
                         border: 'none', cursor: 'pointer',
-                        boxShadow: '0 4px 14px rgba(233,30,140,0.35)',
+                        boxShadow: '0 4px 0 #C41678, 0 8px 18px rgba(233,30,140,0.38)',
+                        fontFamily: "'Nunito Sans', sans-serif",
                       }}
                     >
-                      <span style={{ fontSize: 12, fontWeight: 700, color: 'white' }}>Pantau Antrian</span>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: 'white' }}>Pantau Antrian</span>
                       <ArrowRight size={13} color="white" />
                     </motion.button>
                   </div>
-                  <div style={{ flexShrink: 0, opacity: 0.8 }}>
-                    <ToothDecorSmall />
+                  <div style={{
+                    width: 64, height: 64, borderRadius: 18, flexShrink: 0,
+                    background: 'rgba(233,30,140,0.06)',
+                    border: '2px solid rgba(233,30,140,0.12)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 30,
+                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8)',
+                  }}>
+                    🦷
                   </div>
                 </div>
 
-                {/* Stats row */}
+                {/* Stats row — clay pill style */}
                 <div style={{
-                  marginTop: 16, display: 'flex', gap: 0,
-                  background: 'rgba(255,255,255,0.22)',
-                  borderRadius: 12, overflow: 'hidden',
-                  border: '1px solid rgba(255,255,255,0.30)',
-                  position: 'relative', zIndex: 2,
+                  marginTop: 14, display: 'flex', gap: 8,
                 }}>
                   {[
-                    { v: '12', l: 'Menunggu' },
-                    { v: '~8 mnt', l: 'Est. Waktu' },
-                    { v: '4', l: 'Dokter Aktif' },
-                  ].map((s, i) => (
+                    { v: '12', l: 'Menunggu', c: PINK },
+                    { v: '~8 mnt', l: 'Est. Waktu', c: AQUA },
+                    { v: '4', l: 'Dokter Aktif', c: '#10B981' },
+                  ].map((s) => (
                     <div key={s.l} style={{
-                      flex: 1, padding: '10px 8px', textAlign: 'center',
-                      borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.25)' : 'none',
+                      flex: 1, padding: '8px 6px', textAlign: 'center',
+                      borderRadius: 12,
+                      background: `${s.c}0C`,
+                      border: `2px solid ${s.c}22`,
                     }}>
-                      <div style={{ fontSize: 16, fontWeight: 900, color: 'white', lineHeight: 1 }}>{s.v}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.75)', marginTop: 2, fontWeight: 600 }}>{s.l}</div>
+                      <div style={{ fontSize: 15, fontWeight: 900, color: s.c, lineHeight: 1, fontFamily: "'Nunito Sans', sans-serif" }}>{s.v}</div>
+                      <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2, fontWeight: 600 }}>{s.l}</div>
                     </div>
                   ))}
                 </div>
@@ -248,7 +249,7 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                     <div style={{
                       width: 52, height: 52, borderRadius: 16,
                       background: action.grad,
-                      boxShadow: `0 6px 16px ${action.shadow}`,
+                      boxShadow: `inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 0 ${action.shadow.replace('0.30', '0.40').replace('0.28', '0.36')}, 0 8px 18px ${action.shadow}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       {action.icon}
@@ -306,58 +307,48 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
               </div>
             </section>
 
-            {/* ── PROMO BANNER (CSS only, no external image) ── */}
+            {/* ── PROMO BANNER — claymorphism ── */}
             <section>
               <motion.div
                 whileTap={{ scale: 0.98 }}
                 onClick={() => { haptic('light'); setState({ screen: 'booking' }); }}
                 style={{
-                  borderRadius: 20, overflow: 'hidden', cursor: 'pointer',
-                  background: `linear-gradient(135deg, ${PINK} 0%, #c0196e 50%, #D4A017 100%)`,
-                  padding: '20px 20px',
+                  borderRadius: 24, cursor: 'pointer',
+                  background: '#FFF0F8',
+                  border: '3px solid rgba(233,30,140,0.18)',
+                  padding: '18px 20px',
                   position: 'relative',
-                  boxShadow: '0 8px 24px rgba(233,30,140,0.28)',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 0 rgba(233,30,140,0.14), 0 8px 24px rgba(233,30,140,0.12)',
                   minHeight: 110,
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Glow accents */}
-                <div style={{ position: 'absolute', top: -20, right: 60, width: 100, height: 100, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: -20, right: 20, width: 80, height: 80, borderRadius: '50%', background: 'radial-gradient(circle, rgba(212,160,23,0.30) 0%, transparent 70%)', pointerEvents: 'none' }} />
-
-                <div style={{ position: 'relative', zIndex: 2 }}>
+                <div style={{ flex: 1 }}>
                   <div style={{
-                    display: 'inline-flex', fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
-                    letterSpacing: '0.14em', color: 'white', background: 'rgba(255,255,255,0.20)',
-                    border: '1px solid rgba(255,255,255,0.35)', padding: '3px 10px', borderRadius: 100, marginBottom: 10,
+                    display: 'inline-flex', fontSize: 9, fontWeight: 800, textTransform: 'uppercase',
+                    letterSpacing: '0.14em', color: PINK, background: 'rgba(233,30,140,0.08)',
+                    border: '1.5px solid rgba(233,30,140,0.20)', padding: '4px 10px', borderRadius: 100, marginBottom: 10,
                   }}>
                     Promo Bulan Ini
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 900, color: 'white', lineHeight: 1.2, marginBottom: 8, fontFamily: 'Plus Jakarta Sans, sans-serif', textShadow: '0 1px 4px rgba(0,0,0,0.15)' }}>
-                    Diskon 30%<br />
-                    <span style={{ color: '#ffd8e6' }}>
-                      Scaling & Bleaching
-                    </span>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: DARK, lineHeight: 1.2, marginBottom: 6, fontFamily: "'Nunito Sans', sans-serif" }}>
+                    Diskon 30%{' '}
+                    <span style={{ color: PINK }}>Scaling & Bleaching</span>
                   </div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', marginBottom: 12 }}>Berlaku s/d 30 Juni 2026</div>
+                  <div style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600, marginBottom: 12 }}>Berlaku s/d 30 Juni 2026</div>
                   <div style={{
                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                    background: 'white',
-                    padding: '8px 18px', borderRadius: 100,
-                    boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+                    background: 'linear-gradient(145deg, #FF4DAD, #E91E8C)',
+                    padding: '8px 18px', borderRadius: 9999,
+                    boxShadow: '0 3px 0 #C41678, 0 6px 14px rgba(233,30,140,0.35)',
                   }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: PINK }}>Klaim Sekarang</span>
-                    <ArrowRight size={13} color={PINK} />
+                    <span style={{ fontSize: 12, fontWeight: 800, color: 'white', fontFamily: "'Nunito Sans', sans-serif" }}>Klaim Sekarang</span>
+                    <ArrowRight size={13} color="white" />
                   </div>
                 </div>
-
-                {/* Large tooth decoration right */}
-                <div style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', opacity: 0.12, pointerEvents: 'none' }}>
-                  <svg width={80} height={92} viewBox="0 0 100 115" fill="none">
-                    <path d="M50 8C35 8 23 20 23 35c0 9 3 16 7 24 4 8 6.5 16 6.5 27 0 3 2 5 4.5 5h18c2.5 0 4.5-2 4.5-5 0-11 2.5-19 6.5-27 4-8 7-15 7-24C77 20 65 8 50 8z"
-                      fill="white" />
-                  </svg>
-                </div>
+                {/* Tooth decoration */}
+                <div style={{ flexShrink: 0, fontSize: 52, opacity: 0.25 }}>🦷</div>
               </motion.div>
             </section>
 
@@ -380,13 +371,15 @@ export function MobileHome({ state, setState }: MobileHomeProps) {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.06 }}
-                      whileTap={{ scale: 0.96 }}
+                      whileTap={{ scale: 0.96, y: 2 }}
                       onClick={() => { haptic('selection'); setState({ screen: 'booking-doctor', selectedDoctor: doc }); }}
                       style={{
-                        flexShrink: 0, width: 140, borderRadius: 18, padding: '14px 12px',
+                        flexShrink: 0, width: 140, borderRadius: 22, padding: '16px 12px',
                         textAlign: 'center', background: 'white',
-                        boxShadow: '0 4px 16px rgba(0,0,0,0.07)', border: '1px solid rgba(0,0,0,0.06)',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.9), 0 3px 0 rgba(233,30,140,0.10), 0 6px 18px rgba(233,30,140,0.10), 0 14px 30px rgba(0,0,0,0.04)',
+                        border: '2.5px solid rgba(233,30,140,0.12)',
                         cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+                        fontFamily: "'Nunito Sans', sans-serif",
                       }}
                     >
                       <div style={{

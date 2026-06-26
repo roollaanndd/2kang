@@ -60,9 +60,9 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
   const progressPct = ((step + 1) / TOTAL) * 100;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
-      {/* 3px top strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)', zIndex: 10 }} />
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#FFF5F9', position: 'relative', overflow: 'hidden', fontFamily: "'Nunito Sans', 'Plus Jakarta Sans', sans-serif" }}>
+      {/* 4px brand strip */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)', zIndex: 10 }} />
 
       {/* Skip button */}
       <header style={{ display: 'flex', justifyContent: 'flex-end', padding: '24px 24px 0' }}>
@@ -88,29 +88,26 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
           transition={{ duration: 0.3 }}
           style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '16px 24px 0' }}
         >
-          {/* Illustration container */}
+          {/* Illustration container — clay card style */}
           <div style={{
-            width: '100%', maxWidth: 320, aspectRatio: '1/1',
-            margin: '0 auto 40px',
-            borderRadius: 24,
-            background: 'linear-gradient(180deg, rgba(255,245,249,0.5) 0%, transparent 100%)',
+            width: '100%', maxWidth: 300, aspectRatio: '1/1',
+            margin: '0 auto 36px',
+            borderRadius: 32,
+            background: 'white',
+            border: '3px solid rgba(233,30,140,0.12)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95), 0 4px 0 rgba(233,30,140,0.10), 0 8px 28px rgba(233,30,140,0.12), 0 20px 40px rgba(0,0,0,0.05)',
             position: 'relative', overflow: 'hidden',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'rgba(255,255,255,0.4)',
-              borderRadius: 24,
-            }} />
             <motion.img
               src={slide.img}
               alt="OMDC Dental onboarding illustration"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               style={{
-                width: '100%', height: '100%', objectFit: 'contain',
+                width: '85%', height: '85%', objectFit: 'contain',
                 position: 'relative', zIndex: 1,
-                filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
+                filter: 'drop-shadow(0 16px 32px rgba(233,30,140,0.18))',
               }}
             />
           </div>
@@ -118,14 +115,14 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
           {/* Text content */}
           <div style={{ textAlign: 'center', maxWidth: 300, margin: '0 auto' }}>
             <h1 style={{
-              fontSize: 24, fontWeight: 700, color: '#0D1421',
-              lineHeight: 1.3, letterSpacing: -0.3, marginBottom: 16,
-              whiteSpace: 'pre-line',
+              fontSize: 26, fontWeight: 800, color: '#0D1421',
+              lineHeight: 1.3, letterSpacing: -0.4, marginBottom: 14,
+              whiteSpace: 'pre-line', fontFamily: "'Nunito Sans', sans-serif",
             }}>
               {slide.title}
             </h1>
             <p style={{
-              fontSize: 14, color: '#6B7280', lineHeight: 1.6,
+              fontSize: 14, color: '#9CA3AF', lineHeight: 1.7, fontWeight: 500,
               padding: '0 8px',
             }}>
               {slide.subtitle}
@@ -163,16 +160,17 @@ export function MobileOnboarding({ state, setState }: MobileOnboardingProps) {
           </div>
         </div>
 
-        {/* CTA button */}
+        {/* CTA button — clay primary */}
         <motion.button
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ y: 3 }}
           onClick={goNext}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            gap: 8, padding: '16px 0', borderRadius: 12, border: 'none', cursor: 'pointer',
-            fontWeight: 700, fontSize: 16, color: 'white',
-            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5)',
-            boxShadow: '0 8px 20px rgba(233,30,140,0.25)',
+            gap: 8, padding: '18px 0', borderRadius: 9999, border: 'none', cursor: 'pointer',
+            fontWeight: 800, fontSize: 16, color: 'white',
+            background: 'linear-gradient(145deg, #FF4DAD, #E91E8C)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 0 #C41678, 0 8px 22px rgba(233,30,140,0.40)',
+            fontFamily: "'Nunito Sans', sans-serif",
           }}
         >
           <span>{step < TOTAL - 1 ? 'Lanjut' : 'Mulai Sekarang'}</span>
