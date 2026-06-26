@@ -16,11 +16,12 @@
 const ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I/O/I-1 ambiguity
 const BASE = ALPHABET.length;
 
-export type OmdcCodeKind = 'member' | 'transaction';
+export type OmdcCodeKind = 'member' | 'transaction' | 'booking';
 
 const PREFIX: Record<OmdcCodeKind, string> = {
   member: 'OMDC-M-',
   transaction: 'OMDC-T-',
+  booking: 'OMDC-B-',
 };
 
 /** Stable 32-bit hash of a string (FNV-1a). */
@@ -82,6 +83,36 @@ export function transactionCode(seed?: string): string {
   return PREFIX.transaction + body + checkChar(body);
 }
 
+/**
+ * Short, human-friendly booking code (6 chars, no ambiguous glyphs) that a
+ * patient can read off the app and type at the kiosk numpad/keyboard, e.g.
+ * "7H3K9Q". Also embedded in the OMDC-B- barcode for scanning.
+ */
+export function bookingCode(): string {
+  let out = '';
+  for (let i = 0; i < 6; i++) {
+    out += ALPHABET[Math.floor(Math.random() * BASE)];
+  }
+  return out;
+}
+
+/** Wrap a bare booking code into its scannable OMDC-B- form. */
+export function bookingBarcodeValue(code: string): string {
+  const body = code.toUpperCase();
+  return PREFIX.booking + body + checkChar(body);
+}
+
+/** Pull the bare 6-char booking code out of any scanned/typed string. */
+export function extractBookingCode(raw: string): string | null {
+  const norm = normalize(raw);
+  const parsed = parseOmdcCode(norm);
+  if (parsed.valid && parsed.kind === 'booking' && parsed.key) return parsed.key;
+  // Fall back to the trailing alphanumeric run (handles bare typed codes).
+  const compact = norm.replace(/[^0-9A-Z]/g, '');
+  if (compact.length >= 6) return compact.slice(-6);
+  return compact.length >= 4 ? compact : null;
+}
+
 export interface ParsedOmdcCode {
   valid: boolean;
   kind?: OmdcCodeKind;
@@ -94,7 +125,7 @@ export interface ParsedOmdcCode {
 /** Parse + validate a scanned or typed code. */
 export function parseOmdcCode(raw: string): ParsedOmdcCode {
   const code = normalize(raw);
-  for (const kind of ['member', 'transaction'] as const) {
+  for (const kind of ['member', 'transaction', 'booking'] as const) {
     const prefix = PREFIX[kind];
     if (!code.startsWith(prefix)) continue;
     const payload = code.slice(prefix.length);

@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { Calendar, Clock, User, MapPin, Stethoscope, Phone, ScanLine } from 'lucide-react';
 import { MobileHeader } from '../../../components/mobile/MobileHeader';
 import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
 import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
-import { memberCode } from '../../../lib/omdcCode';
+import { bookingCode as genBookingCode, bookingBarcodeValue } from '../../../lib/omdcCode';
 import { registerTransaction } from '../../../lib/omdcTransactions';
 
 interface MobileBookingConfirmProps {
@@ -44,13 +44,13 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
   const branch = state.selectedBranch;
   const user = state.user;
 
-  // The patient's permanent OMDC code — shown as a scannable barcode so it can
-  // be presented at the eKiosk to recall this account and its bookings.
-  const omdcMemberCode = memberCode(user?.id ?? 'guest');
+  // Stable booking code for this visit — shown big and as a scannable barcode so
+  // the patient can present it at the eKiosk to check in / pay without queueing.
+  const [bkCode] = useState(() => genBookingCode());
 
   const confirmBooking = () => {
     haptic('medium');
-    // Register this booking so a kiosk scan of the patient's OMDC code recalls it.
+    // Register this booking so a kiosk scan / booking-code entry recalls it.
     registerTransaction({
       patientName: user?.name ?? 'Pasien OMDC',
       userId: user?.id ?? 'guest',
@@ -61,6 +61,8 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
       doctorName: doctor?.name,
       date: state.selectedDate,
       time: state.selectedTime,
+      amount: service?.priceMin,
+      bookingCode: bkCode,
       source: 'app',
     });
     setState({ screen: 'booking-payment' });
@@ -213,14 +215,22 @@ export function MobileBookingConfirm({ state, setState }: MobileBookingConfirmPr
           <div className="flex items-center gap-2 mb-3">
             <ScanLine size={16} style={{ color: '#06B6D4' }} />
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#0E7490' }}>
-              Kode OMDC Anda
+              Kode Booking Anda
             </p>
           </div>
+          <div className="flex flex-col items-center gap-1 mb-3">
+            <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: '#9CA3AF' }}>
+              Ketik kode ini di kiosk
+            </span>
+            <span className="font-black tracking-[0.2em]" style={{ fontSize: 32, color: '#E91E8C' }}>
+              {bkCode}
+            </span>
+          </div>
           <div className="flex justify-center">
-            <OmdcBarcode code={omdcMemberCode} height={70} moduleWidth={1.7} />
+            <OmdcBarcode code={bookingBarcodeValue(bkCode)} height={64} moduleWidth={1.7} showText={false} />
           </div>
           <p className="text-[11px] mt-3 text-center leading-snug" style={{ color: '#6B7280' }}>
-            Tunjukkan barcode ini di eKiosk untuk memanggil data &amp; janji temu Anda tanpa antre.
+            Tunjukkan barcode atau ketik kode booking di eKiosk untuk check-in, ambil nomor antrian &amp; bayar tanpa antre.
           </p>
         </motion.div>
       </div>

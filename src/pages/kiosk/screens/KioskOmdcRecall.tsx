@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ScanLine, CheckCircle2, XCircle, Delete } from 'lucide-react';
 import type { KioskScreenProps } from '../KioskLayout';
 import { kioskSound } from '../../../lib/kioskSound';
-import { lookupOmdcCode, seedDemoTransaction, type OmdcTransaction } from '../../../lib/omdcTransactions';
+import { lookupOmdcCode, seedDemoTransaction, checkInTransaction, type OmdcTransaction } from '../../../lib/omdcTransactions';
 import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { useCMS } from '../../../context/CMSContext';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -22,7 +23,10 @@ const KEYS = [
 
 export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
-  const [value, setValue] = useState('OMDC-');
+  const { cms } = useCMS();
+  const queuePrefix = cms.kioskSettings?.queuePrefix ?? 'A';
+  const kioskPayment = cms.kioskSettings?.kioskPayment ?? true;
+  const [value, setValue] = useState('');
   const [phase, setPhase] = useState<Phase>('entry');
   const [result, setResult] = useState<OmdcTransaction | null>(null);
   const [demo, setDemo] = useState<OmdcTransaction | null>(null);
@@ -48,23 +52,29 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
 
   const handleKey = (k: string) => {
     kioskSound('tap');
-    if (k === '⌫') { setValue(v => (v.length > 5 ? v.slice(0, -1) : v)); return; }
-    setValue(v => (v.length < 14 ? v + k : v));
+    if (k === '⌫') { setValue(v => v.slice(0, -1)); return; }
+    setValue(v => (v.length < 16 ? v + k : v));
   };
 
   const continueWithTransaction = (txn: OmdcTransaction) => {
     kioskSound('select');
+    // Check the booking in — assigns a queue number from the shared counter.
+    const checked = checkInTransaction(txn.key, queuePrefix) ?? txn;
+    const needsPayment = !checked.paid && kioskPayment && !!checked.amount;
     setState(prev => ({
       ...prev,
-      patientName: txn.patientName,
-      selectedDate: txn.date,
-      selectedTime: txn.time,
-      queueNumber: txn.queueNumber,
-      omdcCode: txn.code,
+      patientName: checked.patientName,
+      selectedDate: checked.date,
+      selectedTime: checked.time,
+      queueNumber: checked.queueNumber,
+      omdcCode: checked.code,
+      bookingCode: checked.bookingCode,
+      omdcTxnKey: checked.key,
+      amountDue: checked.amount,
       recalledFromOmdc: true,
       queueType: 'checkin',
     }));
-    goTo('ticket');
+    goTo(needsPayment ? 'payment' : 'ticket');
   };
 
   return (
@@ -81,10 +91,10 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
       {/* Header */}
       <div style={{ padding: '30px 64px 22px', backgroundColor: '#fff', borderBottom: '1px solid #F3F4F6', flexShrink: 0 }}>
         <div className="kd" style={{ fontSize: 38, fontWeight: 900, color: DARK, marginBottom: 6, lineHeight: 1.1 }}>
-          {t ? 'Recall with OMDC Code' : 'Panggil dengan Kode OMDC'}
+          {t ? 'Check-in with Booking Code' : 'Check-in dengan Kode Booking'}
         </div>
         <div style={{ fontSize: 19, color: '#6B7280' }}>
-          {t ? 'Scan your barcode or enter your OMDC code' : 'Scan barcode atau masukkan Kode OMDC Anda'}
+          {t ? 'Scan your barcode or enter your booking code from the app' : 'Scan barcode atau masukkan kode booking dari aplikasi'}
         </div>
       </div>
 
@@ -150,15 +160,26 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
 
         {/* RIGHT — manual entry */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16, minHeight: 0 }}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: DARK }}>
-            {t ? 'Or enter your code manually' : 'Atau masukkan kode secara manual'}
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+            <div style={{ fontSize: 18, fontWeight: 700, color: DARK }}>
+              {t ? 'Or enter your code manually' : 'Atau masukkan kode secara manual'}
+            </div>
+            {demo && (
+              <button
+                onClick={() => { kioskSound('tap'); setValue(demo.bookingCode); }}
+                style={{ fontSize: 13, fontWeight: 700, color: AQUA, background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                {t ? `Demo: ${demo.bookingCode}` : `Demo: ${demo.bookingCode}`}
+              </button>
+            )}
           </div>
           <div style={{
             padding: '20px 24px', borderRadius: 16, border: `2px solid ${PINK}`, background: '#fff',
-            fontSize: 30, fontWeight: 900, letterSpacing: '0.12em', color: DARK, textAlign: 'center',
+            fontSize: 30, fontWeight: 900, letterSpacing: '0.12em', textAlign: 'center',
+            color: value ? DARK : '#C8CCD4',
             fontFamily: "'Plus Jakarta Sans', monospace", minHeight: 30,
           }}>
-            {value}
+            {value || (t ? 'e.g. 7H3K9Q' : 'mis. 7H3K9Q')}
             <motion.span animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} style={{ color: PINK }}>|</motion.span>
           </div>
 
@@ -182,13 +203,13 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
 
           <button
             onClick={() => submit(value)}
-            disabled={value.length < 10}
+            disabled={value.replace(/[^0-9A-Za-z]/g, '').length < 4}
             style={{
               height: 68, borderRadius: 18, border: 'none',
-              background: value.length >= 10 ? `linear-gradient(135deg, ${PINK}, ${ROSE})` : '#E5E7EB',
-              color: value.length >= 10 ? '#fff' : '#9CA3AF', fontSize: 21, fontWeight: 800,
-              cursor: value.length >= 10 ? 'pointer' : 'not-allowed',
-              boxShadow: value.length >= 10 ? '0 8px 24px rgba(233,30,140,0.35)' : 'none',
+              background: value.replace(/[^0-9A-Za-z]/g, '').length >= 4 ? `linear-gradient(135deg, ${PINK}, ${ROSE})` : '#E5E7EB',
+              color: value.replace(/[^0-9A-Za-z]/g, '').length >= 4 ? '#fff' : '#9CA3AF', fontSize: 21, fontWeight: 800,
+              cursor: value.replace(/[^0-9A-Za-z]/g, '').length >= 4 ? 'pointer' : 'not-allowed',
+              boxShadow: value.replace(/[^0-9A-Za-z]/g, '').length >= 4 ? '0 8px 24px rgba(233,30,140,0.35)' : 'none',
             }}
           >
             {t ? 'Recall Patient' : 'Panggil Data Pasien'}
@@ -240,11 +261,21 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
                   <div className="kd" style={{ fontSize: 32, fontWeight: 900, color: PINK, marginBottom: 18 }}>
                     {result.patientName}
                   </div>
-                  <div style={{ background: '#F9FAFB', borderRadius: 18, padding: '18px 22px', textAlign: 'left', marginBottom: 24, fontSize: 17, color: '#374151', lineHeight: 1.8 }}>
+                  <div style={{ background: '#F9FAFB', borderRadius: 18, padding: '18px 22px', textAlign: 'left', marginBottom: 16, fontSize: 17, color: '#374151', lineHeight: 1.8 }}>
                     {result.serviceName && <div><strong>{t ? 'Service' : 'Layanan'}:</strong> {result.serviceName}</div>}
                     {result.doctorName && <div><strong>{t ? 'Doctor' : 'Dokter'}:</strong> {result.doctorName}</div>}
                     {result.time && <div><strong>{t ? 'Time' : 'Waktu'}:</strong> {result.time} WIB</div>}
-                    {result.queueNumber && <div><strong>{t ? 'Queue' : 'Antrian'}:</strong> {result.queueNumber}</div>}
+                    <div><strong>{t ? 'Booking code' : 'Kode booking'}:</strong> {result.bookingCode}</div>
+                  </div>
+                  {/* Payment status chip */}
+                  <div style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 20,
+                    padding: '8px 18px', borderRadius: 100, fontSize: 15, fontWeight: 800,
+                    background: result.paid ? '#D1FAE5' : '#FEF3C7', color: result.paid ? '#065F46' : '#92400E',
+                  }}>
+                    {result.paid
+                      ? (t ? '✓ Paid' : '✓ Lunas')
+                      : (t ? `Outstanding: Rp ${(result.amount ?? 0).toLocaleString('id-ID')}` : `Belum bayar: Rp ${(result.amount ?? 0).toLocaleString('id-ID')}`)}
                   </div>
                   <button
                     onClick={() => continueWithTransaction(result)}
@@ -252,7 +283,9 @@ export function KioskOmdcRecall({ state, setState, goTo, goBack }: KioskScreenPr
                       background: `linear-gradient(135deg, ${PINK}, ${ROSE})`, color: '#fff', fontSize: 20, fontWeight: 800,
                       cursor: 'pointer', boxShadow: '0 8px 24px rgba(233,30,140,0.35)' }}
                   >
-                    {t ? 'Confirm Check-in' : 'Konfirmasi Check-in'}
+                    {!result.paid && kioskPayment && result.amount
+                      ? (t ? 'Check-in & Pay' : 'Check-in & Bayar')
+                      : (t ? 'Confirm Check-in' : 'Konfirmasi Check-in')}
                   </button>
                 </>
               )}

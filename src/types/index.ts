@@ -80,6 +80,12 @@ export interface KioskState {
   queueType?: 'new' | 'checkin' | 'register';
   /** OMDC code recalled at the kiosk (member or transaction). */
   omdcCode?: string;
+  /** Short booking code for this visit. */
+  bookingCode?: string;
+  /** Registry key of the active transaction (for status updates). */
+  omdcTxnKey?: string;
+  /** Amount due in IDR when routing through kiosk payment. */
+  amountDue?: number;
   /** True when the current journey was started by recalling an OMDC code. */
   recalledFromOmdc?: boolean;
 }

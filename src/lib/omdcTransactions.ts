@@ -11,13 +11,18 @@
  * and a seeded demo record means kiosk recall works out of the box.
  */
 
-import { memberCode, transactionCode, parseOmdcCode } from './omdcCode';
+import { memberCode, transactionCode, bookingCode, parseOmdcCode } from './omdcCode';
+
+/** Lifecycle of a booking as it moves through app → kiosk → clinic. */
+export type OmdcStatus = 'booked' | 'checked-in' | 'paid' | 'done' | 'cancelled';
 
 export interface OmdcTransaction {
   /** Transaction code body (lookup key, without prefix/check char). */
   key: string;
   /** Full transaction code, e.g. OMDC-T-A18Q4Z. */
   code: string;
+  /** Short, human-friendly booking code typed/scanned at the kiosk. */
+  bookingCode: string;
   patientName: string;
   /** The patient's permanent member code (links txn → account). */
   memberCode: string;
@@ -30,6 +35,12 @@ export interface OmdcTransaction {
   date?: string;
   time?: string;
   queueNumber?: string;
+  /** Booking lifecycle status. */
+  status: OmdcStatus;
+  /** Whether payment has been settled. */
+  paid: boolean;
+  /** Estimated / charged amount in IDR. */
+  amount?: number;
   /** Where it originated. */
   source: 'app' | 'kiosk';
   ts: number;
@@ -73,6 +84,11 @@ export function registerTransaction(input: {
   date?: string;
   time?: string;
   queueNumber?: string;
+  amount?: number;
+  paid?: boolean;
+  status?: OmdcStatus;
+  /** Pre-generated booking code to use (otherwise one is created). */
+  bookingCode?: string;
   source?: 'app' | 'kiosk';
 }): OmdcTransaction {
   const code = transactionCode(input.queueNumber ?? input.patientName);
@@ -83,6 +99,7 @@ export function registerTransaction(input: {
   const txn: OmdcTransaction = {
     key: parsed.key ?? code,
     code,
+    bookingCode: input.bookingCode ?? bookingCode(),
     patientName: input.patientName,
     memberCode: mCode,
     memberKey: mParsed.key ?? mCode,
@@ -94,6 +111,9 @@ export function registerTransaction(input: {
     date: input.date,
     time: input.time,
     queueNumber: input.queueNumber,
+    status: input.status ?? 'booked',
+    paid: input.paid ?? false,
+    amount: input.amount,
     source: input.source ?? 'app',
     ts: Date.now(),
   };
@@ -101,6 +121,17 @@ export function registerTransaction(input: {
   const next = [txn, ...safeRead().filter(t => t.key !== txn.key)];
   safeWrite(next);
   return txn;
+}
+
+/** Patch an existing transaction (by key) and broadcast the change. */
+export function updateTransaction(key: string, patch: Partial<OmdcTransaction>): OmdcTransaction | null {
+  const list = safeRead();
+  const idx = list.findIndex(t => t.key === key);
+  if (idx < 0) return null;
+  const updated = { ...list[idx], ...patch };
+  list[idx] = updated;
+  safeWrite(list);
+  return updated;
 }
 
 export function getTransactions(): OmdcTransaction[] {
@@ -115,27 +146,80 @@ export function findByMemberKey(memberKey: string): OmdcTransaction | null {
 
 export interface OmdcLookupResult {
   found: boolean;
-  kind?: 'member' | 'transaction';
+  kind?: 'member' | 'transaction' | 'booking';
   transaction?: OmdcTransaction;
 }
 
+/** Find a transaction by its short, human-friendly booking code. */
+export function findByBookingCode(code: string): OmdcTransaction | null {
+  const norm = code.toUpperCase().replace(/[^0-9A-Z]/g, '');
+  return safeRead().find(t => t.bookingCode === norm) ?? null;
+}
+
 /**
- * Resolve a scanned/typed OMDC code to a transaction.
- *  - transaction code → that exact booking
- *  - member code      → that patient's most recent booking
+ * Resolve a scanned/typed code to a transaction. Accepts, in order:
+ *  - booking barcode (OMDC-B-…) or a bare 6-char booking code
+ *  - transaction code (OMDC-T-…) → that exact booking
+ *  - member code (OMDC-M-…)      → that patient's most recent booking
  */
 export function lookupOmdcCode(raw: string): OmdcLookupResult {
   const parsed = parseOmdcCode(raw);
-  if (!parsed.valid || !parsed.key) return { found: false };
 
-  if (parsed.kind === 'transaction') {
+  if (parsed.valid && parsed.kind === 'transaction' && parsed.key) {
     const txn = safeRead().find(t => t.key === parsed.key);
     return txn ? { found: true, kind: 'transaction', transaction: txn } : { found: false, kind: 'transaction' };
   }
 
-  // member code
-  const txn = findByMemberKey(parsed.key);
-  return txn ? { found: true, kind: 'member', transaction: txn } : { found: false, kind: 'member' };
+  if (parsed.valid && parsed.kind === 'member' && parsed.key) {
+    const txn = findByMemberKey(parsed.key);
+    return txn ? { found: true, kind: 'member', transaction: txn } : { found: false, kind: 'member' };
+  }
+
+  // Booking barcode (OMDC-B-) or a bare booking code typed at the kiosk.
+  const bareCode = parsed.valid && parsed.kind === 'booking' && parsed.key
+    ? parsed.key
+    : raw.toUpperCase().replace(/[^0-9A-Z]/g, '').slice(-6);
+  if (bareCode.length >= 4) {
+    const txn = findByBookingCode(bareCode);
+    if (txn) return { found: true, kind: 'booking', transaction: txn };
+  }
+  return { found: false, kind: 'booking' };
+}
+
+// ─── Queue number assignment ─────────────────────────────────────────────────
+const QUEUE_KEY = 'omdc:queueCounter';
+
+/**
+ * Assign the next sequential queue number (e.g. "A018"), persisted across the
+ * kiosk so walk-ins and recalled bookings draw from one shared counter.
+ */
+export function assignQueueNumber(prefix = 'A'): string {
+  let n = 18;
+  try {
+    const raw = window.localStorage.getItem(QUEUE_KEY);
+    n = raw ? parseInt(raw, 10) + 1 : 18;
+    window.localStorage.setItem(QUEUE_KEY, String(n));
+  } catch {
+    n = 18 + Math.floor(Math.random() * 80);
+  }
+  return `${prefix}${String(n).padStart(3, '0')}`;
+}
+
+/** Check a booking in: assign a queue number and advance its status. */
+export function checkInTransaction(key: string, queuePrefix = 'A'): OmdcTransaction | null {
+  const existing = safeRead().find(t => t.key === key);
+  if (!existing) return null;
+  const queueNumber = existing.queueNumber ?? assignQueueNumber(queuePrefix);
+  return updateTransaction(key, {
+    queueNumber,
+    status: existing.paid ? 'paid' : 'checked-in',
+  });
+}
+
+/** Settle payment for a booking. */
+export function markPaid(key: string, method?: string): OmdcTransaction | null {
+  void method;
+  return updateTransaction(key, { paid: true, status: 'paid' });
 }
 
 export function subscribeTransactions(cb: (list: OmdcTransaction[]) => void): () => void {
@@ -171,7 +255,9 @@ export function seedDemoTransaction(): OmdcTransaction {
     doctorName: 'drg. Sarah Wijaya',
     date: new Date().toISOString().slice(0, 10),
     time: '10:00',
-    queueNumber: 'A018',
+    amount: 350000,
+    paid: false,
+    status: 'booked',
     source: 'app',
   });
 }

@@ -4,6 +4,7 @@ import { CURRENT_QUEUE } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
 import { useIsPortrait } from '../../../context/KioskOrientationContext';
+import { useCMS } from '../../../context/CMSContext';
 
 const PINK = '#E91E8C';
 const ROSE = '#FF6BB5';
@@ -41,6 +42,8 @@ const STATS = [
 
 export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
   const portrait = useIsPortrait();
+  const { cms } = useCMS();
+  const bookingCodeCheckin = cms.kioskSettings?.bookingCodeCheckin ?? true;
   const [lang, setLang] = useState<'id' | 'en'>('id');
 
   const handleCheckin = () => {
@@ -63,8 +66,8 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
   };
 
   const LABEL = {
-    id: { welcome: '— SELAMAT DATANG —', title: 'Selamat\nDatang!', sub: 'Klinik Gigi Keluarga Terpercaya', checkin: 'MULAI CHECK-IN', scanOmdc: 'SCAN KODE OMDC', cekAntrian: 'Cek Antrian', hint: 'Ketuk layar untuk memulai', nowServing: 'Antrian Saat Ini' },
-    en: { welcome: '— WELCOME —', title: 'Welcome!', sub: 'Your Trusted Family Dental Clinic', checkin: 'START CHECK-IN', scanOmdc: 'SCAN OMDC CODE', cekAntrian: 'Check Queue', hint: 'Tap screen to start', nowServing: 'Now Serving' },
+    id: { welcome: '— SELAMAT DATANG —', title: 'Selamat\nDatang!', sub: 'Klinik Gigi Keluarga Terpercaya', checkin: 'MULAI CHECK-IN', scanOmdc: 'KODE BOOKING / SCAN', cekAntrian: 'Cek Antrian', hint: 'Ketuk layar untuk memulai', nowServing: 'Antrian Saat Ini' },
+    en: { welcome: '— WELCOME —', title: 'Welcome!', sub: 'Your Trusted Family Dental Clinic', checkin: 'START CHECK-IN', scanOmdc: 'BOOKING CODE / SCAN', cekAntrian: 'Check Queue', hint: 'Tap screen to start', nowServing: 'Now Serving' },
   }[lang];
 
   return (
@@ -255,25 +258,27 @@ export function KioskWelcome({ goTo, setState }: KioskScreenProps) {
             </motion.button>
           </div>
 
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={handleOmdc}
-            style={{
-              width: '100%', height: 76,
-              background: 'white', border: `2.5px solid ${AQUA}`,
-              borderRadius: 20, cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-              boxShadow: '0 4px 14px rgba(6,182,212,0.18)',
-            }}
-          >
-            <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke={AQUA} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="16" rx="2" />
-              <path d="M7 8v8M10 8v8M13 8v8M17 8v8" />
-            </svg>
-            <span style={{ fontSize: 21, fontWeight: 800, color: AQUA, fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: 0.4 }}>
-              {LABEL.scanOmdc}
-            </span>
-          </motion.button>
+          {bookingCodeCheckin && (
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleOmdc}
+              style={{
+                width: '100%', height: 76,
+                background: 'white', border: `2.5px solid ${AQUA}`,
+                borderRadius: 20, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
+                boxShadow: '0 4px 14px rgba(6,182,212,0.18)',
+              }}
+            >
+              <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke={AQUA} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <path d="M7 8v8M10 8v8M13 8v8M17 8v8" />
+              </svg>
+              <span style={{ fontSize: 21, fontWeight: 800, color: AQUA, fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: 0.4 }}>
+                {LABEL.scanOmdc}
+              </span>
+            </motion.button>
+          )}
         </div>
 
         {/* Feature highlights — 3 large actionable tiles */}

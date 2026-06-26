@@ -1323,7 +1323,7 @@ function KioskSettingsTab() {
               className="relative flex flex-col items-center justify-center py-10 gap-3"
               style={{ background: 'linear-gradient(135deg,#F4F6FB,#FDF2F8,#ECFEFF)' }}
             >
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg,${PINK},#FF6BB5,#D4A017)` }} />
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg,${PINK},#FF6BB5,#06B6D4)` }} />
               <div className="text-5xl">🦷</div>
               <div className="font-black text-4xl tracking-tight" style={{ color: '#0D1421' }}>HH : MM : SS</div>
               <div className="text-sm" style={{ color: '#9CA3AF' }}>Sabtu, 20 Juni 2026</div>
@@ -1334,6 +1334,41 @@ function KioskSettingsTab() {
                 ✋ Sentuh Layar untuk Memulai
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Booking code & check-in ── */}
+      <div className="rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+          <div className="text-sm font-semibold text-gray-800">Kode Booking & Check-in</div>
+          <div className="text-xs text-gray-500 mt-0.5">Pasien aplikasi dapat check-in di kiosk dengan kode booking / barcode dari aplikasi.</div>
+        </div>
+        <div className="p-5 space-y-4">
+          <Field label="Awalan Nomor Antrian" hint="Contoh: 'A' menghasilkan A018, A019, …">
+            <input
+              type="text"
+              maxLength={3}
+              value={k.queuePrefix}
+              onChange={e => updateKioskSettings({ queuePrefix: e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'A' })}
+              className="w-24 px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-800 uppercase font-bold tracking-widest"
+            />
+          </Field>
+
+          <div className="flex items-center justify-between py-2 border-t border-gray-100">
+            <div>
+              <div className="text-sm font-medium text-gray-800">Check-in dengan Kode Booking</div>
+              <div className="text-xs text-gray-500 mt-0.5">Tampilkan jalur "Scan / Kode Booking" di layar awal kiosk.</div>
+            </div>
+            <Toggle checked={k.bookingCodeCheckin} onChange={v => updateKioskSettings({ bookingCodeCheckin: v })} />
+          </div>
+
+          <div className="flex items-center justify-between py-2 border-t border-gray-100">
+            <div>
+              <div className="text-sm font-medium text-gray-800">Pembayaran di Kiosk</div>
+              <div className="text-xs text-gray-500 mt-0.5">Izinkan pasien melunasi pembayaran melalui kiosk.</div>
+            </div>
+            <Toggle checked={k.kioskPayment} onChange={v => updateKioskSettings({ kioskPayment: v })} />
           </div>
         </div>
       </div>

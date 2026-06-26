@@ -14,11 +14,12 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
   const [countdown, setCountdown] = useState(AUTO_RETURN_SECONDS);
   const queueNumber = state.queueNumber || 'A018';
 
-  // OMDC code for this ticket. If the patient was recalled by scanning their
-  // OMDC code we reuse it; otherwise we register a fresh kiosk transaction so
-  // the printed barcode can be scanned to recall this visit later.
-  const [omdcCode] = useState<string>(() => {
-    if (state.omdcCode) return state.omdcCode;
+  // OMDC + booking codes for this ticket. If the patient was recalled (or came
+  // through the walk-in confirmation) we reuse the codes already in state;
+  // otherwise we register a fresh kiosk transaction so the printed barcode can
+  // be scanned to recall this visit later.
+  const [{ omdcCode, bookingCode }] = useState<{ omdcCode: string; bookingCode: string }>(() => {
+    if (state.omdcCode) return { omdcCode: state.omdcCode, bookingCode: state.bookingCode ?? '' };
     const txn = registerTransaction({
       patientName: state.patientName || 'Walk-in Patient',
       userId: state.patientName || `walkin-${queueNumber}`,
@@ -28,9 +29,11 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
       date: state.selectedDate,
       time: state.selectedTime,
       queueNumber,
+      amount: state.selectedService?.priceMin,
+      status: 'checked-in',
       source: 'kiosk',
     });
-    return txn.code;
+    return { omdcCode: txn.code, bookingCode: txn.bookingCode };
   });
 
   useEffect(() => {
@@ -273,10 +276,25 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             <OmdcBarcode code={omdcCode} height={92} moduleWidth={1.8} background="#ffffff" />
           </div>
 
-          <div style={{ fontSize: '15px', fontWeight: '600', color: '#374151', maxWidth: '240px', lineHeight: '1.4' }}>
+          {/* Human-friendly booking code */}
+          {bookingCode && (
+            <div style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              padding: '8px 18px', borderRadius: 12, background: '#FFF5F9', border: '1px solid #FCE7F3',
+            }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em' }}>
+                {t ? 'BOOKING CODE' : 'KODE BOOKING'}
+              </span>
+              <span className="kd" style={{ fontSize: 26, fontWeight: 900, color: '#E91E8C', letterSpacing: '0.18em' }}>
+                {bookingCode}
+              </span>
+            </div>
+          )}
+
+          <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151', maxWidth: '240px', lineHeight: '1.4' }}>
             {t
-              ? 'Scan this code at any OMDC kiosk to instantly recall your visit'
-              : 'Scan kode ini di kiosk OMDC untuk memanggil data kunjungan Anda'}
+              ? 'Scan the barcode or enter your booking code at any OMDC kiosk'
+              : 'Scan barcode atau masukkan kode booking di kiosk OMDC'}
           </div>
 
           {/* Live print reminder */}

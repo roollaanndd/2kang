@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Banknote, CreditCard, Smartphone, QrCode, Ch
 import type { KioskScreenProps } from '../KioskLayout';
 import type { PaymentMethod } from '../../../types';
 import { kioskSound } from '../../../lib/kioskSound';
+import { markPaid } from '../../../lib/omdcTransactions';
 
 interface PaymentOption {
   id: PaymentMethod;
@@ -60,6 +61,8 @@ export function KioskPayment({ state, setState, goTo, goBack }: KioskScreenProps
 
   const handleContinue = () => {
     kioskSound('success');
+    // Settle the recalled booking in the shared registry, if any.
+    if (state.omdcTxnKey) markPaid(state.omdcTxnKey, selected || undefined);
     setState(prev => ({ ...prev, paymentMethod: selected || undefined }));
     goTo('ticket');
   };
