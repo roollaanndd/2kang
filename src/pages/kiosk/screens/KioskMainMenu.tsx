@@ -50,10 +50,10 @@ const CARDS: CardDef[] = [
     subtitleEn: 'Check-in & take your queue number',
     step: 'service-select',
     queueType: 'new',
-    gradFrom: PINK,
-    gradTo: ROSE,
+    gradFrom: '#FFD9E4',
+    gradTo: PINK,
     shadowColor: 'rgba(233,30,140,0.22)',
-    icon: <CalendarDays size={44} color="white" />,
+    icon: <CalendarDays size={40} color="white" />,
   },
   {
     id: 'status',
@@ -62,10 +62,10 @@ const CARDS: CardDef[] = [
     subtitle: 'Cek nomor antrean Anda saat ini',
     subtitleEn: 'Check your current queue number',
     step: 'queue-display',
-    gradFrom: AQUA,
-    gradTo: '#22D3EE',
+    gradFrom: '#CFFAFE',
+    gradTo: AQUA,
     shadowColor: 'rgba(6,182,212,0.22)',
-    icon: <ListOrdered size={44} color="white" />,
+    icon: <ListOrdered size={40} color="white" />,
   },
   {
     id: 'promo',
@@ -74,10 +74,10 @@ const CARDS: CardDef[] = [
     subtitle: 'Lihat promosi dan jadwal dokter',
     subtitleEn: 'View promotions and doctor schedules',
     step: 'info-promo',
-    gradFrom: ROSE,
-    gradTo: '#FCA5A5',
+    gradFrom: '#FCE7F3',
+    gradTo: ROSE,
     shadowColor: 'rgba(255,107,181,0.22)',
-    icon: <Info size={44} color="white" />,
+    icon: <Info size={40} color="white" />,
   },
   {
     id: 'register',
@@ -87,10 +87,10 @@ const CARDS: CardDef[] = [
     subtitleEn: 'Register for your first visit',
     step: 'new-patient',
     queueType: 'register',
-    gradFrom: '#10B981',
-    gradTo: '#34D399',
+    gradFrom: '#D1FAE5',
+    gradTo: '#10B981',
     shadowColor: 'rgba(16,185,129,0.22)',
-    icon: <UserPlus size={44} color="white" />,
+    icon: <UserPlus size={40} color="white" />,
   },
 ];
 
@@ -223,7 +223,7 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
           </p>
         </motion.div>
 
-        {/* Clay card grid */}
+        {/* Clay card grid — horizontal layout (Stitch design) */}
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
           gap: 20, width: '100%', maxWidth: 900,
@@ -233,40 +233,53 @@ export function KioskMainMenu({ state, setState, goTo }: KioskScreenProps) {
               key={card.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              whileTap={{ scale: 0.97, y: 3 }}
+              whileTap={{ scale: 0.98 }}
               transition={{ delay: 0.08 + i * 0.08, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onClick={() => handleSelect(card)}
               style={{
                 background: CARD_BG[card.id] ?? 'white',
                 borderRadius: 28,
-                padding: '28px 24px',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-                gap: 16, minHeight: 192,
+                padding: '24px 28px',
+                display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                minHeight: 200, height: 200,
                 border: `3px solid ${CARD_BORDER[card.id] ?? 'rgba(0,0,0,0.08)'}`,
-                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.85), 0 4px 0 ${card.shadowColor.replace('0.22', '0.18')}, 0 8px 24px ${card.shadowColor}, 0 20px 40px rgba(0,0,0,0.05)`,
+                boxShadow: `8px 8px 16px ${card.shadowColor.replace('0.22', '0.10')}, -8px -8px 16px rgba(255,255,255,0.8), inset 2px 2px 4px rgba(255,255,255,0.5), inset -2px -2px 4px ${card.shadowColor.replace('0.22', '0.05')}`,
                 cursor: 'pointer',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                 fontFamily: FONT,
+                position: 'relative', overflow: 'hidden',
+                textAlign: 'left',
               }}
             >
-              {/* Icon bezel */}
+              {/* Top highlight accent */}
               <div style={{
-                width: 88, height: 88, borderRadius: 24,
-                background: `linear-gradient(145deg, ${card.gradFrom}, ${card.gradTo})`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.25), 0 6px 0 ${card.shadowColor.replace('0.22', '0.35')}, 0 10px 24px ${card.shadowColor}`,
-              }}>
-                {card.icon}
-              </div>
-              <div>
+                position: 'absolute', top: 0, left: 0, right: 0, height: 16,
+                background: 'linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)',
+                pointerEvents: 'none',
+              }} />
+
+              {/* Horizontal inner row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 20, position: 'relative', zIndex: 1 }}>
+                {/* Circular icon bezel */}
                 <div style={{
-                  fontSize: 22, fontWeight: 900, color: DARK,
-                  marginBottom: 6, lineHeight: 1.2, fontFamily: FONT,
+                  width: 80, height: 80, borderRadius: '50%', flexShrink: 0,
+                  background: `linear-gradient(135deg, ${card.gradFrom}, ${card.gradTo})`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  border: '4px solid rgba(255,255,255,0.4)',
+                  boxShadow: `4px 4px 8px rgba(0,0,0,0.05), -4px -4px 8px rgba(255,255,255,0.8), inset 1px 1px 2px rgba(255,255,255,0.5)`,
                 }}>
-                  {t ? card.labelEn : card.label}
+                  {card.icon}
                 </div>
-                <div style={{ fontSize: 15, color: '#9CA3AF', lineHeight: 1.5, fontWeight: 600 }}>
-                  {t ? card.subtitleEn : card.subtitle}
+                {/* Text */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{
+                    fontSize: 22, fontWeight: 900, color: DARK,
+                    lineHeight: 1.2, fontFamily: FONT,
+                  }}>
+                    {t ? card.labelEn : card.label}
+                  </div>
+                  <div style={{ fontSize: 14, color: '#9CA3AF', lineHeight: 1.5, fontWeight: 600 }}>
+                    {t ? card.subtitleEn : card.subtitle}
+                  </div>
                 </div>
               </div>
             </motion.button>
