@@ -132,10 +132,59 @@ subscribeBroadcasts(callback)
 
 ## eKiosk Architecture
 
-- Landscape 1024×768 fixed viewport
+- Landscape 1024×768 fixed viewport (canvas 1280×800, auto-scaled; portrait 820×1180)
 - Sound: `kioskSound('tap'|'select'|'success'|'error')` — Web Audio API
 - Language toggle: ID/EN on every screen
-- Screens: `main-menu → service → doctor → schedule → patient-info → confirmation → payment → ticket → queue-display`
+- Screens: `welcome → language → main-menu → service-select → doctor-select → date-select → time-select → confirmation → payment → ticket`, plus `queue-display`, `checkin`, `new-patient`, `info-promo`, `omdc-recall`
+- Idle screensaver after `cms.kioskSettings.idleTimeoutSeconds`
+
+## OMDC Code & Booking System (cross-surface)
+
+One identity/booking spine shared by **apps + eKiosk + admin**, so a patient who
+books in the app can check in, get a queue number, and pay at the kiosk by
+scanning a barcode or typing a short code — and walk-ins get the same code on
+their ticket.
+
+### Code types (`src/lib/omdcCode.ts`)
+| Code | Format | Recalls |
+|---|---|---|
+| Member | `OMDC-M-xxxx` | the patient account |
+| Transaction | `OMDC-T-xxxxx` | one exact booking |
+| **Booking** | `OMDC-B-xxxxx` barcode / bare 6-char `7H3K9Q` | one booking (the friendly code patients type) |
+
+All codes are checksummed (mistyped digit rejected) and normalize scanner/OCR
+confusions (`O→0`, `I→1`). `bookingCode()` makes the short code; `bookingBarcodeValue()`
+wraps it for the barcode; `parseOmdcCode()` / `extractBookingCode()` decode.
+
+### Registry (`src/lib/omdcTransactions.ts`)
+localStorage-backed bus (same pattern as `broadcastStore`) so app/kiosk/admin
+(separate route trees, same browser) stay in sync. Real backend would replace it.
+- `registerTransaction(...)` — app booking-confirm & kiosk confirmation/ticket call this
+- `lookupOmdcCode(raw)` — resolves booking/transaction/member codes → transaction
+- `assignQueueNumber(prefix)` — shared sequential counter (`A018`, `A019`, …)
+- `checkInTransaction(key, prefix)` — assigns queue + advances status
+- `markPaid(key)` — settles payment
+- Status lifecycle: `booked → checked-in → paid → done`
+- `seedDemoTransaction()` — kiosk recall works out-of-box (demo code shown on the recall screen)
+
+### Barcode (`src/components/ui/OmdcBarcode.tsx`)
+Real **Code128-B** encoder (bar widths genuinely encode the string) + human-readable text.
+
+### Journey
+```
+NEW WALK-IN : welcome → check-in → service…time → confirmation
+              (assignQueue + registerTransaction) → payment (markPaid) → ticket (barcode + booking code)
+
+APP CUSTOMER: app booking-confirm (registerTransaction, shows booking code + barcode)
+              → kiosk welcome → "Kode Booking / Scan" (omdc-recall)
+              → scan barcode OR type code → lookup → checkInTransaction
+              → unpaid: payment → ticket   |   paid: ticket
+```
+
+### CMS / Admin (`cms.kioskSettings`)
+`queuePrefix`, `bookingCodeCheckin` (show the kiosk recall path), `kioskPayment`
+(allow settling at kiosk) — edited in Admin → Website → **Kiosk** tab.
+Schema version bumped to **5** when these were added.
 
 ## Data / Mock
 

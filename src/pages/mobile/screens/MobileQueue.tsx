@@ -5,6 +5,8 @@ import { CURRENT_QUEUE, CLINIC_NAME } from '../../../data/mockData';
 import { Skeleton, SkeletonText, SkeletonCircle } from '../../../components/ui/Skeleton';
 import { haptic } from '../../../lib/haptics';
 import type { MobileState } from '../../../types';
+import { memberCode, parseOmdcCode } from '../../../lib/omdcCode';
+import { findByMemberKey } from '../../../lib/omdcTransactions';
 
 interface MobileQueueProps {
   state: MobileState;
@@ -15,6 +17,10 @@ const MIN_PER_PATIENT = 4;
 
 export function MobileQueue({ state, setState }: MobileQueueProps) {
   const queueNo = state.currentQueue ?? 'A018';
+
+  // The patient's most recent booking code (for kiosk check-in).
+  const memberKey = parseOmdcCode(memberCode(state.user?.id ?? 'guest')).key ?? '';
+  const bkCode = findByMemberKey(memberKey)?.bookingCode;
 
   const queuePrefix = queueNo.replace(/\d+$/, '');
   const queueNum = parseInt(queueNo.replace(/\D/g, ''), 10);
@@ -139,6 +145,22 @@ export function MobileQueue({ state, setState }: MobileQueueProps) {
                 {isTurn ? 'Giliran Anda telah tiba!' : `Estimasi Tunggu: ${waitLabel}`}
               </span>
             </div>
+
+            {/* Booking code for kiosk check-in */}
+            {bkCode && (
+              <div style={{
+                marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                background: 'rgba(6,182,212,0.06)', padding: '8px 16px',
+                borderRadius: 999, border: '1px solid rgba(6,182,212,0.18)',
+              }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#0E7490', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  Kode Booking
+                </span>
+                <span style={{ fontSize: 15, fontWeight: 900, color: '#0E7490', letterSpacing: '0.14em' }}>
+                  {bkCode}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* ── Currently Serving ── */}

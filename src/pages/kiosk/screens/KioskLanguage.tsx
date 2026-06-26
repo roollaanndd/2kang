@@ -29,7 +29,7 @@ export function KioskLanguage({ setState, goTo, goBack }: KioskScreenProps) {
         style={{
           height: '3px',
           flexShrink: 0,
-          background: 'linear-gradient(90deg, #E91E8C 0%, #FF6BB5 50%, #D4A017 100%)',
+          background: 'linear-gradient(90deg, #E91E8C 0%, #FF6BB5 50%, #06B6D4 100%)',
         }}
       />
 
@@ -243,14 +243,14 @@ function LanguageCard({
             {/* Flag circle */}
             <div
               style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '24px',
+                width: '96px',
+                height: '96px',
+                borderRadius: '28px',
                 background: flagGradient,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '44px',
+                fontSize: '52px',
                 lineHeight: 1,
                 flexShrink: 0,
                 boxShadow: hovered
@@ -266,10 +266,10 @@ function LanguageCard({
             <div style={{ textAlign: 'center' }}>
               <div
                 style={{
-                  fontSize: '28px',
+                  fontSize: '32px',
                   fontWeight: 900,
                   color: '#111827',
-                  marginBottom: '6px',
+                  marginBottom: '8px',
                   letterSpacing: '-0.01em',
                 }}
               >
@@ -277,7 +277,7 @@ function LanguageCard({
               </div>
               <div
                 style={{
-                  fontSize: '15px',
+                  fontSize: '18px',
                   fontWeight: 500,
                   color: '#6B7280',
                 }}
@@ -307,20 +307,20 @@ function BackButton({ onPress }: { onPress: () => void }) {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '8px',
-        padding: '12px 24px',
-        borderRadius: '999px',
-        border: '1px solid rgba(0,0,0,0.10)',
+        gap: '10px',
+        padding: '0 28px',
+        height: 64,
+        borderRadius: '16px',
+        border: `2px solid ${hovered ? 'rgba(233,30,140,0.30)' : 'rgba(0,0,0,0.10)'}`,
         backgroundColor: '#ffffff',
         color: hovered ? '#E91E8C' : '#6B7280',
-        fontSize: '15px',
-        fontWeight: 600,
+        fontSize: '19px',
+        fontWeight: 700,
         cursor: 'pointer',
         transition: 'color 0.18s, border-color 0.18s',
-        borderColor: hovered ? 'rgba(233,30,140,0.30)' : 'rgba(0,0,0,0.10)',
       }}
     >
-      <ChevronLeft size={18} />
+      <ChevronLeft size={22} />
       Kembali
     </button>
   );

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { ClinicBranch } from '../types';
 
-export const CMS_SCHEMA_VERSION = 4;
+export const CMS_SCHEMA_VERSION = 5;
 
 export interface CMSStat { value: string; label: string; }
 export interface CMSService { id: string; name: string; description: string; emoji: string; price: string; isVisible: boolean; }
@@ -95,6 +95,12 @@ export interface CMSContent {
   };
   kioskSettings: {
     idleTimeoutSeconds: number;
+    /** Prefix for kiosk queue numbers, e.g. "A" → A018. */
+    queuePrefix: string;
+    /** Allow patients to check in at the kiosk with their booking code / barcode. */
+    bookingCodeCheckin: boolean;
+    /** Allow settling payment at the kiosk. */
+    kioskPayment: boolean;
   };
   /** Custom company logo — base64 data URL. When set, replaces the default tooth SVG everywhere. */
   logoUrl: string | null;
@@ -254,6 +260,9 @@ export const DEFAULT_CMS_CONTENT: CMSContent = {
   },
   kioskSettings: {
     idleTimeoutSeconds: 30,
+    queuePrefix: 'A',
+    bookingCodeCheckin: true,
+    kioskPayment: true,
   },
   branches: {
     items: [

@@ -18,6 +18,7 @@ import { KioskQueueDisplay } from './screens/KioskQueueDisplay';
 import { KioskCheckin } from './screens/KioskCheckin';
 import { KioskNewPatient } from './screens/KioskNewPatient';
 import { KioskInfoPromo } from './screens/KioskInfoPromo';
+import { KioskOmdcRecall } from './screens/KioskOmdcRecall';
 import { useCMS } from '../../context/CMSContext';
 import { AnimatedDentalBg } from '../../components/ui/AnimatedDentalBg';
 import { kioskSound } from '../../lib/kioskSound';
@@ -62,6 +63,7 @@ const STEP_HISTORY: Record<KioskStep, KioskStep | null> = {
   'checkin': 'main-menu',
   'new-patient': 'main-menu',
   'info-promo': 'main-menu',
+  'omdc-recall': 'welcome',
 };
 
 const INITIAL_STATE: KioskState = {
@@ -91,6 +93,7 @@ const SCREEN_MAP: Record<KioskStep, ComponentType<KioskScreenProps>> = {
   'checkin': KioskCheckin,
   'new-patient': KioskNewPatient,
   'info-promo': KioskInfoPromo,
+  'omdc-recall': KioskOmdcRecall,
 };
 
 function renderScreen(step: KioskStep, props: KioskScreenProps) {
@@ -128,7 +131,7 @@ function IdleScreensaver({ onWake, primaryColor }: { onWake: () => void; primary
       }}
     >
       {/* Signature top gradient strip */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${primaryColor}, #FF6BB5, #D4A017)`, zIndex: 20 }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${primaryColor}, #FF6BB5, #06B6D4)`, zIndex: 20 }} />
 
       {/* Animated premium dental-geometry background — light, no blur */}
       <AnimatedDentalBg />
@@ -277,7 +280,7 @@ export default function KioskLayout() {
         .kiosk-mode .kd-grad {
           font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
           letter-spacing: -0.02em;
-          background: linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017);
+          background: linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;

@@ -3,60 +3,38 @@ import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Printer, Home, Clock, Users, Smartphone } from 'lucide-react';
 import { CURRENT_QUEUE } from '../../../data/mockData';
 import type { KioskScreenProps } from '../KioskLayout';
+import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { registerTransaction } from '../../../lib/omdcTransactions';
 
 const AUTO_RETURN_SECONDS = 10;
 const MINUTES_PER_PATIENT = 15;
-
-/** A tasteful, fully-deterministic stylised QR grid (decorative — does not encode data). */
-function QrGrid({ seed, size = 168 }: { seed: string; size?: number }) {
-  const cells = 21; // classic QR module count
-  const cell = size / cells;
-  // Deterministic pseudo-random fill from the seed string.
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  const rng = (i: number) => {
-    const x = Math.sin((h % 1000) + i * 12.9898) * 43758.5453;
-    return x - Math.floor(x);
-  };
-
-  const isFinder = (r: number, c: number) => {
-    const inBox = (br: number, bc: number) =>
-      r >= br && r < br + 7 && c >= bc && c < bc + 7;
-    return inBox(0, 0) || inBox(0, cells - 7) || inBox(cells - 7, 0);
-  };
-
-  const rects: { x: number; y: number }[] = [];
-  for (let r = 0; r < cells; r++) {
-    for (let c = 0; c < cells; c++) {
-      if (isFinder(r, c)) continue;
-      if (rng(r * cells + c) > 0.52) rects.push({ x: c * cell, y: r * cell });
-    }
-  }
-
-  const finder = (br: number, bc: number) => (
-    <g key={`f-${br}-${bc}`}>
-      <rect x={bc * cell} y={br * cell} width={cell * 7} height={cell * 7} rx={cell * 1.4} fill="#1A1A2E" />
-      <rect x={(bc + 1) * cell} y={(br + 1) * cell} width={cell * 5} height={cell * 5} rx={cell} fill="#ffffff" />
-      <rect x={(bc + 2) * cell} y={(br + 2) * cell} width={cell * 3} height={cell * 3} rx={cell * 0.7} fill="#E91E8C" />
-    </g>
-  );
-
-  return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ display: 'block' }}>
-      {rects.map((p, i) => (
-        <rect key={i} x={p.x} y={p.y} width={cell * 0.92} height={cell * 0.92} rx={cell * 0.28} fill="#1A1A2E" />
-      ))}
-      {finder(0, 0)}
-      {finder(0, cells - 7)}
-      {finder(cells - 7, 0)}
-    </svg>
-  );
-}
 
 export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
   const t = state.language === 'en';
   const [countdown, setCountdown] = useState(AUTO_RETURN_SECONDS);
   const queueNumber = state.queueNumber || 'A018';
+
+  // OMDC + booking codes for this ticket. If the patient was recalled (or came
+  // through the walk-in confirmation) we reuse the codes already in state;
+  // otherwise we register a fresh kiosk transaction so the printed barcode can
+  // be scanned to recall this visit later.
+  const [{ omdcCode, bookingCode }] = useState<{ omdcCode: string; bookingCode: string }>(() => {
+    if (state.omdcCode) return { omdcCode: state.omdcCode, bookingCode: state.bookingCode ?? '' };
+    const txn = registerTransaction({
+      patientName: state.patientName || 'Walk-in Patient',
+      userId: state.patientName || `walkin-${queueNumber}`,
+      serviceId: state.selectedService?.id,
+      serviceName: state.selectedService?.name,
+      doctorName: state.selectedDoctor?.name,
+      date: state.selectedDate,
+      time: state.selectedTime,
+      queueNumber,
+      amount: state.selectedService?.priceMin,
+      status: 'checked-in',
+      source: 'kiosk',
+    });
+    return { omdcCode: txn.code, bookingCode: txn.bookingCode };
+  });
 
   useEffect(() => {
     if (countdown <= 0) {
@@ -107,7 +85,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
       {/* Signature 3px top gradient strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         zIndex: 10,
       }} />
 
@@ -172,7 +150,7 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
         >
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '7px',
-            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+            background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
           }} />
 
           <div style={{ fontSize: '16px', color: '#9CA3AF', fontWeight: '600', marginBottom: '4px', letterSpacing: '4px' }}>
@@ -281,13 +259,13 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             padding: '7px 16px', borderRadius: '100px',
             backgroundColor: '#F0FAFF', border: '1px solid #CFF1FB',
           }}>
-            <Smartphone size={16} color="#D4A017" />
-            <span style={{ fontSize: '13px', fontWeight: '700', color: '#D4A017', letterSpacing: '0.5px' }}>
-              {t ? 'TRACK ON YOUR PHONE' : 'PANTAU DI HP ANDA'}
+            <Smartphone size={16} color="#06B6D4" />
+            <span style={{ fontSize: '13px', fontWeight: '700', color: '#0E7490', letterSpacing: '0.5px' }}>
+              {t ? 'YOUR OMDC CODE' : 'KODE OMDC ANDA'}
             </span>
           </div>
 
-          {/* QR card */}
+          {/* OMDC barcode card */}
           <div style={{
             padding: '16px',
             borderRadius: '20px',
@@ -295,13 +273,28 @@ export function KioskTicket({ state, setState, goTo }: KioskScreenProps) {
             border: '2px solid #F3F4F6',
             boxShadow: 'inset 0 0 0 6px #ffffff, 0 6px 22px rgba(0,0,0,0.06)',
           }}>
-            <QrGrid seed={queueNumber} size={168} />
+            <OmdcBarcode code={omdcCode} height={92} moduleWidth={1.8} background="#ffffff" />
           </div>
 
-          <div style={{ fontSize: '15px', fontWeight: '600', color: '#374151', maxWidth: '220px', lineHeight: '1.4' }}>
+          {/* Human-friendly booking code */}
+          {bookingCode && (
+            <div style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              padding: '8px 18px', borderRadius: 12, background: '#FFF5F9', border: '1px solid #FCE7F3',
+            }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em' }}>
+                {t ? 'BOOKING CODE' : 'KODE BOOKING'}
+              </span>
+              <span className="kd" style={{ fontSize: 26, fontWeight: 900, color: '#E91E8C', letterSpacing: '0.18em' }}>
+                {bookingCode}
+              </span>
+            </div>
+          )}
+
+          <div style={{ fontSize: '14px', fontWeight: '600', color: '#374151', maxWidth: '240px', lineHeight: '1.4' }}>
             {t
-              ? 'Scan to track your queue on your phone'
-              : 'Pindai untuk pantau antrian di HP Anda'}
+              ? 'Scan the barcode or enter your booking code at any OMDC kiosk'
+              : 'Scan barcode atau masukkan kode booking di kiosk OMDC'}
           </div>
 
           {/* Live print reminder */}

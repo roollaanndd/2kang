@@ -85,7 +85,7 @@ export function KioskDateSelect({ state, setState, goTo, goBack }: KioskScreenPr
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         zIndex: 10,
       }} />
 

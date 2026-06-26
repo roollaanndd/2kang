@@ -52,7 +52,7 @@ export function KioskQueueDisplay({ state, goBack }: KioskScreenProps) {
         left: 0,
         right: 0,
         height: '3px',
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         zIndex: 10,
         flexShrink: 0,
       }} />

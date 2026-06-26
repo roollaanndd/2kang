@@ -5,6 +5,8 @@ import { CLINIC_NAME } from '../../../data/mockData';
 import { kioskSound } from '../../../lib/kioskSound';
 import type { KioskScreenProps } from '../KioskLayout';
 import { useIsPortrait } from '../../../context/KioskOrientationContext';
+import { useCMS } from '../../../context/CMSContext';
+import { assignQueueNumber, registerTransaction } from '../../../lib/omdcTransactions';
 
 interface SummaryRowProps {
   icon: ReactNode;
@@ -38,11 +40,36 @@ function SummaryRow({ icon, label, value, highlight }: SummaryRowProps) {
 export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreenProps) {
   const t = state.language === 'en';
   const portrait = useIsPortrait();
+  const { cms } = useCMS();
 
   const handleConfirm = () => {
     kioskSound('success');
-    const nextQueue = 'A' + String(Math.floor(Math.random() * 10) + 18).padStart(3, '0');
-    setState(prev => ({ ...prev, queueNumber: nextQueue }));
+    const queuePrefix = cms.kioskSettings?.queuePrefix ?? 'A';
+    const nextQueue = assignQueueNumber(queuePrefix);
+    const amount = state.selectedService?.priceMin;
+    // Register this walk-in booking so it gets a booking code + barcode and can
+    // be recalled / settled later, exactly like an app booking.
+    const txn = registerTransaction({
+      patientName: state.patientName || 'Walk-in Patient',
+      userId: state.patientName || `walkin-${nextQueue}`,
+      serviceId: state.selectedService?.id,
+      serviceName: state.selectedService?.name,
+      doctorName: state.selectedDoctor?.name,
+      date: state.selectedDate,
+      time: state.selectedTime,
+      queueNumber: nextQueue,
+      amount,
+      status: 'checked-in',
+      source: 'kiosk',
+    });
+    setState(prev => ({
+      ...prev,
+      queueNumber: nextQueue,
+      omdcCode: txn.code,
+      bookingCode: txn.bookingCode,
+      omdcTxnKey: txn.key,
+      amountDue: amount,
+    }));
     goTo('payment');
   };
 
@@ -57,7 +84,7 @@ export function KioskConfirmation({ state, setState, goTo, goBack }: KioskScreen
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         zIndex: 10,
       }} />
 

@@ -9,6 +9,8 @@ import {
 import type { MobileState } from '../../../types';
 import { APP_VERSION } from '../../../version';
 import { haptic } from '../../../lib/haptics';
+import { OmdcBarcode } from '../../../components/ui/OmdcBarcode';
+import { memberCode } from '../../../lib/omdcCode';
 
 interface MobileProfileProps {
   state: MobileState;
@@ -259,6 +261,18 @@ export function MobileProfile({ state, setState }: MobileProfileProps) {
               }}>
                 <Star size={14} fill={PINK} color={PINK} />
                 Gold Member
+              </div>
+
+              {/* OMDC scannable code — present at the eKiosk to recall account */}
+              <div style={{
+                marginTop: 18, width: '100%', paddingTop: 18,
+                borderTop: '1px dashed #E5E7EB',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+              }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#0E7490', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  Kode OMDC — Scan di eKiosk
+                </span>
+                <OmdcBarcode code={memberCode(user?.id ?? 'guest')} height={56} moduleWidth={1.5} />
               </div>
             </div>
 

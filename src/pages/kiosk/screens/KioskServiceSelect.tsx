@@ -38,7 +38,7 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
       {/* 3px signature top strip */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #D4A017)',
+        background: 'linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)',
         zIndex: 10,
       }} />
 
@@ -102,7 +102,7 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
               justifyContent: 'center',
               gap: 14,
               padding: '24px 16px',
-              minHeight: 120,
+              minHeight: 155,
               boxShadow: '0 4px 18px rgba(0,0,0,0.07)',
               transition: 'all 0.2s',
               position: 'relative',
@@ -128,32 +128,32 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
 
             {/* Icon bezel — white-stroke dental glyph on a coloured gradient */}
             <div style={{
-              width: 80,
-              height: 80,
-              borderRadius: 22,
+              width: 88,
+              height: 88,
+              borderRadius: 24,
               background: `linear-gradient(135deg, ${service.color}, ${service.color}cc)`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
-              boxShadow: `0 8px 20px ${service.color}40`,
+              boxShadow: `0 8px 24px ${service.color}44`,
             }}>
-              <DentalServiceIcon id={service.id} size={42} />
+              <DentalServiceIcon id={service.id} size={46} />
             </div>
 
             <div>
               <div style={{
-                fontSize: 16,
+                fontSize: 19,
                 fontWeight: 800,
                 color: DARK,
                 textAlign: 'center',
                 lineHeight: 1.3,
-                marginBottom: 4,
+                marginBottom: 6,
               }}>
                 {t ? service.nameEn : service.name}
               </div>
               <div style={{
-                fontSize: 12,
+                fontSize: 14,
                 color: '#9CA3AF',
                 textAlign: 'center',
                 fontWeight: 500,
@@ -178,13 +178,14 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            padding: '14px 28px',
-            borderRadius: '14px',
+            padding: '0 32px',
+            height: 64,
+            borderRadius: '16px',
             border: '2px solid #E5E7EB',
             backgroundColor: '#ffffff',
             color: '#6B7280',
-            fontSize: '17px',
-            fontWeight: '600',
+            fontSize: '19px',
+            fontWeight: '700',
             cursor: 'pointer',
             transition: 'all 0.15s',
           }}
@@ -197,7 +198,7 @@ export function KioskServiceSelect({ state, setState, goTo, goBack }: KioskScree
             (e.currentTarget as HTMLButtonElement).style.color = '#6B7280';
           }}
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={22} />
           {t ? 'Back' : 'Kembali'}
         </button>
       </div>
