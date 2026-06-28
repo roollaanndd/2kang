@@ -4,15 +4,22 @@ import type { Doctor } from '../types';
 export interface DoctorAvailability {
   doctorId: string;
   date: string;
-  slots: { time: string; booked: boolean }[];
+  schedule: string[];
+  available: boolean;
 }
 
 export const doctorsService = {
-  list: () => api.get<Doctor[]>('/api/doctors'),
-  get: (id: string) => api.get<Doctor>(`/api/doctors/${id}`),
-  update: (id: string, data: Partial<Doctor>) => api.put<Doctor>(`/api/doctors/${id}`, data),
+  list: (branchId?: string) =>
+    api.get<Doctor[]>(`/doctors${branchId ? `?branchId=${branchId}` : ''}`),
+
+  get: (id: string) => api.get<Doctor>(`/doctors/${id}`),
+
   getAvailability: (id: string, date: string) =>
-    api.get<DoctorAvailability>(`/api/doctors/${id}/availability?date=${date}`),
+    api.get<DoctorAvailability>(`/doctors/${id}/availability/${date}`),
+
+  update: (id: string, data: Partial<Doctor>) =>
+    api.patch<Doctor>(`/doctors/${id}`, data),
+
   setSchedule: (id: string, schedule: string[]) =>
-    api.put(`/api/doctors/${id}/schedule`, { schedule }),
+    api.patch(`/doctors/${id}/schedule`, { schedule }),
 };

@@ -7,6 +7,6 @@ export const getDatabaseConfig = (config: ConfigService): TypeOrmModuleOptions =
   ssl: config.get<string>('DATABASE_SSL') === 'true' ? { rejectUnauthorized: false } : false,
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
-  synchronize: config.get<string>('NODE_ENV') === 'development',
+  synchronize: config.get<string>('DB_SYNCHRONIZE') === 'true',
   logging: config.get<string>('NODE_ENV') === 'development' ? ['error', 'warn'] : ['error'],
 });
