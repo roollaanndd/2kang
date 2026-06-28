@@ -3,7 +3,7 @@ name: Auto-merge to main
 on:
   push:
     branches:
-      - claude/website-mobile-apps-dev-lmgp7x
+      - develop
 
 permissions:
   contents: write

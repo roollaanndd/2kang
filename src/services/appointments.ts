@@ -2,25 +2,38 @@ import { api } from './api';
 import type { Appointment } from '../types';
 
 export interface CreateAppointmentDto {
-  patientName: string;
-  phone: string;
   serviceId: string;
   doctorId: string;
   date: string;
   time: string;
+  branchId?: string;
+  selectedTeeth?: number[];
   notes?: string;
+  source?: 'app' | 'kiosk' | 'website' | 'admin' | 'walk-in';
 }
 
 export const appointmentsService = {
-  list: (params?: { date?: string; status?: string; doctorId?: string }) => {
-    const qs = new URLSearchParams(params as Record<string, string>).toString();
-    return api.get<Appointment[]>(`/api/appointments${qs ? `?${qs}` : ''}`);
+  list: (params?: { date?: string; status?: string; doctorId?: string; branchId?: string }) => {
+    const qs = params ? new URLSearchParams(
+      Object.fromEntries(Object.entries(params).filter(([, v]) => v))
+    ).toString() : '';
+    return api.get<Appointment[]>(`/appointments${qs ? `?${qs}` : ''}`);
   },
-  get: (id: string) => api.get<Appointment>(`/api/appointments/${id}`),
-  create: (data: CreateAppointmentDto) => api.post<Appointment>('/api/appointments', data),
-  update: (id: string, data: Partial<Appointment>) =>
-    api.patch<Appointment>(`/api/appointments/${id}`, data),
-  cancel: (id: string) => api.patch(`/api/appointments/${id}`, { status: 'cancelled' }),
-  confirm: (id: string) => api.patch(`/api/appointments/${id}`, { status: 'confirmed' }),
-  today: () => api.get<Appointment[]>('/api/appointments/today'),
+
+  get: (id: string) => api.get<Appointment>(`/appointments/${id}`),
+
+  create: (data: CreateAppointmentDto) => api.post<Appointment>('/appointments', data),
+
+  updateStatus: (id: string, data: { status: string; room?: string; doctorNotes?: string }) =>
+    api.patch<Appointment>(`/appointments/${id}/status`, data),
+
+  cancel: (id: string) => api.patch<Appointment>(`/appointments/${id}/cancel`),
+
+  today: (branchId?: string) =>
+    api.get<Appointment[]>(`/appointments/today${branchId ? `?branchId=${branchId}` : ''}`),
+
+  mine: () => api.get<Appointment[]>('/appointments/my'),
+
+  checkAvailability: (doctorId: string, date: string) =>
+    api.get<string[]>(`/appointments/availability/${doctorId}/${date}`),
 };

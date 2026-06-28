@@ -1,4 +1,4 @@
-# OMDC Dental App — Codebase Guide
+# OMDC Dental App — Developer Guide
 
 ## Project Overview
 
@@ -7,7 +7,7 @@
 | Platform | Route | Description |
 |---|---|---|
 | **Mobile App** | `/mobile` or `/app` | Patient-facing mobile PWA |
-| **eKiosk** | `/kiosk` | Touchscreen check-in terminal (1024×768 landscape) |
+| **eKiosk** | `/kiosk` | Touchscreen check-in terminal (1024x768 landscape) |
 | **Website** | `/` | Public marketing site + booking |
 | **Admin** | `/admin` | Internal clinic dashboard |
 
@@ -34,7 +34,7 @@ DARK  #0D1421   — primary text
 - **3px top strip**: `linear-gradient(90deg, #E91E8C, #FF6BB5, #06B6D4)` — positioned `absolute top-0 left-0 right-0 height:3px`
 - **No blob/radial-gradient backgrounds** anywhere — use `AnimatedDentalBg` instead
 - **No dark or vivid full-screen pink** backgrounds — light/white theme throughout
-- Buttons: `border-radius: 14–18px`, gradient pink primary, white secondary with pink border
+- Buttons: `border-radius: 14-18px`, gradient pink primary, white secondary with pink border
 
 ### Shared Components
 | Component | Path | Usage |
@@ -59,24 +59,24 @@ SERVICE_SHADOWS[i]    // per-service shadow color
 
 ```
 onboarding (5 slides)
-  └─ login
-      ├─ forgot-password
-      └─ register
-            └─ otp
-                  └─ create-pin
-                        └─ home ─────────────── bottom nav
-                            ├─ booking
-                            │    └─ booking-doctor
-                            │         └─ booking-schedule
-                            │               └─ booking-confirm
-                            │                     └─ booking-payment
-                            ├─ queue
-                            ├─ profile
-                            ├─ medical
-                            ├─ notifications
-                            ├─ history
-                            ├─ family
-                            └─ loyalty
+  +-- login
+      +-- forgot-password
+      +-- register
+            +-- otp
+                  +-- create-pin
+                        +-- home ------------- bottom nav
+                            +-- booking
+                            |    +-- booking-doctor
+                            |         +-- booking-schedule
+                            |               +-- booking-confirm
+                            |                     +-- booking-payment
+                            +-- queue
+                            +-- profile
+                            +-- medical
+                            +-- notifications
+                            +-- history
+                            +-- family
+                            +-- loyalty
 ```
 
 ### State (`MobileState`)
@@ -90,7 +90,7 @@ interface MobileState {
   selectedDate?: string;
   selectedTime?: string;
   currentQueue?: string;
-  onboardingStep: number;      // 0–4 (5 slides)
+  onboardingStep: number;      // 0-4 (5 slides)
   tcAccepted?: boolean;
   selectedTeeth?: number[];    // FDI tooth numbers from Odontogram
 }
@@ -102,10 +102,10 @@ interface MobileState {
 |---|---|---|
 | Onboarding | `MobileOnboarding.tsx` | 5 illustrated slides + dot nav + progress bar |
 | Login | `MobileLogin.tsx` | Phone/email + password, Google/Apple social |
-| Register | `MobileRegister.tsx` | Full registration form → navigates to OTP |
+| Register | `MobileRegister.tsx` | Full registration form -> navigates to OTP |
 | OTP | `MobileOTP.tsx` | 6-box digit entry, 60s countdown, auto-focus |
 | Create PIN | `MobileCreatePin.tsx` | 6-digit PIN numpad, 2-phase (create + confirm) |
-| Forgot Password | `MobileForgotPassword.tsx` | Email input → send reset link |
+| Forgot Password | `MobileForgotPassword.tsx` | Email input -> send reset link |
 | Home | `MobileHome.tsx` | Mesh gradient hero, service grid, doctor cards |
 | Booking | `MobileBooking.tsx` | Tooth chart accordion + service list with DentalServiceIcon |
 | Doctor Select | `MobileDoctorSelect.tsx` | Available/unavailable doctor cards |
@@ -132,10 +132,10 @@ subscribeBroadcasts(callback)
 
 ## eKiosk Architecture
 
-- Landscape 1024×768 fixed viewport (canvas 1280×800, auto-scaled; portrait 820×1180)
+- Landscape 1024x768 fixed viewport (canvas 1280x800, auto-scaled; portrait 820x1180)
 - Sound: `kioskSound('tap'|'select'|'success'|'error')` — Web Audio API
 - Language toggle: ID/EN on every screen
-- Screens: `welcome → language → main-menu → service-select → doctor-select → date-select → time-select → confirmation → payment → ticket`, plus `queue-display`, `checkin`, `new-patient`, `info-promo`, `omdc-recall`
+- Screens: `welcome -> language -> main-menu -> service-select -> doctor-select -> date-select -> time-select -> confirmation -> payment -> ticket`, plus `queue-display`, `checkin`, `new-patient`, `info-promo`, `omdc-recall`
 - Idle screensaver after `cms.kioskSettings.idleTimeoutSeconds`
 
 ## OMDC Code & Booking System (cross-surface)
@@ -153,18 +153,18 @@ their ticket.
 | **Booking** | `OMDC-B-xxxxx` barcode / bare 6-char `7H3K9Q` | one booking (the friendly code patients type) |
 
 All codes are checksummed (mistyped digit rejected) and normalize scanner/OCR
-confusions (`O→0`, `I→1`). `bookingCode()` makes the short code; `bookingBarcodeValue()`
+confusions (`O->0`, `I->1`). `bookingCode()` makes the short code; `bookingBarcodeValue()`
 wraps it for the barcode; `parseOmdcCode()` / `extractBookingCode()` decode.
 
 ### Registry (`src/lib/omdcTransactions.ts`)
 localStorage-backed bus (same pattern as `broadcastStore`) so app/kiosk/admin
 (separate route trees, same browser) stay in sync. Real backend would replace it.
 - `registerTransaction(...)` — app booking-confirm & kiosk confirmation/ticket call this
-- `lookupOmdcCode(raw)` — resolves booking/transaction/member codes → transaction
-- `assignQueueNumber(prefix)` — shared sequential counter (`A018`, `A019`, …)
+- `lookupOmdcCode(raw)` — resolves booking/transaction/member codes -> transaction
+- `assignQueueNumber(prefix)` — shared sequential counter (`A018`, `A019`, ...)
 - `checkInTransaction(key, prefix)` — assigns queue + advances status
 - `markPaid(key)` — settles payment
-- Status lifecycle: `booked → checked-in → paid → done`
+- Status lifecycle: `booked -> checked-in -> paid -> done`
 - `seedDemoTransaction()` — kiosk recall works out-of-box (demo code shown on the recall screen)
 
 ### Barcode (`src/components/ui/OmdcBarcode.tsx`)
@@ -172,18 +172,18 @@ Real **Code128-B** encoder (bar widths genuinely encode the string) + human-read
 
 ### Journey
 ```
-NEW WALK-IN : welcome → check-in → service…time → confirmation
-              (assignQueue + registerTransaction) → payment (markPaid) → ticket (barcode + booking code)
+NEW WALK-IN : welcome -> check-in -> service...time -> confirmation
+              (assignQueue + registerTransaction) -> payment (markPaid) -> ticket (barcode + booking code)
 
 APP CUSTOMER: app booking-confirm (registerTransaction, shows booking code + barcode)
-              → kiosk welcome → "Kode Booking / Scan" (omdc-recall)
-              → scan barcode OR type code → lookup → checkInTransaction
-              → unpaid: payment → ticket   |   paid: ticket
+              -> kiosk welcome -> "Kode Booking / Scan" (omdc-recall)
+              -> scan barcode OR type code -> lookup -> checkInTransaction
+              -> unpaid: payment -> ticket   |   paid: ticket
 ```
 
 ### CMS / Admin (`cms.kioskSettings`)
 `queuePrefix`, `bookingCodeCheckin` (show the kiosk recall path), `kioskPayment`
-(allow settling at kiosk) — edited in Admin → Website → **Kiosk** tab.
+(allow settling at kiosk) — edited in Admin -> Website -> **Kiosk** tab.
 Schema version bumped to **5** when these were added.
 
 ## Data / Mock
@@ -219,31 +219,7 @@ export const APP_BUILD_DATE = '2026-06-21';
 5. **Pink primary** `#E91E8C` only — never substitute with other pinks
 6. **Illustrations** use inline SVG — no external 3D asset dependencies
 
-## AI Agent Plugins (Global — install once per machine)
-
-These skills run inside Claude Code to improve design and code quality. Install them in your local terminal, not in the cloud agent (the remote sandbox has no GitHub auth).
-
-| Plugin | Repo | Install |
-|---|---|---|
-| **Ponytail** | `DietrichGebert/ponytail` | `npx skills add ponytail@ponytail` |
-| **Taste Skill** | `Leonxlnx/taste-skill` | `npx skills add https://github.com/Leonxlnx/taste-skill` |
-
-**Taste Skill** (`design-taste-frontend`) — prevents generic AI-generated UI slop. Guides layout, typography, motion, and spacing decisions. Use it whenever generating new screens or redesigning components.
-
-```bash
-# Install globally (run once in your terminal)
-npx skills add https://github.com/Leonxlnx/taste-skill --yes --global
-
-# Or invoke per-session in Claude Code
-/taste-skill
-```
-
-**Usage in prompts:** After installing, Claude Code picks up the skill automatically. You can also explicitly invoke:
-- `/design-taste-frontend` — full design quality pass
-- `/taste` — shorthand if available
-
 ## Git / Deploy
 
-- Feature branch: `claude/website-mobile-apps-dev-lmgp7x`
 - GitHub Pages auto-deploys on merge to `main` via `deploy-pages.yml`
-- Repository: `roollaanndd/2kang`
+- Repository: `roollaanndd/dentalchain`

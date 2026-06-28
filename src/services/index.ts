@@ -1,5 +1,14 @@
-export { api } from './api';
+export { api, setToken, clearToken } from './api';
+export { authService } from './auth';
 export { doctorsService } from './doctors';
 export { appointmentsService } from './appointments';
 export { queueService } from './queue';
 export { patientsService } from './patients';
+export { transactionsService } from './transactions';
+export { paymentsService } from './payments';
+export { servicesCatalogService } from './services-catalog';
+export { branchesService } from './branches';
+export { cmsService } from './cms';
+export { reportsService } from './reports';
+export { notificationsService } from './notifications';
+export { integrationService } from './integration';
