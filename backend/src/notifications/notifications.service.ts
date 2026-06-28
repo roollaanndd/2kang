@@ -56,8 +56,13 @@ export class NotificationsService {
     });
   }
 
-  async markRead(id: string): Promise<void> {
-    await this.repo.update(id, { read: true });
+  async markRead(id: string, userId: string): Promise<void> {
+    await this.repo
+      .createQueryBuilder()
+      .update()
+      .set({ read: true })
+      .where('id = :id AND (userId = :userId OR isBroadcast = true)', { id, userId })
+      .execute();
   }
 
   async markAllRead(userId: string): Promise<void> {

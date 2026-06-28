@@ -12,10 +12,17 @@
     "lint": "tsc --noEmit",
     "test": "echo \"Tests not yet configured\" && exit 0"
   },
-  "keywords": ["dental", "clinic", "nestjs", "api"],
+  "keywords": [
+    "dental",
+    "clinic",
+    "nestjs",
+    "api"
+  ],
   "author": "OMDC Dental",
   "license": "MIT",
   "dependencies": {
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
     "@nestjs/common": "^11.1.27",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.27",
@@ -24,12 +31,14 @@
     "@nestjs/platform-express": "^11.1.27",
     "@nestjs/platform-socket.io": "^11.1.27",
     "@nestjs/swagger": "^11.4.4",
+    "@nestjs/throttler": "^6.5.0",
     "@nestjs/typeorm": "^11.0.3",
     "@nestjs/websockets": "^11.1.27",
     "@supabase/supabase-js": "^2.108.2",
     "bcryptjs": "^3.0.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "helmet": "^8.2.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

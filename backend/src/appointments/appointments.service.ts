@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Appointment, AppointmentStatus } from '../database/entities/appointment.entity';
@@ -45,12 +45,15 @@ export class AppointmentsService {
     return qb.getMany();
   }
 
-  async findOne(id: string): Promise<Appointment> {
+  async findOne(id: string, user?: { id: string; type?: string }): Promise<Appointment> {
     const appt = await this.repo.findOne({
       where: { id },
       relations: { patient: true, doctor: true, service: true },
     });
     if (!appt) throw new NotFoundException('Appointment not found');
+    if (user && user.type !== 'admin' && appt.patientId !== user.id) {
+      throw new ForbiddenException('Not your appointment');
+    }
     return appt;
   }
 
@@ -93,7 +96,9 @@ export class AppointmentsService {
     return booked.filter((a) => a.status !== 'cancelled').map((a) => a.time);
   }
 
-  async cancel(id: string): Promise<Appointment> {
-    return this.updateStatus(id, { status: 'cancelled' });
+  async cancel(id: string, user?: { id: string; type?: string }): Promise<Appointment> {
+    const appt = await this.findOne(id, user);
+    appt.status = 'cancelled';
+    return this.repo.save(appt);
   }
 }

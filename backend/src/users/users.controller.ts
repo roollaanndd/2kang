@@ -1,18 +1,19 @@
-import { Controller, Get, Patch, Post, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Delete, Param, Body, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private service: UsersService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all patients (admin)' })
+  @Roles('admin', 'owner', 'master-admin', 'branch-admin')
+  @ApiOperation({ summary: 'List all patients (admin only)' })
   findAll(@Query('search') search?: string) {
     return this.service.findAll(search);
   }
@@ -24,14 +25,15 @@ export class UsersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get patient by ID' })
+  @Roles('admin', 'owner', 'master-admin', 'branch-admin')
+  @ApiOperation({ summary: 'Get patient by ID (admin only)' })
   findOne(@Param('id') id: string) {
     return this.service.findOne(id);
   }
 
   @Patch('me')
   @ApiOperation({ summary: 'Update current user profile' })
-  updateMe(@CurrentUser() user: { id: string }, @Body() data: any) {
+  updateMe(@CurrentUser() user: { id: string }, @Body() data: UpdateProfileDto) {
     return this.service.update(user.id, data);
   }
 
@@ -43,7 +45,7 @@ export class UsersController {
 
   @Post('me/family')
   @ApiOperation({ summary: 'Add family member' })
-  addFamily(@CurrentUser() user: { id: string }, @Body() data: any) {
+  addFamily(@CurrentUser() user: { id: string }, @Body() data: { name: string; dob?: string; gender?: 'M' | 'F'; relation?: string }) {
     return this.service.addFamilyMember(user.id, data);
   }
 

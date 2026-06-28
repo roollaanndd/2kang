@@ -205,16 +205,24 @@ export class IntegrationService {
   async handleWebhook(integrationId: string, payload: WebhookPayloadDto, signature?: string) {
     const config = await this.getFullConfig(integrationId);
 
-    if (config.webhookSecret && signature) {
-      const crypto = await import('crypto');
-      const expected = crypto
-        .createHmac('sha256', config.webhookSecret)
-        .update(JSON.stringify(payload))
-        .digest('hex');
+    if (!config.webhookSecret) {
+      throw new BadRequestException('Webhook secret not configured for this integration');
+    }
 
-      if (signature !== expected) {
-        throw new BadRequestException('Invalid webhook signature');
-      }
+    if (!signature) {
+      throw new BadRequestException('Missing webhook signature header');
+    }
+
+    const crypto = await import('crypto');
+    const expected = crypto
+      .createHmac('sha256', config.webhookSecret)
+      .update(JSON.stringify(payload))
+      .digest('hex');
+
+    const signatureBuffer = Buffer.from(signature);
+    const expectedBuffer = Buffer.from(expected);
+    if (signatureBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(signatureBuffer, expectedBuffer)) {
+      throw new BadRequestException('Invalid webhook signature');
     }
 
     this.logger.log(`Webhook received: ${payload.event} from integration ${config.name}`);

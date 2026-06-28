@@ -1,12 +1,11 @@
-import { Controller, Get, Post, Patch, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { NotificationsService } from './notifications.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @ApiTags('notifications')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('notifications')
 export class NotificationsController {
   constructor(private service: NotificationsService) {}
@@ -25,8 +24,8 @@ export class NotificationsController {
 
   @Patch(':id/read')
   @ApiOperation({ summary: 'Mark notification as read' })
-  markRead(@Param('id') id: string) {
-    return this.service.markRead(id);
+  markRead(@CurrentUser() user: { id: string }, @Param('id') id: string) {
+    return this.service.markRead(id, user.id);
   }
 
   @Patch('read-all')
@@ -36,7 +35,8 @@ export class NotificationsController {
   }
 
   @Post('broadcast')
-  @ApiOperation({ summary: 'Send broadcast notification to all users (admin)' })
+  @Roles('admin', 'owner', 'master-admin')
+  @ApiOperation({ summary: 'Send broadcast notification to all users (admin only)' })
   broadcast(@Body() data: { type: string; title: string; body: string; branchId?: string }) {
     return this.service.broadcast(data as any);
   }

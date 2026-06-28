@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transaction, TransactionStatus } from '../database/entities/transaction.entity';
@@ -14,16 +14,16 @@ export class TransactionsService {
     private queueService: QueueService,
   ) {}
 
-  async create(dto: CreateTransactionDto): Promise<Transaction> {
-    const code = this.omdcCode.transactionCode(dto.patientName);
+  async create(user: { id: string; name: string }, dto: CreateTransactionDto): Promise<Transaction> {
+    const code = this.omdcCode.transactionCode(user.name);
     const bCode = this.omdcCode.bookingCode();
-    const mCode = this.omdcCode.memberCode(dto.patientId);
+    const mCode = this.omdcCode.memberCode(user.id);
 
     const txn = this.repo.create({
       code,
       bookingCode: bCode,
-      patientId: dto.patientId,
-      patientName: dto.patientName,
+      patientId: user.id,
+      patientName: dto.patientName || user.name,
       memberCode: mCode,
       appointmentId: dto.appointmentId,
       serviceId: dto.serviceId,
@@ -46,7 +46,7 @@ export class TransactionsService {
 
     if (parsed.valid && parsed.kind === 'transaction' && parsed.key) {
       const txn = await this.repo.findOne({ where: { code: parsed.code } });
-      return txn ? { found: true, kind: 'transaction', transaction: txn } : { found: false, kind: 'transaction' };
+      return txn ? { found: true, kind: 'transaction', transaction: this.sanitizeLookup(txn) } : { found: false, kind: 'transaction' };
     }
 
     if (parsed.valid && parsed.kind === 'member' && parsed.key) {
@@ -54,21 +54,22 @@ export class TransactionsService {
         where: { memberCode: parsed.code },
         order: { createdAt: 'DESC' },
       });
-      return txn ? { found: true, kind: 'member', transaction: txn } : { found: false, kind: 'member' };
+      return txn ? { found: true, kind: 'member', transaction: this.sanitizeLookup(txn) } : { found: false, kind: 'member' };
     }
 
     const bareCode = this.omdcCode.extractBookingCode(raw);
     if (bareCode) {
       const txn = await this.repo.findOne({ where: { bookingCode: bareCode } });
-      if (txn) return { found: true, kind: 'booking', transaction: txn };
+      if (txn) return { found: true, kind: 'booking', transaction: this.sanitizeLookup(txn) };
     }
 
     return { found: false, kind: 'unknown' };
   }
 
-  async checkIn(id: string, branchId: string): Promise<Transaction> {
+  async checkIn(id: string, branchId: string, userId: string): Promise<Transaction> {
     const txn = await this.repo.findOne({ where: { id } });
     if (!txn) throw new NotFoundException('Transaction not found');
+    if (txn.patientId !== userId) throw new ForbiddenException('Not your transaction');
 
     const queueNumber = await this.queueService.assignQueueNumber(branchId);
     txn.queueNumber = queueNumber;
@@ -109,5 +110,21 @@ export class TransactionsService {
     const qb = this.repo.createQueryBuilder('t').where('t.status = :status', { status });
     if (branchId) qb.andWhere('t.branchId = :branchId', { branchId });
     return qb.orderBy('t.createdAt', 'ASC').getMany();
+  }
+
+  private sanitizeLookup(txn: Transaction) {
+    return {
+      id: txn.id,
+      code: txn.code,
+      bookingCode: txn.bookingCode,
+      serviceName: txn.serviceName,
+      doctorName: txn.doctorName,
+      date: txn.date,
+      time: txn.time,
+      status: txn.status,
+      paid: txn.paid,
+      queueNumber: txn.queueNumber,
+      branchId: txn.branchId,
+    };
   }
 }

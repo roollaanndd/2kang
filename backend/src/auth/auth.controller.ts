@@ -1,10 +1,10 @@
-import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto, SetPinDto, AdminLoginDto } from './dto/register.dto';
 import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -12,6 +12,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
+  @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 5 } })
   @Post('register')
   @ApiOperation({ summary: 'Register a new patient account' })
   register(@Body() dto: RegisterDto) {
@@ -19,6 +20,7 @@ export class AuthController {
   }
 
   @Public()
+  @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 10 } })
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Patient login (email or phone)' })
@@ -27,7 +29,7 @@ export class AuthController {
   }
 
   @Post('pin')
-  @UseGuards(JwtAuthGuard)
+  @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 5 } })
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Set or update 6-digit PIN' })
@@ -36,6 +38,7 @@ export class AuthController {
   }
 
   @Public()
+  @Throttle({ short: { ttl: 1000, limit: 1 }, medium: { ttl: 60000, limit: 5 } })
   @Post('admin/login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Admin staff login' })

@@ -1,14 +1,12 @@
-import { IsString, IsOptional, IsNumber, IsIn } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsIn, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateTransactionDto {
-  @ApiProperty({ example: 'Andi Pratama' })
+  @ApiPropertyOptional({ example: 'Andi Pratama', description: 'Override patient name (defaults to JWT user name)' })
+  @IsOptional()
   @IsString()
-  patientName: string;
-
-  @ApiProperty({ example: 'user-uuid' })
-  @IsString()
-  patientId: string;
+  @MaxLength(100)
+  patientName?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -18,11 +16,13 @@ export class CreateTransactionDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @MaxLength(100)
   serviceName?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsString()
+  @MaxLength(100)
   doctorName?: string;
 
   @ApiPropertyOptional()
@@ -59,5 +59,6 @@ export class CreateTransactionDto {
 export class LookupCodeDto {
   @ApiProperty({ example: '7H3K9Q', description: 'Any OMDC code (booking, transaction, or member)' })
   @IsString()
+  @MaxLength(20)
   code: string;
 }
