@@ -7,6 +7,7 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: 'https',
     iosScheme: 'https',
+    allowNavigation: [],
   },
   plugins: {
     SplashScreen: {
@@ -27,10 +28,17 @@ const config: CapacitorConfig = {
     allowMixedContent: false,
     captureInput: true,
     webContentsDebuggingEnabled: false,
+    overrideUserAgent: 'OMDC-Dental-App/2.5.0',
+    appendUserAgent: '',
+    backgroundColor: '#FFFFFF',
+    buildOptions: {
+      signingType: 'apksigner',
+    },
   },
   ios: {
     contentInset: 'automatic',
     allowsLinkPreview: false,
+    scrollEnabled: true,
   },
 };
 
