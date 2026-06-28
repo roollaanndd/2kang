@@ -11,3 +11,4 @@ export { branchesService } from './branches';
 export { cmsService } from './cms';
 export { reportsService } from './reports';
 export { notificationsService } from './notifications';
+export { integrationService } from './integration';

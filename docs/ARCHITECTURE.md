@@ -1067,7 +1067,7 @@ deploy-pages.yml:
   steps: npm ci → npm run build (GITHUB_PAGES=true) → upload to Pages
 
 auto-merge.yml:
-  trigger: push to feature branch (claude/website-mobile-apps-dev-lmgp7x)
+  trigger: push to develop branch
   steps: verify build → merge to main with -X theirs strategy
 ```
 

@@ -77,6 +77,17 @@ All endpoints are prefixed with `/api/v1`. See Swagger docs at `/api/docs` for f
 - `POST /queue/:branchId/call-next` — Call next patient
 - `POST/PATCH /cms/*` — Content management
 
+### Integration (Owner/Admin)
+- `GET /integration` — List integration configs
+- `POST /integration` — Create integration config
+- `PATCH /integration/:id` — Update integration config
+- `POST /integration/:id/test` — Test external connection
+- `POST /integration/import/patients` — Import patients from external system
+- `POST /integration/import/medical-records` — Import medical records
+- `POST /integration/export` — Export OMDC data
+- `GET /integration/sync/logs` — Sync history
+- `POST /integration/webhook/:id` — Receive webhook (public)
+
 ## Scripts
 
 ```bash

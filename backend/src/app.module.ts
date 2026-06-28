@@ -18,6 +18,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { CmsModule } from './cms/cms.module';
 import { ReportsModule } from './reports/reports.module';
+import { IntegrationModule } from './integration/integration.module';
 import { SeedModule } from './database/seeds/seed.module';
 
 @Module({
@@ -45,6 +46,7 @@ import { SeedModule } from './database/seeds/seed.module';
     NotificationsModule,
     CmsModule,
     ReportsModule,
+    IntegrationModule,
 
     // Database setup
     SeedModule,
