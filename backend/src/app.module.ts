@@ -9,10 +9,15 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { OmdcCodeModule } from './omdc-code/omdc-code.module';
 import { UsersModule } from './users/users.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { ServicesModule } from './services/services.module';
+import { BranchesModule } from './branches/branches.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { QueueModule } from './queue/queue.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { PaymentsModule } from './payments/payments.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { CmsModule } from './cms/cms.module';
+import { ReportsModule } from './reports/reports.module';
 import { SeedModule } from './database/seeds/seed.module';
 
 @Module({
@@ -31,10 +36,15 @@ import { SeedModule } from './database/seeds/seed.module';
     // Business modules
     UsersModule,
     DoctorsModule,
+    ServicesModule,
+    BranchesModule,
     AppointmentsModule,
     QueueModule,
     TransactionsModule,
+    PaymentsModule,
     NotificationsModule,
+    CmsModule,
+    ReportsModule,
 
     // Database setup
     SeedModule,
